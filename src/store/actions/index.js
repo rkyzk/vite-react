@@ -21,8 +21,8 @@ export const fetchProducts = () => async (dispatch) => {
     });
   } catch (error) {
     dispatch({
-      type: "ERROR",
-      errors: "failed to load data.",
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch products",
     });
   }
 };

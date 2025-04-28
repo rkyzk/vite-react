@@ -19,7 +19,7 @@ const errorReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: action.errors,
+        errorMessage: action.payload,
       };
     default:
       return state;
