@@ -2,10 +2,10 @@ import ProductCard from "./ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchProducts } from "../store/actions";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const Products = () => {
-  const isLoading = false;
-  const error = null;
+  const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products, categories, pagination } = useSelector(
     (state) => state.products
   );
@@ -51,11 +51,20 @@ const Products = () => {
   //   },
   // ];
   return (
-    <div className="lg:px-14 sm:px-8 px-4 py-14">
+    <div className="lg:px-14 sm:px-8 px-4 py-14 flex justify-center">
       {isLoading ? (
-        <p>loading...</p>
-      ) : error ? (
-        <p>{error}</p>
+        <div
+          className="h-8 w-8 animate-spin rounded-full border-4 border-solid
+                 border-current border-e-transparent align-[-0.125em] text-surface
+                 motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white
+                 text-zinc-600"
+          role="status"
+        ></div>
+      ) : errorMessage ? (
+        <>
+          <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />
+          <p className="text-lg text-slate-600">{errorMessage}</p>
+        </>
       ) : (
         <div
           className="grid sm:grid-col-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4

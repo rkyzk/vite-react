@@ -2,8 +2,11 @@ import axiosReq from "../../api/axiosDefaults";
 
 export const fetchProducts = () => async (dispatch) => {
   try {
-    const { data } = await axiosReq.get(`/public/products`);
-    console.log(data);
+    dispatch({
+      type: "IS_FETCHING",
+    });
+    const { data } = await axiosReq.get(`/2public/products`);
+    await delay(2000);
     dispatch({
       type: "FETCH_PRODUCTS",
       payload: data.content,
@@ -13,7 +16,15 @@ export const fetchProducts = () => async (dispatch) => {
       totalElements: data.totalElements,
       totalPages: data.totalPages,
     });
+    dispatch({
+      type: "IS_SUCCESS",
+    });
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: "ERROR",
+      errors: "failed to load data.",
+    });
   }
 };
+
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
