@@ -10,6 +10,7 @@ const Products = () => {
       image: "https//placehold.co/600x400",
       description: "blah blah blah",
       price: "$200",
+      quantity: 50,
     },
     {
       productId: 2,
@@ -17,13 +18,18 @@ const Products = () => {
       image: "https//placehold.co/600x400",
       description: "blah blah blah",
       price: "$150",
+      quantity: 0,
     },
     {
       productId: 3,
       name: "def",
       image: "https//placehold.co/600x400",
-      description: "blah blah blah",
+      description:
+        "this is the description of this product." +
+        "it is an excellent product, so you'd better buy a lot." +
+        "I don't think this went over 90 chars yet.",
       price: "$150",
+      quantity: 50,
     },
     {
       productId: 4,
@@ -31,18 +37,19 @@ const Products = () => {
       image: "https//placehold.co/600x400",
       description: "blah blah blah",
       price: "$150",
+      quantity: 30,
     },
   ];
   return (
-    <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:2-[90%] 2xl:mx-auto">
+    <div className="lg:px-14 sm:px-8 px-4 py-14">
       {isLoading ? (
         <p>loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
         <div
-          className="grid 2xl: grid-cols-4 lg:grid-cols-3 sm:grid-cols-2
-          gap-2"
+          className="grid sm:grid-col-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4
+          gap-4"
         >
           {products &&
             products.map((product, i) => <ProductCard key={i} {...product} />)}
