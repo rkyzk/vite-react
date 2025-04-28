@@ -2,9 +2,9 @@ import truncateText from "../utils/truncateText";
 import { FaShoppingCart } from "react-icons/fa";
 
 const ProductCard = ({
-  productId,
-  name,
-  image,
+  id,
+  productName,
+  imagePath,
   description,
   price,
   quantity,
@@ -15,10 +15,10 @@ const ProductCard = ({
       <img
         className="w-full cursor-pointer"
         src="https://placehold.co/600x400"
-        alt={name}
+        alt={productName}
       ></img>
       <div className="pt-2 flex justify-between text-gray-900">
-        <h2 className="text-xl">{name}</h2>
+        <h2 className="text-xl">{productName}</h2>
         <div>{price}</div>
       </div>
       <div className="h-20 text-gray-700">{truncateText(description, 50)}</div>
