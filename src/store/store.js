@@ -1,18 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productReducer from "./reducers/ProductReducer";
-
-const initialState = {
-  products: null,
-  categories: null,
-  pagination: {},
-};
+import productReducer from "./reducers/productReducer";
+import errorReducer from "./reducers/errorReducer";
 
 export const store = configureStore({
   reducer: {
     products: productReducer,
+    errors: errorReducer,
   },
   preloadedState: {
-    products: initialState,
+    products: null,
   },
 });
 
