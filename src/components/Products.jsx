@@ -6,13 +6,14 @@ import { FaExclamationTriangle } from "react-icons/fa";
 
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
-  const { products, categories, pagination } = useSelector(
+  const { products, category, pagination } = useSelector(
     (state) => state.products
   );
+  const { searchTerms } = useSelector((state) => state.searchTerms);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    dispatch(fetchProducts(searchTerms));
+  }, [dispatch, searchTerms]);
   // const products = [
   //   {
   //     productId: 1,
