@@ -30,18 +30,19 @@ export const fetchProducts = (searchTerms) => async (dispatch) => {
   }
 };
 
-export const storeSearchTerms = (searchTerms) => async (dispatch) => {
-  dispatch({
-    type: "STORE_SEARCH_TERMS",
-    searchTerms: searchTerms,
-  });
-};
-
-export const setCategory = (category) => async (dispatch) => {
-  dispatch({
-    type: "SET_CATEGORY",
-    category: category,
-  });
+export const fetchCategories = () => async (dispatch) => {
+  try {
+    const { data } = await axiosReq.get(`/admin/categories`);
+    dispatch({
+      type: "FETCH_CATEGORIES",
+      payload: data.content,
+    });
+  } catch (error) {
+    dispatch({
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch categories",
+    });
+  }
 };
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
