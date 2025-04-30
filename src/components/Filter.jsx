@@ -8,16 +8,16 @@ const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
 
-  // const categories = [
-  //   { categoryId: 1, categoryName: "tulips" },
-  //   { categoryId: 2, categoryName: "hyacinth" },
-  //   { categoryId: 3, categoryName: "crocus" },
-  // ];
+  const categories = [
+    { categoryId: 1, categoryName: "tulips" },
+    { categoryId: 2, categoryName: "hyacinth" },
+    { categoryId: 3, categoryName: "crocus" },
+  ];
 
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { categories } = useSelector((state) => state.categories);
+  // const { categories } = useSelector((state) => state.categories);
 
   useEffect(() => {
     const handler = setTimeout(() => {

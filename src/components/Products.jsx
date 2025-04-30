@@ -8,51 +8,53 @@ import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
 
 const Products = () => {
-  const { isLoading, errorMessage } = useSelector((state) => state.errors);
-  const { products, pagination } = useSelector((state) => state.products);
-  useProductFilter();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, []);
+  const isLoading = false;
+  const errorMessage = null;
+  // const { isLoading, errorMessage } = useSelector((state) => state.errors);
+  // const { products, pagination } = useSelector((state) => state.products);
+  // useProductFilter();
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(fetchCategories());
+  // }, []);
 
-  // const products = [
-  //   {
-  //     productId: 1,
-  //     name: "abc",
-  //     image: "https//placehold.co/600x400",
-  //     description: "blah blah blah",
-  //     price: "$200",
-  //     quantity: 50,
-  //   },
-  //   {
-  //     productId: 2,
-  //     name: "def",
-  //     image: "https//placehold.co/600x400",
-  //     description: "blah blah blah",
-  //     price: "$150",
-  //     quantity: 0,
-  //   },
-  //   {
-  //     productId: 3,
-  //     name: "def",
-  //     image: "https//placehold.co/600x400",
-  //     description:
-  //       "this is the description of this product." +
-  //       "it is an excellent product, so you'd better buy a lot." +
-  //       "I don't think this went over 90 chars yet.",
-  //     price: "$150",
-  //     quantity: 50,
-  //   },
-  //   {
-  //     productId: 4,
-  //     name: "def",
-  //     image: "https//placehold.co/600x400",
-  //     description: "blah blah blah",
-  //     price: "$150",
-  //     quantity: 30,
-  //   },
-  // ];
+  const products = [
+    {
+      productId: 1,
+      name: "abc",
+      image: "https//placehold.co/600x400",
+      description: "blah blah blah",
+      price: "$200",
+      quantity: 50,
+    },
+    {
+      productId: 2,
+      name: "def",
+      image: "https//placehold.co/600x400",
+      description: "blah blah blah",
+      price: "$150",
+      quantity: 0,
+    },
+    {
+      productId: 3,
+      name: "def",
+      image: "https//placehold.co/600x400",
+      description:
+        "this is the description of this product." +
+        "it is an excellent product, so you'd better buy a lot." +
+        "I don't think this went over 90 chars yet.",
+      price: "$150",
+      quantity: 50,
+    },
+    {
+      productId: 4,
+      name: "def",
+      image: "https//placehold.co/600x400",
+      description: "blah blah blah",
+      price: "$150",
+      quantity: 30,
+    },
+  ];
   return (
     <>
       <Filter />
@@ -82,7 +84,7 @@ const Products = () => {
           </div>
         )}
       </div>
-      <PaginationSection totalPages={Number(pagination.totalPages)} />
+      {/* <PaginationSection totalPages={Number(pagination.totalPages)} /> */}
     </>
   );
 };
