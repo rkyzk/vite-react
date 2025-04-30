@@ -7,9 +7,7 @@ export const store = configureStore({
     products: productReducer,
     errors: errorReducer,
   },
-  preloadedState: {
-    products: null,
-  },
+  preloadedState: {},
 });
 
 export default store;

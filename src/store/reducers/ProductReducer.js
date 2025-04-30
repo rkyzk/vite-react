@@ -1,6 +1,6 @@
 const initialState = {
   products: null,
-  categories: null,
+  categories: [{ categoryId: 0, categoryName: "abc" }],
   pagination: {},
 };
 
@@ -22,14 +22,14 @@ export const productReducer = (state = initialState, action) => {
     case "FETCH_CATEGORIES":
       return {
         ...state,
-        categories: action.payload,
+        categories: [{ categoryId: 1, categoryName: "tulips" }],
         pagination: {
           ...state.pagination,
+          pageNumber: action.pageNumber,
+          pageSize: action.pageSize,
           totalElements: action.totalElements,
           totalPages: action.totalPages,
           lastPage: action.lastPage,
-          pageNumber: action.pageNumber,
-          pageSize: action.pageSize,
         },
       };
     default:

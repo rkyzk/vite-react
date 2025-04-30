@@ -1,15 +1,11 @@
 import axiosReq from "../../api/axiosDefaults";
 
-export const fetchProducts = (searchTerms) => async (dispatch) => {
+export const fetchProducts = (queryString) => async (dispatch) => {
   try {
     dispatch({
       type: "IS_FETCHING",
     });
-    let searchPhrase = "";
-    if (searchTerms != null && searchTerms != "") {
-      searchPhrase = "/keywords/" + searchTerms;
-    }
-    const { data } = await axiosReq.get(`/public/products` + searchPhrase);
+    const { data } = await axiosReq.get(`/public/products?${queryString}`);
     dispatch({
       type: "FETCH_PRODUCTS",
       payload: data.content,
@@ -32,12 +28,21 @@ export const fetchProducts = (searchTerms) => async (dispatch) => {
 
 export const fetchCategories = () => async (dispatch) => {
   try {
+    console.log("fetching cats");
+    // dispatch({ type: "CATEGORY_LOADER" });
     const { data } = await axiosReq.get(`/admin/categories`);
     dispatch({
       type: "FETCH_CATEGORIES",
       payload: data.content,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      lastPage: data.lastPage,
     });
+    dispatch({ type: "IS_ERROR" });
   } catch (error) {
+    console.log(error);
     dispatch({
       type: "IS_ERROR",
       payload: error?.response?.data?.message || "Failed to fetch categories",
