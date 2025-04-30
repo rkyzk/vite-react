@@ -1,32 +1,23 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import { fetchCategories } from "../store/actions";
 
 const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
 
-  const categories = [
-    { categoryId: 1, categoryName: "tulips" },
-    { categoryId: 2, categoryName: "hyacinth" },
-    { categoryId: 3, categoryName: "crocus" },
-  ];
+  // const categories = [
+  //   { categoryId: 1, categoryName: "tulips" },
+  //   { categoryId: 2, categoryName: "hyacinth" },
+  //   { categoryId: 3, categoryName: "crocus" },
+  // ];
 
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  // const categories = useSelector((state) => state.categories);
-  // console.log(categories);
-
-  // const dispatch = useDispatch();
-  // console.log("dipatch: " + dispatch);
-  // useEffect(() => {
-  //   console.log("filter");
-  //   dispatch(fetchCategories);
-  // }, [dispatch]);
+  const { categories } = useSelector((state) => state.categories);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -72,7 +63,7 @@ const Filter = () => {
             onChange={(e) => setCategory(e.target.value)}
             label="category"
           >
-            {category !== "0" && (
+            {category !== 0 && (
               <MenuItem key={0} value={0}>
                 unselect
               </MenuItem>

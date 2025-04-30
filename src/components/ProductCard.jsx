@@ -18,10 +18,10 @@ const ProductCard = ({
         alt={productName}
       ></img>
       <div className="pt-2 flex justify-between text-gray-900">
-        <h2 className="text-xl">{productName}</h2>
+        <h2 className="text-xl">{truncateText(productName, 50)}</h2>
         <div>{price}</div>
       </div>
-      <div className="h-20 text-gray-700">{truncateText(description, 50)}</div>
+      <div className="h-20 text-gray-700">{truncateText(description, 80)}</div>
       <button
         className={`${
           isAvailable
