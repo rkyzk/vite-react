@@ -46,7 +46,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link className={`${styles.Text}`}>
+          <Link to="/cart" className={`${styles.Text}`}>
             <Badge
               showZero
               badgeContent={cartItemsQty}

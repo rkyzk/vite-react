@@ -88,4 +88,12 @@ export const updateCart = (id, qty) => (dispatch, getState) => {
   }
 };
 
+export const removeItemFromCart = (prodId) => (dispatch, getState) => {
+  dispatch({
+    type: "REMOVE_FROM_CART",
+    payload: prodId,
+  });
+  localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+};
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
