@@ -28,7 +28,6 @@ export const fetchProducts = (queryString) => async (dispatch) => {
 
 export const fetchCategories = () => async (dispatch) => {
   try {
-    console.log("fetching cats");
     // dispatch({ type: "CATEGORY_LOADER" });
     const { data } = await api.get(`/admin/categories`);
     dispatch({
@@ -47,6 +46,45 @@ export const fetchCategories = () => async (dispatch) => {
       type: "IS_ERROR",
       payload: error?.response?.data?.message || "Failed to fetch categories",
     });
+  }
+};
+
+export const fetchFeaturedProducts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "IS_FETCHING",
+    });
+    const { data } = await api.get(`/public/products/featured`);
+    dispatch({
+      type: "FETCH_FEATURED_PRODUCTS",
+      payload: data,
+    });
+    dispatch({
+      type: "IS_SUCCESS",
+    });
+  } catch (error) {
+    dispatch({
+      type: "IS_ERROR",
+      payload:
+        error?.response?.data?.message || "Failed to fetch featured products",
+    });
+  }
+};
+
+export const updateCart = (id, qty) => (dispatch, getState) => {
+  const { products } = getState().products;
+  const productData = products.find((item) => item.id === id);
+  const isQuantityInStock = qty <= productData.quantity;
+  if (isQuantityInStock) {
+    dispatch({
+      type: "UPDATE_CART",
+      payload: { product: productData, quantity: qty },
+    });
+    localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+    //localStorage.setItem("cartItems", []);
+    // localStorage.clear();
+  } else {
+    dispatch();
   }
 };
 

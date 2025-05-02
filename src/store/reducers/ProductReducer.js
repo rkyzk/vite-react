@@ -1,9 +1,10 @@
 const initialState = {
   products: null,
+  featuredProducts: null,
   pagination: {},
 };
 
-export const productReducer = (state = initialState, action) => {
+const productReducer = (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_PRODUCTS":
       return {
@@ -17,6 +18,11 @@ export const productReducer = (state = initialState, action) => {
           pageNumber: action.pageNumber,
           pageSize: action.pageSize,
         },
+      };
+    case "FETCH_FEATURED_PRODUCTS":
+      return {
+        ...state,
+        featuredProducts: action.payload,
       };
     default:
       return state;
