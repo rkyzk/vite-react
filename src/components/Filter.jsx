@@ -1,25 +1,27 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 const Filter = () => {
   const [keywords, setKeywords] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(0);
 
   const categories = [
-    { categoryId: 2, categoryName: "tulips" },
-    { categoryId: 3, categoryName: "hyacinth" },
-    { categoryId: 4, categoryName: "crocus" },
+    { categoryId: 1, categoryName: "tulips" },
+    { categoryId: 2, categoryName: "hyacinth" },
+    { categoryId: 3, categoryName: "crocus" },
   ];
 
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  // const { categories } = useSelector((state) => state.categories);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      category === "all" || category === ""
+      category === 0
         ? searchParams.delete("category")
         : searchParams.set("category", category);
       // Trim spaces of keywords. Replace spaces in the middle with '_'
@@ -35,11 +37,13 @@ const Filter = () => {
   }, [category, keywords]);
 
   const handleClearFilter = () => {
+    setCategory(0);
+    setKeywords("");
     navigate({ pathname: window.location.pathname });
   };
 
   return (
-    <div className="flex justify-end w-10/12 mx-auto">
+    <div className="flex justify-end mx-auto">
       {/* Search box */}
       <input
         type="text"
@@ -59,13 +63,13 @@ const Filter = () => {
             onChange={(e) => setCategory(e.target.value)}
             label="category"
           >
-            {category !== "all" && (
-              <MenuItem key={1} value="all">
+            {category !== 0 && (
+              <MenuItem key={0} value={0}>
                 unselect
               </MenuItem>
             )}
             {categories.map((item) => (
-              <MenuItem key={item.categoryId} value={item.categoryName}>
+              <MenuItem key={item.categoryId} value={item.categoryId}>
                 <span className="text-slate-700">{item.categoryName}</span>
               </MenuItem>
             ))}
