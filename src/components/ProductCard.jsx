@@ -3,8 +3,16 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
+import styles from "../styles/ProductCard.module.css";
 
-const ProductCard = ({ id, productName, description, price, quantity }) => {
+const ProductCard = ({
+  id,
+  productName,
+  description,
+  price,
+  quantity,
+  imageName,
+}) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
@@ -15,8 +23,8 @@ const ProductCard = ({ id, productName, description, price, quantity }) => {
   return (
     <div className="relative">
       <img
-        className="w-full cursor-pointer"
-        src="https://placehold.co/600x400"
+        className={`${styles.prodImg} overflow-hidden cursor-pointer`}
+        src={`/src/assets/products/${imageName}`}
         alt={productName}
       ></img>
       <div className="pt-2 flex justify-between text-gray-900">

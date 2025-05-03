@@ -1,0 +1,33 @@
+.prodImg {
+  width: 330px;
+  height: 264px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1023px) {
+  .prodImg {
+    width: 350px;
+    height: 280px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .prodImg {
+    width: 300px;
+    height: 240px;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .prodImg {
+    width: 400px;
+    height: 320px;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .prodImg {
+    width: 326px;
+    height: 261px;
+  }
+}

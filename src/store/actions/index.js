@@ -74,6 +74,7 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
 export const updateCart = (id, qty) => (dispatch, getState) => {
   const { products } = getState().products;
   const productData = products.find((item) => item.id === id);
+  console.log("index " + productData);
   const isQuantityInStock = qty <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
