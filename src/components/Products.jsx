@@ -13,7 +13,6 @@ const Products = () => {
   useProductFilter();
   const dispatch = useDispatch();
   useEffect(() => {
-    //localStorage.clear();
     dispatch(fetchCategories());
   }, []);
 

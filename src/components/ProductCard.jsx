@@ -4,19 +4,12 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
 
-const ProductCard = ({
-  id,
-  productName,
-  imagePath,
-  description,
-  price,
-  quantity,
-}) => {
-  const isAvailable = quantity && Number(quantity) > 0;
+const ProductCard = ({ id, productName, description, price, quantity }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  const addToCart = (quantity) => {
-    dispatch(updateCart(id, quantity));
+  const isAvailable = quantity && Number(quantity) > 0;
+  const addToCart = (id) => {
+    dispatch(updateCart(id, qty));
   };
 
   return (
@@ -34,13 +27,13 @@ const ProductCard = ({
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
-            <label for="quantity" className="mt-2">
+            <label htmlFor="quantity" className="mt-2">
               Qty
             </label>
             <select
               name="quantity"
               className="border bg-white rounded-lg py-2 pl-1"
-              onChange={(e) => setQty(e.target.value)}
+              onChange={(e) => setQty(Number(e.target.value))}
             >
               {[...Array(30)]
                 .map((_, i) => i + 1)
@@ -59,7 +52,7 @@ const ProductCard = ({
               : "bg-gray-400 text-gray-700"
           }
         rounded py-2 px-3`}
-          onClick={() => addToCart(Number(qty))}
+          onClick={() => addToCart(id)}
         >
           {isAvailable ? (
             <div className="flex">

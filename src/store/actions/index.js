@@ -78,7 +78,7 @@ export const updateCart = (id, qty) => (dispatch, getState) => {
   if (isQuantityInStock) {
     dispatch({
       type: "UPDATE_CART",
-      payload: { product: productData, quantity: qty },
+      payload: { ...productData, purchaseQty: qty },
     });
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
     //localStorage.setItem("cartItems", []);
