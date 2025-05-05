@@ -18,13 +18,17 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout/completed" element={<OrderCompleted />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout/completed" element={<OrderCompleted />} />
+          </Route>
+          <Route path="/" element={<PrivateRoute publicPage />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
         </Routes>
       </div>
     </Router>
