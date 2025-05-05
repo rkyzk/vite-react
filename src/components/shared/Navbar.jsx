@@ -6,8 +6,10 @@ import { Badge } from "@mui/material";
 import styles from "../../styles/Navbar.module.css";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import UserMenu from "./UserMenu";
 
 const Navbar = () => {
+  const { user } = useSelector((state) => state.auth);
   const path = useLocation().pathname;
   const cart = useSelector((state) => state.carts.cart);
   const cartItemsQty = cart ? cart.length : 0;
@@ -60,9 +62,13 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/login" className={`${styles.Text}`}>
-            Login
-          </Link>
+          {user && user.id ? (
+            <UserMenu {...user} clasName="absolute top-30 right-5" />
+          ) : (
+            <Link to="/login" className={`${styles.Text}`}>
+              Login
+            </Link>
+          )}
         </li>
       </ul>
     </>

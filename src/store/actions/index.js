@@ -148,4 +148,11 @@ export const sendLoginRequest =
     }
   };
 
+export const sendLogoutRequest = (navigate) => async (dispatch) => {
+  await api.post("/auth/signout");
+  dispatch({ type: "LOGOUT_USER" });
+  localStorage.removeItem("auth");
+  navigate(`/`);
+};
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
