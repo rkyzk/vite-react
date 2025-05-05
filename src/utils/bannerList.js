@@ -28,7 +28,7 @@ const bannerList = [
     image: "/src/assets/narcissus.jpg",
   },
   {
-    id: 7,
+    id: 8,
     image: "/src/assets/tulips2.jpg",
   },
 ];

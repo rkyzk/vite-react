@@ -60,7 +60,9 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link className={`${styles.Text}`}>Signin</Link>
+          <Link to="/login" className={`${styles.Text}`}>
+            Login
+          </Link>
         </li>
       </ul>
     </>

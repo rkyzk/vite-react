@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
 import styles from "../styles/Products.module.css";
+import Spinner from "./shared/Spinner";
 
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
@@ -61,13 +62,7 @@ const Products = () => {
       <Filter />
       <div className="px-2 py-14 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
-          <div
-            className="h-8 w-8 animate-spin rounded-full border-4 border-solid
-                 border-current border-e-transparent align-[-0.125em] text-surface
-                 motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white
-                 text-zinc-600"
-            role="status"
-          ></div>
+          <Spinner />
         ) : errorMessage ? (
           <>
             <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />

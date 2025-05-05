@@ -16,26 +16,24 @@ const Cart = () => {
       ) : (
         <>
           <div className="flex w-full md:w-10/12">
-            <span className="w-1/12">index</span>
-            <span className="w-5/12">product</span>
-            <span className="w-2/12">quantity</span>
-            <span className="w-2/12">unit price</span>
+            <span className="w-5/12 pl-11">product</span>
+            <span className="w-2/12 pl-2">quantity</span>
+            <span className="w-2/12 pl-2">unit price</span>
           </div>
           <hr className="mt-1" />
-          <div>
+          <div className="w-full md:w-10/12">
             {cart.map((item, idx) => {
               let data = { ...item, idx: idx };
               return <CartItem key={idx} {...data} />;
             })}
           </div>
-          <hr className="mt-3" />
           <div className="flex justify-end">
-            <div className="mr-6">
-              <span className="text-xl block">Sub Total: {totalPrice}</span>
+            <div>
+              <span className="pr-24">Sub Total: {totalPrice}</span>
               <Link
                 to="/checkout"
-                className="no-underline block mt-1 bg-amber-700 text-white
-              py-1 px-3 rounded-lg w-48 hover: opacity-70"
+                className="block mt-3 bg-amber-800 text-white
+              py-1 px-3 rounded-lg hover:opacity-70"
               >
                 Proceed to Check out
               </Link>

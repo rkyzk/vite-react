@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Products from "./components/Products";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -6,6 +7,9 @@ import Navbar from "./components/shared/Navbar";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import OrderCompleted from "./components/OrderCompleted";
+import Login from "./components/auth/Login";
 
 function App() {
   return (
@@ -14,10 +18,13 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout/completed" element={<OrderCompleted />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </div>
     </Router>

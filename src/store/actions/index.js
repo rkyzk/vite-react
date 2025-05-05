@@ -1,4 +1,5 @@
 import api from "../../api/axiosDefaults";
+import axios from "axios";
 
 export const fetchProducts = (queryString) => async (dispatch) => {
   try {
@@ -74,7 +75,6 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
 export const updateCart = (id, qty) => (dispatch, getState) => {
   const { products } = getState().products;
   const productData = products.find((item) => item.id === id);
-  console.log("index " + productData);
   const isQuantityInStock = qty <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
@@ -85,7 +85,7 @@ export const updateCart = (id, qty) => (dispatch, getState) => {
     //localStorage.setItem("cartItems", []);
     // localStorage.clear();
   } else {
-    dispatch();
+    dispatch(`/public/order/featured`);
   }
 };
 
@@ -96,5 +96,56 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
+
+export const handleSendOrderToBE = (address) => async (dispatch, getState) => {
+  const baseUrl = "http://localhost:8080/api";
+  const cart = getState().carts.cart;
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
+  const items = cart.map((item) => {
+    return { product: { ...item }, quantity: item.purchaseQty };
+  });
+  try {
+    const { data } = await axios({
+      method: "post",
+      url: baseUrl + "/order/guest",
+      headers: {},
+      data: {
+        addressDTO: address,
+        cartDTO: {
+          cartItems: items,
+          totalPrice: totalPrice,
+        },
+      },
+    });
+    dispatch({
+      type: "CLEAR_CART",
+    });
+    localStorage.setItem("cartItems", []);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendLoginRequest =
+  (sendData, setLoader, navigate) => async (dispatch) => {
+    setLoader(true);
+    try {
+      const { data } = await api.post(`/auth/signin`, sendData);
+      dispatch({
+        type: "LOGIN_USER",
+        payload: data,
+      });
+      localStorage.setItem("auth", JSON.stringify(data));
+      navigate(`/`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  };
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
