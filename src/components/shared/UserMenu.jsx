@@ -2,38 +2,41 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { sendLogoutRequest } from "../../store/actions";
 import { useDispatch } from "react-redux";
+import { Menu, MenuItem } from "@mui/material";
+import BackDrop from "./BackDrop";
 
 const UserMenu = ({ id, username, roles }) => {
-  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleCloseUserMenu = () => {
-    setTimeout(() => {
-      setOpen(false);
-      document.removeEventListener("mouseup", handleCloseUserMenu);
-    }, 100);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-  const handleOpenUserMenu = () => {
-    setOpen(true);
-    document.addEventListener("mouseup", handleCloseUserMenu);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
-
   const handleLogout = () => {
+    handleClose();
     dispatch(sendLogoutRequest(navigate));
   };
 
   return (
-    <>
-      <button onClick={() => handleOpenUserMenu()}>Hi {username}!</button>
-      {open && (
-        <div className="px-3 py-2 d-flex flex-column bg-gray-50 text-slate-700">
-          <Link>Profile</Link>
-          <Link>Order History</Link>
-          <button onClick={() => handleLogout()}>Log out</button>
-        </div>
-      )}
-    </>
+    <div>
+      <div onClick={handleClick}>Hi {username}!</div>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>Order History</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
+      {open && <BackDrop />}
+    </div>
   );
 };
 
