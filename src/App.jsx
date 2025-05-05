@@ -10,6 +10,8 @@ import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import OrderCompleted from "./components/OrderCompleted";
 import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import PrivateRoute from "./components/PrivateRote";
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           </Route>
           <Route path="/" element={<PrivateRoute publicPage />}>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
       </div>

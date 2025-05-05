@@ -155,4 +155,17 @@ export const sendLogoutRequest = (navigate) => async (dispatch) => {
   navigate(`/`);
 };
 
+export const sendRegisterRequest =
+  (sendData, setLoader, navigate) => async (dispatch) => {
+    setLoader(true);
+    try {
+      const { data } = await api.post("/auth/signup", sendData);
+      navigate(`/login`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
