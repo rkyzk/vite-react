@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { removeItemFromCart, updateCart } from "../store/actions";
+import styles from "../styles/CartItem.module.css";
 
 const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
   const dispatch = useDispatch();
@@ -18,7 +19,11 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
         <span className="w-1/12 mt-14 pl-2 text-center">{idx + 1}</span>
         <div className="w-5/12 pl-2">
           <span>{productName}</span>
-          <img src={`/src/assets/products/${imageName}`} alt={productName} />
+          <img
+            className={`${styles.imgSize}`}
+            src={`/src/assets/products/${imageName}`}
+            alt={productName}
+          />
         </div>
         <div className="w-2/12 pl-2">
           <select

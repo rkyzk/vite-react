@@ -1,0 +1,13 @@
+img {
+  width: 150px;
+  height: 120px;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+@media screen and (max-width: 475px) {
+  .imgSize {
+    width: 120px;
+    height: 96px;
+  }
+}

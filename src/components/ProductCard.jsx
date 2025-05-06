@@ -23,7 +23,7 @@ const ProductCard = ({
   return (
     <div className="relative">
       <img
-        className={`${styles.prodImg} overflow-hidden cursor-pointer`}
+        className={`${styles.imgSize} "cursor-pointer"`}
         src={`/src/assets/products/${imageName}`}
         alt={productName}
       ></img>

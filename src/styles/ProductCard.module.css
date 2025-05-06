@@ -1,32 +1,33 @@
-.prodImg {
+.imgSize {
   width: 330px;
   height: 264px;
-  overflow: hidden;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 @media screen and (max-width: 1023px) {
-  .prodImg {
+  .imgSize {
     width: 350px;
     height: 280px;
   }
 }
 
 @media screen and (max-width: 800px) {
-  .prodImg {
+  .imgSize {
     width: 300px;
     height: 240px;
   }
 }
 
 @media screen and (max-width: 639px) {
-  .prodImg {
+  .imgSize {
     width: 400px;
     height: 320px;
   }
 }
 
 @media screen and (max-width: 475px) {
-  .prodImg {
+  .imgSize {
     width: 326px;
     height: 261px;
   }
