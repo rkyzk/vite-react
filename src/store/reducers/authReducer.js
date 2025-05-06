@@ -1,5 +1,6 @@
 const initialState = {
   user: null,
+  addresses: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT_USER":
       return {
         user: null,
+      };
+    case "STORE_ADDRESSES":
+      return {
+        ...state,
+        addresses: action.payload,
       };
     default:
       return state;

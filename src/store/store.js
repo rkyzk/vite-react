@@ -11,11 +11,11 @@ const cartItems = localStorage.getItem("cartItems")
   : [];
 const user = localStorage.getItem("auth")
   ? JSON.parse(localStorage.getItem("auth"))
-  : [];
+  : null;
 
 const initialState = {
   carts: { cart: cartItems },
-  auth: { user: user },
+  auth: { user: user, addresses: null },
 };
 
 const store = configureStore({

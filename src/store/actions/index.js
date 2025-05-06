@@ -1,5 +1,4 @@
 import api from "../../api/axiosDefaults";
-import axios from "axios";
 
 export const fetchProducts = (queryString) => async (dispatch) => {
   try {
@@ -97,8 +96,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
-export const handleSendOrderToBE = (address) => async (dispatch, getState) => {
-  const baseUrl = "http://localhost:8080/api";
+export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -107,19 +105,15 @@ export const handleSendOrderToBE = (address) => async (dispatch, getState) => {
   const items = cart.map((item) => {
     return { product: { ...item }, quantity: item.purchaseQty };
   });
+  const sendData = {
+    addressDTOList: addressList,
+    cartDTO: {
+      cartItems: items,
+      totalPrice: totalPrice,
+    },
+  };
   try {
-    const { data } = await axios({
-      method: "post",
-      url: baseUrl + "/order/guest",
-      headers: {},
-      data: {
-        addressDTO: address,
-        cartDTO: {
-          cartItems: items,
-          totalPrice: totalPrice,
-        },
-      },
-    });
+    const { data } = await api.post(`/order/guest`, sendData);
     dispatch({
       type: "CLEAR_CART",
     });
@@ -129,6 +123,37 @@ export const handleSendOrderToBE = (address) => async (dispatch, getState) => {
     console.log(error);
   }
 };
+
+export const sendOrderLoggedInUser =
+  (addressList) => async (dispatch, getState) => {
+    console.log(addressList);
+    const cart = getState().carts.cart;
+    const totalPrice = cart.reduce(
+      (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+      0
+    );
+    const items = cart.map((item) => {
+      return { product: { ...item }, quantity: item.purchaseQty };
+    });
+    const sendData = {
+      addressDTOList: addressList,
+      cartDTO: {
+        cartItems: items,
+        totalPrice: totalPrice,
+      },
+    };
+    try {
+      const { data } = api.post(`/order/newaddress`, sendData);
+      console.log("post req fired");
+      dispatch({
+        type: "CLEAR_CART",
+      });
+      localStorage.setItem("cartItems", []);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const sendLoginRequest =
   (sendData, setLoader, navigate) => async (dispatch) => {
@@ -167,5 +192,11 @@ export const sendRegisterRequest =
       setLoader(false);
     }
   };
+
+export const getUserAddress = () => async (dispatch) => {
+  const { data } = await api.get(`/user/addresses`);
+  console.log("get address");
+  dispatch({ type: "STORE_ADDRESSES", payload: data });
+};
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));

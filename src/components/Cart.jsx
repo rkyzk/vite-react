@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getUserAddress } from "../store/actions";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
@@ -8,6 +10,10 @@ const Cart = () => {
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
   );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUserAddress());
+  }, []);
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">

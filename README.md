@@ -1,8 +1,13 @@
 # Ecommerce App Frontend
 
-nvm install --lts
+nvm use --lts
 
-# Credits
+## Bugs
+
+not logged in => Checkout => log in => should go back to checkout page
+but goes to home page
+
+## Credits
 
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/

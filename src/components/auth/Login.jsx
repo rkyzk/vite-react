@@ -10,7 +10,6 @@ const Login = () => {
     password: "",
   });
   const [loader, setLoader] = useState(false);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

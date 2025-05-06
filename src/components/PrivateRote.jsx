@@ -3,9 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoute = ({ publicPage = false }) => {
   const { user } = useSelector((state) => state.auth);
-
   if (publicPage) {
-    return user.username ? <Navigate to="/" /> : <Outlet />;
+    return user ? <Navigate to="/" /> : <Outlet />;
   }
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
