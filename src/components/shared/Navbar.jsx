@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { GiPlantsAndAnimals } from "react-icons/gi";
+import { GiConsoleController, GiPlantsAndAnimals } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@mui/material";
 import styles from "../../styles/Navbar.module.css";
@@ -10,67 +10,74 @@ import UserMenu from "./UserMenu";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.auth);
+  const [open, setOpen] = useState(false);
   const path = useLocation().pathname;
   const cart = useSelector((state) => state.carts.cart);
   const cartItemsQty = cart ? cart.length : 0;
-  const cssAttr = [
-    "flex-column",
-    "block",
-    "bg-white",
-    "absolute",
-    "top-15",
-    "right-5",
-    "opacity-90",
-    "z-[2]",
-  ];
+  // watch window size (menu box needs to close above 768px if open)
+  const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+  /**
+   * If window size is above 768px, set 'open' false
+   */
+  const checkMedia = () => {
+    if (mediaQuery.matches) {
+      setOpen(false);
+      window.removeEventListener("resize", checkMedia);
+    }
+  };
+
+  /**
+   * Close menu box and remove event listeners
+   */
+  const handleCloseMenu = () => {
+    setOpen(false);
+    document.removeEventListener("mouseup", handleCloseMenu);
+    window.removeEventListener("resize", checkMedia);
+  };
+
+  /**
+   * Open the menu box and add event listeners
+   */
+  const openMenu = () => {
+    setOpen(true);
+    document.addEventListener("mouseup", handleCloseMenu);
+    window.addEventListener("resize", checkMedia);
+  };
 
   const navbar = (
     <>
-      <ul id="menu" className={`${styles.menu} "mt=[4] gap-4 flex visible"`}>
-        <li>
-          <Link to="/" className={`${styles.Text}`}>
-            {path === "/" && <span>*</span>}
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link className={`${styles.Text}`}>About</Link>
-        </li>
-        <li>
-          <Link to="/products" className={`${styles.Text}`}>
-            {path === "/products" && <span>*</span>}
-            Our shop
-          </Link>
-        </li>
-        <li>
-          <Link to="/contact" className={`${styles.Text}`}>
-            Contact
-          </Link>
-        </li>
-        <li>
-          <Link to="/cart" className={`${styles.Text}`}>
-            <Badge
-              showZero
-              badgeContent={cartItemsQty}
-              overlap="circular"
-              color="primary"
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-              <FaShoppingCart size={25} />
-            </Badge>
-            <span className="xs:ml-4 sm:ml-4 md:hidden">Cart</span>
-          </Link>
-        </li>
-        <li>
-          {user && user.id ? (
-            <UserMenu {...user} clasName="absolute top-30 right-5" />
-          ) : (
-            <Link to="/login" className={`${styles.Text}`}>
-              Login
-            </Link>
-          )}
-        </li>
-      </ul>
+      <Link to="/" className={`${styles.Text}`}>
+        {path === "/" && <span>*</span>}
+        Home
+      </Link>
+      <Link className={`${styles.Text}`}>About</Link>
+      <Link to="/products" className={`${styles.Text}`}>
+        {path === "/products" && <span>*</span>}
+        Our shop
+      </Link>
+      <Link to="/contact" className={`${styles.Text}`}>
+        Contact
+      </Link>
+      <Link to="/cart" className={`${styles.Text}`}>
+        <Badge
+          showZero
+          badgeContent={cartItemsQty}
+          overlap="circular"
+          color="primary"
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <FaShoppingCart size={25} />
+        </Badge>
+        <span className="xs:ml-4 sm:ml-4 md:hidden">Cart</span>
+      </Link>
+      {user && user.id ? (
+        <UserMenu {...user} clasName="absolute top-30 right-5" />
+      ) : (
+        <Link to="/login" className={`${styles.Text}`}>
+          Login
+        </Link>
+      )}
     </>
   );
 
@@ -83,8 +90,12 @@ const Navbar = () => {
         <GiPlantsAndAnimals className="mr-2 text-3xl" />
         <h1 className="font-[Ole] font-bold">Wild Blossom</h1>
       </Link>
-      {navbar}
-      <RxHamburgerMenu className="mt-2 text-2xl md:hidden" />
+      <ul className={`${styles.navBarMd}`}>{navbar}</ul>
+      <RxHamburgerMenu
+        className="mt-2 text-2xl md:hidden"
+        onClick={() => openMenu()}
+      />
+      {open && <ul className={`${styles.navBar}`}>{navbar}</ul>}
     </div>
   );
 };

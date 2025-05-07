@@ -43,7 +43,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex justify-end mx-auto">
+    <div className="flex justify-end mx-auto gap-1 pr-5">
       {/* Search box */}
       <input
         type="text"
@@ -51,7 +51,7 @@ const Filter = () => {
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
         className="border-gray-500 rounded-md bg-stone-100
-                   h-12 px-2 py-1 w-64 mr-1"
+                   h-12 px-1 py-2 w-64"
       ></input>
       {/* Category drowdown */}
       <div>
@@ -76,10 +76,7 @@ const Filter = () => {
           </Select>
         </FormControl>
       </div>
-      <button
-        onClick={handleClearFilter}
-        className="bg-stone-500 text-white rounded-md h-12 w-16 px-2 py-1 ml-1"
-      >
+      <button onClick={handleClearFilter} className="bg-stone-500 py-1 px-2">
         clear
       </button>
     </div>

@@ -12,3 +12,16 @@ h2 {
 a {
   text-decoration: none !important;
 }
+
+input {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+button {
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.5;
+}
