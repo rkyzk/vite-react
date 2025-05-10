@@ -5,7 +5,19 @@
   object-position: 50% 50%;
 }
 
-@media screen and (max-width: 475px) {
+.Btn:hover {
+  color: rgb(29, 15, 5) !important;
+}
+
+@media screen and (max-width: 532px) {
+  .Btn {
+    line-height: 1rem;
+    width: 70px;
+    height: 44px;
+  }
+}
+
+@media screen and (max-width: 500px) {
   .imgSize {
     width: 120px;
     height: 96px;

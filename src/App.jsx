@@ -4,6 +4,7 @@ import Products from "./components/Products";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Navbar from "./components/shared/Navbar";
+import Footer from "./components/shared/Footer";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
@@ -32,6 +33,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

@@ -21,29 +21,29 @@ const Cart = () => {
         <p className="w-30 m-auto">No items in cart</p>
       ) : (
         <>
-          <div className="flex w-full md:w-10/12">
-            <span className="w-5/12 pl-11">product</span>
-            <span className="w-2/12 pl-2">quantity</span>
-            <span className="w-2/12 pl-2">unit price</span>
+          <div className="flex w-full gap-1">
+            <span className="w-1/12"></span>
+            <span className="w-4/12">product</span>
+            <span className="w-2/12">qty</span>
+            <span>unit price</span>
           </div>
           <hr className="mt-1" />
-          <div className="w-full md:w-10/12">
-            {cart.map((item, idx) => {
-              let data = { ...item, idx: idx };
-              return <CartItem key={idx} {...data} />;
-            })}
+          {cart.map((item, idx) => {
+            let data = { ...item, idx: idx };
+            return <CartItem key={idx} {...data} className="p-0 m-0" />;
+          })}
+          <div className="flex w-full mt-3">
+            <strong className="w-7/12 text-right">sub total: </strong>
+            <strong className="w-2/12 pl-3">{totalPrice}</strong>
           </div>
-          <div className="flex justify-end">
-            <div>
-              <span className="pr-24">Sub Total: {totalPrice}</span>
-              <Link
-                to="/checkout"
-                className="block mt-3 bg-amber-800 text-white
-              py-1 px-3 rounded-lg hover:opacity-70"
-              >
-                Proceed to Check out
-              </Link>
-            </div>
+          <div className="flex w-full mt-3 justify-end">
+            <Link
+              to="/checkout"
+              className="block mt-1 bg-amber-800 text-white
+                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8"
+            >
+              Proceed to Check out
+            </Link>
           </div>
         </>
       )}
