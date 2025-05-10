@@ -13,6 +13,7 @@ import OrderCompleted from "./components/OrderCompleted";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/PrivateRote";
+import Test from "./Test";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Route>
+          <Route path="/test" element={<Test />} />
         </Routes>
         <Footer />
       </div>

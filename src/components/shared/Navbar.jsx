@@ -60,19 +60,25 @@ const Navbar = () => {
         Contact
       </Link>
       <Link to="/cart" className={`${styles.Text}`}>
-        <Badge
-          showZero
-          badgeContent={cartItemsQty}
-          overlap="circular"
-          color="primary"
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <FaShoppingCart size={25} />
-        </Badge>
-        <span className="xs:ml-4 sm:ml-4 md:hidden">Cart</span>
+        <div className="flex gap-3">
+          <Badge
+            showZero
+            badgeContent={cartItemsQty}
+            overlap="circular"
+            color="primary"
+            className="mt-1"
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <FaShoppingCart size={25} />
+          </Badge>
+          <span className={`${styles.Text} ${styles.cartText}`}> My Cart</span>
+        </div>
       </Link>
       {user && user.id ? (
-        <UserMenu {...user} clasName="absolute top-30 right-5" />
+        <UserMenu
+          {...user}
+          clasName={`${styles.Text} "absolute top-30 right-5"`}
+        />
       ) : (
         <Link to="/login" className={`${styles.Text}`}>
           Login

@@ -15,7 +15,7 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
 
   return (
     <>
-      <div className="flex w-full">
+      <div className="flex w-full gap-1">
         <span className="w-1/12"></span>
         <span>{productName}</span>
       </div>

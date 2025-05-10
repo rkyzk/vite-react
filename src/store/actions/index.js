@@ -143,7 +143,7 @@ export const sendOrderLoggedInUser =
       },
     };
     try {
-      const { data } = api.post(`/order/newaddress`, sendData);
+      const { data } = api.post(`/order/address/add`, sendData);
       console.log("post req fired");
       dispatch({
         type: "CLEAR_CART",
@@ -194,8 +194,19 @@ export const sendRegisterRequest =
   };
 
 export const getUserAddress = () => async (dispatch) => {
+  try {
+    const { data } = await api.get(`/user/addresses`);
+    dispatch({ type: "STORE_ADDRESSES", payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendUpdateAddressReq = (address) => async (dispatch) => {
+  console.log(address.addressId);
+  let id = address.addressId;
+  await api.put(`/addresses/${id}`, address);
   const { data } = await api.get(`/user/addresses`);
-  console.log("get address");
   dispatch({ type: "STORE_ADDRESSES", payload: data });
 };
 

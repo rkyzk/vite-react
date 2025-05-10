@@ -4,6 +4,7 @@ import { sendLogoutRequest } from "../../store/actions";
 import { useDispatch } from "react-redux";
 import { Menu, MenuItem } from "@mui/material";
 import BackDrop from "./BackDrop";
+import styles from "../../styles/Navbar.module.css";
 
 const UserMenu = ({ id, username, roles }) => {
   const dispatch = useDispatch();
@@ -24,7 +25,9 @@ const UserMenu = ({ id, username, roles }) => {
 
   return (
     <div>
-      <div onClick={handleClick}>Hi {username}!</div>
+      <div className={`${styles.Text}`} onClick={handleClick}>
+        Hi {username}!
+      </div>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
