@@ -2,6 +2,13 @@
 
 nvm use --lts
 
+## to do
+
+card data
+order confirmation dialog
+each product page
+about
+
 ## Bugs
 
 not logged in => Checkout => log in => should go back to checkout page

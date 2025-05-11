@@ -76,7 +76,10 @@ const Filter = () => {
           </Select>
         </FormControl>
       </div>
-      <button onClick={handleClearFilter} className="bg-stone-500 py-1 px-2">
+      <button
+        onClick={handleClearFilter}
+        className="bg-stone-500 py-1 px-2 h-10"
+      >
         clear
       </button>
     </div>

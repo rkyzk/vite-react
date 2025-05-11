@@ -30,7 +30,7 @@ const Cart = () => {
           <hr className="mt-1" />
           {cart.map((item, idx) => {
             let data = { ...item, idx: idx };
-            return <CartItem key={idx} {...data} className="p-0 m-0" />;
+            return <CartItem key={idx} {...data} />;
           })}
           <div className="flex w-full mt-3">
             <strong className="w-7/12 text-right">sub total: </strong>

@@ -1,5 +1,11 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Button, Dialog, DialogContent, DialogActions } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+} from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,7 +13,7 @@ import {
   sendOrderLoggedInUser,
   sendUpdateAddressReq,
 } from "../store/actions";
-import "../styles/Checkout.module.css";
+import styles from "../styles/Checkout.module.css";
 
 const Checkout = () => {
   const { user, addresses } = useSelector((state) => state.auth);
@@ -21,6 +27,12 @@ const Checkout = () => {
   const [ordered, setOrdered] = useState(false);
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const cart = useSelector((state) => state.carts.cart);
+  const totalPrice = cart?.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
 
   const initialSAddressState = {
     addressId: storedSAddress ? storedSAddress.addressId : null,
@@ -57,6 +69,7 @@ const Checkout = () => {
 
   const handlePlaceOrder = () => {
     if (!ordered) {
+      setOrdered(true);
       let addressList = [];
       if (!addresses || addresses?.length == 0) {
         addressList.push(shippingAddress);
@@ -97,92 +110,92 @@ const Checkout = () => {
   const addressForm = (handleChangeAddress, address) => {
     return (
       <div>
-        <div>
-          <label htmlFor="fullname" className="w-40">
-            your full name:
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="fullname" className={`${styles.Label}`}>
+            full name:
           </label>
           <input
             id="fullname"
             name="fullname"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.fullname}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div className="mt-1">
-          <label htmlFor="streetAddress1" className="w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="streetAddress1" className={`${styles.Label}`}>
             street address 1:
           </label>
           <input
             id="streetAddress1"
             name="streetAddress1"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.streetAddress1}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
-          <label htmlFor="streetAddress2" className="mt-1 w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="streetAddress2" className={`${styles.Label}`}>
             street address 2:
           </label>
           <input
             id="streetAddress2"
             name="streetAddress2"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.streetAddress2}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
-          <label htmlFor="city" className="mt-1 w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="city" className={`${styles.Label}`}>
             city:
           </label>
           <input
             id="city "
             name="city"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.city}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
-          <label htmlFor="province" className="mt-1 w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="province" className={`${styles.Label}`}>
             province:
           </label>
           <input
             id="province"
             name="province"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.province}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
-          <label htmlFor="postalCode" className="mt-1 w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="postalCode" className={`${styles.Label}`}>
             postal code:
           </label>
           <input
             id="postalCode"
             name="postalCode"
             type="text"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.postalCode}
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
-          <label htmlFor="countryCode" className="mt-1 w-40">
+        <div className={`${styles.InputItem}`}>
+          <label htmlFor="countryCode" className={`${styles.Label}`}>
             country:
           </label>
           <input
             id="countryCode"
             name="countryCode"
-            className="bg-white pl-2 rounded-lg"
+            className={`${styles.Input}`}
             value={address.countryCode}
             onChange={(e) => handleChangeAddress(e)}
           />
@@ -192,144 +205,190 @@ const Checkout = () => {
   };
 
   return (
-    <div className="px-2 w-full mt-3 mx-auto text-xl sm:w-9/12">
-      {!user && (
-        <span>
-          <Link to="/login" className="hover:text-sky-900">
-            Log in{" "}
-          </Link>{" "}
-          or <Link to="/register">Register </Link>
-          <br />
-          Or fill out the form below to make a purchase as a guest.
-        </span>
-      )}
-      {storedSAddress && !editSAddr ? (
-        <>
-          <strong>Shipping Address:</strong>
-          <div id="shipping-address">
-            <div>
-              <span className="block">{storedSAddress.fullname}</span>
-              <span className="block">{storedSAddress.streetAddress1}</span>
-              {storedSAddress.streetAddress2 && (
-                <span className="block">{storedSAddress.streetAddress2}</span>
-              )}
-              <span className="block">{storedSAddress.city}</span>
-              <span className="block">{storedSAddress.province}</span>
-              <span className="block">{storedSAddress.postalCode}</span>
-              <span className="block">{storedSAddress.countryCode}</span>
-              <button
-                className="bg-cyan-700 block mt-2 px-3 py-1"
-                onClick={() => setEditSAddr(true)}
-              >
-                edit
-              </button>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="mt-2 px-4 pb-2 bg-slate-300 flex">
+    <>
+      <div className="flex px-2 w-full mt-3 mx-auto xl:w-9/12">
+        {!user && (
+          <span>
+            <Link to="/login" className="hover:text-sky-900">
+              Log in{" "}
+            </Link>{" "}
+            or <Link to="/register">Register </Link>
+            <br />
+            Or fill out the form below to make a purchase as a guest.
+          </span>
+        )}
+        <div className="grid m-auto justify-center xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
           <div>
-            <legend className="mt-2">Shipping Address:</legend>
-            {addressForm(handleChangeShippingAddress, shippingAddress)}
-            {storedSAddress && (
-              <div classname="flex">
-                <button
-                  className="bg-fuchsia-400 px-2 py-1 mr-1"
-                  onClick={() => saveAddress(shippingAddress)}
-                >
-                  save
-                </button>
-                <button
-                  className="bg-fuchsia-400 px-2 py-1"
-                  onClick={() => setEditSAddr(false)}
-                >
-                  cancel
-                </button>
+            <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
+            {storedSAddress && !editSAddr ? (
+              <>
+                <div className="pt-2">
+                  <span className="block">{storedSAddress.fullname}</span>
+                  <span className="block">{storedSAddress.streetAddress1}</span>
+                  {storedSAddress.streetAddress2 && (
+                    <span className="block">
+                      {storedSAddress.streetAddress2}
+                    </span>
+                  )}
+                  <span className="block">{storedSAddress.city}</span>
+                  <span className="block">{storedSAddress.province}</span>
+                  <span className="block">{storedSAddress.postalCode}</span>
+                  <span className="block">{storedSAddress.countryCode}</span>
+                  <button
+                    className="bg-cyan-700 block mt-2 px-3 py-1"
+                    onClick={() => setEditSAddr(true)}
+                  >
+                    edit
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
+                <div>
+                  {addressForm(handleChangeShippingAddress, shippingAddress)}
+                  {storedSAddress && (
+                    <div classname="flex">
+                      <button
+                        className="bg-fuchsia-400 px-2 py-1 mr-1"
+                        onClick={() => saveAddress(shippingAddress)}
+                      >
+                        save
+                      </button>
+                      <button
+                        className="bg-fuchsia-400 px-2 py-1"
+                        onClick={() => setEditSAddr(false)}
+                      >
+                        cancel
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
+          <div>
+            <h2 className={`${styles.Text} "mt-2"`}>Billing Address:</h2>
+            {storedBAddress && !editBAddr ? (
+              <>
+                <span className="block">{storedBAddress.fullname}</span>
+                <span className="block">{storedBAddress.streetAddress1}</span>
+                {storedBAddress.streetAddress2 && (
+                  <span className="block">{storedBAddress.streetAddress2}</span>
+                )}
+                <span className="block">{storedBAddress.city}</span>
+                <span className="block">{storedBAddress.province}</span>
+                <span className="block">{storedBAddress.postalCode}</span>
+                <span className="block">{storedBAddress.countryCode}</span>
+                <button
+                  className="bg-cyan-700 block mt-2 px-3 py-1"
+                  onClick={() => setEditBAddr(true)}
+                >
+                  edit
+                </button>
+              </>
+            ) : (
+              <>
+                {!storedBAddress && (
+                  <p className={`${styles.note}`}>
+                    If it's different from shipping address
+                  </p>
+                )}
+                <div
+                  className={`${styles.addressCardBox} ${styles.bAddressBox}`}
+                >
+                  <div>
+                    {addressForm(handleChangeBillingAddress, billingAddress)}
+                  </div>
+                </div>
+                {editBAddr && (
+                  <div className="flex gap-1">
+                    <button
+                      className="bg-fuchsia-400 px-2 py-1 mr-1"
+                      onClick={() => saveAddress(billingAddress)}
+                    >
+                      save
+                    </button>
+                    <button
+                      className="bg-fuchsia-400 px-2 py-1"
+                      onClick={() => setEditBAddr(false)}
+                    >
+                      cancel
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className="flex-col">
+            <h2 className={`${styles.Text} "mt-2"`}>card information</h2>
+            <div className={`${styles.addressCardBox}`}>
+              <div className={`${styles.InputItem}`}>
+                <label htmlFor="name-on-card" className={`${styles.Label}`}>
+                  card owner:
+                </label>
+                <input name="name-on-card" className={`${styles.Input}`} />
+              </div>
+              <div className={`${styles.InputItem}`}>
+                <label htmlFor="card-num" className={`${styles.Label}`}>
+                  card number:
+                </label>
+                <input
+                  name="card-num"
+                  type="number"
+                  className={`${styles.Input}`}
+                />
+              </div>
+              <div className={`${styles.InputItem}`}>
+                <label htmlFor="expiration" className={`${styles.Label}`}>
+                  expiration date:
+                </label>
+                <input
+                  name="expiration"
+                  type="number"
+                  className={`${styles.Input}`}
+                />
+              </div>
+              <div className={`${styles.InputItem}`}>
+                <label htmlFor="security-code" className={`${styles.Label}`}>
+                  security code:
+                </label>
+                <input name="security-code" className={`${styles.Input}`} />
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      <div className="mt-5">
-        <strong>Billing Address:</strong>
       </div>
-      {storedBAddress && !editBAddr ? (
-        <>
-          <span className="block">{storedBAddress.fullname}</span>
-          <span className="block">{storedBAddress.streetAddress1}</span>
-          {storedBAddress.streetAddress2 && (
-            <span className="block">{storedBAddress.streetAddress2}</span>
-          )}
-          <span className="block">{storedBAddress.city}</span>
-          <span className="block">{storedBAddress.province}</span>
-          <span className="block">{storedBAddress.postalCode}</span>
-          <span className="block">{storedBAddress.countryCode}</span>
-          <button
-            className="bg-cyan-700 block mt-2 px-3 py-1"
-            onClick={() => setEditBAddr(true)}
-          >
-            edit
-          </button>
-        </>
-      ) : (
-        <span>
-          same as shipping address or{" "}
-          <button onClick={() => setEditBAddr(true)}>
-            enter a billing address
-          </button>
-        </span>
-      )}
-      {editBAddr && (
-        <div>{addressForm(handleChangeBillingAddress, billingAddress)}</div>
-      )}
-      {storedBAddress && editBAddr && (
-        <div className="flex gap-1">
-          <button
-            className="bg-fuchsia-400 px-2 py-1 mr-1"
-            onClick={() => saveAddress(billingAddress)}
-          >
-            save
-          </button>
-          <button
-            className="bg-fuchsia-400 px-2 py-1"
-            onClick={() => setEditBAddr(false)}
-          >
-            cancel
-          </button>
-        </div>
-      )}
-      <div className="mt-2 px-4 pb-2 bg-fuchsia-100">
-        <legend className="mt-2">card information</legend>
-        <label htmlFor="name-on-card">name on your card:</label>
-        <input name="name-on-card" className="bg-white rounded-lg block" />
-        <label htmlFor="card-num" className="mt-1">
-          card number:
-        </label>
-        <input
-          name="card-num"
-          type="number"
-          className="bg-white rounded-lg block"
-        />
-        <label htmlFor="expiration" className="mt-1">
-          expiration date:
-        </label>
-        <input
-          name="expiration"
-          type="number"
-          className="bg-white rounded-lg block"
-        />
-        <label htmlFor="security-code" className="mt-1">
-          security code:
-        </label>
-        <input name="security-code" className="bg-white rounded-lg block" />
+      <div className="w-full flex">
+        <button
+          className="mx-auto w-40 bg-amber-800 mt-4 px-2 py-1 text-white hover:opacity-50"
+          onClick={() => setOpenDialog(true)}
+        >
+          Place your order
+        </button>
       </div>
-      <button
-        className="mt-2 px-2 py-1 text-white hover:opacity-50"
-        onClick={() => handlePlaceOrder()}
-      >
-        Place your Order
-      </button>
-    </div>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You are about to make purchase follwoing items.
+          </DialogContentText>
+          {/* {cart?.cartItems.forEach((item) => {
+            return (
+              <>
+                <span>{item.productName}</span>
+                <span>{item.purchaseQty}</span>
+              </>
+            );
+          })} */}
+          <span>{totalPrice}</span>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handlePlaceOrder()} autoFocus>
+            proceed
+          </Button>
+          <Button onClick={() => setOpenDialog(false)}>cancel</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

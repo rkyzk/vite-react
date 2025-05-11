@@ -203,7 +203,6 @@ export const getUserAddress = () => async (dispatch) => {
 };
 
 export const sendUpdateAddressReq = (address) => async (dispatch) => {
-  console.log(address.addressId);
   let id = address.addressId;
   await api.put(`/addresses/${id}`, address);
   const { data } = await api.get(`/user/addresses`);
