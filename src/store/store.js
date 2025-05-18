@@ -9,13 +9,13 @@ import authReducer from "./reducers/authReducer";
 const cartItems = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
-const user = localStorage.getItem("auth")
-  ? JSON.parse(localStorage.getItem("auth"))
+const user = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
   : null;
 
 const initialState = {
   carts: { cart: cartItems },
-  auth: { user: user, addresses: null },
+  auth: { user: null, addresses: null },
 };
 
 const store = configureStore({

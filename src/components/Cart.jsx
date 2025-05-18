@@ -6,13 +6,16 @@ import { getUserAddress } from "../store/actions";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
+  const { user } = useSelector((state) => state.auth);
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUserAddress());
+    if (user && user.id) {
+      dispatch(getUserAddress());
+    }
   }, []);
 
   return (

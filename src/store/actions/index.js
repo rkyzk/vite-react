@@ -81,8 +81,6 @@ export const updateCart = (id, qty) => (dispatch, getState) => {
       payload: { ...productData, purchaseQty: qty },
     });
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
-    //localStorage.setItem("cartItems", []);
-    // localStorage.clear();
   } else {
     dispatch(`/public/order/featured`);
   }
@@ -144,7 +142,6 @@ export const sendOrderLoggedInUser =
     };
     try {
       const { data } = api.post(`/order/address/add`, sendData);
-      console.log("post req fired");
       dispatch({
         type: "CLEAR_CART",
       });
@@ -164,7 +161,7 @@ export const sendLoginRequest =
         type: "LOGIN_USER",
         payload: data,
       });
-      localStorage.setItem("auth", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(data));
       navigate(`/`);
     } catch (error) {
       console.log(error);
@@ -176,7 +173,7 @@ export const sendLoginRequest =
 export const sendLogoutRequest = (navigate) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
-  localStorage.removeItem("auth");
+  localStorage.removeItem("user");
   navigate(`/`);
 };
 
@@ -193,10 +190,11 @@ export const sendRegisterRequest =
     }
   };
 
-export const getUserAddress = () => async (dispatch) => {
+export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
     dispatch({ type: "STORE_ADDRESSES", payload: data });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
@@ -207,6 +205,21 @@ export const sendUpdateAddressReq = (address) => async (dispatch) => {
   await api.put(`/addresses/${id}`, address);
   const { data } = await api.get(`/user/addresses`);
   dispatch({ type: "STORE_ADDRESSES", payload: data });
+};
+
+export const createClientSecret = (totalPrice) => async (dispatch) => {
+  const sendData = {
+    amount: Number(totalPrice),
+    currency: "usd",
+  };
+  console.log(totalPrice);
+  try {
+    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+    localStorage.setItem("client-secret", JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));

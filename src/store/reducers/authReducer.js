@@ -1,6 +1,7 @@
 const initialState = {
   user: null,
   addresses: null,
+  clientSecret: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -18,6 +19,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         addresses: action.payload,
+      };
+    case "STORE_CLIENT_SECRET":
+      return {
+        ...state,
+        clientSecret: action.payload,
       };
     default:
       return state;

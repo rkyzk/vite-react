@@ -8,7 +8,7 @@ import Footer from "./components/shared/Footer";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
-import Checkout from "./components/Checkout";
+import Checkout from "./components/checkout/Checkout";
 import OrderCompleted from "./components/OrderCompleted";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
