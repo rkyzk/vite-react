@@ -3,8 +3,9 @@ import { useState } from "react";
 import { sendUpdateAddressReq } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import { Link } from "react-router-dom";
+import AddressCard from "./AddressCard";
 
-const AddressForm = () => {
+const AddressForm = (setTempAddresses) => {
   const { user, addresses } = useSelector((state) => state.auth);
   let storedSAddress = null;
   let storedBAddress = null;
@@ -180,23 +181,15 @@ const AddressForm = () => {
           <div>
             <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
             {storedSAddress && !editSAddr ? (
-              <div className="pt-1">
-                <span className="block">{storedSAddress.fullname}</span>
-                <span className="block">{storedSAddress.streetAddress1}</span>
-                {storedSAddress.streetAddress2 && (
-                  <span className="block">{storedSAddress.streetAddress2}</span>
-                )}
-                <span className="block">{storedSAddress.city}</span>
-                <span className="block">{storedSAddress.province}</span>
-                <span className="block">{storedSAddress.postalCode}</span>
-                <span className="block">{storedSAddress.countryCode}</span>
+              <>
+                <AddressCard address={storedSAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditSAddr(true)}
                 >
                   edit
                 </button>
-              </div>
+              </>
             ) : (
               <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
                 {addressForm(handleChangeShippingAddress, shippingAddress)}
@@ -222,23 +215,15 @@ const AddressForm = () => {
           <div>
             <h2 className={`${styles.Text} "mt-2"`}>Billing Address:</h2>
             {storedBAddress && !editBAddr ? (
-              <div className="pt-1">
-                <span className="block">{storedBAddress.fullname}</span>
-                <span className="block">{storedBAddress.streetAddress1}</span>
-                {storedBAddress.streetAddress2 && (
-                  <span className="block">{storedBAddress.streetAddress2}</span>
-                )}
-                <span className="block">{storedBAddress.city}</span>
-                <span className="block">{storedBAddress.province}</span>
-                <span className="block">{storedBAddress.postalCode}</span>
-                <span className="block">{storedBAddress.countryCode}</span>
+              <>
+                <AddressCard address={storedBAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditBAddr(true)}
                 >
                   edit
                 </button>
-              </div>
+              </>
             ) : (
               <>
                 {!storedBAddress && (

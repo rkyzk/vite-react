@@ -1,6 +1,6 @@
 const initialState = {
   user: null,
-  addresses: null,
+  addresses: [],
   clientSecret: null,
 };
 
@@ -14,6 +14,7 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT_USER":
       return {
         user: null,
+        addresses: null,
       };
     case "STORE_ADDRESSES":
       return {
@@ -24,6 +25,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         clientSecret: action.payload,
+      };
+    case "REMOVE_CLIENT_SECRET":
+      return {
+        ...state,
+        clientSecret: null,
       };
     default:
       return state;

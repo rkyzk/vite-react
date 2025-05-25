@@ -24,7 +24,7 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:5731/order-confirm`,
+        return_url: `http://localhost:5173/order-confirm`,
       },
     });
     if (error) {

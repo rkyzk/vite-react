@@ -9,7 +9,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout/Checkout";
-import OrderCompleted from "./components/OrderCompleted";
+import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/PrivateRote";
@@ -28,7 +28,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/" element={<PrivateRoute />}></Route>
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/checkout/completed" element={<OrderCompleted />} />
+          <Route path="/order-confirm" element={<PaymentConfirmation />} />
           <Route path="/" element={<PrivateRoute publicPage />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
