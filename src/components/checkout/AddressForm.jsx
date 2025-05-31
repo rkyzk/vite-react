@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import AddressCard from "./AddressCard";
 
 const AddressForm = (setTempAddresses) => {
-  const { user, addresses } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth);
   let storedSAddress = null;
   let storedBAddress = null;
-  addresses?.forEach((address) => {
+  user?.addresses?.forEach((address) => {
     address.billingAddress == false
       ? (storedSAddress = address)
       : (storedBAddress = address);
@@ -176,8 +176,8 @@ const AddressForm = (setTempAddresses) => {
           Or fill out the form below to make a purchase as a guest.
         </div>
       )}
-      <div className="flex px-2 w-full mt-3 mx-auto xl:w-9/12">
-        <div className="grid m-auto justify-center xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
+      <div className="flex w-full mt-3">
+        <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
           <div>
             <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
             {storedSAddress && !editSAddr ? (

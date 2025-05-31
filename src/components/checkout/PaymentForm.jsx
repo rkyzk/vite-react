@@ -5,6 +5,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import styles from "../../styles/PaymentForm.module.css";
 
 const PaymentForm = ({ clientSecret, totalPrice }) => {
   const stripe = useStripe();
@@ -35,12 +36,12 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
   const isLoading = !stripe || !elements;
 
   return (
-    <form onSubmit={handleSubmit} className="flex-col max-w-lg mx-auto p-4">
-      <legend className="w-[200px] font-normal">Payment Information</legend>
+    <form onSubmit={handleSubmit} className="flex-col py-4">
+      <h2 className={`${styles.paymentHeading}`}>Payment Information</h2>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="flex-col">
+        <div className={`${styles.paymentForm}`}>
           <PaymentElement options={paymentElementOptions} />
           {errorMessage && (
             <div className="text-red-500 mt-2">{errorMessage}</div>

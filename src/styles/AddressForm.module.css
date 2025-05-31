@@ -9,7 +9,7 @@
 
 .Text {
   font-family: Raleway, sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   margin-top: 20px;
 }
@@ -58,6 +58,6 @@
 
 @media screen and (min-width: 640px) {
   .sAddressBox {
-    margin-top: 5px;
+    margin-top: 26px;
   }
 }

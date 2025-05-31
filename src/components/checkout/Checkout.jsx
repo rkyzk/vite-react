@@ -17,10 +17,12 @@ const Checkout = () => {
   // };
 
   return (
-    <>
-      <AddressForm setTempAddresses={setTempAddresses} />
-      <StripePayment totalPrice={totalPrice} />
-    </>
+    <div className="flex">
+      <div className="px-2 mx-auto">
+        <AddressForm setTempAddresses={setTempAddresses} />
+        <StripePayment totalPrice={totalPrice} />
+      </div>
+    </div>
   );
 };
 

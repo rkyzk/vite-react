@@ -11,7 +11,7 @@ const stripePromise = loadStripe(
 );
 
 const StripePayment = ({ totalPrice }) => {
-  const { clientSecret } = useSelector((state) => state.auth);
+  const clientSecret = useSelector((state) => state.auth.clientSecret);
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const dispatch = useDispatch();
   useEffect(() => {
