@@ -1,15 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import { sendUpdateAddressReq } from "../../store/actions";
+import { useEffect, useState } from "react";
+import { getUserAddress, sendUpdateAddressReq } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import { Link } from "react-router-dom";
 import AddressCard from "./AddressCard";
 
 const AddressForm = (setTempAddresses) => {
-  const user = useSelector((state) => state.auth);
+  const { user, addresses } = useSelector((state) => state.auth);
   let storedSAddress = null;
   let storedBAddress = null;
-  user?.addresses?.forEach((address) => {
+  addresses?.forEach((address) => {
     address.billingAddress == false
       ? (storedSAddress = address)
       : (storedBAddress = address);
@@ -61,6 +61,10 @@ const AddressForm = (setTempAddresses) => {
   };
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserAddress());
+  }, []);
 
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));

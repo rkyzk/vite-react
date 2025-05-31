@@ -1,8 +1,10 @@
+import styles from "../../styles/AddressCard.module.css";
+
 const AddressCard = ({ address }) => {
   return (
-    <div className="pt-1">
-      <span className="block">{address?.fullname}</span>
-      <span className="block">{address?.streetAddress1}</span>
+    <div className={`${styles.Address}`}>
+      <span>{address?.fullname}</span>
+      <span>{address?.streetAddress1}</span>
       {address?.streetAddress2 && (
         <span className="block">{address.streetAddress2}</span>
       )}

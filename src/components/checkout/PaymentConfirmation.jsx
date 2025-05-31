@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { sendOrderAsGuest, sendOrderLoggedInUser } from "../../store/actions";
+import {
+  loadData,
+  sendOrderAsGuest,
+  sendOrderLoggedInUser,
+} from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 
@@ -12,9 +16,10 @@ const PaymentConfirmation = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
   const cart = useSelector((state) => state.carts.cart);
-  const { user, addresses } = useSelector((state) => state.auth);
+  const { addresses } = useSelector((state) => state.auth);
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
+  console.log(order);
 
   let storedSAddress = null;
   let storedBAddress = null;
@@ -26,6 +31,7 @@ const PaymentConfirmation = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(loadData());
     if (
       paymentIntent &&
       clientSecret &&
@@ -40,13 +46,14 @@ const PaymentConfirmation = () => {
         pgResponseMessage: "Payment successful",
       };
       dispatch(sendOrderLoggedInUser(sendData));
+      console.log("abc");
       // if (!user) {
       //   dispatch(sendOrderAsGuest(addresses));
       // } else {
       //   dispatch(sendOrderLoggedInUser(sendData));
       // }
     }
-  }, [paymentIntent]);
+  }, []);
 
   return (
     <>
@@ -55,7 +62,7 @@ const PaymentConfirmation = () => {
           <h2>Thank you for your purchase. Your order has been placed.</h2>
           <h3>Order Summary</h3>
           <div className="flex">
-            <div className="border px-3 py-1">
+            <div className="border py-1">
               <span>Shipping Address:</span>
               <AddressCard address={order.shippingAddr} />
             </div>

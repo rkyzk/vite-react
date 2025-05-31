@@ -145,7 +145,6 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
   };
   try {
     const response = await api.post(`/order/address/add`, sendData);
-    console.log(response.data);
     if (response.data) {
       dispatch({
         type: "STORE_ORDER_SUMMARY",
@@ -215,6 +214,19 @@ export const sendUpdateAddressReq = (address) => async (dispatch) => {
   await api.put(`/addresses/${id}`, address);
   const { data } = await api.get(`/user/addresses`);
   dispatch({ type: "STORE_ADDRESSES", payload: data });
+};
+
+export const loadData = () => async (dispatch) => {
+  try {
+    const auth = localStorage.getItem("auth")
+      ? JSON.parse(localStorage.getItem("auth"))
+      : [];
+    dispatch({ type: "LOGIN_USER", payload: auth.user });
+    auth.addresses &&
+      dispatch({ type: "STORE_ADDRESS", payload: auth.addresses });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const createClientSecret = (totalPrice) => async (dispatch) => {

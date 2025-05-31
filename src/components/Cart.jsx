@@ -26,9 +26,9 @@ const Cart = () => {
         <>
           <div className="flex w-full gap-1">
             <span className="w-1/12"></span>
-            <span className="w-4/12">product</span>
-            <span className="w-2/12">qty</span>
-            <span>unit price</span>
+            <span className="w-4/12 font-bold">product</span>
+            <span className="w-2/12 font-bold">qty</span>
+            <span className="w-2/12 font-bold">unit price</span>
           </div>
           <hr className="mt-1" />
           {cart.map((item, idx) => {
@@ -39,11 +39,13 @@ const Cart = () => {
             <strong className="w-7/12 text-right">sub total: </strong>
             <strong className="w-2/12 pl-3">{totalPrice}</strong>
           </div>
-          <div className="flex w-full mt-3 justify-end">
+          <div className="flex w-full mt-3">
+            <span className="w-9/12"></span>
             <Link
               to="/checkout"
               className="block mt-1 bg-amber-800 text-white
-                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8"
+                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8
+                  mx-auto"
             >
               Proceed to Check out
             </Link>
