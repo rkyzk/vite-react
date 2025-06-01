@@ -43,7 +43,7 @@ const Cart = () => {
             <span className="w-9/12"></span>
             <Link
               to="/checkout"
-              className="block mt-1 bg-amber-800 text-white
+              className="mt-1 bg-amber-800 text-white
                   py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8
                   mx-auto"
             >

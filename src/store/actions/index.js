@@ -162,7 +162,7 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
 };
 
 export const sendLoginRequest =
-  (sendData, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
     setLoader(true);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
@@ -170,10 +170,20 @@ export const sendLoginRequest =
         type: "LOGIN_USER",
         payload: data,
       });
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("auth", JSON.stringify(data));
+      reset();
+      toast.success("You are logged in.");
       navigate(`/`);
     } catch (error) {
-      console.log(error);
+      if (error?.response?.data?.message === "Bad credentials") {
+        dispatch({
+          type: "IS_ERROR",
+          payload: "Username and password don't match.",
+        });
+      } else {
+        console.log("other errors");
+        toast("Errors occurred.  Please try again.");
+      }
     } finally {
       setLoader(false);
     }

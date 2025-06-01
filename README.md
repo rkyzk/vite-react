@@ -1,13 +1,20 @@
 # Ecommerce App Frontend
 
 nvm use --lts
+npm run dev
 
 ## to do
 
-card data
-order confirmation dialog
-each product page
-about
+input validation
+log in/log out
+
+style
+
+## To allow toast notifications
+
+Chrome:
+Settings > Privacy and Security > Pop-ups and redirects
+Under 'Default behaviors,' select 'Sites can send pop-ups and redirects'
 
 ## Bugs
 

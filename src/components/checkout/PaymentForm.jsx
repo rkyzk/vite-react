@@ -47,7 +47,7 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
             <div className="text-red-500 mt-2">{errorMessage}</div>
           )}
           <button
-            className="mt-2 mx-auto w-[180px] bg-amber-800 py-1 px-2"
+            className="mt-2 mx-auto bg-amber-800 py-1 px-2"
             disabled={!stripe || isLoading}
           >
             {!isLoading ? `Proceed to pay ¥${totalPrice}` : "Processing"}

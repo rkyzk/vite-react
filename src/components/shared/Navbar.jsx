@@ -74,10 +74,10 @@ const Navbar = () => {
           <span className={`${styles.Text} ${styles.cartText}`}> My Cart</span>
         </div>
       </Link>
-      {user && user.user.id ? (
+      {user && user.id ? (
         <>
           <UserMenu
-            {...user.user}
+            {...user}
             clasName={`${styles.Text} "absolute top-30 right-5"`}
           />
         </>
