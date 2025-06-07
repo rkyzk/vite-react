@@ -1,0 +1,6 @@
+.imgSize {
+  width: 100px;
+  height: 80px;
+  object-fit: cover;
+  object-position: 50% 50%;
+}

@@ -1,8 +1,27 @@
 # Ecommerce App Frontend
 
-nvm install --lts
+nvm use --lts
+npm run dev
 
-# Credits
+## to do
+
+input validation
+log in/log out
+
+style
+
+## To allow toast notifications
+
+Chrome:
+Settings > Privacy and Security > Pop-ups and redirects
+Under 'Default behaviors,' select 'Sites can send pop-ups and redirects'
+
+## Bugs
+
+not logged in => Checkout => log in => should go back to checkout page
+but goes to home page
+
+## Credits
 
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/

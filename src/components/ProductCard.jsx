@@ -3,44 +3,46 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
+import styles from "../styles/ProductCard.module.css";
+import toast from "react-hot-toast";
 
 const ProductCard = ({
   id,
   productName,
-  imagePath,
   description,
   price,
   quantity,
+  imageName,
 }) => {
-  const isAvailable = quantity && Number(quantity) > 0;
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
-  const addToCart = (quantity) => {
-    dispatch(updateCart(id, quantity));
+  const isAvailable = quantity && Number(quantity) > 0;
+  const addToCart = (id) => {
+    dispatch(updateCart(id, qty, toast));
   };
 
   return (
-    <div className="relative">
+    <div className={`${styles.Card} "relative"`}>
       <img
-        className="w-full cursor-pointer"
-        src="https://placehold.co/600x400"
+        className={`${styles.imgSize} "cursor-pointer"`}
+        src={`/src/assets/products/${imageName}`}
         alt={productName}
       ></img>
       <div className="pt-2 flex justify-between text-gray-900">
         <h2 className="text-xl">{truncateText(productName, 50)}</h2>
         <div>{price}</div>
       </div>
-      <div className="h-20 text-gray-700">{truncateText(description, 80)}</div>
+      <div className="h-15 text-gray-700">{truncateText(description, 80)}</div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
-            <label for="quantity" className="mt-2">
+            <label htmlFor="quantity" className="mt-2">
               Qty
             </label>
             <select
               name="quantity"
               className="border bg-white rounded-lg py-2 pl-1"
-              onChange={(e) => setQty(e.target.value)}
+              onChange={(e) => setQty(Number(e.target.value))}
             >
               {[...Array(30)]
                 .map((_, i) => i + 1)
@@ -55,11 +57,11 @@ const ProductCard = ({
         <button
           className={`${
             isAvailable
-              ? "bg-sky-600 opacity-100 hover:bg-sky-800 text-white "
+              ? "bg-stone-600 hover:bg-stone-600 opacity-50 text-white "
               : "bg-gray-400 text-gray-700"
           }
         rounded py-2 px-3`}
-          onClick={() => addToCart(Number(qty))}
+          onClick={() => addToCart(id)}
         >
           {isAvailable ? (
             <div className="flex">

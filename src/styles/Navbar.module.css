@@ -10,9 +10,33 @@
   background-color: #d6d4d4;
 }
 
-/* screen sizes of 767px and below */
+.navBarMd {
+  display: flex;
+  gap: 28px;
+  margin-top: 10px;
+}
+
+.navBar,
+.cartText {
+  display: none;
+}
+
 @media screen and (max-width: 767px) {
-  .menu {
+  .navBarMd {
     display: none;
+  }
+
+  .navBar {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    position: absolute;
+    top: 48px;
+    right: 20px;
+    z-index: 2;
+    background-color: white;
+    opacity: 0.9;
+    padding: 3px 25px 3px;
   }
 }

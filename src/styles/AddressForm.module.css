@@ -1,0 +1,63 @@
+.editBillingAddress {
+  color: rgb(91, 103, 214);
+}
+
+.editBillingAddress:hover {
+  color: rgb(17, 32, 169);
+  opacity: 1;
+}
+
+.Text {
+  font-family: Raleway, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.Note {
+  width: 500px;
+  margin: auto;
+  font-family: Raleway, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.Label {
+  font-size: 1rem;
+  width: 160px;
+}
+
+.Input {
+  line-height: 1.2rem;
+  padding: 2px 4px !important;
+  width: 90%;
+}
+
+.note {
+  font-size: 0.9rem;
+  margin-top: -8px;
+}
+
+.addressCardBox {
+  background-color: rgb(204, 209, 209);
+  padding: 5px 0px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+  width: 300px;
+}
+
+.InputItem {
+  display: flex;
+  flex-direction: column;
+}
+.bAddressBox {
+  margin-top: -12px;
+}
+
+@media screen and (min-width: 640px) {
+  .sAddressBox {
+    margin-top: 26px;
+  }
+}

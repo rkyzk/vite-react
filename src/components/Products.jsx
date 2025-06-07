@@ -6,6 +6,8 @@ import { fetchCategories } from "../store/actions";
 import { useEffect } from "react";
 import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
+import styles from "../styles/Products.module.css";
+import Spinner from "./shared/Spinner";
 
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
@@ -13,7 +15,6 @@ const Products = () => {
   useProductFilter();
   const dispatch = useDispatch();
   useEffect(() => {
-    //localStorage.clear();
     dispatch(fetchCategories());
   }, []);
 
@@ -59,15 +60,9 @@ const Products = () => {
   return (
     <>
       <Filter />
-      <div className="lg:px-14 sm:px-8 px-4 py-14 flex justify-center">
+      <div className="px-2 py-14 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
-          <div
-            className="h-8 w-8 animate-spin rounded-full border-4 border-solid
-                 border-current border-e-transparent align-[-0.125em] text-surface
-                 motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white
-                 text-zinc-600"
-            role="status"
-          ></div>
+          <Spinner />
         ) : errorMessage ? (
           <>
             <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />
@@ -75,8 +70,8 @@ const Products = () => {
           </>
         ) : (
           <div
-            className="grid sm:grid-col-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4
-          gap-4"
+            className={`${styles.imgGap} grid sm:gap-4 xs:grid-col-1 sm:grid-cols-2 lg:grid-cols-3
+              2xl:grid-cols-4`}
           >
             {products &&
               products.map((product, i) => (

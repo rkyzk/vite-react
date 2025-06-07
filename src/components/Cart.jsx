@@ -1,76 +1,56 @@
 import { useSelector, useDispatch } from "react-redux";
-import { removeItemFromCart } from "../store/actions";
+import CartItem from "./CartItem";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getUserAddress } from "../store/actions";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
+  const user = useSelector((state) => state.auth);
+  const totalPrice = cart?.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
   const dispatch = useDispatch();
-
-  const removeItem = (prodId) => {
-    dispatch(removeItemFromCart(prodId));
-  };
+  useEffect(() => {
+    if (user && user.id) {
+      dispatch(getUserAddress());
+    }
+  }, []);
 
   return (
-    <div className="px-2 max-w-7xl mx-auto w-full md:w-9/12 mt-2">
+    <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
       {!cart.length ? (
-        <p>No items in cart</p>
+        <p className="w-30 m-auto">No items in cart</p>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Nr.</th>
-              <th className="w-25">product</th>
-              <th className="w-25">quantity</th>
-              <th className="w-25">unit price</th>
-              <th className="w-25"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {cart &&
-              cart.map((item, idx) => {
-                return (
-                  <tr key={idx} className="h-30">
-                    <td>{idx + 1}</td>
-                    <td>
-                      <div className="flex-column">
-                        <span>{item.product.productName}</span>
-                        <img
-                          src={item.product.image}
-                          alt={item.product.productName}
-                          className="w-15 h-10"
-                        />
-                      </div>
-                    </td>
-                    <td>{item.quantity}</td>
-                    <td>
-                      <select
-                        name="quantity"
-                        className="border bg-white rounded-lg py-2 pl-1"
-                      >
-                        {[...Array(30)]
-                          .map((_, i) => i + 1)
-                          .map((i) => (
-                            <option key={i} value={i}>
-                              {i}
-                            </option>
-                          ))}
-                      </select>
-                    </td>
-                    <td className="flex-column">
-                      <button className="block bg-sky-600 text-white px-2 py-1 rounded-lg">
-                        update quantity
-                      </button>
-                      <button
-                        onClick={() => removeItem(item.product.id)}
-                        className="block mt-1 bg-amber-400 text-white px-2 py-1 rounded-lg"
-                      >
-                        remove item
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+        <>
+          <div className="flex w-full gap-1">
+            <span className="w-1/12"></span>
+            <span className="w-4/12 font-bold">product</span>
+            <span className="w-2/12 font-bold">qty</span>
+            <span className="w-2/12 font-bold">unit price</span>
+          </div>
+          <hr className="mt-1" />
+          {cart.map((item, idx) => {
+            let data = { ...item, idx: idx };
+            return <CartItem key={idx} {...data} />;
+          })}
+          <div className="flex w-full mt-3">
+            <strong className="w-7/12 text-right">sub total: </strong>
+            <strong className="w-2/12 pl-3">{totalPrice}</strong>
+          </div>
+          <div className="flex w-full mt-3">
+            <span className="w-9/12"></span>
+            <Link
+              to="/checkout"
+              className="mt-1 bg-amber-800 text-white
+                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8
+                  mx-auto"
+            >
+              Proceed to Check out
+            </Link>
+          </div>
+        </>
       )}
     </div>
   );

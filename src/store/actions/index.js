@@ -71,20 +71,19 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
   }
 };
 
-export const updateCart = (id, qty) => (dispatch, getState) => {
+export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   const { products } = getState().products;
   const productData = products.find((item) => item.id === id);
   const isQuantityInStock = qty <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
       type: "UPDATE_CART",
-      payload: { product: productData, quantity: qty },
+      payload: { ...productData, purchaseQty: qty },
     });
+    toast.success("Item added in cart");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
-    //localStorage.setItem("cartItems", []);
-    // localStorage.clear();
   } else {
-    dispatch();
+    dispatch(`/public/order/featured`);
   }
 };
 
@@ -94,6 +93,178 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
     payload: prodId,
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+};
+
+export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
+  const cart = getState().carts.cart;
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
+  const items = cart.map((item) => {
+    return { product: { ...item }, quantity: item.purchaseQty };
+  });
+  const sendData = {
+    addressDTOList: addressList,
+    cartDTO: {
+      cartItems: items,
+      totalPrice: totalPrice,
+    },
+  };
+  try {
+    const { data } = await api.post(`/order/guest`, sendData);
+    dispatch({
+      type: "CLEAR_CART",
+    });
+    localStorage.setItem("cartItems", []);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
+  const cart = getState().carts.cart;
+  const addresses = getState().auth.addresses;
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
+  const items = cart.map((item) => {
+    return { product: { ...item }, quantity: item.purchaseQty };
+  });
+  const sendData = {
+    addressDTOList: addresses,
+    cartDTO: {
+      cartItems: items,
+      totalPrice: totalPrice,
+    },
+    pgName: data.pgName,
+    pgPaymentId: data.pgPaymentId,
+    pgStatus: data.pgStatus,
+    pgResponseMessage: data.pgResponseMessage,
+  };
+  try {
+    const response = await api.post(`/order/address/add`, sendData);
+    if (response.data) {
+      dispatch({
+        type: "STORE_ORDER_SUMMARY",
+        payload: response.data,
+      });
+      dispatch({
+        type: "CLEAR_CART",
+      });
+    }
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("client-secret");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendLoginRequest =
+  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+    setLoader(true);
+    try {
+      const { data } = await api.post(`/auth/signin`, sendData);
+      dispatch({
+        type: "LOGIN_USER",
+        payload: data,
+      });
+      localStorage.setItem("auth", JSON.stringify(data));
+      reset();
+      toast("You're logged in.");
+      navigate(`/`);
+    } catch (error) {
+      if (error?.response?.data?.message === "Bad credentials") {
+        dispatch({
+          type: "IS_ERROR",
+          payload: "Username and password don't match.",
+        });
+      } else {
+        console.log("other errors");
+        toast("Error occurred.  Please try again.");
+      }
+    } finally {
+      setLoader(false);
+    }
+  };
+
+export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
+  await api.post("/auth/signout");
+  dispatch({ type: "LOGOUT_USER" });
+  toast("You've been logged out.");
+  localStorage.removeItem("auth");
+  navigate(`/`);
+};
+
+export const sendRegisterRequest =
+  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+    setLoader(true);
+    try {
+      const { data } = await api.post("/auth/signup", sendData);
+      toast("Your've been successfully registered.");
+      reset();
+      navigate("/login");
+    } catch (error) {
+      console.log(error.response.data.message);
+      dispatch({
+        type: "IS_ERROR",
+        payload:
+          error?.response?.data?.message ||
+          "Something went wrong, please try again.",
+      });
+    } finally {
+      setLoader(false);
+    }
+  };
+
+export const getUserAddress = () => async (dispatch, getState) => {
+  try {
+    const { data } = await api.get(`/user/addresses`);
+    dispatch({ type: "STORE_ADDRESSES", payload: data });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendUpdateAddressReq = (address) => async (dispatch) => {
+  let id = address.addressId;
+  await api.put(`/addresses/${id}`, address);
+  const { data } = await api.get(`/user/addresses`);
+  dispatch({ type: "STORE_ADDRESSES", payload: data });
+};
+
+export const loadData = () => async (dispatch) => {
+  try {
+    const auth = localStorage.getItem("auth")
+      ? JSON.parse(localStorage.getItem("auth"))
+      : [];
+    dispatch({ type: "LOGIN_USER", payload: auth.user });
+    auth.addresses &&
+      dispatch({ type: "STORE_ADDRESS", payload: auth.addresses });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createClientSecret = (totalPrice) => async (dispatch) => {
+  const sendData = {
+    amount: Number(totalPrice),
+    currency: "usd",
+  };
+  try {
+    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+    localStorage.setItem("client-secret", JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const clearErrorMessage = () => async (dispatch) => {
+  dispatch({ type: "CLEAR_ERROR_MESSAGE" });
 };
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));

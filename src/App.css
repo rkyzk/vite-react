@@ -1,6 +1,27 @@
 @import "tailwindcss";
 
+div {
+  font-family: Raleway;
+}
+
 h2 {
   font-family: "Amatic SC", sans-serif;
   font-weight: 600;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+input {
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+button {
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.5;
 }

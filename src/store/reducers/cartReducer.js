@@ -1,66 +1,52 @@
 const initialState = {
   cart: [],
-  totalPrice: 0.0,
   cartId: null,
+  totalPrice: 0,
 };
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_CART": {
-      let existsInCart = state.cart.find(
-        (item) => item.product.id === action.payload.product.id
-      );
+      const productToAdd = action.payload;
+      let existsInCart = state.cart.find((item) => item.id === productToAdd.id);
       if (existsInCart) {
         let updatedCart = state.cart.map((item) => {
-          if (item.product.id === action.payload.product.id) {
-            return {
-              product: action.payload.product,
-              quantity: action.payload.quantity,
-            };
+          if (item.id === productToAdd.id) {
+            return productToAdd;
           } else {
             return item;
           }
         });
-        let newPrice = getTotalPrice(updatedCart);
         return {
           ...state,
           cart: updatedCart,
-          totalPrice: newPrice,
         };
       } else {
-        let newCartItem = {
-          product: action.payload.product,
-          quantity: action.payload.quantity,
-        };
-        let newCartContent = [...state.cart, newCartItem];
-        let newPrice = getTotalPrice(newCartContent);
+        let newCartContent = [...state.cart, productToAdd];
         return {
           ...state,
           cart: newCartContent,
-          totalPrice: newPrice,
         };
       }
     }
     case "REMOVE_FROM_CART": {
-      let newCart = state.cart.filter(
-        (item) => item.product.id !== action.payload
-      );
-      let newPrice = getTotalPrice(newCart);
+      let newCart = state.cart.filter((item) => item.id !== action.payload);
       return {
         ...state,
         cart: newCart,
-        totalPrice: newPrice,
+      };
+    }
+    case "CLEAR_CART": {
+      return {
+        ...state,
+        cart: [],
+        totalPrice: 0,
+        cartId: null,
       };
     }
     default:
       return state;
   }
-};
-
-const getTotalPrice = (cart) => {
-  const prices = cart.map((item) => item.product.price * item.quantity);
-  const totalPrice = prices.reduce((acc, val) => acc + val, 0);
-  return totalPrice;
 };
 
 export default cartReducer;
