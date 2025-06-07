@@ -5,10 +5,17 @@
   object-position: 50% 50%;
 }
 
+.Card {
+  width: 330px;
+}
+
 @media screen and (max-width: 1023px) {
   .imgSize {
     width: 350px;
     height: 280px;
+  }
+  .Card {
+    width: 350px;
   }
 }
 
@@ -17,6 +24,9 @@
     width: 300px;
     height: 240px;
   }
+  .Card {
+    width: 300px;
+  }
 }
 
 @media screen and (max-width: 639px) {
@@ -24,11 +34,17 @@
     width: 400px;
     height: 320px;
   }
+  .Card {
+    width: 400px;
+  }
 }
 
 @media screen and (max-width: 475px) {
   .imgSize {
     width: 326px;
     height: 261px;
+  }
+  .Card {
+    width: 326px;
   }
 }

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.auth.user);
+  const auth = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   const path = useLocation().pathname;
   const cart = useSelector((state) => state.carts.cart);
@@ -74,10 +74,10 @@ const Navbar = () => {
           <span className={`${styles.Text} ${styles.cartText}`}> My Cart</span>
         </div>
       </Link>
-      {user && user.id ? (
+      {auth?.user && auth.user?.id ? (
         <>
           <UserMenu
-            {...user}
+            {...auth.user}
             clasName={`${styles.Text} "absolute top-30 right-5"`}
           />
         </>

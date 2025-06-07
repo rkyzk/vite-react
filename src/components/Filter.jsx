@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import styles from "../styles/Filter.module.css";
 
 const Filter = () => {
   const [keywords, setKeywords] = useState("");
@@ -43,7 +43,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex justify-end mx-auto gap-1 pr-5">
+    <div className="flex justify-end mx-auto gap-2 pr-5">
       {/* Search box */}
       <input
         type="text"
@@ -62,15 +62,18 @@ const Filter = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             label="category"
+            className="py-1 bg-white focus:outline-gray focus:outline-none"
           >
             {category !== 0 && (
               <MenuItem key={0} value={0}>
-                unselect
+                all
               </MenuItem>
             )}
             {categories.map((item) => (
               <MenuItem key={item.categoryId} value={item.categoryId}>
-                <span className="text-slate-700">{item.categoryName}</span>
+                <span className={`${styles.SelectItems} "text-slate-700"`}>
+                  {item.categoryName}
+                </span>
               </MenuItem>
             ))}
           </Select>

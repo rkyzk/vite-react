@@ -21,7 +21,7 @@ const ProductCard = ({
   };
 
   return (
-    <div className="relative">
+    <div className={`${styles.Card} "relative"`}>
       <img
         className={`${styles.imgSize} "cursor-pointer"`}
         src={`/src/assets/products/${imageName}`}
@@ -31,7 +31,7 @@ const ProductCard = ({
         <h2 className="text-xl">{truncateText(productName, 50)}</h2>
         <div>{price}</div>
       </div>
-      <div className="h-20 text-gray-700">{truncateText(description, 80)}</div>
+      <div className="h-15 text-gray-700">{truncateText(description, 80)}</div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
@@ -56,7 +56,7 @@ const ProductCard = ({
         <button
           className={`${
             isAvailable
-              ? "bg-sky-600 opacity-100 hover:bg-sky-800 text-white "
+              ? "bg-stone-600 hover:bg-stone-600 opacity-50 text-white "
               : "bg-gray-400 text-gray-700"
           }
         rounded py-2 px-3`}
