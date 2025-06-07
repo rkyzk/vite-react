@@ -71,7 +71,7 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
   }
 };
 
-export const updateCart = (id, qty) => (dispatch, getState) => {
+export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   const { products } = getState().products;
   const productData = products.find((item) => item.id === id);
   const isQuantityInStock = qty <= productData.quantity;
@@ -80,6 +80,7 @@ export const updateCart = (id, qty) => (dispatch, getState) => {
       type: "UPDATE_CART",
       payload: { ...productData, purchaseQty: qty },
     });
+    toast.success("Item added in cart");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   } else {
     dispatch(`/public/order/featured`);

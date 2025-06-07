@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
 import styles from "../styles/ProductCard.module.css";
+import toast from "react-hot-toast";
 
 const ProductCard = ({
   id,
@@ -17,7 +18,7 @@ const ProductCard = ({
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCart(id, qty));
+    dispatch(updateCart(id, qty, toast));
   };
 
   return (
