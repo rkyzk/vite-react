@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { Menu, MenuItem } from "@mui/material";
 import BackDrop from "./BackDrop";
 import styles from "../../styles/Navbar.module.css";
+import toast from "react-hot-toast";
 
 const UserMenu = ({ id, username, roles }) => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const UserMenu = ({ id, username, roles }) => {
   };
   const handleLogout = () => {
     handleClose();
-    dispatch(sendLogoutRequest(navigate));
+    dispatch(sendLogoutRequest(navigate, toast));
   };
 
   return (

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
   const [open, setOpen] = useState(false);
   const path = useLocation().pathname;
   const cart = useSelector((state) => state.carts.cart);

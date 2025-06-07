@@ -172,7 +172,7 @@ export const sendLoginRequest =
       });
       localStorage.setItem("auth", JSON.stringify(data));
       reset();
-      toast.success("You are logged in.");
+      toast("You're logged in.");
       navigate(`/`);
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
@@ -182,28 +182,37 @@ export const sendLoginRequest =
         });
       } else {
         console.log("other errors");
-        toast("Errors occurred.  Please try again.");
+        toast("Error occurred.  Please try again.");
       }
     } finally {
       setLoader(false);
     }
   };
 
-export const sendLogoutRequest = (navigate) => async (dispatch) => {
+export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
+  toast("You've been logged out.");
   localStorage.removeItem("auth");
   navigate(`/`);
 };
 
 export const sendRegisterRequest =
-  (sendData, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
     setLoader(true);
     try {
       const { data } = await api.post("/auth/signup", sendData);
-      navigate(`/login`);
+      toast("Your've been successfully registered.");
+      reset();
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
+      dispatch({
+        type: "IS_ERROR",
+        payload:
+          error?.response?.data?.message ||
+          "Something went wrong, please try again.",
+      });
     } finally {
       setLoader(false);
     }
@@ -251,6 +260,10 @@ export const createClientSecret = (totalPrice) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const clearErrorMessage = () => async (dispatch) => {
+  dispatch({ type: "CLEAR_ERROR_MESSAGE" });
 };
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));

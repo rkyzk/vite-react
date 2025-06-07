@@ -26,7 +26,6 @@ const Login = () => {
   const handleLogin = async (data) => {
     dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate));
   };
-  toast("hello!");
 
   return (
     <form
