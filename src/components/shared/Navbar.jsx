@@ -31,9 +31,11 @@ const Navbar = () => {
    * Close menu box and remove event listeners
    */
   const handleCloseMenu = () => {
-    setOpen(false);
-    document.removeEventListener("mouseup", handleCloseMenu);
-    window.removeEventListener("resize", checkMedia);
+    setTimeout(() => {
+      setOpen(false);
+      document.removeEventListener("mouseup", handleCloseMenu);
+      window.removeEventListener("resize", checkMedia);
+    }, 100);
   };
 
   /**
@@ -75,12 +77,10 @@ const Navbar = () => {
         </div>
       </Link>
       {auth?.user && auth.user?.id ? (
-        <>
-          <UserMenu
-            {...auth.user}
-            clasName={`${styles.Text} "absolute top-30 right-5"`}
-          />
-        </>
+        <UserMenu
+          {...auth.user}
+          clasName={`${styles.Text} "absolute top-30 right-5"`}
+        />
       ) : (
         <Link to="/login" className={`${styles.Text}`}>
           Login
@@ -90,7 +90,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="flex justify-between w-full px-8 lg:px-14">
+    <div className="px-2 flex justify-between w-full md:w-11/12 mx-auto">
       <Link
         to="/"
         className={`${styles.Text} flex items-center text-2xl font-bold`}

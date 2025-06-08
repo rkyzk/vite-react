@@ -1,5 +1,6 @@
 # Ecommerce App Frontend
 
+\
 nvm use --lts
 npm run dev
 

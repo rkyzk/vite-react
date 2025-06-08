@@ -52,7 +52,7 @@ const Filter = () => {
         onChange={(e) => setKeywords(e.target.value)}
         className="border-gray-500 rounded-md bg-stone-100
                    h-12 px-1 py-2 w-64"
-      ></input>
+      />
       {/* Category drowdown */}
       <div>
         <FormControl className="w-40 focus:outline-none" size="small">

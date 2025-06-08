@@ -57,7 +57,7 @@ const ProductCard = ({
         <button
           className={`${
             isAvailable
-              ? "bg-stone-600 hover:bg-stone-600 opacity-50 text-white "
+              ? "bg-stone-700 hover:bg-stone-700 opacity-50 text-white "
               : "bg-gray-400 text-gray-700"
           }
         rounded py-2 px-3`}

@@ -12,6 +12,7 @@ import Spinner from "./shared/Spinner";
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products } = useSelector((state) => state.products);
+
   useProductFilter();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,6 +58,11 @@ const Products = () => {
   //     quantity: 30,
   //   },
   // ];
+  const categories = [
+    { categoryId: 1, categoryName: "tulips" },
+    { categoryId: 2, categoryName: "hyacinth" },
+    { categoryId: 3, categoryName: "crocus" },
+  ];
   return (
     <>
       <Filter />
@@ -70,7 +76,7 @@ const Products = () => {
           </>
         ) : (
           <div
-            className={`${styles.imgGap} grid sm:gap-4 xs:grid-col-1 sm:grid-cols-2 lg:grid-cols-3
+            className={`${styles.imgGap} grid gap-y-10 sm:gap-x-4 xs:grid-col-1 sm:grid-cols-2 lg:grid-cols-3
               2xl:grid-cols-4`}
           >
             {products &&
