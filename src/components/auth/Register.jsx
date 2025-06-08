@@ -86,7 +86,7 @@ const Register = () => {
         <input
           id="password"
           name="password"
-          type="text"
+          type="password"
           required
           placeholder="password"
           className="w-80 bg-white pl-2 py-1 rounded-lg"

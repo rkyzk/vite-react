@@ -27,6 +27,9 @@ but goes to home page
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/
 
+eye button for diplaying/hiding password (login & register pages)
+https://stackoverflow.com/questions/70885518/how-do-i-add-a-password-visibility-button-for-a-text-input
+
 category pulldown from tailwindcss
 
 productCard

@@ -6,7 +6,7 @@ import { getUserAddress } from "../store/actions";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
-  const user = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -24,6 +24,12 @@ const Cart = () => {
         <p className="w-30 m-auto">No items in cart</p>
       ) : (
         <>
+          {!user && (
+            <p className="text-center">
+              To make purchase, <a href="/login">log in</a> or{" "}
+              <a href="/register">register</a>.
+            </p>
+          )}
           <div className="flex w-full gap-1">
             <span className="w-1/12"></span>
             <span className="w-4/12 font-bold">product</span>
@@ -37,19 +43,21 @@ const Cart = () => {
           })}
           <div className="flex w-full mt-3">
             <strong className="w-7/12 text-right">sub total: </strong>
-            <strong className="w-2/12 pl-3">{totalPrice}</strong>
+            <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
           </div>
-          <div className="flex w-full mt-3">
-            <span className="w-9/12"></span>
-            <Link
-              to="/checkout"
-              className="mt-1 bg-amber-800 text-white
-                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8
+          {user && (
+            <div className="flex w-full mt-3">
+              <span className="w-9/12"></span>
+              <Link
+                to="/checkout"
+                className="mt-1 bg-amber-900 text-white
+                  py-2 px-2 rounded-lg hover:opacity-70 sm:mr-8
                   mx-auto"
-            >
-              Proceed to Check out
-            </Link>
-          </div>
+              >
+                Proceed to Check out
+              </Link>
+            </div>
+          )}
         </>
       )}
     </div>

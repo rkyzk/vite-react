@@ -12,10 +12,6 @@ const Checkout = () => {
     0
   );
 
-  // const storeGuestAddresses = () => {
-  //   dispatch(storeGuestTempAddresses());
-  // };
-
   return (
     <div className="flex">
       <div className="px-2 mx-auto">

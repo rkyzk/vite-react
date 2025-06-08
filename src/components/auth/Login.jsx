@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendLoginRequest } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { IoEyeOutline } from "react-icons/io5";
+import { clearErrorMessage } from "../../store/actions/index";
 
 /**
  * log users in
@@ -23,6 +25,10 @@ const Login = () => {
     mode: "onTouched",
   });
 
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  });
+
   const handleLogin = async (data) => {
     dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate));
   };
@@ -30,8 +36,8 @@ const Login = () => {
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="max-w-md mt-3 w-100 px-2 flex flex-col m-auto
-          items-center gap-2"
+      className="max-w-md mt-3 px-2 flex flex-col m-auto
+          items-center"
     >
       <h2>Log in</h2>
       <span>
@@ -42,28 +48,37 @@ const Login = () => {
           {errorMessage}
         </span>
       )}
-      <input
-        {...register("username")}
-        id="username"
-        name="username"
-        type="text"
-        required
-        placeholder="your username or email"
-        className="w-80 bg-white pl-2 py-1 rounded-lg"
-        errors={errors}
-      />
-      <input
-        {...register("password")}
-        id="password"
-        name="password"
-        required
-        type="text"
-        placeholder="password"
-        className="w-80 bg-white pl-2 py-1 rounded-lg"
-      />
+      <div className="w-80 flex flex-col gap-2">
+        <input
+          {...register("username")}
+          id="username"
+          name="username"
+          type="text"
+          required
+          placeholder="your username or email"
+          className="bg-white pl-2 py-1 rounded-lg"
+          errors={errors}
+        />
+        <div className="flex">
+          <input
+            {...register("password")}
+            id="password"
+            name="password"
+            required
+            type="password"
+            placeholder="password"
+            className="bg-white pl-2 py-1 rounded-lg w-80"
+          />
+          <IoEyeOutline
+            id="eye-icon"
+            className="mt-2 ml-[-25px]"
+            onClick={() => togglePassword()}
+          />
+        </div>
+      </div>
       <button
         type="submit"
-        className="bg-emerald-700 text-white hover:opacity-70 rounded-lg py-1 px-3"
+        className="bg-emerald-700 text-white mt-2 hover:opacity-70 rounded-lg py-1 px-3"
       >
         {loader ? <Spinner /> : <>login</>}
       </button>

@@ -30,7 +30,7 @@ const ProductCard = ({
       ></img>
       <div className="pt-2 flex justify-between text-gray-900">
         <h2 className="text-xl">{truncateText(productName, 50)}</h2>
-        <div>{price}</div>
+        <div>&yen;{price}</div>
       </div>
       <div className="h-15 text-gray-700">{truncateText(description, 80)}</div>
       <div className="flex justify-end gap-1">
@@ -57,7 +57,7 @@ const ProductCard = ({
         <button
           className={`${
             isAvailable
-              ? "bg-stone-700 hover:bg-stone-700 opacity-50 text-white "
+              ? "bg-cyan-700 hover:opacity-50 text-white "
               : "bg-gray-400 text-gray-700"
           }
         rounded py-2 px-3`}
