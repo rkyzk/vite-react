@@ -5,8 +5,6 @@ import AddressForm from "./AddressForm";
 
 const Checkout = () => {
   const cart = useSelector((state) => state.carts.cart);
-  const [tempAddresses, setTempAddresses] = useState([]);
-  const dispatch = useDispatch();
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -15,7 +13,7 @@ const Checkout = () => {
   return (
     <div className="flex">
       <div className="px-2 mx-auto">
-        <AddressForm setTempAddresses={setTempAddresses} />
+        <AddressForm />
         <StripePayment totalPrice={totalPrice} />
       </div>
     </div>

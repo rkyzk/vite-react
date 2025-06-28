@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendLoginRequest } from "../../store/actions";
 import Spinner from "../shared/Spinner";
@@ -16,6 +16,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { errorMessage } = useSelector((state) => state.errors);
+  const { state } = useLocation();
   const {
     register,
     handleSubmit,
@@ -30,7 +31,7 @@ const Login = () => {
   });
 
   const handleLogin = async (data) => {
-    dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate));
+    dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate, state));
   };
 
   return (
@@ -69,11 +70,7 @@ const Login = () => {
             placeholder="password"
             className="bg-white pl-2 py-1 rounded-lg w-80"
           />
-          <IoEyeOutline
-            id="eye-icon"
-            className="mt-2 ml-[-25px]"
-            onClick={() => togglePassword()}
-          />
+          <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
         </div>
       </div>
       <button

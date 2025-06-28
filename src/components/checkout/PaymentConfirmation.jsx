@@ -1,11 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import {
-  loadData,
-  sendOrderAsGuest,
-  sendOrderLoggedInUser,
-} from "../../store/actions";
+import { sendOrderAsGuest, sendOrderAsUser } from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 
@@ -16,22 +12,16 @@ const PaymentConfirmation = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
   const cart = useSelector((state) => state.carts.cart);
-  const { addresses } = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
+  const shippingAddress =
+    auth && auth.shippingAddress ? auth.shippingAddress : null;
+
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
-  console.log(order);
 
-  let storedSAddress = null;
-  let storedBAddress = null;
-  addresses?.forEach((address) => {
-    address.billingAddress == false
-      ? (storedSAddress = address)
-      : (storedBAddress = address);
-  });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadData());
     if (
       paymentIntent &&
       clientSecret &&
@@ -45,13 +35,9 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      dispatch(sendOrderLoggedInUser(sendData));
-      console.log("abc");
-      // if (!user) {
-      //   dispatch(sendOrderAsGuest(addresses));
-      // } else {
-      //   dispatch(sendOrderLoggedInUser(sendData));
-      // }
+      shippingAddress
+        ? dispatch(sendOrderAsUser(sendData))
+        : dispatch(sendOrderAsGuest(sendData));
     }
   }, []);
 

@@ -14,8 +14,8 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/PrivateRote";
 import { Toaster } from "react-hot-toast";
-import Test from "./Test";
 import { Fragment } from "react";
+import Product from "./components/Product";
 
 function App() {
   return (
@@ -36,7 +36,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Route>
-            <Route path="/test" element={<Test />} />
+            <Route path="/product/:id" element={<Product />} />
           </Routes>
           <Footer />
         </div>

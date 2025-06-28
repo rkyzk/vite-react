@@ -43,7 +43,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex justify-end mx-auto gap-2 pr-5">
+    <div className="flex flex-col mx-auto w-64 gap-2 sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"
@@ -51,18 +51,18 @@ const Filter = () => {
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
         className="border-gray-500 rounded-md bg-stone-100
-                   h-12 px-1 py-2 w-64"
+                   h-12 px-1 py-2"
       />
       {/* Category drowdown */}
       <div>
-        <FormControl className="w-40 focus:outline-none" size="small">
+        <FormControl className="focus:outline-none" size="small">
           <InputLabel labelId="category-select-label">Category</InputLabel>
           <Select
             labelId="category-select-label"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             label="category"
-            className="py-1 bg-white focus:outline-gray focus:outline-none"
+            className="py-1 w-64 bg-white focus:outline-gray focus:outline-none"
           >
             {category !== 0 && (
               <MenuItem key={0} value={0}>
@@ -81,7 +81,7 @@ const Filter = () => {
       </div>
       <button
         onClick={handleClearFilter}
-        className="bg-stone-500 py-1 px-2 h-10"
+        className="bg-stone-500 py-1 px-2 h-10 w-16 mx-auto"
       >
         clear
       </button>

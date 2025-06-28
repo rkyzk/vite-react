@@ -5,15 +5,9 @@ import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
 import styles from "../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-const ProductCard = ({
-  id,
-  productName,
-  description,
-  price,
-  quantity,
-  imageName,
-}) => {
+const ProductCard = ({ id, productName, price, quantity, imageName }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
@@ -27,12 +21,14 @@ const ProductCard = ({
         className={`${styles.imgSize} "cursor-pointer"`}
         src={`/src/assets/products/${imageName}`}
         alt={productName}
-      ></img>
-      <div className="pt-2 flex justify-between text-gray-900">
-        <h2 className="text-xl">{truncateText(productName, 50)}</h2>
-        <div>&yen;{price}</div>
+      />
+      <h2 className="text-xl text-gray-900">{truncateText(productName, 50)}</h2>
+      <div className="flex jusitfy-between">
+        <p>&yen;{price} for 12 bulbs</p>
+        <div>
+          <Link to={`/product/${id}`}>View product</Link>
+        </div>
       </div>
-      <div className="h-15 text-gray-700">{truncateText(description, 80)}</div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>

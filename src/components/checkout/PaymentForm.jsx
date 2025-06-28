@@ -6,17 +6,29 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import styles from "../../styles/PaymentForm.module.css";
+import { useSelector } from "react-redux";
 
+/**
+ * Displays stripe's payment element
+ * (pre-built secure form)
+ * Handles form submission when user clicks 'proceed'
+ * @param clientSecret, totalPrice
+ */
 const PaymentForm = ({ clientSecret, totalPrice }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessege] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const paymentElementOptions = {
     layout: "tabs",
   };
+  const { shippingAddress, tempSAddress } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!shippingAddress && !tempSAddress) {
+      setErrorMessage("Enter valid shipping address.");
+      return;
+    }
     if (!stripe || !elements) {
       return;
     }
@@ -29,7 +41,8 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
       },
     });
     if (error) {
-      setErrorMessege(error.message);
+      console.log(error.message);
+      setErrorMessage(error.message);
       return false;
     }
   };

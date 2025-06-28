@@ -95,7 +95,8 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
-export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
+export const sendOrderAsUser = (data) => async (dispatch, getState) => {
+  console.log("index 101");
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -105,36 +106,6 @@ export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
     return { product: { ...item }, quantity: item.purchaseQty };
   });
   const sendData = {
-    addressDTOList: addressList,
-    cartDTO: {
-      cartItems: items,
-      totalPrice: totalPrice,
-    },
-  };
-  try {
-    const { data } = await api.post(`/order/guest`, sendData);
-    dispatch({
-      type: "CLEAR_CART",
-    });
-    localStorage.setItem("cartItems", []);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
-  const cart = getState().carts.cart;
-  const addresses = getState().auth.addresses;
-  const totalPrice = cart.reduce(
-    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
-  );
-  const items = cart.map((item) => {
-    return { product: { ...item }, quantity: item.purchaseQty };
-  });
-  const sendData = {
-    addressDTOList: addresses,
     cartDTO: {
       cartItems: items,
       totalPrice: totalPrice,
@@ -145,7 +116,8 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
     pgResponseMessage: data.pgResponseMessage,
   };
   try {
-    const response = await api.post(`/order/address/add`, sendData);
+    const response = await api.post(`/order`, sendData);
+    console.log(response.data);
     if (response.data) {
       dispatch({
         type: "STORE_ORDER_SUMMARY",
@@ -154,17 +126,68 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
       dispatch({
         type: "CLEAR_CART",
       });
+      dispatch({
+        type: "REMOVE_CLIENT_SECRET",
+      });
     }
-    localStorage.removeItem("cartItems");
-    localStorage.removeItem("client-secret");
+    localStorage.setItem("cart", getState.carts.cart);
+    localStorage.setItem("auth", getState.auth);
+    return;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
+  const cart = getState().carts.cart;
+  const tempSAddress = getState().auth.tempSAddress;
+
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
+  const items = cart.map((item) => {
+    return { product: { ...item }, quantity: item.purchaseQty };
+  });
+
+  const sendData = {
+    addressDTOList: [tempSAddress],
+    cartDTO: {
+      cartItems: items,
+      totalPrice: totalPrice,
+    },
+    pgName: data.pgName,
+    pgPaymentId: data.pgPaymentId,
+    pgStatus: data.pgStatus,
+    pgResponseMessage: data.pgResponseMessage,
+  };
+  try {
+    console.log("before post");
+    const response = await api.post(`/order/guest`, sendData);
+    console.log(response.data);
+    if (response.data) {
+      dispatch({
+        type: "STORE_ORDER_SUMMARY",
+        payload: response.data,
+      });
+      dispatch({
+        type: "CLEAR_CART",
+      });
+      dispatch({
+        type: "REMOVE_CLIENT_SECRET",
+      });
+    }
+    localStorage.setItem("cart", getState.carts.cart);
+    localStorage.setItem("auth", getState.auth);
   } catch (error) {
     console.log(error);
   }
 };
 
 export const sendLoginRequest =
-  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate, state) => async (dispatch) => {
     setLoader(true);
+    console.log(state);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
       dispatch({
@@ -174,7 +197,12 @@ export const sendLoginRequest =
       localStorage.setItem("auth", JSON.stringify(data));
       reset();
       toast("You're logged in.");
-      navigate(`/`);
+      navigate(`/cart`);
+      if (!state) {
+        navigate(`/`);
+      } else {
+        navigate(`/cart`);
+      }
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
@@ -222,7 +250,13 @@ export const sendRegisterRequest =
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
-    dispatch({ type: "STORE_ADDRESSES", payload: data });
+    let type = "";
+    data.map((address) => {
+      type = address.billingAddress
+        ? "STORE_BILLING_ADDRESS"
+        : "STORE_SHIPPING_ADDRESS";
+      dispatch({ type: type, payload: address });
+    });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
@@ -236,32 +270,30 @@ export const sendUpdateAddressReq = (address) => async (dispatch) => {
   dispatch({ type: "STORE_ADDRESSES", payload: data });
 };
 
-export const loadData = () => async (dispatch) => {
-  try {
-    const auth = localStorage.getItem("auth")
-      ? JSON.parse(localStorage.getItem("auth"))
-      : [];
-    dispatch({ type: "LOGIN_USER", payload: auth.user });
-    auth.addresses &&
-      dispatch({ type: "STORE_ADDRESS", payload: auth.addresses });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const createClientSecret = (totalPrice) => async (dispatch) => {
-  const sendData = {
-    amount: Number(totalPrice),
-    currency: "usd",
+export const storeAddress =
+  (address, isShippingAddr) => async (dispatch, getState) => {
+    console.log("store address ");
+    let type = isShippingAddr
+      ? "STORE_TEMP_SHIPPING_ADDRESS"
+      : "STORE_TEMP_BILLING_ADDRESS";
+    dispatch({ type: type, payload: address });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
-  try {
-    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
-    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
-    localStorage.setItem("client-secret", JSON.stringify(data));
-  } catch (error) {
-    console.log(error);
-  }
-};
+
+export const createClientSecret =
+  (totalPrice) => async (dispatch, getState) => {
+    const sendData = {
+      amount: Number(totalPrice),
+      currency: "jpy",
+    };
+    try {
+      const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+      dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });

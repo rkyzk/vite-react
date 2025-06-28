@@ -1,6 +1,9 @@
 const initialState = {
   user: null,
-  addresses: [],
+  shippingAddress: null,
+  billingAddress: null,
+  tempSAddress: null,
+  tempBAddress: null,
   clientSecret: null,
 };
 
@@ -14,12 +17,28 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT_USER":
       return {
         user: null,
-        addresses: null,
+        shippingAddress: null,
+        billingAddress: null,
       };
-    case "STORE_ADDRESSES":
+    case "STORE_BILLING_ADDRESS":
       return {
         ...state,
-        addresses: action.payload,
+        billingAddress: action.payload,
+      };
+    case "STORE_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        shippingAddress: action.payload,
+      };
+    case "STORE_TEMP_BILLING_ADDRESS":
+      return {
+        ...state,
+        tempBAddress: action.payload,
+      };
+    case "STORE_TEMP_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        tempSAddress: action.payload,
       };
     case "STORE_CLIENT_SECRET":
       return {

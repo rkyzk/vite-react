@@ -1,69 +1,109 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getUserAddress, sendUpdateAddressReq } from "../../store/actions";
+import {
+  getUserAddress,
+  sendUpdateAddressReq,
+  storeAddress,
+} from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import { Link } from "react-router-dom";
 import AddressCard from "./AddressCard";
 
-const AddressForm = (setTempAddresses) => {
-  const { user, addresses } = useSelector((state) => state.auth);
-  let storedSAddress = null;
-  let storedBAddress = null;
-  addresses?.forEach((address) => {
-    address.billingAddress == false
-      ? (storedSAddress = address)
-      : (storedBAddress = address);
-  });
+const AddressForm = () => {
+  const auth = useSelector((state) => state.auth);
+  const user = auth ? auth.user : null;
+  const shippingAddress =
+    auth && auth?.shippingAddress ? auth.shippingAddress : null;
+  const billingAddress =
+    auth && auth?.billingAddress ? auth.billingAddress : null;
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
-
-  const initialSAddressState = {
-    addressId: storedSAddress ? storedSAddress.addressId : null,
-    fullname: storedSAddress ? storedSAddress.fullname : "",
-    streetAddress1: storedSAddress ? storedSAddress.streetAddress1 : "",
-    streetAddress2: storedSAddress ? storedSAddress.streetAddress2 : "",
-    city: storedSAddress ? storedSAddress.city : "",
-    province: storedSAddress ? storedSAddress.province : "",
-    countryCode: storedSAddress ? storedSAddress.countryCode : "",
-    postalCode: storedSAddress ? storedSAddress.postalCode : "",
-  };
-  const initialBAddressState = {
-    addressId: storedBAddress ? storedBAddress.addressId : null,
-    fullname: storedBAddress ? storedBAddress.fullname : "",
-    streetAddress1: storedBAddress ? storedBAddress.streetAddress1 : "",
-    streetAddress2: storedBAddress ? storedBAddress.streetAddress2 : "",
-    city: storedBAddress ? storedBAddress.city : "",
-    province: storedBAddress ? storedBAddress.province : "",
-    countryCode: storedBAddress ? storedBAddress.countryCode : "",
-    postalCode: storedBAddress ? storedBAddress.postalCode : "",
-  };
-  const [shippingAddress, setShippingAddress] = useState({
-    ...initialSAddressState,
+  const [sAddress, setShippingAddress] = useState({
+    fullname: null,
+    streetAddress1: null,
+    streetAddress2: null,
+    city: null,
+    province: null,
+    postalCode: null,
+    countryCode: null,
     billingAddress: false,
   });
-
-  const [billingAddress, setBillingAddress] = useState({
-    ...initialBAddressState,
+  const [bAddress, setBillingAddress] = useState({
+    fullname: null,
+    streetAddress1: null,
+    streetAddress2: null,
+    city: null,
+    province: null,
+    postalCode: null,
+    countryCode: null,
     billingAddress: true,
   });
+
+  const [showErrorsSA, setShowErrorsSA] = useState(false);
+  const [showErrorsBA, setShowErrorsBA] = useState(false);
   const handleChangeShippingAddress = (e) => {
     setShippingAddress({
-      ...shippingAddress,
+      ...sAddress,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleChangeBillingAddress = (e) => {
     setBillingAddress({
-      ...billingAddress,
+      ...bAddress,
       [e.target.name]: e.target.value,
     });
   };
 
   const dispatch = useDispatch();
+  const setA = (e) => {
+    let formId = e.currentTarget.id;
+    let isShippingAddr = formId === "s-addr";
+    let formElem = document.getElementById(formId);
+    formElem.addEventListener("focusout", handleStoreAddr);
+  };
+
+  const handleStoreAddr = (e) => {
+    let isShippingAddr = true;
+    let formElem = document.getElementById("s-addr");
+    if (formElem.contains(e.relatedTarget)) return;
+    console.log("handle store address");
+    formElem.removeEventListener("focusout", handleStoreAddr);
+    let keys = [
+      "fullname",
+      "streetAddress1",
+      "city",
+      "province",
+      "postalCode",
+      "countryCode",
+    ];
+    let address = isShippingAddr ? sAddress : bAddress;
+    // validate and show errors
+    isShippingAddr ? setShowErrorsSA(true) : setShowErrorsBA(true);
+    let complete = true;
+    for (let i = 0; i < keys.length; i++) {
+      if (!(address[keys[i]] && address[keys[i]]?.length > 2)) {
+        console.log(i);
+        complete = false;
+        break;
+      }
+    }
+    console.log(complete);
+    complete && dispatch(storeAddress(address, isShippingAddr));
+  };
 
   useEffect(() => {
     dispatch(getUserAddress());
+    shippingAddress &&
+      setShippingAddress({
+        ...shippingAddress,
+        billingAddress: false,
+      });
+    billingAddress &&
+      setShippingAddress({
+        ...shippingAddress,
+        billingAddress: false,
+      });
   }, []);
 
   const saveAddress = (address) => {
@@ -72,9 +112,9 @@ const AddressForm = (setTempAddresses) => {
     setEditBAddr(false);
   };
 
-  const addressForm = (handleChangeAddress, address) => {
+  const addressForm = (handleChangeAddress, address, isShippingAddr) => {
     return (
-      <div>
+      <form id={isShippingAddr ? "s-addr" : "b-addr"} onFocus={(e) => setA(e)}>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="fullname" className={`${styles.Label}`}>
             full name:
@@ -87,6 +127,13 @@ const AddressForm = (setTempAddresses) => {
             value={address.fullname}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address.fullname?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Enter 2 or more characters.
+              </span>
+            )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="streetAddress1" className={`${styles.Label}`}>
@@ -100,6 +147,13 @@ const AddressForm = (setTempAddresses) => {
             value={address.streetAddress1}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address.streetAddress1?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Eneter valid street address.
+              </span>
+            )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="streetAddress2" className={`${styles.Label}`}>
@@ -119,13 +173,20 @@ const AddressForm = (setTempAddresses) => {
             city:
           </label>
           <input
-            id="city "
+            id="city"
             name="city"
             type="text"
             className={`${styles.Input}`}
             value={address.city}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address.city?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Enter valid city name.
+              </span>
+            )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="province" className={`${styles.Label}`}>
@@ -139,6 +200,13 @@ const AddressForm = (setTempAddresses) => {
             value={address.province}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address.province?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Province is required.
+              </span>
+            )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="postalCode" className={`${styles.Label}`}>
@@ -152,6 +220,13 @@ const AddressForm = (setTempAddresses) => {
             value={address.postalCode}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address.postalCode?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Postal code is required.
+              </span>
+            )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="countryCode" className={`${styles.Label}`}>
@@ -160,12 +235,20 @@ const AddressForm = (setTempAddresses) => {
           <input
             id="countryCode"
             name="countryCode"
+            type="text"
             className={`${styles.Input}`}
             value={address.countryCode}
             onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr) ||
+            (showErrorsBA && !isShippingAddr)) &&
+            !(address?.countryCode?.length > 2) && (
+              <span className="text-sm font-semibold text-red-600 mt-0">
+                Country code is required.
+              </span>
+            )}
         </div>
-      </div>
+      </form>
     );
   };
   return (
@@ -184,9 +267,9 @@ const AddressForm = (setTempAddresses) => {
         <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
           <div>
             <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
-            {storedSAddress && !editSAddr ? (
+            {shippingAddress && !editSAddr ? (
               <>
-                <AddressCard address={storedSAddress} />
+                <AddressCard address={shippingAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditSAddr(true)}
@@ -196,12 +279,12 @@ const AddressForm = (setTempAddresses) => {
               </>
             ) : (
               <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
-                {addressForm(handleChangeShippingAddress, shippingAddress)}
-                {storedSAddress && (
+                {addressForm(handleChangeShippingAddress, sAddress, true)}
+                {shippingAddress && (
                   <div classname="flex">
                     <button
                       className="bg-fuchsia-400 px-2 py-1 m-1"
-                      onClick={() => saveAddress(shippingAddress)}
+                      onClick={() => saveAddress(sAddress)}
                     >
                       save
                     </button>
@@ -218,9 +301,9 @@ const AddressForm = (setTempAddresses) => {
           </div>
           <div>
             <h2 className={`${styles.Text} "mt-2"`}>Billing Address:</h2>
-            {storedBAddress && !editBAddr ? (
+            {billingAddress && !editBAddr ? (
               <>
-                <AddressCard address={storedBAddress} />
+                <AddressCard address={billingAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditBAddr(true)}
@@ -230,7 +313,7 @@ const AddressForm = (setTempAddresses) => {
               </>
             ) : (
               <>
-                {!storedBAddress && (
+                {!billingAddress && (
                   <p className={`${styles.note}`}>
                     If it's different from shipping address
                   </p>
@@ -238,12 +321,12 @@ const AddressForm = (setTempAddresses) => {
                 <div
                   className={`${styles.addressCardBox} ${styles.bAddressBox}`}
                 >
-                  {addressForm(handleChangeBillingAddress, billingAddress)}
+                  {addressForm(handleChangeBillingAddress, bAddress, false)}
                   {editBAddr && (
                     <div className="flex">
                       <button
                         className="bg-fuchsia-400 px-2 py-1 m-1"
-                        onClick={() => saveAddress(billingAddress)}
+                        onClick={() => saveAddress(bAddress)}
                       >
                         save
                       </button>
