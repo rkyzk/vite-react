@@ -1,16 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { GiConsoleController, GiPlantsAndAnimals } from "react-icons/gi";
+import { GiPlantsAndAnimals } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@mui/material";
 import styles from "../../styles/Navbar.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
+import Modal from "@mui/material/Modal";
+import AuthModal from "../auth/AuthModal";
 
 const Navbar = () => {
   const auth = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const path = useLocation().pathname;
   const cart = useSelector((state) => state.carts.cart);
   const cartItemsQty = cart ? cart.length : 0;
@@ -82,29 +85,34 @@ const Navbar = () => {
           clasName={`${styles.Text} "absolute top-30 right-5"`}
         />
       ) : (
-        <Link to="/login" className={`${styles.Text}`}>
+        <button className={`${styles.Text}`} onClick={() => setModalOpen(true)}>
           Login
-        </Link>
+        </button>
       )}
     </>
   );
 
   return (
-    <div className="px-2 flex justify-between w-full md:w-11/12 mx-auto">
-      <Link
-        to="/"
-        className={`${styles.Text} flex items-center text-2xl font-bold`}
-      >
-        <GiPlantsAndAnimals className="mr-2 text-3xl" />
-        <h1 className="font-[Ole] font-bold">Wild Blossom</h1>
-      </Link>
-      <ul className={`${styles.navBarMd}`}>{navbar}</ul>
-      <RxHamburgerMenu
-        className="mt-2 text-2xl md:hidden"
-        onClick={() => openMenu()}
-      />
-      {open && <ul className={`${styles.navBar}`}>{navbar}</ul>}
-    </div>
+    <>
+      <div className="px-2 flex justify-between w-full md:w-11/12 mx-auto">
+        <Link
+          to="/"
+          className={`${styles.Text} flex items-center text-2xl font-bold`}
+        >
+          <GiPlantsAndAnimals className="mr-2 text-3xl" />
+          <h1 className="font-[Ole] font-bold">Wild Blossom</h1>
+        </Link>
+        <ul className={`${styles.navBarMd}`}>{navbar}</ul>
+        <RxHamburgerMenu
+          className="mt-2 text-2xl md:hidden"
+          onClick={() => openMenu()}
+        />
+        {open && <ul className={`${styles.navBar}`}>{navbar}</ul>}
+      </div>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <AuthModal state={false} setModalOpen={setModalOpen} />
+      </Modal>
+    </>
   );
 };
 

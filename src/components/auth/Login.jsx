@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendLoginRequest } from "../../store/actions";
 import Spinner from "../shared/Spinner";
@@ -11,7 +11,7 @@ import { clearErrorMessage } from "../../store/actions/index";
 /**
  * log users in
  */
-const Login = (state) => {
+const Login = ({ state, setModalOpen }) => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,13 +24,17 @@ const Login = (state) => {
   } = useForm({
     mode: "onTouched",
   });
+  const path = useLocation().pathname;
 
   useEffect(() => {
     dispatch(clearErrorMessage());
   }, []);
 
   const handleLogin = async (data) => {
-    dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate, state));
+    dispatch(
+      sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
+    );
+    !state && setModalOpen(false);
   };
 
   return (

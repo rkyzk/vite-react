@@ -184,8 +184,10 @@ export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
 };
 
 export const sendLoginRequest =
-  (sendData, reset, toast, setLoader, navigate, state) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate, state, path) =>
+  async (dispatch) => {
     setLoader(true);
+    console.log("index: " + state);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
       dispatch({
@@ -196,7 +198,7 @@ export const sendLoginRequest =
       localStorage.setItem("auth", JSON.stringify(data));
       reset();
       toast.success("You're logged in.");
-      state ? navigate(`/checkout`) : navigate(`/`);
+      state ? navigate(`/checkout`) : navigate(path);
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
