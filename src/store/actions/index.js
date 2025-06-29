@@ -267,10 +267,15 @@ export const sendSaveNewAddressReq =
 
 export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
-  await api.put(`/addresses/${id}`, address);
-  const { data } = await api.get(`/user/addresses`);
-  console.log(data);
-  dispatch({ type: "STORE_ADDRESSES", payload: data });
+  try {
+    const { data } = await api.put(`/addresses/${id}`, address);
+    let type = address.billingAddress
+      ? "STORE_BILLING_ADDRESS"
+      : "STORE_SHIPPING_ADDRESS";
+    dispatch({ type: type, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 

@@ -19,14 +19,14 @@ const AddressForm = () => {
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
   const initAddr = {
-    addressId: null,
-    fullname: null,
-    streetAddress1: null,
-    streetAddress2: null,
-    city: null,
-    province: null,
-    postalCode: null,
-    countryCode: null,
+    addressId: "",
+    fullname: "",
+    streetAddress1: "",
+    streetAddress2: "",
+    city: "",
+    province: "",
+    postalCode: "",
+    countryCode: "",
   };
   const [sAddress, setSAddress] = useState({
     ...initAddr,
@@ -58,12 +58,14 @@ const AddressForm = () => {
     let formId = e.currentTarget.id;
     let isShippingAddr = formId === "s-addr";
     let formElem = document.getElementById(formId);
-    formElem.addEventListener("focusout", handleStoreAddr);
+    formElem.addEventListener(
+      "focusout",
+      handleStoreAddr(formId, isShippingAddr)
+    );
   };
 
-  const handleStoreAddr = (e) => {
-    let isShippingAddr = true;
-    let formElem = document.getElementById("s-addr");
+  const handleStoreAddr = (e, formId, isShippingAddr) => {
+    let formElem = document.getElementById(formId);
     if (formElem.contains(e.relatedTarget)) return;
     formElem.removeEventListener("focusout", handleStoreAddr);
     let keys = [
@@ -89,6 +91,7 @@ const AddressForm = () => {
   };
 
   const saveAddress = (address) => {
+    console.log("saving");
     dispatch(sendUpdateAddressReq(address));
     setEditSAddr(false);
     setEditBAddr(false);
@@ -103,6 +106,9 @@ const AddressForm = () => {
     setBAddress({ ...initAddr, billingAddress: true });
     setEditBAddr(false);
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
     shippingAddress && setSAddress({ ...shippingAddress });
@@ -111,7 +117,11 @@ const AddressForm = () => {
 
   const addressForm = (handleChangeAddress, address, isShippingAddr) => {
     return (
-      <form id={isShippingAddr ? "s-addr" : "b-addr"} onFocus={(e) => setA(e)}>
+      // <form id={isShippingAddr ? "s-addr" : "b-addr"} onFocus={(e) => setA(e)}>
+      <form
+        id={isShippingAddr ? "s-addr" : "b-addr"}
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <div className={`${styles.InputItem}`}>
           <label htmlFor="fullname" className={`${styles.Label}`}>
             full name:
@@ -324,7 +334,7 @@ const AddressForm = () => {
                     <div className="flex">
                       <button
                         className="bg-fuchsia-400 px-2 py-1 m-1"
-                        onClick={() => saveAddress(bAddress)}
+                        onClick={() => console.log(bAddress)}
                       >
                         save
                       </button>
