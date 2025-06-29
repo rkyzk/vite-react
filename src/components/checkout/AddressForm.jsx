@@ -91,7 +91,6 @@ const AddressForm = () => {
   };
 
   const saveAddress = (address) => {
-    console.log("saving");
     dispatch(sendUpdateAddressReq(address));
     setEditSAddr(false);
     setEditBAddr(false);
@@ -273,7 +272,7 @@ const AddressForm = () => {
     <>
       <div className="flex w-full mt-3">
         <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
-          <div>
+          <div className="min-w-[300px]">
             <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
             {shippingAddress && !editSAddr ? (
               <>
@@ -334,7 +333,7 @@ const AddressForm = () => {
                     <div className="flex">
                       <button
                         className="bg-fuchsia-400 px-2 py-1 m-1"
-                        onClick={() => console.log(bAddress)}
+                        onClick={() => saveAddress(bAddress)}
                       >
                         save
                       </button>

@@ -96,7 +96,6 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
 };
 
 export const sendOrderAsUser = (data) => async (dispatch, getState) => {
-  console.log("index 101");
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -117,7 +116,6 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
   };
   try {
     const response = await api.post(`/order`, sendData);
-    console.log(response.data);
     if (response.data) {
       dispatch({
         type: "STORE_ORDER_SUMMARY",
@@ -133,51 +131,6 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
     localStorage.setItem("cart", getState.carts.cart);
     localStorage.setItem("auth", getState.auth);
     return;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
-  const cart = getState().carts.cart;
-  const tempSAddress = getState().auth.tempSAddress;
-
-  const totalPrice = cart.reduce(
-    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
-  );
-  const items = cart.map((item) => {
-    return { product: { ...item }, quantity: item.purchaseQty };
-  });
-
-  const sendData = {
-    addressDTOList: [tempSAddress],
-    cartDTO: {
-      cartItems: items,
-      totalPrice: totalPrice,
-    },
-    pgName: data.pgName,
-    pgPaymentId: data.pgPaymentId,
-    pgStatus: data.pgStatus,
-    pgResponseMessage: data.pgResponseMessage,
-  };
-  try {
-    const response = await api.post(`/order/guest`, sendData);
-    console.log(response.data);
-    if (response.data) {
-      dispatch({
-        type: "STORE_ORDER_SUMMARY",
-        payload: response.data,
-      });
-      dispatch({
-        type: "CLEAR_CART",
-      });
-      dispatch({
-        type: "REMOVE_CLIENT_SECRET",
-      });
-    }
-    localStorage.setItem("cart", getState.carts.cart);
-    localStorage.setItem("auth", getState.auth);
   } catch (error) {
     console.log(error);
   }
@@ -259,9 +212,11 @@ export const getUserAddress = () => async (dispatch, getState) => {
 
 export const sendSaveNewAddressReq =
   (address) => async (dispatch, getState) => {
-    await api.post(`/addresses`, address);
-    const { data } = await api.get(`/user/addresses`);
-    dispatch({ type: "STORE_ADDRESSES", payload: data });
+    const { data } = await api.post(`/addresses`, address);
+    let type = address.billingAddress
+      ? "STORE_BILLING_ADDRESS"
+      : "STORE_SHIPPING_ADDRESS";
+    dispatch({ type: type, payload: data });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
 
