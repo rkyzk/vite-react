@@ -162,7 +162,6 @@ export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
     pgResponseMessage: data.pgResponseMessage,
   };
   try {
-    console.log("before post");
     const response = await api.post(`/order/guest`, sendData);
     console.log(response.data);
     if (response.data) {
@@ -187,22 +186,17 @@ export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
 export const sendLoginRequest =
   (sendData, reset, toast, setLoader, navigate, state) => async (dispatch) => {
     setLoader(true);
-    console.log(state);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
       dispatch({
         type: "LOGIN_USER",
         payload: data,
       });
+      getUserAddress();
       localStorage.setItem("auth", JSON.stringify(data));
       reset();
-      toast("You're logged in.");
-      navigate(`/cart`);
-      if (!state) {
-        navigate(`/`);
-      } else {
-        navigate(`/cart`);
-      }
+      toast.success("You're logged in.");
+      state ? navigate(`/checkout`) : navigate(`/`);
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
@@ -211,7 +205,7 @@ export const sendLoginRequest =
         });
       } else {
         console.log("other errors");
-        toast("Error occurred.  Please try again.");
+        toast.error("Error occurred.  Please try again.");
       }
     } finally {
       setLoader(false);
@@ -221,19 +215,19 @@ export const sendLoginRequest =
 export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
-  toast("You've been logged out.");
+  toast.success("You've been logged out.");
   localStorage.removeItem("auth");
   navigate(`/`);
 };
 
 export const sendRegisterRequest =
-  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate, state) => async (dispatch) => {
     setLoader(true);
     try {
       const { data } = await api.post("/auth/signup", sendData);
-      toast("Your've been successfully registered.");
+      toast.success("Your've been registered.");
       reset();
-      navigate("/login");
+      !state && navigate(`/login`);
     } catch (error) {
       console.log(error.response.data.message);
       dispatch({
@@ -257,10 +251,16 @@ export const getUserAddress = () => async (dispatch, getState) => {
         : "STORE_SHIPPING_ADDRESS";
       dispatch({ type: type, payload: address });
     });
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
+    //localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
+};
+
+export const sendSaveNewAddressReq = (address) => async (dispatch) => {
+  await api.post(`/addresses`, address);
+  const { data } = await api.get(`/user/addresses`);
+  dispatch({ type: "STORE_ADDRESSES", payload: data });
 };
 
 export const sendUpdateAddressReq = (address) => async (dispatch) => {
@@ -272,7 +272,6 @@ export const sendUpdateAddressReq = (address) => async (dispatch) => {
 
 export const storeAddress =
   (address, isShippingAddr) => async (dispatch, getState) => {
-    console.log("store address ");
     let type = isShippingAddr
       ? "STORE_TEMP_SHIPPING_ADDRESS"
       : "STORE_TEMP_BILLING_ADDRESS";

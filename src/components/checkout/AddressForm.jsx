@@ -4,21 +4,20 @@ import {
   getUserAddress,
   sendUpdateAddressReq,
   storeAddress,
+  sendSaveNewAddressReq,
 } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
-import { Link } from "react-router-dom";
 import AddressCard from "./AddressCard";
 
 const AddressForm = () => {
   const auth = useSelector((state) => state.auth);
-  const user = auth ? auth.user : null;
   const shippingAddress =
     auth && auth?.shippingAddress ? auth.shippingAddress : null;
   const billingAddress =
     auth && auth?.billingAddress ? auth.billingAddress : null;
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
-  const [sAddress, setShippingAddress] = useState({
+  const [sAddress, setSAddress] = useState({
     fullname: null,
     streetAddress1: null,
     streetAddress2: null,
@@ -28,7 +27,7 @@ const AddressForm = () => {
     countryCode: null,
     billingAddress: false,
   });
-  const [bAddress, setBillingAddress] = useState({
+  const [bAddress, setBAddress] = useState({
     fullname: null,
     streetAddress1: null,
     streetAddress2: null,
@@ -42,14 +41,14 @@ const AddressForm = () => {
   const [showErrorsSA, setShowErrorsSA] = useState(false);
   const [showErrorsBA, setShowErrorsBA] = useState(false);
   const handleChangeShippingAddress = (e) => {
-    setShippingAddress({
+    setSAddress({
       ...sAddress,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleChangeBillingAddress = (e) => {
-    setBillingAddress({
+    setBAddress({
       ...bAddress,
       [e.target.name]: e.target.value,
     });
@@ -67,7 +66,6 @@ const AddressForm = () => {
     let isShippingAddr = true;
     let formElem = document.getElementById("s-addr");
     if (formElem.contains(e.relatedTarget)) return;
-    console.log("handle store address");
     formElem.removeEventListener("focusout", handleStoreAddr);
     let keys = [
       "fullname",
@@ -88,26 +86,30 @@ const AddressForm = () => {
         break;
       }
     }
-    console.log(complete);
     complete && dispatch(storeAddress(address, isShippingAddr));
   };
 
   useEffect(() => {
     dispatch(getUserAddress());
     shippingAddress &&
-      setShippingAddress({
+      setSAddress({
         ...shippingAddress,
         billingAddress: false,
       });
     billingAddress &&
-      setShippingAddress({
-        ...shippingAddress,
-        billingAddress: false,
+      setBAddress({
+        ...billingAddress,
+        billingAddress: true,
       });
   }, []);
 
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));
+    setEditSAddr(false);
+    setEditBAddr(false);
+  };
+  const saveNewAddress = (address) => {
+    dispatch(sendSaveNewAddressReq(address));
     setEditSAddr(false);
     setEditBAddr(false);
   };
@@ -248,21 +250,19 @@ const AddressForm = () => {
               </span>
             )}
         </div>
+        <div className="flex justify-end pr-6">
+          <button
+            className="bg-fuchsia-400 px-2 py-1 mt-2"
+            onClick={() => saveNewAddress(address)}
+          >
+            save
+          </button>
+        </div>
       </form>
     );
   };
   return (
     <>
-      {!user && (
-        <div className={`${styles.Note} "mt-2"`}>
-          <Link to="/login" className="hover:text-sky-900">
-            Log in{" "}
-          </Link>{" "}
-          or <Link to="/register">Register </Link>
-          <br />
-          Or fill out the form below to make a purchase as a guest.
-        </div>
-      )}
       <div className="flex w-full mt-3">
         <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
           <div>

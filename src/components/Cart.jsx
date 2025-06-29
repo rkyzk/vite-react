@@ -1,15 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserAddress } from "../store/actions";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/Cart.module.css";
+import Modal from "@mui/material/Modal";
+import AuthModal from "./auth/AuthModal";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
   const user = auth?.user;
+  const [open, setOpen] = useState(false);
+
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -21,6 +23,10 @@ const Cart = () => {
       dispatch(getUserAddress());
     }
   }, []);
+
+  const handleCheckout = () => {
+    user ? navigate("/checkout") : setOpen(true);
+  };
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
@@ -45,14 +51,17 @@ const Cart = () => {
           </div>
           <div className="flex w-full mt-3">
             <span className="w-9/12"></span>
-            <Link
-              to="/checkout"
+            <button
               className="mt-1 bg-amber-900 text-white
                   py-2 px-2 rounded-lg hover:opacity-70 sm:mr-8
                   mx-auto"
+              onClick={() => handleCheckout()}
             >
               Proceed to Check out
-            </Link>
+            </button>
+            <Modal open={open} onClose={() => setOpen(false)}>
+              <AuthModal state={true} />
+            </Modal>
           </div>
         </>
       )}

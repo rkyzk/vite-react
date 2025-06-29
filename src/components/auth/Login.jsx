@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendLoginRequest } from "../../store/actions";
 import Spinner from "../shared/Spinner";
@@ -11,12 +11,11 @@ import { clearErrorMessage } from "../../store/actions/index";
 /**
  * log users in
  */
-const Login = () => {
+const Login = (state) => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { errorMessage } = useSelector((state) => state.errors);
-  const { state } = useLocation();
   const {
     register,
     handleSubmit,
@@ -28,7 +27,7 @@ const Login = () => {
 
   useEffect(() => {
     dispatch(clearErrorMessage());
-  });
+  }, []);
 
   const handleLogin = async (data) => {
     dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate, state));
@@ -37,13 +36,10 @@ const Login = () => {
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="max-w-md mt-3 px-2 flex flex-col m-auto
+      className="px-2 flex flex-col mx-auto mb-5
           items-center"
     >
       <h2>Log in</h2>
-      <span>
-        Don't have an accout yet? <Link to="/register">Register here.</Link>
-      </span>
       {errorMessage && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
@@ -57,7 +53,7 @@ const Login = () => {
           type="text"
           required
           placeholder="your username or email"
-          className="bg-white pl-2 py-1 rounded-lg"
+          className="bg-white pl-2 py-1 rounded-lg border-black"
           errors={errors}
         />
         <div className="flex">
@@ -68,7 +64,7 @@ const Login = () => {
             required
             type="password"
             placeholder="password"
-            className="bg-white pl-2 py-1 rounded-lg w-80"
+            className="bg-white pl-2 py-1 rounded-lg w-80  border-black"
           />
           <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
         </div>
