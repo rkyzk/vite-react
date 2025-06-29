@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import {
-  getUserAddress,
   sendUpdateAddressReq,
   storeAddress,
   sendSaveNewAddressReq,
@@ -18,23 +17,25 @@ const AddressForm = () => {
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
   const [sAddress, setSAddress] = useState({
-    fullname: null,
-    streetAddress1: null,
-    streetAddress2: null,
-    city: null,
-    province: null,
-    postalCode: null,
-    countryCode: null,
+    addressId: shippingAddress ? shippingAddress.addressId : null,
+    fullname: shippingAddress ? shippingAddress.fullname : null,
+    streetAddress1: shippingAddress ? shippingAddress.streetAddress1 : null,
+    streetAddress2: shippingAddress ? shippingAddress.streetAddress2 : null,
+    city: shippingAddress ? shippingAddress.city : null,
+    province: shippingAddress ? shippingAddress.province : null,
+    postalCode: shippingAddress ? shippingAddress.postalCode : null,
+    countryCode: shippingAddress ? shippingAddress.countryCode : null,
     billingAddress: false,
   });
   const [bAddress, setBAddress] = useState({
-    fullname: null,
-    streetAddress1: null,
-    streetAddress2: null,
-    city: null,
-    province: null,
-    postalCode: null,
-    countryCode: null,
+    addressId: billingAddress ? billingAddress.addressId : null,
+    fullname: billingAddress ? billingAddress.fullname : null,
+    streetAddress1: billingAddress ? billingAddress.streetAddress1 : null,
+    streetAddress2: billingAddress ? billingAddress.streetAddress2 : null,
+    city: billingAddress ? billingAddress.city : null,
+    province: billingAddress ? billingAddress.province : null,
+    postalCode: billingAddress ? billingAddress.postalCode : null,
+    countryCode: billingAddress ? billingAddress.countryCode : null,
     billingAddress: true,
   });
 
@@ -88,20 +89,6 @@ const AddressForm = () => {
     }
     complete && dispatch(storeAddress(address, isShippingAddr));
   };
-
-  useEffect(() => {
-    dispatch(getUserAddress());
-    shippingAddress &&
-      setSAddress({
-        ...shippingAddress,
-        billingAddress: false,
-      });
-    billingAddress &&
-      setBAddress({
-        ...billingAddress,
-        billingAddress: true,
-      });
-  }, []);
 
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));
@@ -250,14 +237,17 @@ const AddressForm = () => {
               </span>
             )}
         </div>
-        <div className="flex justify-end pr-6">
-          <button
-            className="bg-fuchsia-400 px-2 py-1 mt-2"
-            onClick={() => saveNewAddress(address)}
-          >
-            save
-          </button>
-        </div>
+        {((isShippingAddr && !editSAddr) ||
+          (!isShippingAddr && !editBAddr)) && (
+          <div className="flex justify-end pr-6">
+            <button
+              className="bg-fuchsia-400 px-2 py-1 mt-2"
+              onClick={() => saveNewAddress(address)}
+            >
+              save
+            </button>
+          </div>
+        )}
       </form>
     );
   };
@@ -269,7 +259,7 @@ const AddressForm = () => {
             <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
             {shippingAddress && !editSAddr ? (
               <>
-                <AddressCard address={shippingAddress} />
+                <AddressCard address={sAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditSAddr(true)}
@@ -281,7 +271,7 @@ const AddressForm = () => {
               <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
                 {addressForm(handleChangeShippingAddress, sAddress, true)}
                 {shippingAddress && (
-                  <div classname="flex">
+                  <div className="flex">
                     <button
                       className="bg-fuchsia-400 px-2 py-1 m-1"
                       onClick={() => saveAddress(sAddress)}
@@ -289,7 +279,7 @@ const AddressForm = () => {
                       save
                     </button>
                     <button
-                      className="bg-fuchsia-400 px-2 py-1"
+                      className="bg-fuchsia-400 px-2 my-1"
                       onClick={() => setEditSAddr(false)}
                     >
                       cancel
@@ -303,7 +293,7 @@ const AddressForm = () => {
             <h2 className={`${styles.Text} "mt-2"`}>Billing Address:</h2>
             {billingAddress && !editBAddr ? (
               <>
-                <AddressCard address={billingAddress} />
+                <AddressCard address={bAddress} />
                 <button
                   className="bg-cyan-700 block mt-2 px-3 py-1"
                   onClick={() => setEditBAddr(true)}
@@ -331,7 +321,7 @@ const AddressForm = () => {
                         save
                       </button>
                       <button
-                        className="bg-fuchsia-400 px-2 m-1"
+                        className="bg-fuchsia-400 px-2 my-1"
                         onClick={() => setEditBAddr(false)}
                       >
                         cancel

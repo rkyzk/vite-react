@@ -185,17 +185,15 @@ export const sendOrderAsGuest = (data) => async (dispatch, getState) => {
 
 export const sendLoginRequest =
   (sendData, reset, toast, setLoader, navigate, state, path) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     setLoader(true);
-    console.log("index: " + state);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
       dispatch({
         type: "LOGIN_USER",
         payload: data,
       });
-      getUserAddress();
-      localStorage.setItem("auth", JSON.stringify(data));
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
       reset();
       toast.success("You're logged in.");
       state ? navigate(`/checkout`) : navigate(path);
@@ -253,23 +251,27 @@ export const getUserAddress = () => async (dispatch, getState) => {
         : "STORE_SHIPPING_ADDRESS";
       dispatch({ type: type, payload: address });
     });
-    //localStorage.setItem("auth", JSON.stringify(getState().auth));
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const sendSaveNewAddressReq = (address) => async (dispatch) => {
-  await api.post(`/addresses`, address);
-  const { data } = await api.get(`/user/addresses`);
-  dispatch({ type: "STORE_ADDRESSES", payload: data });
-};
+export const sendSaveNewAddressReq =
+  (address) => async (dispatch, getState) => {
+    await api.post(`/addresses`, address);
+    const { data } = await api.get(`/user/addresses`);
+    dispatch({ type: "STORE_ADDRESSES", payload: data });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  };
 
-export const sendUpdateAddressReq = (address) => async (dispatch) => {
+export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   await api.put(`/addresses/${id}`, address);
   const { data } = await api.get(`/user/addresses`);
+  console.log(data);
   dispatch({ type: "STORE_ADDRESSES", payload: data });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
 export const storeAddress =

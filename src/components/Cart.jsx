@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
-import { useEffect, useState } from "react";
-import { getUserAddress } from "../store/actions";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import AuthModal from "./auth/AuthModal";
@@ -16,13 +15,7 @@ const Cart = () => {
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
   );
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (user && user.id) {
-      dispatch(getUserAddress());
-    }
-  }, []);
 
   const handleCheckout = () => {
     user ? navigate("/checkout") : setOpen(true);
