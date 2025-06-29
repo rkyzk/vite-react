@@ -40,6 +40,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         tempSAddress: action.payload,
       };
+    case "DELETE_BILLING_ADDRESS":
+      return {
+        ...state,
+        billingAddress: null,
+      };
     case "STORE_CLIENT_SECRET":
       return {
         ...state,

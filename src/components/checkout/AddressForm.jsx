@@ -4,9 +4,11 @@ import {
   sendUpdateAddressReq,
   storeAddress,
   sendSaveNewAddressReq,
+  deleteAddress,
 } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import AddressCard from "./AddressCard";
+import toast from "react-hot-toast";
 
 const AddressForm = () => {
   const auth = useSelector((state) => state.auth);
@@ -16,26 +18,22 @@ const AddressForm = () => {
     auth && auth?.billingAddress ? auth.billingAddress : null;
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
+  const initAddr = {
+    addressId: null,
+    fullname: null,
+    streetAddress1: null,
+    streetAddress2: null,
+    city: null,
+    province: null,
+    postalCode: null,
+    countryCode: null,
+  };
   const [sAddress, setSAddress] = useState({
-    addressId: shippingAddress ? shippingAddress.addressId : null,
-    fullname: shippingAddress ? shippingAddress.fullname : null,
-    streetAddress1: shippingAddress ? shippingAddress.streetAddress1 : null,
-    streetAddress2: shippingAddress ? shippingAddress.streetAddress2 : null,
-    city: shippingAddress ? shippingAddress.city : null,
-    province: shippingAddress ? shippingAddress.province : null,
-    postalCode: shippingAddress ? shippingAddress.postalCode : null,
-    countryCode: shippingAddress ? shippingAddress.countryCode : null,
+    ...initAddr,
     billingAddress: false,
   });
   const [bAddress, setBAddress] = useState({
-    addressId: billingAddress ? billingAddress.addressId : null,
-    fullname: billingAddress ? billingAddress.fullname : null,
-    streetAddress1: billingAddress ? billingAddress.streetAddress1 : null,
-    streetAddress2: billingAddress ? billingAddress.streetAddress2 : null,
-    city: billingAddress ? billingAddress.city : null,
-    province: billingAddress ? billingAddress.province : null,
-    postalCode: billingAddress ? billingAddress.postalCode : null,
-    countryCode: billingAddress ? billingAddress.countryCode : null,
+    ...initAddr,
     billingAddress: true,
   });
 
@@ -100,6 +98,16 @@ const AddressForm = () => {
     setEditSAddr(false);
     setEditBAddr(false);
   };
+  const handleDeleteBAddress = (id) => {
+    dispatch(deleteAddress(id, toast));
+    setBAddress({ ...initAddr, billingAddress: true });
+    setEditBAddr(false);
+  };
+
+  useEffect(() => {
+    shippingAddress && setSAddress({ ...shippingAddress });
+    billingAddress && setBAddress({ ...billingAddress });
+  }, [shippingAddress, billingAddress]);
 
   const addressForm = (handleChangeAddress, address, isShippingAddr) => {
     return (
@@ -290,7 +298,7 @@ const AddressForm = () => {
             )}
           </div>
           <div>
-            <h2 className={`${styles.Text} "mt-2"`}>Billing Address:</h2>
+            <h2 className={`${styles.Text}`}>Billing Address:</h2>
             {billingAddress && !editBAddr ? (
               <>
                 <AddressCard address={bAddress} />
@@ -326,7 +334,10 @@ const AddressForm = () => {
                       >
                         cancel
                       </button>
-                      <button className="bg-fuchsia-400 m-1 px-2">
+                      <button
+                        className="bg-fuchsia-400 m-1 px-2"
+                        onClick={() => handleDeleteBAddress(bAddress.addressId)}
+                      >
                         delete
                       </button>
                     </div>

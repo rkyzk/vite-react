@@ -6,6 +6,7 @@ npm run dev
 
 ## to do
 
+when editing billing address need margin below heading
 input validation
 log in/log out
 

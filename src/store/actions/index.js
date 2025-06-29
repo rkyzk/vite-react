@@ -283,6 +283,17 @@ export const storeAddress =
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
 
+export const deleteAddress = (id, toast) => async (dispatch, getState) => {
+  try {
+    await api.delete(`/addresses/${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+  dispatch({ type: "DELETE_BILLING_ADDRESS" });
+  toast.success("Billing Address was deleted");
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
 export const createClientSecret =
   (totalPrice) => async (dispatch, getState) => {
     const sendData = {
