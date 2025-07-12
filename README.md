@@ -29,25 +29,24 @@ Log in as user1.
 2. Fill out shipping address only. Uncheck 'save this address' order confirmation is displayed. y
 3. Fill out shipping address (save) and billing address (save).
    Order confirmation shows both addresses. both addresses are saved in the DB
-   more space between B & S addresses
 4. Fill out shipping address (save) and billing address (uncheck save).
-   Order confirmation shows both addresses. only shipping addresse is saved in the DB
+   Order confirmation shows both addresses. In address table the user id of the shipping address has a value, while the user id of the billing address is null.
 
 In table addresses enter the following
 only shipping address in DB
 Go to Checkout page
 
-5. make sure the shipping address is displayed.
-   Entry form for billing address is displayed.
-   place order. Order confirmation is displayed.
+5. Make sure the shipping address is displayed and
+   the entry form for billing address is displayed.
+   Place order. Order confirmation shows shipping address.
 
 In table addresses enter the following
 shipping address in DB
 billing
 Go to Checkout page
 
-6. check if the shipping address and the billing address are displayed.
-   place order. Order confirmation is displayed with both addresses.
+6. Check if both shipping and the billing addresses are displayed.
+   Place order. Order confirmation displays both addresses.
 
 check edit function:
 
@@ -68,6 +67,7 @@ check edit function:
 10. Go to checkout. Click 'edit' billing address.
     Change all fields. Click 'cancel'
     Original address is displayed. Check the DB.
+    N added function handleCancelEditAddress. OK
 
 delete this address 7. delete billing address
 billing address is deleted from the DB

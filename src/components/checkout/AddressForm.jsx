@@ -49,7 +49,6 @@ const AddressForm = ({ props }) => {
   };
 
   const dispatch = useDispatch();
-
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));
     setEditSAddr(false);
@@ -60,6 +59,15 @@ const AddressForm = ({ props }) => {
     dispatch(deleteAddress(id, toast));
     setBAddress({ ...initAddr, billingAddress: true });
     setEditBAddr(false);
+  };
+  const handleCancelEditAddress = (isShippingAddr) => {
+    if (isShippingAddr) {
+      setSAddress({ ...sAddress, ...shippingAddress });
+      setEditSAddr(false);
+    } else {
+      setBAddress({ ...bAddress, ...billingAddress });
+      setEditBAddr(false);
+    }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -260,7 +268,7 @@ const AddressForm = ({ props }) => {
                     </button>
                     <button
                       className="bg-fuchsia-400 px-2 my-1"
-                      onClick={() => setEditSAddr(false)}
+                      onClick={() => handleCancelEditAddress(true)}
                     >
                       cancel
                     </button>
@@ -302,7 +310,7 @@ const AddressForm = ({ props }) => {
                       </button>
                       <button
                         className="bg-fuchsia-400 px-2 mx-1 mt-1"
-                        onClick={() => setEditBAddr(false)}
+                        onClick={() => handleCancelEditAddress(false)}
                       >
                         cancel
                       </button>

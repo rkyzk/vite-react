@@ -245,7 +245,7 @@ export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
   toast.success("You've been logged out.");
-  localStorage.removeItem("auth");
+  localStorage.setItem("auth", null);
   navigate(`/`);
 };
 
