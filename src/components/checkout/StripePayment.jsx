@@ -14,10 +14,15 @@ const stripePromise = loadStripe(
  * Fetches client secret from the backend.
  * Displays payment form when client secret is available.
  */
-const StripePayment = ({ totalPrice }) => {
+const StripePayment = ({ validateAddresses }) => {
   const auth = useSelector((state) => state.auth);
   const clientSecret = auth?.clientSecret ? auth.clientSecret : null;
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
+  const cart = useSelector((state) => state.carts.cart);
+  const totalPrice = cart?.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     !clientSecret && dispatch(createClientSecret(totalPrice));
@@ -26,12 +31,13 @@ const StripePayment = ({ totalPrice }) => {
   if (isLoading) {
     return <Spinner />;
   }
+  const props = { clientSecret, totalPrice, validateAddresses };
 
   return (
     <>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <PaymentForm clientSecret={clientSecret} totalPrice={totalPrice} />
+          <PaymentForm props={props} />
         </Elements>
       )}
     </>

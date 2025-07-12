@@ -1,16 +1,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import {
-  sendUpdateAddressReq,
-  storeAddress,
-  sendSaveNewAddressReq,
-  deleteAddress,
-} from "../../store/actions";
+import { sendUpdateAddressReq, deleteAddress } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import AddressCard from "./AddressCard";
 import toast from "react-hot-toast";
 
-const AddressForm = () => {
+const AddressForm = ({ props }) => {
+  const {
+    sAddress,
+    setSAddress,
+    bAddress,
+    setBAddress,
+    showErrorsSA,
+    showErrorsBA,
+    initAddr,
+  } = props;
   const auth = useSelector((state) => state.auth);
   const shippingAddress =
     auth && auth?.shippingAddress ? auth.shippingAddress : null;
@@ -18,27 +22,8 @@ const AddressForm = () => {
     auth && auth?.billingAddress ? auth.billingAddress : null;
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
-  const initAddr = {
-    addressId: "",
-    fullname: "",
-    streetAddress1: "",
-    streetAddress2: "",
-    city: "",
-    province: "",
-    postalCode: "",
-    countryCode: "",
-  };
-  const [sAddress, setSAddress] = useState({
-    ...initAddr,
-    billingAddress: false,
-  });
-  const [bAddress, setBAddress] = useState({
-    ...initAddr,
-    billingAddress: true,
-  });
-
-  const [showErrorsSA, setShowErrorsSA] = useState(false);
-  const [showErrorsBA, setShowErrorsBA] = useState(false);
+  const [saveSAddr, setSaveSAddr] = useState(true);
+  const [saveBAddr, setSaveBAddr] = useState(true);
   const handleChangeShippingAddress = (e) => {
     setSAddress({
       ...sAddress,
@@ -53,53 +38,24 @@ const AddressForm = () => {
     });
   };
 
-  const dispatch = useDispatch();
-  const setA = (e) => {
-    let formId = e.currentTarget.id;
-    let isShippingAddr = formId === "s-addr";
-    let formElem = document.getElementById(formId);
-    formElem.addEventListener(
-      "focusout",
-      handleStoreAddr(formId, isShippingAddr)
-    );
+  const toggleSaveAddr = (isShippingAddr) => {
+    if (isShippingAddr) {
+      setSaveSAddr(!saveSAddr);
+      sAddress.saveAddr = !sAddress.saveAddr;
+    } else {
+      setSaveBAddr(!saveBAddr);
+      bAddress.saveAddr = !bAddress.saveAddr;
+    }
   };
 
-  const handleStoreAddr = (e, formId, isShippingAddr) => {
-    let formElem = document.getElementById(formId);
-    if (formElem.contains(e.relatedTarget)) return;
-    formElem.removeEventListener("focusout", handleStoreAddr);
-    let keys = [
-      "fullname",
-      "streetAddress1",
-      "city",
-      "province",
-      "postalCode",
-      "countryCode",
-    ];
-    let address = isShippingAddr ? sAddress : bAddress;
-    // validate and show errors
-    isShippingAddr ? setShowErrorsSA(true) : setShowErrorsBA(true);
-    let complete = true;
-    for (let i = 0; i < keys.length; i++) {
-      if (!(address[keys[i]] && address[keys[i]]?.length > 2)) {
-        console.log(i);
-        complete = false;
-        break;
-      }
-    }
-    complete && dispatch(storeAddress(address, isShippingAddr));
-  };
+  const dispatch = useDispatch();
 
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));
     setEditSAddr(false);
     setEditBAddr(false);
   };
-  const saveNewAddress = (address) => {
-    dispatch(sendSaveNewAddressReq(address));
-    setEditSAddr(false);
-    setEditBAddr(false);
-  };
+
   const handleDeleteBAddress = (id) => {
     dispatch(deleteAddress(id, toast));
     setBAddress({ ...initAddr, billingAddress: true });
@@ -108,15 +64,13 @@ const AddressForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-
   useEffect(() => {
-    shippingAddress && setSAddress({ ...shippingAddress });
-    billingAddress && setBAddress({ ...billingAddress });
-  }, [shippingAddress, billingAddress]);
+    shippingAddress && setSAddress({ ...shippingAddress, saveAddr: true });
+    billingAddress && setBAddress({ ...billingAddress, saveAddr: true });
+  }, [auth]);
 
   const addressForm = (handleChangeAddress, address, isShippingAddr) => {
     return (
-      // <form id={isShippingAddr ? "s-addr" : "b-addr"} onFocus={(e) => setA(e)}>
       <form
         id={isShippingAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => handleSubmit(e)}
@@ -254,15 +208,24 @@ const AddressForm = () => {
               </span>
             )}
         </div>
-        {((isShippingAddr && !editSAddr) ||
-          (!isShippingAddr && !editBAddr)) && (
-          <div className="flex justify-end pr-6">
-            <button
-              className="bg-fuchsia-400 px-2 py-1 mt-2"
-              onClick={() => saveNewAddress(address)}
-            >
-              save
-            </button>
+        {((isShippingAddr && !shippingAddress) ||
+          (!isShippingAddr && !billingAddress)) && (
+          <div>
+            <label htmlFor="save-addr">
+              <input
+                type="radio"
+                id="saveAddr"
+                name="saveAddr"
+                value={isShippingAddr ? saveSAddr : saveBAddr}
+                checked={address.saveAddr}
+                onClick={() => {
+                  toggleSaveAddr(isShippingAddr);
+                }}
+                onChange={(e) => handleChangeAddress(e)}
+                className="m-1"
+              />
+              <span>save this address</span>
+            </label>
           </div>
         )}
       </form>
@@ -332,22 +295,22 @@ const AddressForm = () => {
                   {editBAddr && (
                     <div className="flex">
                       <button
-                        className="bg-fuchsia-400 px-2 py-1 m-1"
+                        className="bg-fuchsia-400 px-2 py-1 mt-1"
                         onClick={() => saveAddress(bAddress)}
                       >
                         save
                       </button>
                       <button
-                        className="bg-fuchsia-400 px-2 my-1"
+                        className="bg-fuchsia-400 px-2 mx-1 mt-1"
                         onClick={() => setEditBAddr(false)}
                       >
                         cancel
                       </button>
                       <button
-                        className="bg-fuchsia-400 m-1 px-2"
+                        className="bg-fuchsia-400 mt-1 px-2"
                         onClick={() => handleDeleteBAddress(bAddress.addressId)}
                       >
-                        delete
+                        delete this address
                       </button>
                     </div>
                   )}

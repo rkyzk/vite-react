@@ -14,19 +14,20 @@ import { useSelector } from "react-redux";
  * Handles form submission when user clicks 'proceed'
  * @param clientSecret, totalPrice
  */
-const PaymentForm = ({ clientSecret, totalPrice }) => {
+const PaymentForm = ({ props }) => {
+  const { clientSecret, totalPrice, validateAddresses } = props;
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState("");
   const paymentElementOptions = {
     layout: "tabs",
   };
-  const { shippingAddress, tempSAddress } = useSelector((state) => state.auth);
+  const { shippingAddress } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!shippingAddress && !tempSAddress) {
-      setErrorMessage("Enter valid shipping address.");
+    if (!shippingAddress && !validateAddresses()) {
+      setErrorMessage("Enter valid addresses.");
       return;
     }
     if (!stripe || !elements) {

@@ -136,6 +136,83 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
   }
 };
 
+export const sendOrderWithNewAddresses =
+  (data) => async (dispatch, getState) => {
+    const cart = getState().carts.cart;
+    const totalPrice = cart.reduce(
+      (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+      0
+    );
+    const items = cart.map((item) => {
+      return { product: { ...item }, quantity: item.purchaseQty };
+    });
+    let { tempSAddress, tempBAddress } = getState().auth;
+    let responseSAddr = null;
+    let responseBAddr = null;
+    if (tempSAddress.saveAddr) {
+      try {
+        responseSAddr = await api.post(`/addresses`, tempSAddress);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        responseSAddr = await api.post(`/addresses/anonym`, tempSAddress);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    const sAddrId = responseSAddr.data.addressId;
+    if (tempBAddress?.fullname.length > 0) {
+      if (tempBAddress.saveAddr) {
+        try {
+          responseBAddr = await api.post(`/addresses`, tempBAddress);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          responseBAddr = await api.post(`/addresses/anonym`, tempBAddress);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    const bAddrId = responseBAddr?.data.addressId;
+    const sendData = {
+      shippingAddressId: sAddrId,
+      billingAddressId: bAddrId,
+      cartDTO: {
+        cartItems: items,
+        totalPrice: totalPrice,
+      },
+      pgName: data.pgName,
+      pgPaymentId: data.pgPaymentId,
+      pgStatus: data.pgStatus,
+      pgResponseMessage: data.pgResponseMessage,
+    };
+    try {
+      const response = await api.post(`/order/newaddresses`, sendData);
+      if (response.data) {
+        dispatch({
+          type: "STORE_ORDER_SUMMARY",
+          payload: response.data,
+        });
+        dispatch({
+          type: "CLEAR_CART",
+        });
+        dispatch({
+          type: "REMOVE_CLIENT_SECRET",
+        });
+      }
+      localStorage.setItem("cart", null);
+      localStorage.setItem("auth", getState.auth);
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 export const sendLoginRequest =
   (sendData, reset, toast, setLoader, navigate, state, path) =>
   async (dispatch, getState) => {
@@ -157,7 +234,6 @@ export const sendLoginRequest =
           payload: "Username and password don't match.",
         });
       } else {
-        console.log("other errors");
         toast.error("Error occurred.  Please try again.");
       }
     } finally {
@@ -234,14 +310,12 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
-export const storeAddress =
-  (address, isShippingAddr) => async (dispatch, getState) => {
-    let type = isShippingAddr
-      ? "STORE_TEMP_SHIPPING_ADDRESS"
-      : "STORE_TEMP_BILLING_ADDRESS";
-    dispatch({ type: type, payload: address });
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
-  };
+export const storeAddress = (address) => async (dispatch, getState) => {
+  address.billingAddress
+    ? dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address })
+    : dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
 
 export const deleteAddress = (id, toast) => async (dispatch, getState) => {
   try {

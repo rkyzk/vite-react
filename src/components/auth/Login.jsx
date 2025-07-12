@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAddress, sendLoginRequest } from "../../store/actions";
@@ -26,11 +26,8 @@ const Login = ({ state, setModalOpen }) => {
   });
   const path = useLocation().pathname;
 
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-  }, []);
-
   const handleLogin = async (data) => {
+    dispatch(clearErrorMessage());
     await dispatch(
       sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
     );

@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { sendOrderAsGuest, sendOrderAsUser } from "../../store/actions";
+import {
+  sendOrderAsUser,
+  sendOrderWithNewAddresses,
+} from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 
@@ -37,7 +40,7 @@ const PaymentConfirmation = () => {
       };
       shippingAddress
         ? dispatch(sendOrderAsUser(sendData))
-        : dispatch(sendOrderAsGuest(sendData));
+        : dispatch(sendOrderWithNewAddresses(sendData));
     }
   }, []);
 
@@ -47,13 +50,13 @@ const PaymentConfirmation = () => {
         <div className="px-2 py-4 mx-auto md:w-9/12">
           <h2>Thank you for your purchase. Your order has been placed.</h2>
           <h3>Order Summary</h3>
-          <div className="flex">
+          <div className="xs:flex-col sm:flex sm:gap-x-28">
             <div className="border py-1">
               <span>Shipping Address:</span>
               <AddressCard address={order.shippingAddr} />
             </div>
             {order.billingAddr?.fullname.length > 0 && (
-              <div className="border px-3 py-1">
+              <div className="border py-1">
                 <span>Billing Address:</span>
                 <AddressCard address={order.billingAddr} />
               </div>
