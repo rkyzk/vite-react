@@ -55,6 +55,16 @@ const authReducer = (state = initialState, action) => {
         ...state,
         clientSecret: null,
       };
+    case "CLEAR_TEMP_S_ADDRESS":
+      return {
+        ...state,
+        tempSAddress: null,
+      };
+    case "CLEAR_TEMP_B_ADDRESS":
+      return {
+        ...state,
+        tempBAddress: null,
+      };
     default:
       return state;
   }

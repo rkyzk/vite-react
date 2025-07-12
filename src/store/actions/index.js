@@ -152,6 +152,13 @@ export const sendOrderWithNewAddresses =
     if (tempSAddress.saveAddr) {
       try {
         responseSAddr = await api.post(`/addresses`, tempSAddress);
+        dispatch({
+          type: "STORE_SHIPPING_ADDRESS",
+          payload: responseSAddr.data,
+        });
+        dispatch({
+          type: "CLEAR_TEMP_S_ADDRESS",
+        });
       } catch (error) {
         console.log(error);
       }
@@ -167,6 +174,13 @@ export const sendOrderWithNewAddresses =
       if (tempBAddress.saveAddr) {
         try {
           responseBAddr = await api.post(`/addresses`, tempBAddress);
+          dispatch({
+            type: "STORE_BILLING_ADDRESS",
+            payload: responseBAddr.data,
+          });
+          dispatch({
+            type: "CLEAR_TEMP_B_ADDRESS",
+          });
         } catch (error) {
           console.log(error);
         }
@@ -206,8 +220,7 @@ export const sendOrderWithNewAddresses =
         });
       }
       localStorage.setItem("cart", null);
-      localStorage.setItem("auth", getState.auth);
-      return;
+      localStorage.setItem("auth", getState().auth);
     } catch (error) {
       console.log(error);
     }
@@ -324,7 +337,7 @@ export const deleteAddress = (id, toast) => async (dispatch, getState) => {
     console.log(error);
   }
   dispatch({ type: "DELETE_BILLING_ADDRESS" });
-  toast.success("Billing Address was deleted");
+  toast.success("Billing Address has been deleted");
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 

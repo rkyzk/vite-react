@@ -58,6 +58,8 @@ check edit function:
 8. go to checkout. Click 'edit' shipping address.
    Change all fields. Click 'cancel'
    Original address is displayed. Check the DB.
+   Check the DB.
+   N added function handleCancelEditAddress. OK
 
 9. Go to checkout. Click 'edit' billing address.
    Change all fields. click 'save'.
@@ -69,8 +71,18 @@ check edit function:
     Original address is displayed. Check the DB.
     N added function handleCancelEditAddress. OK
 
+11. Go to checkout. Click 'edit' billing address.
+    Change all fields. Click 'cancel'
+    Original address is displayed. Check the DB.
+    N added function handleCancelEditAddress. OK
+
 delete this address 7. delete billing address
 billing address is deleted from the DB
+
+12. test address validation
+
+test no addresses, save address order
+see id redux addresses are updated
 
 ## Bugs
 
