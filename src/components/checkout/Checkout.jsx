@@ -1,7 +1,7 @@
 import StripePayment from "./StripePayment";
 import AddressForm from "./AddressForm";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { storeAddress } from "../../store/actions";
 
 export const Checkout = () => {
@@ -49,7 +49,7 @@ export const Checkout = () => {
     let complete = true;
     // check if shipping address is complete
     for (let i = 0; i < keys.length; i++) {
-      if (!(sAddress[keys[i]] && sAddress[keys[i]].length > 2)) {
+      if (!(sAddress[keys[i]] && sAddress[keys[i]].trim().length > 1)) {
         complete = false;
         break;
       }
@@ -64,12 +64,14 @@ export const Checkout = () => {
         break;
       }
     }
-    if (complete && completeBA) return true; // billing address wasn't entered
+    if (completeBA) {
+      return complete && completeBA; // billing address wasn't entered
+    }
     // when billing address was entered, check if it's complete
     completeBA = true;
     keys.pop();
     for (let i = 0; i < keys.length; i++) {
-      if (!(bAddress[keys[i]] && bAddress[keys[i]].trim().length > 2)) {
+      if (!(bAddress[keys[i]] && bAddress[keys[i]].trim().length > 1)) {
         completeBA = false;
         break;
       }

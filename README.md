@@ -81,8 +81,18 @@ billing address is deleted from the DB
 
 12. test address validation
 
-test no addresses, save address order
-see id redux addresses are updated
+13. test no addresses, save address order
+    see id redux addresses are updated ok
+
+- Test validations on address form
+
+14. Enter nothing in address forms.
+    Fill out payment information and click on 'Proceed to pay'
+    Error messages are displayed.
+    'Enter valid address(es)'
+    Error messages for all fields except for street2 are displayed.
+
+checkout page is displayed when not logged in
 
 ## Bugs
 

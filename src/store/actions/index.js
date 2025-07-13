@@ -129,7 +129,7 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
       });
     }
     localStorage.setItem("cart", getState.carts.cart);
-    localStorage.setItem("auth", getState.auth);
+    localStorage.setItem("auth", getState().auth);
     return;
   } catch (error) {
     console.log(error);

@@ -99,7 +99,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address.fullname?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Enter 2 or more characters.
+                Enter 2 or more characters
               </span>
             )}
         </div>
@@ -119,7 +119,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address.streetAddress1?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Eneter valid street address.
+                Eneter valid street address
               </span>
             )}
         </div>
@@ -152,7 +152,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address.city?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Enter valid city name.
+                Enter valid city name
               </span>
             )}
         </div>
@@ -172,7 +172,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address.province?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Province is required.
+                Enter valid province name
               </span>
             )}
         </div>
@@ -192,7 +192,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address.postalCode?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Postal code is required.
+                Enter valid postal code
               </span>
             )}
         </div>
@@ -212,7 +212,7 @@ const AddressForm = ({ props }) => {
             (showErrorsBA && !isShippingAddr)) &&
             !(address?.countryCode?.length > 2) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Country code is required.
+                Enter valid country
               </span>
             )}
         </div>
