@@ -16,6 +16,7 @@ import PrivateRoute from "./components/PrivateRote";
 import { Toaster } from "react-hot-toast";
 import { Fragment } from "react";
 import Product from "./components/Product";
+import Test from "./Test";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/products" element={<Products />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

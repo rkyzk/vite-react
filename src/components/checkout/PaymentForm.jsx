@@ -6,7 +6,6 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import styles from "../../styles/PaymentForm.module.css";
-import { useSelector } from "react-redux";
 
 /**
  * Displays stripe's payment element
@@ -15,23 +14,50 @@ import { useSelector } from "react-redux";
  * @param clientSecret, totalPrice
  */
 const PaymentForm = ({ props }) => {
-  const { clientSecret, totalPrice, validateAddresses } = props;
+  const {
+    clientSecret,
+    totalPrice,
+    errors,
+    billAddrErrors,
+    setShowErrorsSA,
+    setShowErrorsBA,
+    storeAddr,
+    billAddrCheck,
+  } = props;
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const paymentElementOptions = {
     layout: "tabs",
   };
-  const { shippingAddress } = useSelector((state) => state.auth);
+
+  const validateAddr = (erroObj) => {
+    let valid = false;
+    for (let key in erroObj) {
+      valid |= erroObj[key];
+      console.log(key);
+      if (valid) {
+        setErrorMessage("Enter valid address");
+        return valid;
+      }
+    }
+    return valid;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!shippingAddress && !validateAddresses()) {
-      setErrorMessage("Enter valid addresses.");
-      return;
-    }
     if (!stripe || !elements) {
       return;
+    }
+    if (
+      validateAddr(errors) ||
+      (!billAddrCheck && validateAddr(billAddrErrors))
+    ) {
+      setShowErrorsSA(true);
+      !billAddrCheck && setShowErrorsBA(true);
+      return;
+    } else {
+      storeAddr();
     }
     const { error: submitError } = await elements.submit();
     const { error } = await stripe.confirmPayment({

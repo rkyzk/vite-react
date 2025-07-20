@@ -138,6 +138,7 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
 
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
+    console.log("fired");
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -146,30 +147,36 @@ export const sendOrderWithNewAddresses =
     const items = cart.map((item) => {
       return { product: { ...item }, quantity: item.purchaseQty };
     });
-    let { tempSAddress, tempBAddress } = getState().auth;
+    let { shippingAddress, billingAddress, tempSAddress, tempBAddress } =
+      getState().auth;
     let responseSAddr = null;
     let responseBAddr = null;
-    if (tempSAddress.saveAddr) {
-      try {
-        responseSAddr = await api.post(`/addresses`, tempSAddress);
-        dispatch({
-          type: "STORE_SHIPPING_ADDRESS",
-          payload: responseSAddr.data,
-        });
-        dispatch({
-          type: "CLEAR_TEMP_S_ADDRESS",
-        });
-      } catch (error) {
-        console.log(error);
+    let sAddrId;
+    if (tempSAddress?.fullname.length > 0) {
+      if (tempSAddress.saveAddr) {
+        try {
+          responseSAddr = await api.post(`/addresses`, tempSAddress);
+          dispatch({
+            type: "STORE_SHIPPING_ADDRESS",
+            payload: responseSAddr.data,
+          });
+          dispatch({
+            type: "CLEAR_TEMP_S_ADDRESS",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          responseSAddr = await api.post(`/addresses/anonym`, tempSAddress);
+        } catch (error) {
+          console.log(error);
+        }
       }
+      sAddrId = responseSAddr && responseSAddr.data.addressId;
     } else {
-      try {
-        responseSAddr = await api.post(`/addresses/anonym`, tempSAddress);
-      } catch (error) {
-        console.log(error);
-      }
+      sAddrId = shippingAddress.addressId;
     }
-    const sAddrId = responseSAddr.data.addressId;
     if (tempBAddress?.fullname.length > 0) {
       if (tempBAddress.saveAddr) {
         try {
@@ -184,6 +191,7 @@ export const sendOrderWithNewAddresses =
         } catch (error) {
           console.log(error);
         }
+        console.log("saved");
       } else {
         try {
           responseBAddr = await api.post(`/addresses/anonym`, tempBAddress);
@@ -192,7 +200,12 @@ export const sendOrderWithNewAddresses =
         }
       }
     }
-    const bAddrId = responseBAddr?.data.addressId;
+    let bAddrId;
+    if (responseBAddr) {
+      bAddrId = responseBAddr.data.addressId;
+    } else if (billingAddress) {
+      billingAddress.addressId;
+    }
     const sendData = {
       shippingAddressId: sAddrId,
       billingAddressId: bAddrId,

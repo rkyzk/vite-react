@@ -16,8 +16,8 @@ const PaymentConfirmation = () => {
   const redirectStatus = searchParams.get("redirect_status");
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
-  const shippingAddress =
-    auth && auth.shippingAddress ? auth.shippingAddress : null;
+  const tempSAddress = auth && auth.tempSAddress ? auth.tempSAddress : null;
+  const tempBAddress = auth && auth.tempBAddress ? auth.tempBAddress : null;
 
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
@@ -38,11 +38,11 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      shippingAddress
-        ? dispatch(sendOrderAsUser(sendData))
-        : dispatch(sendOrderWithNewAddresses(sendData));
+      tempSAddress || tempBAddress
+        ? dispatch(sendOrderWithNewAddresses(sendData))
+        : dispatch(sendOrderAsUser(sendData));
     }
-  }, []);
+  }, [clientSecret]);
 
   return (
     <>

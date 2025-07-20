@@ -6,6 +6,9 @@ npm run dev
 
 ## to do
 
+shipping address is there
+add new billing address. will not add b address in DB
+
 when editing billing address need margin below heading
 input validation
 username and pw don't match
@@ -92,7 +95,7 @@ billing address is deleted from the DB
     'Enter valid address(es)'
     Error messages for all fields except for street2 are displayed.
 
-checkout page is displayed when not logged in
+checkout page is displayed when not logged in -> private route App.jsx
 
 ## Bugs
 

@@ -24,67 +24,60 @@ export const Checkout = () => {
     ...initAddr,
     billingAddress: true,
   });
+  const [errors, setErrors] = useState({
+    fullname: false,
+    streetAddress1: false,
+    city: false,
+    province: false,
+    postalCode: false,
+    countryCode: false,
+  });
+  const [billAddrErrors, setBillAddrErrors] = useState({
+    fullname: false,
+    streetAddress1: false,
+    city: false,
+    province: false,
+    postalCode: false,
+    countryCode: false,
+  });
   const [showErrorsSA, setShowErrorsSA] = useState(false);
   const [showErrorsBA, setShowErrorsBA] = useState(false);
+  const [billAddrCheck, setBillAddrCheck] = useState(true);
+  const dispatch = useDispatch();
+  const storeAddr = () => {
+    dispatch(storeAddress(sAddress));
+    !billAddrCheck && dispatch(storeAddress(bAddress));
+  };
+
   const props = {
     sAddress,
     setSAddress,
+    errors,
+    setErrors,
     bAddress,
     setBAddress,
+    billAddrErrors,
+    setBillAddrErrors,
     showErrorsSA,
     showErrorsBA,
     initAddr,
+    billAddrCheck,
+    setBillAddrCheck,
   };
-  const dispatch = useDispatch();
-
-  const validateAddresses = () => {
-    let keys = [
-      "fullname",
-      "streetAddress1",
-      "city",
-      "province",
-      "postalCode",
-      "countryCode",
-    ];
-    let complete = true;
-    // check if shipping address is complete
-    for (let i = 0; i < keys.length; i++) {
-      if (!(sAddress[keys[i]] && sAddress[keys[i]].trim().length > 1)) {
-        complete = false;
-        break;
-      }
-    }
-    complete ? dispatch(storeAddress(sAddress)) : setShowErrorsSA(true);
-    // check if billing address is entered at all
-    keys.push("streetAddress2");
-    let completeBA = true;
-    for (let i = 0; i < keys.length; i++) {
-      if (bAddress[keys[i]] && bAddress[keys[i]].trim().length != 0) {
-        completeBA = false;
-        break;
-      }
-    }
-    if (completeBA) {
-      return complete && completeBA; // billing address wasn't entered
-    }
-    // when billing address was entered, check if it's complete
-    completeBA = true;
-    keys.pop();
-    for (let i = 0; i < keys.length; i++) {
-      if (!(bAddress[keys[i]] && bAddress[keys[i]].trim().length > 1)) {
-        completeBA = false;
-        break;
-      }
-    }
-    completeBA ? dispatch(storeAddress(bAddress)) : setShowErrorsBA(true);
-    return complete && completeBA;
+  const stripePaymentProps = {
+    errors,
+    billAddrErrors,
+    setShowErrorsSA,
+    setShowErrorsBA,
+    storeAddr,
+    billAddrCheck,
   };
 
   return (
     <div className="flex">
       <div className="px-2 mx-auto">
         <AddressForm props={props} />
-        <StripePayment validateAddresses={validateAddresses} />
+        <StripePayment stripePaymentProps={stripePaymentProps} />
       </div>
     </div>
   );
