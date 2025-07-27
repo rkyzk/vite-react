@@ -9,6 +9,20 @@
   width: 330px;
 }
 
+.Button {
+  border-radius: 0px !important;
+  border: 1px silver solid;
+}
+
+.Link > a {
+  color: #785d0d !important;
+}
+
+.Link > a:hover {
+  color: #513f08 !important;
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 1023px) {
   .imgSize {
     width: 350px;
@@ -42,10 +56,10 @@
 
 @media screen and (max-width: 475px) {
   .imgSize {
-    width: 326px;
-    height: 261px;
+    width: 300px !important;
+    height: 240px !important;
   }
   .Card {
-    width: 326px;
+    width: 300px !important;
   }
 }

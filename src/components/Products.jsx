@@ -11,7 +11,7 @@ import Spinner from "./shared/Spinner";
 
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
-  const { products } = useSelector((state) => state.products);
+  const { products, pagination } = useSelector((state) => state.products);
 
   useProductFilter();
   const dispatch = useDispatch();
@@ -19,11 +19,6 @@ const Products = () => {
     dispatch(fetchCategories());
   }, []);
 
-  const categories = [
-    { categoryId: 1, categoryName: "tulips" },
-    { categoryId: 2, categoryName: "hyacinth" },
-    { categoryId: 3, categoryName: "crocus" },
-  ];
   return (
     <>
       <Filter />
@@ -47,7 +42,7 @@ const Products = () => {
           </div>
         )}
       </div>
-      {/* <PaginationSection totalPages={Number(pagination.totalPages)} /> */}
+      <PaginationSection totalPages={Number(pagination.totalPages)} />
     </>
   );
 };

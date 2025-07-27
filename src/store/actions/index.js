@@ -1,6 +1,6 @@
 import api from "../../api/axiosDefaults";
 
-export const fetchProducts = (queryString) => async (dispatch) => {
+export const fetchProducts = (queryString) => async (dispatch, getState) => {
   try {
     dispatch({
       type: "IS_FETCHING",
@@ -18,6 +18,7 @@ export const fetchProducts = (queryString) => async (dispatch) => {
     dispatch({
       type: "IS_SUCCESS",
     });
+    localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
@@ -49,7 +50,7 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-export const fetchFeaturedProducts = () => async (dispatch) => {
+export const fetchFeaturedProducts = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: "IS_FETCHING",
@@ -62,11 +63,43 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
     dispatch({
       type: "IS_SUCCESS",
     });
+    localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message || "Failed to fetch featured products",
+    });
+  }
+};
+
+export const fetchProductDetail = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: "IS_FETCHING",
+    });
+    let { productDetails } = getState().products;
+    let newProdDetails = { ...productDetails };
+    if (Object.hasOwn(productDetails, id)) {
+      console.log("return");
+    } else {
+      const { data } = await api.get(`/public/product/detail/${id}`);
+      newProdDetails[id] = data;
+      dispatch({
+        type: "STORE_PRODUCT_DETAIL",
+        payload: newProdDetails,
+      });
+      console.log("stored");
+    }
+    dispatch({
+      type: "IS_SUCCESS",
+    });
+    localStorage.setItem("products", JSON.stringify(getState().products));
+  } catch (error) {
+    dispatch({
+      type: "IS_ERROR",
+      payload:
+        error?.response?.data?.message || "Failed to fetch product detail",
     });
   }
 };
@@ -82,8 +115,6 @@ export const updateCart = (id, qty, toast) => (dispatch, getState) => {
     });
     toast.success("Item added in cart");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
-  } else {
-    dispatch(`/public/order/featured`);
   }
 };
 
@@ -138,7 +169,6 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
 
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
-    console.log("fired");
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,

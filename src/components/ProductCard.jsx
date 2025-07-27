@@ -22,22 +22,24 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
         src={`/src/assets/products/${imageName}`}
         alt={productName}
       />
-      <h2 className="text-xl text-gray-900">{truncateText(productName, 50)}</h2>
-      <div className="flex jusitfy-between">
-        <p>&yen;{price} for 12 bulbs</p>
+      <h2 className="mt-1 text-xl text-gray-900">
+        {truncateText(productName, 50)}
+      </h2>
+      <div className="flex">
         <div>
+          <p>&yen;{price} for 12 bulbs</p>
+        </div>
+        <div className={`${styles.Link} ml-4`}>
           <Link to={`/product/${id}`}>View product</Link>
         </div>
       </div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
-            <label htmlFor="quantity" className="mt-2">
-              Qty
-            </label>
+            <label htmlFor="quantity">Qty</label>
             <select
               name="quantity"
-              className="border bg-white rounded-lg py-2 pl-1"
+              className="border bg-white rounded-lg"
               onChange={(e) => setQty(Number(e.target.value))}
             >
               {[...Array(30)]
@@ -53,10 +55,9 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
         <button
           className={`${
             isAvailable
-              ? "bg-cyan-700 hover:opacity-50 text-white "
+              ? "bg-neutral-100 text-gray-900 hover:bg-neutral-400"
               : "bg-gray-400 text-gray-700"
-          }
-        rounded py-2 px-3`}
+          } ${styles.Button} p-1`}
           onClick={() => addToCart(id)}
         >
           {isAvailable ? (

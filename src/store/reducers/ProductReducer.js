@@ -1,6 +1,7 @@
 const initialState = {
-  products: null,
-  featuredProducts: null,
+  products: [],
+  featuredProducts: [],
+  productDetails: {},
   pagination: {},
 };
 
@@ -23,6 +24,11 @@ const productReducer = (state = initialState, action) => {
       return {
         ...state,
         featuredProducts: action.payload,
+      };
+    case "STORE_PRODUCT_DETAIL":
+      return {
+        ...state,
+        productDetails: action.payload,
       };
     default:
       return state;

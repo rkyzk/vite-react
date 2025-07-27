@@ -18,10 +18,8 @@ const PaymentConfirmation = () => {
   const auth = useSelector((state) => state.auth);
   const tempSAddress = auth && auth.tempSAddress ? auth.tempSAddress : null;
   const tempBAddress = auth && auth.tempBAddress ? auth.tempBAddress : null;
-
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,5 +1,11 @@
 # Ecommerce App Frontend
 
+spring green
+golden artist
+1404
+1405
+1406
+
 \
 nvm use --lts
 npm run dev
@@ -103,6 +109,11 @@ not logged in => Checkout => log in => should go back to checkout page
 but goes to home page
 
 ## Credits
+
+decription:
+https://www.gardenia.net
+
+https://www.shootgardening.com/plants/hyacinthus-orientalis-anastasia
 
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/

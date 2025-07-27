@@ -18,10 +18,6 @@ input {
   border-radius: 10px;
 }
 
-button {
-  color: #fff;
-}
-
 button:hover {
   opacity: 0.5;
 }

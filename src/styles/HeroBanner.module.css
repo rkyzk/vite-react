@@ -53,3 +53,10 @@ now override the 3.3 new styles for modern browsers & apply opacity
     transform: translate3d(0, 0, 0);
   }
 }
+@media screen and (max-width: 680px) {
+  img {
+    height: 260px !important;
+    width: 100% !important;
+    object-fit: cover;
+  }
+}
