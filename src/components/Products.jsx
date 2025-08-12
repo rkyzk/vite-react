@@ -22,7 +22,7 @@ const Products = () => {
   return (
     <>
       <Filter />
-      <div className="px-2 py-14 flex justify-center sm:px-8 lg:px-14">
+      <div className="px-2 py-10 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
           <Spinner />
         ) : errorMessage ? (

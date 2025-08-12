@@ -1,3 +1,9 @@
 .SelectItems {
   font-family: Raleway, sans-serif;
 }
+
+.Btn {
+  border: 1px #666 solid;
+  height: 35px;
+  margin-top: 6px !important;
+}

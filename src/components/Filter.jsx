@@ -80,8 +80,8 @@ const Filter = () => {
         </FormControl>
       </div>
       <button
-        onClick={handleClearFilter}
-        className="bg-stone-500 py-1 px-2 h-10 w-16 mx-auto"
+        onClick={() => handleClearFilter()}
+        className={`${styles.Btn} rounded-0 px-2 hover:bg-neutral-600 hover:text-white`}
       >
         clear
       </button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { sendRegisterRequest, clearErrorMessage } from "../../store/actions";
@@ -6,7 +6,7 @@ import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
-const Register = (state, setHideRegForm) => {
+const Register = (state) => {
   const [loader, setLoader] = useState(false);
   const [show, setShow] = useState(true);
   const dispatch = useDispatch();
@@ -28,6 +28,9 @@ const Register = (state, setHideRegForm) => {
     );
     setShow(false);
   };
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
 
   return (
     <>
@@ -112,7 +115,8 @@ const Register = (state, setHideRegForm) => {
             </div>
             <button
               type="submit"
-              className="bg-emerald-700 text-white hover:opacity-70 rounded-lg py-1 px-3"
+              className="bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
+                hover:opacity-50rounded-lg py-1 px-3"
             >
               {loader ? <Spinner /> : <>register</>}
             </button>

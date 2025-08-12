@@ -48,7 +48,60 @@ export const Checkout = () => {
     dispatch(storeAddress(sAddress));
     !billAddrCheck && dispatch(storeAddress(bAddress));
   };
-
+  const validateInput = () => {
+    let result = true;
+    // validate input for shipping address
+    for (let key in errors) {
+      let errs = errors;
+      if (key === "streetAddress2") {
+        if (sAddress[key].length === 1) {
+          errs["streetAddress2"] = true;
+          setErrors(errs);
+          result = false;
+        } else {
+          errs["streetAddress2"] = false;
+          setErrors(errs);
+        }
+      } else {
+        if (sAddress[key].length < 2) {
+          console.log(key);
+          errs[key] = true;
+          setErrors(errs);
+          setShowErrorsSA(true);
+          result = false;
+        } else {
+          errs[key] = false;
+          setErrors(errs);
+        }
+      }
+      console.log(errors);
+    }
+    // check if there are any input for billing address
+    // let isEntered = false;
+    // for (let key in bAddress) {
+    //   if (bAddress[key].trim() !== "") {
+    //     isEntered = true;
+    //     break;
+    //   }
+    // }
+    // validate input only when at least one field has been entered.
+    // if (isEntered) {
+    //   for (let key in bAddress) {
+    //     let errs = errors;
+    //     if (bAddress[key].length < 2) {
+    //       errs[key] = true;
+    //       setBillAddrErrors(errs);
+    //     }
+    //     !showErrorsBA && setShowErrorsBA(true);
+    //   }
+    // }
+    if (result) {
+      return true;
+    } else {
+      setShowErrorsSA(true);
+      return false;
+    }
+  };
   const props = {
     sAddress,
     setSAddress,
@@ -65,12 +118,8 @@ export const Checkout = () => {
     setBillAddrCheck,
   };
   const stripePaymentProps = {
-    errors,
-    billAddrErrors,
-    setShowErrorsSA,
-    setShowErrorsBA,
     storeAddr,
-    billAddrCheck,
+    validateInput,
   };
 
   return (

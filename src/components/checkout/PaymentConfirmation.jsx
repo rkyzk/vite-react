@@ -49,12 +49,12 @@ const PaymentConfirmation = () => {
           <h2>Thank you for your purchase. Your order has been placed.</h2>
           <h3>Order Summary</h3>
           <div className="xs:flex-col sm:flex sm:gap-x-28">
-            <div className="border py-1">
+            <div className="py-1">
               <span>Shipping Address:</span>
               <AddressCard address={order.shippingAddr} />
             </div>
             {order.billingAddr?.fullname.length > 0 && (
-              <div className="border py-1">
+              <div className="py-1">
                 <span>Billing Address:</span>
                 <AddressCard address={order.billingAddr} />
               </div>

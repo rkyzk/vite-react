@@ -36,6 +36,9 @@ const AddressForm = ({ props }) => {
       ...sAddress,
       [e.target.name]: e.target.value,
     });
+    if (e.target.id !== "streetAddress2") {
+      validateIpt(e);
+    }
   };
 
   const handleChangeBillingAddress = (e) => {
@@ -79,53 +82,14 @@ const AddressForm = ({ props }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  const validateInput = (e) => {
-    let id = e.target.parentElement.parentElement.id;
-    if (e.target.id == "fullname") {
-      // /^[a-zA-Zs-]{2,}$/
-      if (!e.target.value.match(/^[a-zA-Zs-]{2,}$/)) {
-        id === "s-addr"
-          ? setErrors({
-              ...errors,
-              fullname: true,
-            })
-          : setBillAddrErrors({
-              ...errors,
-              fullname: true,
-            });
-      } else {
-        id === "s-addr"
-          ? setErrors({
-              ...errors,
-              fullname: false,
-            })
-          : setBillAddrErrors({
-              ...errors,
-              fullname: false,
-            });
-      }
+  const validateIpt = (e) => {
+    let errs = errors;
+    if (e.target.value.trim().length < 2) {
+      errs[e.target.name] = true;
+      setErrors(errs);
     } else {
-      if (e.target.value.trim().length < 2) {
-        id === "s-addr"
-          ? setErrors({
-              ...errors,
-              [e.target.name]: true,
-            })
-          : setBillAddrErrors({
-              ...errors,
-              [e.target.name]: true,
-            });
-      } else {
-        id === "s-addr"
-          ? setErrors({
-              ...errors,
-              [e.target.name]: false,
-            })
-          : setBillAddrErrors({
-              ...errors,
-              [e.target.name]: false,
-            });
-      }
+      errs[e.target.name] = false;
+      setErrors(errs);
     }
   };
   useEffect(() => {
@@ -151,7 +115,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.fullname}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.fullname) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.fullname)) && (
@@ -171,7 +134,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.streetAddress1}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.streetAddress1) ||
             (showErrorsBA &&
@@ -192,8 +154,6 @@ const AddressForm = ({ props }) => {
             type="text"
             className={`${styles.Input}`}
             value={address.streetAddress2}
-            onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
         </div>
         <div className={`${styles.InputItem}`}>
@@ -207,7 +167,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.city}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.city) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.city)) && (
@@ -227,7 +186,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.province}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.province) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.province)) &&
@@ -248,7 +206,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.postalCode}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.postalCode) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.postalCode)) &&
@@ -269,7 +226,6 @@ const AddressForm = ({ props }) => {
             className={`${styles.Input}`}
             value={address.countryCode}
             onChange={(e) => handleChangeAddress(e)}
-            onBlur={(e) => validateInput(e)}
           />
           {((showErrorsSA && isShippingAddr && errors.countryCode) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.countryCode)) &&
@@ -366,7 +322,7 @@ const AddressForm = ({ props }) => {
                       setBillAddrCheck(!billAddrCheck);
                     }}
                   />
-                  <span>Same as shipping address</span>
+                  <span className="ml-1">Same as shipping address</span>
                 </label>
               </div>
             )}

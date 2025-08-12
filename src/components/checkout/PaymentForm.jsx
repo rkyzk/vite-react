@@ -14,16 +14,7 @@ import styles from "../../styles/PaymentForm.module.css";
  * @param clientSecret, totalPrice
  */
 const PaymentForm = ({ props }) => {
-  const {
-    clientSecret,
-    totalPrice,
-    errors,
-    billAddrErrors,
-    setShowErrorsSA,
-    setShowErrorsBA,
-    storeAddr,
-    billAddrCheck,
-  } = props;
+  const { clientSecret, totalPrice, storeAddr, validateInput } = props;
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -31,32 +22,17 @@ const PaymentForm = ({ props }) => {
     layout: "tabs",
   };
 
-  const validateAddr = (erroObj) => {
-    let valid = false;
-    for (let key in erroObj) {
-      valid |= erroObj[key];
-      console.log(key);
-      if (valid) {
-        setErrorMessage("Enter valid address");
-        return valid;
-      }
-    }
-    return valid;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
     }
-    if (
-      validateAddr(errors) ||
-      (!billAddrCheck && validateAddr(billAddrErrors))
-    ) {
-      setShowErrorsSA(true);
-      !billAddrCheck && setShowErrorsBA(true);
+    let isValid = validateInput();
+    if (!isValid) {
+      setErrorMessage("Enter valid address");
       return;
     } else {
+      setErrorMessage(null);
       storeAddr();
     }
     const { error: submitError } = await elements.submit();
@@ -68,9 +44,8 @@ const PaymentForm = ({ props }) => {
       },
     });
     if (error) {
-      console.log(error.message);
       setErrorMessage(error.message);
-      return false;
+      return;
     }
   };
   const isLoading = !stripe || !elements;
@@ -87,7 +62,8 @@ const PaymentForm = ({ props }) => {
             <div className="text-red-500 mt-2">{errorMessage}</div>
           )}
           <button
-            className="mt-2 mx-auto bg-amber-800 py-1 px-2"
+            className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
+              hover:bg-stone-300 hover:text-stone-800"
             disabled={!stripe || isLoading}
           >
             {!isLoading ? `Proceed to pay ¥${totalPrice}` : "Processing"}

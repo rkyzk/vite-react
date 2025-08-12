@@ -15,7 +15,14 @@ const PaginationSection = ({ totalPages }) => {
     navigate(`${pathname}?${params}`);
   };
   return (
-    <Pagination count={totalPages} page={currPage} onChange={onChangeHandler} />
+    <div className="flex">
+      <Pagination
+        className="mx-auto"
+        count={totalPages}
+        page={currPage}
+        onChange={onChangeHandler}
+      />
+    </div>
   );
 };
 

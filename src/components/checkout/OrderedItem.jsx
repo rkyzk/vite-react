@@ -12,7 +12,7 @@ const OrderedItem = ({ data }) => {
         ></img>
       </div>
       <span className="w-3/12 text-center pr-4">{data.quantity}</span>
-      <span className="w-3/12 text-center pr-4">{data.product.price}</span>
+      <span className="w-3/12 text-center pr-4">&yen;{data.product.price}</span>
     </div>
   );
 };

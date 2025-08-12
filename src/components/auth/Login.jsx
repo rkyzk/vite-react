@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAddress, sendLoginRequest } from "../../store/actions";
@@ -34,6 +34,9 @@ const Login = ({ state, setModalOpen }) => {
     dispatch(getUserAddress());
     !state && setModalOpen(false);
   };
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
 
   return (
     <form
@@ -73,7 +76,8 @@ const Login = ({ state, setModalOpen }) => {
       </div>
       <button
         type="submit"
-        className="bg-emerald-700 text-white mt-2 hover:opacity-70 rounded-lg py-1 px-3"
+        className="mt-2 bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
+          hover:opacity-10 rounded-lg py-1 px-3"
       >
         {loader ? <Spinner /> : <>login</>}
       </button>

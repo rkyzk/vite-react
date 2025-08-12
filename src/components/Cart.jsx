@@ -45,9 +45,8 @@ const Cart = () => {
           <div className="flex w-full mt-3">
             <span className="w-9/12"></span>
             <button
-              className="mt-1 bg-amber-900 text-white
-                  py-2 px-2 rounded-lg hover:opacity-70 sm:mr-8
-                  mx-auto"
+              className="mt-1 bg-stone-700 text-white
+                  py-1 px-2 sm:mr-8 mx-auto"
               onClick={() => handleCheckout()}
             >
               Proceed to Check out

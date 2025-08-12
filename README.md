@@ -1,16 +1,19 @@
 # Ecommerce App Frontend
 
-spring green
-golden artist
-1404
-1405
-1406
-
 \
 nvm use --lts
 npm run dev
 
+##
+
+Product page
+md:mt-0 not working
+
 ## to do
+
+what to do when jwt expires
+
+order history
 
 shipping address is there
 add new billing address. will not add b address in DB
@@ -29,17 +32,26 @@ Under 'Default behaviors,' select 'Sites can send pop-ups and redirects'
 
 ## Tests
 
+Sign up/Log in page
+|No|tested feature|procedure|expected|result|date|
+|-|--------|
+|1|layout|check layout from 330px to 1425px|All items are displayed fine and spacing among them is balanced.|||
+|2|login function(normal)||All items are displayed fine and spacing among them is balanced.|||
+
 Checkout page: address form
 
 In table addresses in DB make sure no address exists with user_id = 1.
 Log in as user1.
 
-1. Fill out shipping address only. Check 'save this address.' Order confirmation is displayed. The address is saved. y
-2. Fill out shipping address only. Uncheck 'save this address' order confirmation is displayed. y
-3. Fill out shipping address (save) and billing address (save).
-   Order confirmation shows both addresses. both addresses are saved in the DB
-4. Fill out shipping address (save) and billing address (uncheck save).
-   Order confirmation shows both addresses. In address table the user id of the shipping address has a value, while the user id of the billing address is null.
+| No  | tested feature                                              | procedure                                                                                                                                              | expected                                                                                                                             | result | date     |
+| --- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------- |
+| 1   | address forms (when no address is registered for the user)  | put an item in the cart and go to checkout page                                                                                                        | Shipping address form is displayed.                                                                                                  | pass   | 2025/8/3 |
+| 2   | new shipping address will be saved                          | put an item in the cart, go to checkout page. Enter shipping address, card information and click 'proceed'                                             | The shipping address will be displayed on order confirmation page. The address is saved in the DB                                    | pass   | 2025/8/3 |
+| 3   | shipping address won't be saved when checkbox is unchecked. | put an item in the cart, go to checkout page. Enter shipping address, uncheck 'save address,' enter card information and click 'proceed'               | The order confirmation page shows shipping address. The address is saved in the DB without the user id.                              | pass   | 2025/8/3 |
+| 4   | new billing address will be saved                           | put an item in the cart, go to checkout page. Enter shipping and billing addresses, card information and click 'proceed'                               | Both shipping and billing addresses will be displayed on order confirmation page. Both addresses are saved in the DB                 | pass   | 2025/8/3 |
+| 5   | Billing address won't be saved when checkbox is unchecked.  | Put an item in the cart, go to checkout page. Enter shipping and billing addresses, card information and click 'proceed'                               | Both shipping and billing addresses will be displayed on order confirmation page. Billing address is saved in the DB without user id | pass   | 2025/8/3 |
+| 6   | Error is displayed when shipping address is not complete.   | Put an item in the cart, go to checkout page. Enter all fields for shipping address except for postal code, enter card information and click 'proceed' | Error 'Enter valid Shipping address' is displayed                                                                                    |        |          |
+| 7   | Error is displayed when only billing address is complete.   | put an item in the cart, go to checkout page. Enter all fields for billing address, enter card information and click 'proceed'                         | Error 'Enter valid Shipping address' is displayed                                                                                    |        |          |
 
 In table addresses enter the following
 only shipping address in DB

@@ -13,16 +13,16 @@ const Home = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchFeaturedProducts());
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(""));
   }, []);
 
   return (
-    <div>
+    <div className="px-2 sm:px-8 lg:px-14">
       <HeroBanner />
       <h2 className="mt-2 font-[Amatic_SC] font-extrabold ml-3 sm:ml-8 md:ml-14">
         Featured Products
       </h2>
-      <div className="flex w-full px-2 sm:px-8 lg:px-14">
+      <div className="flex">
         {isLoading ? (
           <Spinner className="mx-auto" />
         ) : errorMessage ? (

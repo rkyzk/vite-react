@@ -15,11 +15,11 @@
 }
 
 .Link > a {
-  color: #785d0d !important;
+  color: rgb(154, 116, 20) !important;
 }
 
 .Link > a:hover {
-  color: #513f08 !important;
+  color: #6e560d !important;
   text-decoration: underline;
 }
 

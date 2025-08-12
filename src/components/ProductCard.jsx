@@ -36,7 +36,9 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
-            <label htmlFor="quantity">Qty</label>
+            <label className="mt-1" htmlFor="quantity">
+              Qty
+            </label>
             <select
               name="quantity"
               className="border bg-white rounded-lg"
@@ -55,7 +57,7 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
         <button
           className={`${
             isAvailable
-              ? "bg-neutral-100 text-gray-900 hover:bg-neutral-400"
+              ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
               : "bg-gray-400 text-gray-700"
           } ${styles.Button} p-1`}
           onClick={() => addToCart(id)}
