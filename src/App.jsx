@@ -10,7 +10,6 @@ import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout/Checkout";
 import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
-import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/PrivateRote";
 import { Toaster } from "react-hot-toast";
@@ -36,7 +35,6 @@ function App() {
               <Route path="/order-confirm" element={<PaymentConfirmation />} />
             </Route>
             <Route path="/" element={<PrivateRoute publicPage />}>
-              <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Route>
             <Route path="/product/:id" element={<Product />} />

@@ -40,12 +40,12 @@ export const fetchCategories = () => async (dispatch) => {
       totalPages: data.totalPages,
       lastPage: data.lastPage,
     });
-    dispatch({ type: "IS_ERROR" });
+    dispatch({ type: "IS_SUCCESS" });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: "IS_ERROR",
       payload: error?.response?.data?.message || "Failed to fetch categories",
+      page: "Filter",
     });
   }
 };
@@ -281,19 +281,19 @@ export const sendLoginRequest =
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       reset();
-      toast.success("You're logged in.");
-      state ? navigate(`/checkout`) : navigate(path);
+      return true;
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
           payload: "Username and password don't match.",
+          page: "login",
         });
+        return false;
       } else {
         toast.error("Error occurred.  Please try again.");
+        return false;
       }
-    } finally {
-      setLoader(false);
     }
   };
 
@@ -312,7 +312,6 @@ export const sendRegisterRequest =
       const { data } = await api.post("/auth/signup", sendData);
       toast.success("Your've been registered.");
       reset();
-      !state && navigate(`/login`);
     } catch (error) {
       console.log(error.response.data.message);
       dispatch({
@@ -320,6 +319,7 @@ export const sendRegisterRequest =
         payload:
           error?.response?.data?.message ||
           "Something went wrong, please try again.",
+        page: "register",
       });
     } finally {
       setLoader(false);

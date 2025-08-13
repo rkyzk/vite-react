@@ -6,7 +6,6 @@ import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOutline } from "react-icons/io5";
-import { clearErrorMessage } from "../../store/actions/index";
 
 /**
  * log users in
@@ -15,7 +14,7 @@ const Login = ({ state, setModalOpen }) => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage } = useSelector((state) => state.errors);
+  const { errorMessage, page } = useSelector((state) => state.errors);
   const {
     register,
     handleSubmit,
@@ -27,16 +26,21 @@ const Login = ({ state, setModalOpen }) => {
   const path = useLocation().pathname;
 
   const handleLogin = async (data) => {
-    dispatch(clearErrorMessage());
-    await dispatch(
+    let result = await dispatch(
       sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
     );
-    dispatch(getUserAddress());
-    !state && setModalOpen(false);
+    if (result) {
+      dispatch(getUserAddress());
+      setLoader(false);
+      setModalOpen(false);
+      toast.success("You're logged in.");
+      state ? navigate(`/checkout`) : navigate(path);
+    } else {
+      setLoader(false);
+      setModalOpen(true);
+      console.log("here");
+    }
   };
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-  }, []);
 
   return (
     <form
@@ -45,7 +49,7 @@ const Login = ({ state, setModalOpen }) => {
           items-center"
     >
       <h2>Log in</h2>
-      {errorMessage && (
+      {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
         </span>

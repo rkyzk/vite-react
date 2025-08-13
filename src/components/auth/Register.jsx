@@ -11,7 +11,7 @@ const Register = (state) => {
   const [show, setShow] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage } = useSelector((state) => state.errors);
+  const { errorMessage, page } = useSelector((state) => state.errors);
   const {
     register,
     handleSubmit,
@@ -43,7 +43,7 @@ const Register = (state) => {
           items-center gap-2"
           >
             <h2>Register (for New Customers)</h2>
-            {errorMessage && (
+            {errorMessage && page === "register" && (
               <span className="text-sm font-semibold text-red-600 mt-0">
                 {errorMessage}
               </span>

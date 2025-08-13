@@ -18,13 +18,6 @@ const auth = localStorage.getItem("auth")
 const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
-// const products = {
-//   products: [],
-//   featuredProducts: [],
-//   productDetails: {},
-//   pagination: {},
-// };
-// localStorage.setItem("products", products);
 
 const initialState = {
   carts: { cart: cartItems },
