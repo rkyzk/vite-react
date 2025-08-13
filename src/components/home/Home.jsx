@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { fetchFeaturedProducts, fetchProducts } from "../../store/actions";
 import ProductCard from "../ProductCard";
 import { FaExclamationTriangle } from "react-icons/fa";
+import { PiPlantLight } from "react-icons/pi";
 import Spinner from "../shared/Spinner";
 import styles from "../../styles/Products.module.css";
+import homeStyles from "../../styles/Home.module.css";
 
 const Home = () => {
   const { featuredProducts } = useSelector((state) => state.products);
@@ -19,15 +21,23 @@ const Home = () => {
   return (
     <div className="px-2 sm:px-8 lg:px-14">
       <HeroBanner />
-      <h2 className="mt-2 font-[Amatic_SC] font-extrabold ml-3 sm:ml-8 md:ml-14">
-        Featured Products
-      </h2>
+      <div
+        className={`${homeStyles.FeaturedHeading} flex flex-row justify-start mt-2`}
+      >
+        <PiPlantLight className="text-3xl mt-1" />
+        <h2
+          className="font-[Amatic_SC]
+          font-extrabold w-[165px] ml-2"
+        >
+          Featured Products
+        </h2>
+      </div>
       <div className="flex">
         {isLoading ? (
-          <Spinner className="mx-auto" />
+          <Spinner className="ml-20" />
         ) : errorMessage ? (
           <>
-            <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />
+            <FaExclamationTriangle className="text-slate-600 text-3xl ml-20 mr-2" />
             <p className="text-lg text-slate-600">{errorMessage}</p>
           </>
         ) : (

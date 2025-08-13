@@ -16,6 +16,15 @@ export const Checkout = () => {
     countryCode: "",
     saveAddr: true,
   };
+  const addrErrs = {
+    fullname: false,
+    streetAddress1: false,
+    streetAddress2: false,
+    city: false,
+    province: false,
+    postalCode: false,
+    countryCode: false,
+  };
   const [sAddress, setSAddress] = useState({
     ...initAddr,
     billingAddress: false,
@@ -24,22 +33,8 @@ export const Checkout = () => {
     ...initAddr,
     billingAddress: true,
   });
-  const [errors, setErrors] = useState({
-    fullname: false,
-    streetAddress1: false,
-    city: false,
-    province: false,
-    postalCode: false,
-    countryCode: false,
-  });
-  const [billAddrErrors, setBillAddrErrors] = useState({
-    fullname: false,
-    streetAddress1: false,
-    city: false,
-    province: false,
-    postalCode: false,
-    countryCode: false,
-  });
+  const [errors, setErrors] = useState(addrErrs);
+  const [billAddrErrors, setBillAddrErrors] = useState(addrErrs);
   const [showErrorsSA, setShowErrorsSA] = useState(false);
   const [showErrorsBA, setShowErrorsBA] = useState(false);
   const [billAddrCheck, setBillAddrCheck] = useState(true);

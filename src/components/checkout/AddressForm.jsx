@@ -36,9 +36,7 @@ const AddressForm = ({ props }) => {
       ...sAddress,
       [e.target.name]: e.target.value,
     });
-    if (e.target.id !== "streetAddress2") {
-      validateIpt(e);
-    }
+    validateIpt(e);
   };
 
   const handleChangeBillingAddress = (e) => {
@@ -84,12 +82,22 @@ const AddressForm = ({ props }) => {
   };
   const validateIpt = (e) => {
     let errs = errors;
-    if (e.target.value.trim().length < 2) {
-      errs[e.target.name] = true;
-      setErrors(errs);
+    if (e.target.id !== "streetAddress2") {
+      if (e.target.value.trim().length === 1) {
+        errs[e.target.name] = true;
+        setErrors(errs);
+      } else {
+        errs[e.target.name] = false;
+        setErrors(errs);
+      }
     } else {
-      errs[e.target.name] = false;
-      setErrors(errs);
+      if (e.target.value.trim().length < 2) {
+        errs[e.target.name] = true;
+        setErrors(errs);
+      } else {
+        errs[e.target.name] = false;
+        setErrors(errs);
+      }
     }
   };
   useEffect(() => {
@@ -154,7 +162,16 @@ const AddressForm = ({ props }) => {
             type="text"
             className={`${styles.Input}`}
             value={address.streetAddress2}
+            onChange={(e) => handleChangeAddress(e)}
           />
+          {((showErrorsSA && isShippingAddr && errors.streetAddress2) ||
+            (showErrorsBA &&
+              !isShippingAddr &&
+              billAddrErrors.streetAddress2)) && (
+            <span className="text-sm font-semibold text-red-600 mt-0">
+              Eneter valid street address
+            </span>
+          )}
         </div>
         <div className={`${styles.InputItem}`}>
           <label htmlFor="city" className={`${styles.Label}`}>

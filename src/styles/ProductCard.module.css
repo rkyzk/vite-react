@@ -11,7 +11,7 @@
 
 .Button {
   border-radius: 0px !important;
-  border: 1px silver solid;
+  border: 1px rgb(70, 63, 63) solid;
 }
 
 .Link > a {
