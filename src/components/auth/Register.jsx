@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { sendRegisterRequest, clearErrorMessage } from "../../store/actions";
+import { sendRegisterRequest } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -22,15 +22,16 @@ const Register = (state) => {
   });
 
   const handleRegister = async (data) => {
-    dispatch(clearErrorMessage());
-    dispatch(
+    let result = await dispatch(
       sendRegisterRequest(data, reset, toast, setLoader, navigate, state)
     );
-    setShow(false);
+    if (result) {
+      setLoader(false);
+      setShow(false);
+    } else {
+      setLoader(false);
+    }
   };
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-  }, []);
 
   return (
     <>

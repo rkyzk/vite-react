@@ -306,14 +306,14 @@ export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
 };
 
 export const sendRegisterRequest =
-  (sendData, reset, toast, setLoader, navigate, state) => async (dispatch) => {
+  (sendData, reset, toast, setLoader) => async (dispatch) => {
     setLoader(true);
     try {
       const { data } = await api.post("/auth/signup", sendData);
       toast.success("Your've been registered.");
       reset();
+      return true;
     } catch (error) {
-      console.log(error.response.data.message);
       dispatch({
         type: "IS_ERROR",
         payload:
@@ -321,8 +321,7 @@ export const sendRegisterRequest =
           "Something went wrong, please try again.",
         page: "register",
       });
-    } finally {
-      setLoader(false);
+      return false;
     }
   };
 

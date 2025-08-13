@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserAddress, sendLoginRequest } from "../../store/actions";
+import {
+  clearErrorMessage,
+  getUserAddress,
+  sendLoginRequest,
+} from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -30,6 +34,7 @@ const Login = ({ state, setModalOpen }) => {
       sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
     );
     if (result) {
+      dispatch(clearErrorMessage());
       dispatch(getUserAddress());
       setLoader(false);
       setModalOpen(false);
@@ -38,7 +43,6 @@ const Login = ({ state, setModalOpen }) => {
     } else {
       setLoader(false);
       setModalOpen(true);
-      console.log("here");
     }
   };
 
