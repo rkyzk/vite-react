@@ -14,7 +14,8 @@ import { IoEyeOutline } from "react-icons/io5";
 /**
  * log users in
  */
-const Login = ({ state, setModalOpen }) => {
+const Login = ({ props }) => {
+  const { state, setModalOpen } = props;
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();

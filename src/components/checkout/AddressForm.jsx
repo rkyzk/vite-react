@@ -261,7 +261,7 @@ const AddressForm = ({ props }) => {
                 id="saveAddr"
                 name="saveAddr"
                 value={isShippingAddr ? saveSAddr : saveBAddr}
-                checked={address.saveAddr}
+                defaultChecked={address.saveAddr}
                 onClick={() => {
                   toggleSaveAddr(isShippingAddr);
                 }}
@@ -334,7 +334,7 @@ const AddressForm = ({ props }) => {
                     id="billAddrCheckBox"
                     name="billAddrCheckBox"
                     value={billAddrCheck}
-                    checked={billAddrCheck}
+                    deafultChecked={billAddrCheck}
                     onClick={() => {
                       setBillAddrCheck(!billAddrCheck);
                     }}

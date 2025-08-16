@@ -391,6 +391,7 @@ export const createClientSecret =
     };
     try {
       const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+      console.log(data);
       dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
     } catch (error) {

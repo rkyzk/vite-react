@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
   const user = auth?.user;
-  const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -18,8 +18,10 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    user ? navigate("/checkout") : setOpen(true);
+    user ? navigate("/checkout") : setModalOpen(true);
   };
+  const state = true;
+  const props = { state, setModalOpen };
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
@@ -51,8 +53,8 @@ const Cart = () => {
             >
               Proceed to Check out
             </button>
-            <Modal open={open} onClose={() => setOpen(false)}>
-              <AuthModal state={true} />
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+              <AuthModal props={props} />
             </Modal>
           </div>
         </>

@@ -4,7 +4,7 @@ import { GiPlantsAndAnimals } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@mui/material";
 import styles from "../../styles/Navbar.module.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import UserMenu from "./UserMenu";
 import Modal from "@mui/material/Modal";
@@ -49,6 +49,8 @@ const Navbar = () => {
     document.addEventListener("mouseup", handleCloseMenu);
     window.addEventListener("resize", checkMedia);
   };
+  const state = false;
+  const props = { state, setModalOpen };
 
   const navbar = (
     <>
@@ -110,7 +112,7 @@ const Navbar = () => {
         {open && <ul className={`${styles.navBar}`}>{navbar}</ul>}
       </div>
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <AuthModal state={false} setModalOpen={setModalOpen} />
+        <AuthModal props={props} />
       </Modal>
     </>
   );
