@@ -5,15 +5,9 @@ import { useDispatch } from "react-redux";
 import { updateCart } from "../store/actions";
 import styles from "../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-const ProductCard = ({
-  id,
-  productName,
-  description,
-  price,
-  quantity,
-  imageName,
-}) => {
+const ProductCard = ({ id, productName, price, quantity, imageName }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
@@ -27,21 +21,27 @@ const ProductCard = ({
         className={`${styles.imgSize} "cursor-pointer"`}
         src={`/src/assets/products/${imageName}`}
         alt={productName}
-      ></img>
-      <div className="pt-2 flex justify-between text-gray-900">
-        <h2 className="text-xl">{truncateText(productName, 50)}</h2>
-        <div>{price}</div>
+      />
+      <h2 className="mt-1 text-xl text-gray-900">
+        {truncateText(productName, 50)}
+      </h2>
+      <div className="flex">
+        <div>
+          <p>&yen;{price} for 12 bulbs</p>
+        </div>
+        <div className={`${styles.Link} ml-4`}>
+          <Link to={`/product/${id}`}>View product</Link>
+        </div>
       </div>
-      <div className="h-15 text-gray-700">{truncateText(description, 80)}</div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
-            <label htmlFor="quantity" className="mt-2">
+            <label className="mt-1" htmlFor="quantity">
               Qty
             </label>
             <select
               name="quantity"
-              className="border bg-white rounded-lg py-2 pl-1"
+              className="border bg-white rounded-lg"
               onChange={(e) => setQty(Number(e.target.value))}
             >
               {[...Array(30)]
@@ -57,10 +57,9 @@ const ProductCard = ({
         <button
           className={`${
             isAvailable
-              ? "bg-stone-600 hover:bg-stone-600 opacity-50 text-white "
+              ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
               : "bg-gray-400 text-gray-700"
-          }
-        rounded py-2 px-3`}
+          } ${styles.Button} p-1`}
           onClick={() => addToCart(id)}
         >
           {isAvailable ? (

@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { sendLoginRequest } from "../../store/actions";
+import {
+  clearErrorMessage,
+  getUserAddress,
+  sendLoginRequest,
+} from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { IoEyeOutline } from "react-icons/io5";
 
 /**
  * log users in
  */
-const Login = () => {
+const Login = ({ props }) => {
+  const { state, setModalOpen } = props;
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage } = useSelector((state) => state.errors);
+  const { errorMessage, page } = useSelector((state) => state.errors);
   const {
     register,
     handleSubmit,
@@ -22,48 +28,65 @@ const Login = () => {
   } = useForm({
     mode: "onTouched",
   });
+  const path = useLocation().pathname;
 
   const handleLogin = async (data) => {
-    dispatch(sendLoginRequest(data, reset, toast, setLoader, navigate));
+    let result = await dispatch(
+      sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
+    );
+    if (result) {
+      dispatch(clearErrorMessage());
+      dispatch(getUserAddress());
+      setLoader(false);
+      setModalOpen(false);
+      toast.success("You're logged in.");
+      state ? navigate(`/checkout`) : navigate(path);
+    } else {
+      setLoader(false);
+      setModalOpen(true);
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="max-w-md mt-3 w-100 px-2 flex flex-col m-auto
-          items-center gap-2"
+      className="px-2 flex flex-col mx-auto mb-5
+          items-center"
     >
       <h2>Log in</h2>
-      <span>
-        Don't have an accout yet? <Link to="/register">Register here.</Link>
-      </span>
-      {errorMessage && (
+      {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
         </span>
       )}
-      <input
-        {...register("username")}
-        id="username"
-        name="username"
-        type="text"
-        required
-        placeholder="your username or email"
-        className="w-80 bg-white pl-2 py-1 rounded-lg"
-        errors={errors}
-      />
-      <input
-        {...register("password")}
-        id="password"
-        name="password"
-        required
-        type="text"
-        placeholder="password"
-        className="w-80 bg-white pl-2 py-1 rounded-lg"
-      />
+      <div className="w-80 flex flex-col gap-2">
+        <input
+          {...register("username")}
+          id="username"
+          name="username"
+          type="text"
+          required
+          placeholder="your username or email"
+          className="bg-white pl-2 py-1 rounded-lg border-black"
+          errors={errors}
+        />
+        <div className="flex">
+          <input
+            {...register("password")}
+            id="password"
+            name="password"
+            required
+            type="password"
+            placeholder="password"
+            className="bg-white pl-2 py-1 rounded-lg w-80  border-black"
+          />
+          <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
+        </div>
+      </div>
       <button
         type="submit"
-        className="bg-emerald-700 text-white hover:opacity-70 rounded-lg py-1 px-3"
+        className="mt-2 bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
+          hover:opacity-10 rounded-lg py-1 px-3"
       >
         {loader ? <Spinner /> : <>login</>}
       </button>

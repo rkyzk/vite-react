@@ -1,6 +1,6 @@
 import api from "../../api/axiosDefaults";
 
-export const fetchProducts = (queryString) => async (dispatch) => {
+export const fetchProducts = (queryString) => async (dispatch, getState) => {
   try {
     dispatch({
       type: "IS_FETCHING",
@@ -18,6 +18,7 @@ export const fetchProducts = (queryString) => async (dispatch) => {
     dispatch({
       type: "IS_SUCCESS",
     });
+    localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
@@ -29,7 +30,7 @@ export const fetchProducts = (queryString) => async (dispatch) => {
 export const fetchCategories = () => async (dispatch) => {
   try {
     // dispatch({ type: "CATEGORY_LOADER" });
-    const { data } = await api.get(`/admin/categories`);
+    const { data } = await api.get(`/public/categories`);
     dispatch({
       type: "FETCH_CATEGORIES",
       payload: data.content,
@@ -39,17 +40,17 @@ export const fetchCategories = () => async (dispatch) => {
       totalPages: data.totalPages,
       lastPage: data.lastPage,
     });
-    dispatch({ type: "IS_ERROR" });
+    dispatch({ type: "IS_SUCCESS" });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: "IS_ERROR",
       payload: error?.response?.data?.message || "Failed to fetch categories",
+      page: "Filter",
     });
   }
 };
 
-export const fetchFeaturedProducts = () => async (dispatch) => {
+export const fetchFeaturedProducts = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: "IS_FETCHING",
@@ -62,11 +63,43 @@ export const fetchFeaturedProducts = () => async (dispatch) => {
     dispatch({
       type: "IS_SUCCESS",
     });
+    localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message || "Failed to fetch featured products",
+    });
+  }
+};
+
+export const fetchProductDetail = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: "IS_FETCHING",
+    });
+    let { productDetails } = getState().products;
+    let newProdDetails = { ...productDetails };
+    if (Object.hasOwn(productDetails, id)) {
+      console.log("return");
+    } else {
+      const { data } = await api.get(`/public/product/detail/${id}`);
+      newProdDetails[id] = data;
+      dispatch({
+        type: "STORE_PRODUCT_DETAIL",
+        payload: newProdDetails,
+      });
+      console.log("stored");
+    }
+    dispatch({
+      type: "IS_SUCCESS",
+    });
+    localStorage.setItem("products", JSON.stringify(getState().products));
+  } catch (error) {
+    dispatch({
+      type: "IS_ERROR",
+      payload:
+        error?.response?.data?.message || "Failed to fetch product detail",
     });
   }
 };
@@ -82,8 +115,6 @@ export const updateCart = (id, qty, toast) => (dispatch, getState) => {
     });
     toast.success("Item added in cart");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
-  } else {
-    dispatch(`/public/order/featured`);
   }
 };
 
@@ -95,7 +126,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
-export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
+export const sendOrderAsUser = (data) => async (dispatch, getState) => {
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -105,36 +136,6 @@ export const sendOrderAsGuest = (addressList) => async (dispatch, getState) => {
     return { product: { ...item }, quantity: item.purchaseQty };
   });
   const sendData = {
-    addressDTOList: addressList,
-    cartDTO: {
-      cartItems: items,
-      totalPrice: totalPrice,
-    },
-  };
-  try {
-    const { data } = await api.post(`/order/guest`, sendData);
-    dispatch({
-      type: "CLEAR_CART",
-    });
-    localStorage.setItem("cartItems", []);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
-  const cart = getState().carts.cart;
-  const addresses = getState().auth.addresses;
-  const totalPrice = cart.reduce(
-    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
-  );
-  const items = cart.map((item) => {
-    return { product: { ...item }, quantity: item.purchaseQty };
-  });
-  const sendData = {
-    addressDTOList: addresses,
     cartDTO: {
       cartItems: items,
       totalPrice: totalPrice,
@@ -145,7 +146,7 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
     pgResponseMessage: data.pgResponseMessage,
   };
   try {
-    const response = await api.post(`/order/address/add`, sendData);
+    const response = await api.post(`/order`, sendData);
     if (response.data) {
       dispatch({
         type: "STORE_ORDER_SUMMARY",
@@ -154,16 +155,123 @@ export const sendOrderLoggedInUser = (data) => async (dispatch, getState) => {
       dispatch({
         type: "CLEAR_CART",
       });
+      dispatch({
+        type: "REMOVE_CLIENT_SECRET",
+      });
     }
-    localStorage.removeItem("cartItems");
-    localStorage.removeItem("client-secret");
+    localStorage.setItem("cart", getState.carts.cart);
+    localStorage.setItem("auth", getState().auth);
+    return;
   } catch (error) {
     console.log(error);
   }
 };
 
+export const sendOrderWithNewAddresses =
+  (data) => async (dispatch, getState) => {
+    const cart = getState().carts.cart;
+    const totalPrice = cart.reduce(
+      (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+      0
+    );
+    const items = cart.map((item) => {
+      return { product: { ...item }, quantity: item.purchaseQty };
+    });
+    let { shippingAddress, billingAddress, tempSAddress, tempBAddress } =
+      getState().auth;
+    let responseSAddr = null;
+    let responseBAddr = null;
+    let sAddrId;
+    if (tempSAddress?.fullname.length > 0) {
+      if (tempSAddress.saveAddr) {
+        try {
+          responseSAddr = await api.post(`/addresses`, tempSAddress);
+          dispatch({
+            type: "STORE_SHIPPING_ADDRESS",
+            payload: responseSAddr.data,
+          });
+          dispatch({
+            type: "CLEAR_TEMP_S_ADDRESS",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          responseSAddr = await api.post(`/addresses/anonym`, tempSAddress);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      sAddrId = responseSAddr && responseSAddr.data.addressId;
+    } else {
+      sAddrId = shippingAddress.addressId;
+    }
+    if (tempBAddress?.fullname.length > 0) {
+      if (tempBAddress.saveAddr) {
+        try {
+          responseBAddr = await api.post(`/addresses`, tempBAddress);
+          dispatch({
+            type: "STORE_BILLING_ADDRESS",
+            payload: responseBAddr.data,
+          });
+          dispatch({
+            type: "CLEAR_TEMP_B_ADDRESS",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        console.log("saved");
+      } else {
+        try {
+          responseBAddr = await api.post(`/addresses/anonym`, tempBAddress);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    let bAddrId;
+    if (responseBAddr) {
+      bAddrId = responseBAddr.data.addressId;
+    } else if (billingAddress) {
+      billingAddress.addressId;
+    }
+    const sendData = {
+      shippingAddressId: sAddrId,
+      billingAddressId: bAddrId,
+      cartDTO: {
+        cartItems: items,
+        totalPrice: totalPrice,
+      },
+      pgName: data.pgName,
+      pgPaymentId: data.pgPaymentId,
+      pgStatus: data.pgStatus,
+      pgResponseMessage: data.pgResponseMessage,
+    };
+    try {
+      const response = await api.post(`/order/newaddresses`, sendData);
+      if (response.data) {
+        dispatch({
+          type: "STORE_ORDER_SUMMARY",
+          payload: response.data,
+        });
+        dispatch({
+          type: "CLEAR_CART",
+        });
+        dispatch({
+          type: "REMOVE_CLIENT_SECRET",
+        });
+      }
+      localStorage.setItem("cart", null);
+      localStorage.setItem("auth", getState().auth);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 export const sendLoginRequest =
-  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader, navigate, state, path) =>
+  async (dispatch, getState) => {
     setLoader(true);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
@@ -171,97 +279,125 @@ export const sendLoginRequest =
         type: "LOGIN_USER",
         payload: data,
       });
-      localStorage.setItem("auth", JSON.stringify(data));
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
       reset();
-      toast("You're logged in.");
-      navigate(`/`);
+      return true;
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
           payload: "Username and password don't match.",
+          page: "login",
         });
+        return false;
       } else {
-        console.log("other errors");
-        toast("Error occurred.  Please try again.");
+        toast.error("Error occurred.  Please try again.");
+        return false;
       }
-    } finally {
-      setLoader(false);
     }
   };
 
 export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
-  toast("You've been logged out.");
-  localStorage.removeItem("auth");
+  toast.success("You've been logged out.");
+  localStorage.setItem("auth", null);
   navigate(`/`);
 };
 
 export const sendRegisterRequest =
-  (sendData, reset, toast, setLoader, navigate) => async (dispatch) => {
+  (sendData, reset, toast, setLoader) => async (dispatch) => {
     setLoader(true);
     try {
       const { data } = await api.post("/auth/signup", sendData);
-      toast("Your've been successfully registered.");
+      toast.success("Your've been registered.");
       reset();
-      navigate("/login");
+      return true;
     } catch (error) {
-      console.log(error.response.data.message);
       dispatch({
         type: "IS_ERROR",
         payload:
           error?.response?.data?.message ||
           "Something went wrong, please try again.",
+        page: "register",
       });
-    } finally {
-      setLoader(false);
+      return false;
     }
   };
 
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
-    dispatch({ type: "STORE_ADDRESSES", payload: data });
+    let type = "";
+    data.map((address) => {
+      type = address.billingAddress
+        ? "STORE_BILLING_ADDRESS"
+        : "STORE_SHIPPING_ADDRESS";
+      dispatch({ type: type, payload: address });
+    });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const sendUpdateAddressReq = (address) => async (dispatch) => {
-  let id = address.addressId;
-  await api.put(`/addresses/${id}`, address);
-  const { data } = await api.get(`/user/addresses`);
-  dispatch({ type: "STORE_ADDRESSES", payload: data });
-};
-
-export const loadData = () => async (dispatch) => {
-  try {
-    const auth = localStorage.getItem("auth")
-      ? JSON.parse(localStorage.getItem("auth"))
-      : [];
-    dispatch({ type: "LOGIN_USER", payload: auth.user });
-    auth.addresses &&
-      dispatch({ type: "STORE_ADDRESS", payload: auth.addresses });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const createClientSecret = (totalPrice) => async (dispatch) => {
-  const sendData = {
-    amount: Number(totalPrice),
-    currency: "usd",
+export const sendSaveNewAddressReq =
+  (address) => async (dispatch, getState) => {
+    const { data } = await api.post(`/addresses`, address);
+    let type = address.billingAddress
+      ? "STORE_BILLING_ADDRESS"
+      : "STORE_SHIPPING_ADDRESS";
+    dispatch({ type: type, payload: data });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
+
+export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
+  let id = address.addressId;
   try {
-    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
-    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
-    localStorage.setItem("client-secret", JSON.stringify(data));
+    const { data } = await api.put(`/addresses/${id}`, address);
+    let type = address.billingAddress
+      ? "STORE_BILLING_ADDRESS"
+      : "STORE_SHIPPING_ADDRESS";
+    dispatch({ type: type, payload: data });
   } catch (error) {
     console.log(error);
   }
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
+
+export const storeAddress = (address) => async (dispatch, getState) => {
+  address.billingAddress
+    ? dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address })
+    : dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
+export const deleteAddress = (id, toast) => async (dispatch, getState) => {
+  try {
+    await api.delete(`/addresses/${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+  dispatch({ type: "DELETE_BILLING_ADDRESS" });
+  toast.success("Billing Address has been deleted");
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
+export const createClientSecret =
+  (totalPrice) => async (dispatch, getState) => {
+    const sendData = {
+      amount: Number(totalPrice),
+      currency: "jpy",
+    };
+    try {
+      const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+      console.log(data);
+      dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });

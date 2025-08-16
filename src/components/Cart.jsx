@@ -1,22 +1,27 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { getUserAddress } from "../store/actions";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Modal from "@mui/material/Modal";
+import AuthModal from "./auth/AuthModal";
 
 const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
-  const user = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
+  const user = auth?.user;
+  const [modalOpen, setModalOpen] = useState(false);
+
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
   );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (user && user.id) {
-      dispatch(getUserAddress());
-    }
-  }, []);
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    user ? navigate("/checkout") : setModalOpen(true);
+  };
+  const state = true;
+  const props = { state, setModalOpen };
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
@@ -37,18 +42,20 @@ const Cart = () => {
           })}
           <div className="flex w-full mt-3">
             <strong className="w-7/12 text-right">sub total: </strong>
-            <strong className="w-2/12 pl-3">{totalPrice}</strong>
+            <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
           </div>
           <div className="flex w-full mt-3">
             <span className="w-9/12"></span>
-            <Link
-              to="/checkout"
-              className="mt-1 bg-amber-800 text-white
-                  py-1 px-3 rounded-lg hover:opacity-70 sm:mr-8
-                  mx-auto"
+            <button
+              className="mt-1 bg-stone-700 text-white
+                  py-1 px-2 sm:mr-8 mx-auto"
+              onClick={() => handleCheckout()}
             >
               Proceed to Check out
-            </Link>
+            </button>
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+              <AuthModal props={props} />
+            </Modal>
           </div>
         </>
       )}

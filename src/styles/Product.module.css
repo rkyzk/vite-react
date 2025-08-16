@@ -1,0 +1,47 @@
+.Img {
+  width: 430px;
+  height: 344px;
+  object-fit: cover;
+  object-position: center top;
+  margin: auto;
+}
+
+.Button {
+  border-radius: 0px !important;
+}
+
+.PrcQty {
+  display: flex;
+}
+
+@media screen and (min-width: 768px) {
+  .Box {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .Img {
+    width: 310px !important;
+    height: 264px !important;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .Box {
+    width: 95%;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .Qty {
+    margin-top: 2px;
+  }
+  .PrcQty {
+    flex-direction: column;
+  }
+}

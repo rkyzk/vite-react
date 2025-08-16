@@ -6,5 +6,6 @@ const api = axios.create({
   // "http://ecommerce-rest-api-2025.ap-northeast-1.elasticbeanstalk.com/api",
   withCredentials: true,
 });
+axios.defaults.withCredentials = true;
 
 export default api;

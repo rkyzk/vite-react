@@ -7,10 +7,17 @@ import {
 } from "@stripe/react-stripe-js";
 import styles from "../../styles/PaymentForm.module.css";
 
-const PaymentForm = ({ clientSecret, totalPrice }) => {
+/**
+ * Displays stripe's payment element
+ * (pre-built secure form)
+ * Handles form submission when user clicks 'proceed'
+ * @param clientSecret, totalPrice
+ */
+const PaymentForm = ({ props }) => {
+  const { clientSecret, totalPrice, storeAddr, validateInput } = props;
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessege] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const paymentElementOptions = {
     layout: "tabs",
   };
@@ -19,6 +26,14 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
+    }
+    let isValid = validateInput();
+    if (!isValid) {
+      setErrorMessage("Enter valid address");
+      return;
+    } else {
+      setErrorMessage(null);
+      storeAddr();
     }
     const { error: submitError } = await elements.submit();
     const { error } = await stripe.confirmPayment({
@@ -29,8 +44,8 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
       },
     });
     if (error) {
-      setErrorMessege(error.message);
-      return false;
+      setErrorMessage(error.message);
+      return;
     }
   };
   const isLoading = !stripe || !elements;
@@ -47,7 +62,8 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
             <div className="text-red-500 mt-2">{errorMessage}</div>
           )}
           <button
-            className="mt-2 mx-auto bg-amber-800 py-1 px-2"
+            className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
+              hover:bg-stone-300 hover:text-stone-800"
             disabled={!stripe || isLoading}
           >
             {!isLoading ? `Proceed to pay ¥${totalPrice}` : "Processing"}

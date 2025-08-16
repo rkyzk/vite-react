@@ -5,8 +5,8 @@
   object-position: 50% 50%;
 }
 
-.Btn:hover {
-  color: rgb(29, 15, 5) !important;
+.Btn {
+  border: 1px #484848 solid !important;
 }
 
 @media screen and (max-width: 532px) {

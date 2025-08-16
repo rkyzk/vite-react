@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
@@ -8,16 +9,17 @@ const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
 
-  const categories = [
-    { categoryId: 1, categoryName: "tulips" },
-    { categoryId: 2, categoryName: "hyacinth" },
-    { categoryId: 3, categoryName: "crocus" },
-  ];
+  // const categories = [
+  //   { categoryId: 1, categoryName: "tulips" },
+  //   { categoryId: 2, categoryName: "hyacinth" },
+  //   { categoryId: 3, categoryName: "crocus" },
+  // ];
 
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  // const { categories } = useSelector((state) => state.categories);
+  const { categories } = useSelector((state) => state.categories);
+  const { errorMessage, page } = useSelector((state) => state.errors);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -43,7 +45,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex justify-end mx-auto gap-2 pr-5">
+    <div className="flex flex-col mx-auto w-64 gap-2 sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"
@@ -51,18 +53,18 @@ const Filter = () => {
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
         className="border-gray-500 rounded-md bg-stone-100
-                   h-12 px-1 py-2 w-64"
-      ></input>
+                   h-12 px-1 py-2"
+      />
       {/* Category drowdown */}
       <div>
-        <FormControl className="w-40 focus:outline-none" size="small">
+        <FormControl className="focus:outline-none" size="small">
           <InputLabel labelId="category-select-label">Category</InputLabel>
           <Select
             labelId="category-select-label"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             label="category"
-            className="py-1 bg-white focus:outline-gray focus:outline-none"
+            className="py-1 w-64 bg-white focus:outline-gray focus:outline-none"
           >
             {category !== 0 && (
               <MenuItem key={0} value={0}>
@@ -78,10 +80,11 @@ const Filter = () => {
             ))}
           </Select>
         </FormControl>
+        {page === "Filter" && errorMessage && <>{errorMessage}</>}
       </div>
       <button
-        onClick={handleClearFilter}
-        className="bg-stone-500 py-1 px-2 h-10"
+        onClick={() => handleClearFilter()}
+        className={`${styles.Btn} rounded-0 px-2 hover:bg-neutral-600 hover:text-white`}
       >
         clear
       </button>

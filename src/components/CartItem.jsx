@@ -60,11 +60,11 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
               })}
           </select>
         </div>
-        <span className="w-2/12 mt-4">{price}</span>
+        <span className="w-2/12 mt-4">&yen;{price}</span>
         <button
           onClick={() => handleRemoveItem(id)}
-          className={`${styles.Btn} mx-auto bg-amber-400 text-white align-self-center
-           px-2 py-2`}
+          className={`${styles.Btn} mx-auto rounded-0 text-gray align-self-center
+           px-2 py-1 hover:bg-neutral-600 hover:text-white`}
         >
           remove item
         </button>
