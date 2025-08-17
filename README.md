@@ -1,28 +1,33 @@
-# Ecommerce App Frontend
+# EC サイト アプリ Frontend(React)
 
-\
-nvm use --lts
-npm run dev
+###　ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
 
-##
+- ホームページ
+  https://shop.hanano-yamato.co.jp
 
-Product page
-md:mt-0 not working
+- 商品詳細ページ
+  https://www.pref.toyama.jp/1613/sangyou/nourinsuisan/nougyou/kj00014132/kj00014132-011-01.html<br/>
 
-## to do
+https://www.919g.co.jp/blog/?p=7420<br/>
 
-what to do when jwt expires
-[object Object]
-order history
+- ソースを参考にしたサイト
+  https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</br>
 
-shipping address is there
-add new billing address. will not add b address in DB
+  spinner:</br>
+  https://tw-elements.com/docs/standard/components/spinners/
 
-when editing billing address need margin below heading
-input validation
-username and pw don't match
+- 画像葉したサイトより利用
+  https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/<br/>
 
-style
+https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
+
+https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
+
+## 今後修正すること
+
+- ハンバーガーメニューにするとユーザ名をクリックした際プルダウンが表示された途端消えてしまう
+- 商品届け先住所の入力バリデーションを項目ごとに特化したものにする
+- 請求先住所の入力バリデーションが未実装
 
 ## To allow toast notifications
 
@@ -145,3 +150,5 @@ https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/
 https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip
 
 https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html
+
+\

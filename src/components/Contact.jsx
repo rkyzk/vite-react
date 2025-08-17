@@ -3,15 +3,11 @@ import "../styles/Contact.module.css";
 const Contact = () => {
   return (
     <div className="px-2 max-w-7xl mx-auto w-full md:w-9/12 mt-2 flex-column">
-      <h2 className="w-16 mx-auto">Contact</h2>
+      <h2 className="mx-auto w-[300px]">問い合わせ（作成中）</h2>
       <form method="post" className="flex-column w-full sm:w-95 mx-auto">
-        <p className="text-justify">
-          If you have any inquiries, suggestions or concerns, feel free to write
-          to us! We'll get back to you as soon as possible.
-        </p>
         <div className="flex-column">
           <lable for="name" className="block">
-            Your full name:
+            お名前:
           </lable>
           <input
             id="name"
@@ -22,7 +18,7 @@ const Contact = () => {
         </div>
         <div className="flex-column">
           <lable for="email" className="block">
-            Your email:
+            メール:
           </lable>
           <input
             id="email"
@@ -33,7 +29,7 @@ const Contact = () => {
         </div>
         <div className="flex-column">
           <lable for="message" className="block">
-            message:
+            メッセージ:
           </lable>
           <textarea
             id="message"
@@ -44,9 +40,9 @@ const Contact = () => {
         </div>
         <button
           type="submit"
-          className="rounded-4xl bg-amber-900 text-white px-4 py-1 hover:opacity-80"
+          className="bg-amber-900 text-white px-4 py-1 hover:opacity-80"
         >
-          submit
+          送信
         </button>
       </form>
     </div>

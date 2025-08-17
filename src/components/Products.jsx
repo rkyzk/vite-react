@@ -2,7 +2,11 @@ import ProductCard from "./ProductCard";
 import { useSelector, useDispatch } from "react-redux";
 import { FaExclamationTriangle } from "react-icons/fa";
 import useProductFilter from "../hooks/useProductFilter";
-import { fetchCategories } from "../store/actions";
+import {
+  fetchCategories,
+  fetchProducts,
+  clearErrorMessage,
+} from "../store/actions";
 import { useEffect } from "react";
 import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
@@ -16,7 +20,9 @@ const Products = () => {
   useProductFilter();
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(clearErrorMessage());
     dispatch(fetchCategories());
+    !products && dispatch(fetchProducts(""));
   }, []);
 
   return (

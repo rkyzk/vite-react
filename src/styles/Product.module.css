@@ -8,15 +8,30 @@
 
 .Button {
   border-radius: 0px !important;
+  border: 1px solid #555;
 }
 
 .PrcQty {
   display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (min-width: 768px) {
   .Box {
     gap: 15px;
+  }
+
+  .PrcQty {
+    flex-direction: column !important;
+  }
+  .QtyAddBtn {
+    justify-content: end;
+  }
+}
+
+@media screen and (min-width: 890px) {
+  .PrcQty {
+    flex-direction: row !important;
   }
 }
 

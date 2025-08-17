@@ -39,11 +39,11 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex flex-col mx-auto w-64 gap-2 sm:flex-row sm:justify-center">
+    <div className="flex flex-col mx-auto gap-2 sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"
-        placeholder="enter keyword"
+        placeholder="キーワードを入力"
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
         className="border-gray-500 rounded-md bg-stone-100
@@ -78,9 +78,9 @@ const Filter = () => {
       </div>
       <button
         onClick={() => handleClearFilter()}
-        className={`${styles.Btn} rounded-0 px-2 hover:bg-neutral-600 hover:text-white`}
+        className={`${styles.ClearBtn} px-1 h-[34px] hover:bg-neutral-600 hover:text-white`}
       >
-        clear
+        クリア
       </button>
     </div>
   );

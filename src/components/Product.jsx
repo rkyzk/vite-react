@@ -2,7 +2,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { updateCart, fetchProductDetail } from "../store/actions";
+import {
+  updateCart,
+  fetchProductDetail,
+  clearErrorMessage,
+} from "../store/actions";
 import { FaShoppingCart, FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "./shared/Spinner";
 import styles from "../styles/Product.module.css";
@@ -18,6 +22,7 @@ const Product = () => {
   const { productDetails } = useSelector((state) => state.products);
   const productDetail = productDetails ? productDetails[Number(id)] : {};
   useEffect(() => {
+    dispatch(clearErrorMessage());
     dispatch(fetchProductDetail(Number(id)));
   }, []);
 
@@ -37,7 +42,7 @@ const Product = () => {
         </div>
       ) : (
         <div
-          className={`${styles.Box} "xs:grid-col-1 md:grid-cols-2 md:mt-5 grid justify-center xs:px-3 sm:px-5 lg:px-14"`}
+          className={`${styles.Box} xs:grid-col-1 md:grid-cols-2 md:mt-5 grid justify-center xs:px-3 sm:px-5 lg:px-14`}
         >
           <div>
             <img
@@ -47,18 +52,16 @@ const Product = () => {
             />
           </div>
           <div className="mt-3 md:mt-0">
-            <h1 className="text-xl font-semi-bold">{productName}</h1>
-            <div className={`${styles.PrcQty} "my-1 justify-between gap-1"`}>
+            <h2 className="text-2xl">{productName}</h2>
+            <div className={`${styles.PrcQty} my-1 gap-1`}>
               <div className="mt-1">
-                <span className="text-md md:text-xl">
-                  &yen;{price} for 12 bulbs
-                </span>
+                <span className="text-md">&yen;{price}（球根12個入り）</span>
               </div>
-              <div className="flex">
+              <div className={`${styles.QtyAddBtn} flex`}>
                 {isAvailable && (
                   <div className="mr-1">
                     <label htmlFor="quantity" className="mr-2">
-                      Qty
+                      数個
                     </label>
                     <select
                       name="quantity"
@@ -80,7 +83,7 @@ const Product = () => {
                     isAvailable
                       ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
                       : "bg-gray-400 text-gray-700"
-                  } ${styles.Button} p-1 border`}
+                  } ${styles.Button} p-1`}
                   onClick={() => addToCart(id)}
                 >
                   {isAvailable ? (

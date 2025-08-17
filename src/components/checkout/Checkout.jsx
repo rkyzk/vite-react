@@ -42,6 +42,7 @@ export const Checkout = () => {
   const [showErrorsBA, setShowErrorsBA] = useState(false);
   const [billAddrCheck, setBillAddrCheck] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
   if (auth === null) {
     const state = false;
     const props = { state, setModalOpen };
@@ -51,7 +52,7 @@ export const Checkout = () => {
       </Modal>
     );
   }
-  const dispatch = useDispatch();
+
   const storeAddr = () => {
     dispatch(storeAddress(sAddress));
     !billAddrCheck && dispatch(storeAddress(bAddress));

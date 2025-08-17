@@ -44,11 +44,10 @@ const Cart = () => {
             <strong className="w-7/12 text-right">合計: </strong>
             <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
           </div>
-          <div className="flex w-full mt-3">
-            <span className="w-9/12"></span>
+          <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
             <button
-              className="mt-1 bg-stone-700 text-white
-                  py-1 px-2 sm:mr-8 mx-auto"
+              className={`mt-1 bg-stone-700 text-white
+                  py-1 px-2 sm:mr-8`}
               onClick={() => handleCheckout()}
             >
               購入手続きに進む

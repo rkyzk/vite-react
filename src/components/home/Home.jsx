@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import HeroBanner from "./HeroBanner";
 import { useEffect } from "react";
-import { fetchFeaturedProducts, fetchProducts } from "../../store/actions";
+import { fetchFeaturedProducts, clearErrorMessage } from "../../store/actions";
 import ProductCard from "../ProductCard";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { PiPlantLight } from "react-icons/pi";
@@ -14,13 +14,21 @@ const Home = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchFeaturedProducts());
-    dispatch(fetchProducts(""));
+    dispatch(clearErrorMessage());
+    !featuredProducts && dispatch(fetchFeaturedProducts());
   }, []);
 
   return (
     <div className="px-2 sm:px-8 lg:px-14">
       <HeroBanner />
+      <div className="flex lg:mt-4">
+        <p className="max-w-[600px] mx-auto">
+          無農薬でチューリップ、ヒヤシンスなどの球根を栽培・販売しています。
+          <br />
+          お庭やベランダでの家庭菜園はもちろん、季節のギフトやプレゼントにもオススメです。
+        </p>
+      </div>
+      <hr />
       <div
         className={`${homeStyles.FeaturedHeading} flex flex-row justify-start mt-2`}
       >

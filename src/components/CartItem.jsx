@@ -1,12 +1,6 @@
 import { useDispatch } from "react-redux";
 import { removeItemFromCart, updateCart } from "../store/actions";
 import styles from "../styles/CartItem.module.css";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 
 const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
   const dispatch = useDispatch();
@@ -63,8 +57,8 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
         <span className="w-2/12 mt-4">&yen;{price}</span>
         <button
           onClick={() => handleRemoveItem(id)}
-          className={`${styles.Btn} mx-auto rounded-0 text-gray align-self-center
-           px-2 py-1 hover:bg-neutral-600 hover:text-white`}
+          className={`${styles.Btn} align-self-center
+           px-1 py-1 hover:bg-neutral-600 hover:text-white`}
         >
           カートから削除
         </button>

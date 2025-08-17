@@ -85,7 +85,6 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
     let { productDetails } = getState().products;
     let newProdDetails = { ...productDetails };
     if (Object.hasOwn(productDetails, id)) {
-      console.log("return");
     } else {
       const { data } = await api.get(`/public/product/detail/${id}`);
       newProdDetails[id] = data;

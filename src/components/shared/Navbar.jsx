@@ -55,14 +55,15 @@ const Navbar = () => {
   const navbar = (
     <>
       <Link to="/" className={`${styles.Text}`}>
-        {path === "/" && <span>*</span>}
+        {path === "/" && <span>◆</span>}
         ホーム
       </Link>
       <Link to="/products" className={`${styles.Text}`}>
-        {path === "/products" && <span>*</span>}
+        {path === "/products" && <span>◆</span>}
         商品
       </Link>
       <Link to="/contact" className={`${styles.Text}`}>
+        {path === "/contact" && <span>◆</span>}
         問い合わせ
       </Link>
       <Link to="/cart" className={`${styles.Text}`}>

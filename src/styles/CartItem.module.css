@@ -9,17 +9,9 @@
   border: 1px #484848 solid !important;
 }
 
-@media screen and (max-width: 532px) {
-  .Btn {
-    line-height: 1rem;
-    width: 70px;
-    height: 44px;
-  }
-}
-
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 680px) {
   .imgSize {
-    width: 120px;
-    height: 96px;
+    width: 120px !important;
+    height: 96px !important;
   }
 }

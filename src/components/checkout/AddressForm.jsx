@@ -114,7 +114,7 @@ const AddressForm = ({ props }) => {
       >
         <div className={`${styles.InputItem}`}>
           <label htmlFor="fullname" className={`${styles.Label}`}>
-            full name:
+            氏名:
           </label>
           <input
             id="fullname"
@@ -127,7 +127,7 @@ const AddressForm = ({ props }) => {
           {((showErrorsSA && isShippingAddr && errors.fullname) ||
             (showErrorsBA && !isShippingAddr && billAddrErrors.fullname)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
-              "Fullname must be two or more characters"
+              "２文字以上入力してください"
             </span>
           )}
         </div>
@@ -261,14 +261,14 @@ const AddressForm = ({ props }) => {
                 id="saveAddr"
                 name="saveAddr"
                 value={isShippingAddr ? saveSAddr : saveBAddr}
-                defaultChecked={address.saveAddr}
+                checked={address.saveAddr}
                 onClick={() => {
                   toggleSaveAddr(isShippingAddr);
                 }}
                 onChange={(e) => handleChangeAddress(e)}
                 className="m-1"
               />
-              <span>save this address</span>
+              <span>この住所を保存</span>
             </label>
           </div>
         )}
@@ -280,15 +280,15 @@ const AddressForm = ({ props }) => {
       <div className="flex w-full mt-3">
         <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
           <div className="min-w-[300px]">
-            <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
+            <h2 className={`${styles.Text} "mt-2"`}>お届け先:</h2>
             {shippingAddress && !editSAddr ? (
               <>
                 <AddressCard address={sAddress} />
                 <button
-                  className="bg-cyan-700 block mt-2 px-3 py-1"
+                  className="bg-cyan-700 block mt-2 px-1 py-1 text-xs"
                   onClick={() => setEditSAddr(true)}
                 >
-                  edit
+                  編集
                 </button>
               </>
             ) : (
@@ -297,16 +297,16 @@ const AddressForm = ({ props }) => {
                 {shippingAddress && (
                   <div className="flex">
                     <button
-                      className="bg-fuchsia-400 px-2 py-1 m-1"
+                      className="bg-fuchsia-400 px-2 py-1 m-1 text-xs"
                       onClick={() => saveAddress(sAddress)}
                     >
-                      save
+                      保存
                     </button>
                     <button
-                      className="bg-fuchsia-400 px-2 my-1"
+                      className="bg-fuchsia-400 px-2 my-1 text-xs"
                       onClick={() => handleCancelEditAddress(true)}
                     >
-                      cancel
+                      キャンセル
                     </button>
                   </div>
                 )}
@@ -314,15 +314,15 @@ const AddressForm = ({ props }) => {
             )}
           </div>
           <div>
-            <h2 className={`${styles.Text}`}>Billing Address:</h2>
+            <h2 className={`${styles.Text}`}>請求先:</h2>
             {billingAddress && !editBAddr && (
               <>
                 <AddressCard address={bAddress} />
                 <button
-                  className="bg-cyan-700 block mt-2 px-3 py-1"
+                  className="bg-cyan-700 block mt-2 px-1 py-1 text-xs"
                   onClick={() => setEditBAddr(true)}
                 >
-                  edit
+                  編集
                 </button>
               </>
             )}
@@ -334,12 +334,12 @@ const AddressForm = ({ props }) => {
                     id="billAddrCheckBox"
                     name="billAddrCheckBox"
                     value={billAddrCheck}
-                    deafultChecked={billAddrCheck}
+                    checked={billAddrCheck}
                     onClick={() => {
                       setBillAddrCheck(!billAddrCheck);
                     }}
                   />
-                  <span className="ml-1">Same as shipping address</span>
+                  <span className="ml-1">お届け先と同じ</span>
                 </label>
               </div>
             )}
@@ -349,22 +349,22 @@ const AddressForm = ({ props }) => {
                 {editBAddr && (
                   <div className="flex">
                     <button
-                      className="bg-fuchsia-400 px-2 py-1 mt-1"
+                      className="text-xs bg-fuchsia-400 px-2 py-1 mt-1"
                       onClick={() => saveAddress(bAddress)}
                     >
-                      save
+                      保存
                     </button>
                     <button
-                      className="bg-fuchsia-400 px-2 mx-1 mt-1"
+                      className="text-xs bg-fuchsia-400 px-2 mx-1 mt-1"
                       onClick={() => handleCancelEditAddress(false)}
                     >
-                      cancel
+                      キャンセル
                     </button>
                     <button
-                      className="bg-fuchsia-400 mt-1 px-2"
+                      className="bg-fuchsia-400 mt-1 px-2 text-xs"
                       onClick={() => handleDeleteBAddress(bAddress.addressId)}
                     >
-                      delete this address
+                      アドレスを削除
                     </button>
                   </div>
                 )}
