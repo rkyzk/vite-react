@@ -39,7 +39,7 @@ const Login = ({ props }) => {
       dispatch(getUserAddress());
       setLoader(false);
       setModalOpen(false);
-      toast.success("You're logged in.");
+      toast.success("ログインしました。");
       state ? navigate(`/checkout`) : navigate(path);
     } else {
       setLoader(false);
@@ -53,7 +53,7 @@ const Login = ({ props }) => {
       className="px-2 flex flex-col mx-auto mb-5
           items-center"
     >
-      <h2>Log in</h2>
+      <legend className="text-sm text-center">ログイン</legend>
       {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
@@ -66,7 +66,7 @@ const Login = ({ props }) => {
           name="username"
           type="text"
           required
-          placeholder="your username or email"
+          placeholder="ユーザ名"
           className="bg-white pl-2 py-1 rounded-lg border-black"
           errors={errors}
         />
@@ -77,7 +77,7 @@ const Login = ({ props }) => {
             name="password"
             required
             type="password"
-            placeholder="password"
+            placeholder="パスワード"
             className="bg-white pl-2 py-1 rounded-lg w-80  border-black"
           />
           <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
@@ -88,7 +88,7 @@ const Login = ({ props }) => {
         className="mt-2 bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
           hover:opacity-10 rounded-lg py-1 px-3"
       >
-        {loader ? <Spinner /> : <>login</>}
+        {loader ? <Spinner /> : <>ログイン</>}
       </button>
     </form>
   );

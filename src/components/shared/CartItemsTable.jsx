@@ -8,9 +8,9 @@ const CartItemsTable = ({ cart }) => {
   return (
     <>
       <div className="flex w-full md:w-10/12">
-        <span className="w-5/12 pl-11">product</span>
-        <span className="w-2/12 pl-2">quantity</span>
-        <span className="w-2/12 pl-2">unit price</span>
+        <span className="w-5/12 pl-11">商品名</span>
+        <span className="w-2/12 pl-2">数個</span>
+        <span className="w-2/12 pl-2">単価</span>
       </div>
       <hr className="mt-1" />
       <div className="w-full md:w-10/12">
@@ -21,7 +21,7 @@ const CartItemsTable = ({ cart }) => {
       </div>
       <div className="flex justify-end">
         <div>
-          <span className="pr-24">Sub Total: {totalPrice}</span>
+          <span className="pr-24">合計: {totalPrice}</span>
         </div>
       </div>
     </>

@@ -24,13 +24,8 @@ const Home = () => {
       <div
         className={`${homeStyles.FeaturedHeading} flex flex-row justify-start mt-2`}
       >
-        <PiPlantLight className="text-3xl mt-1" />
-        <h2
-          className="font-[Amatic_SC]
-          font-extrabold w-[165px] ml-2"
-        >
-          Featured Products
-        </h2>
+        <PiPlantLight className="text-3xl" />
+        <h2 className="text-slate-600 w-[165px] ml-2 mt-1">おすすめ商品</h2>
       </div>
       <div className="flex">
         {isLoading ? (

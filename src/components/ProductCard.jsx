@@ -27,17 +27,17 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
       </h2>
       <div className="flex">
         <div>
-          <p>&yen;{price} for 12 bulbs</p>
+          <p>&yen;{price} (球根12個)</p>
         </div>
         <div className={`${styles.Link} ml-4`}>
-          <Link to={`/product/${id}`}>View product</Link>
+          <Link to={`/product/${id}`}>商品詳細を見る</Link>
         </div>
       </div>
       <div className="flex justify-end gap-1">
         {isAvailable && (
           <>
             <label className="mt-1" htmlFor="quantity">
-              Qty
+              数個
             </label>
             <select
               name="quantity"
@@ -65,10 +65,10 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
           {isAvailable ? (
             <div className="flex">
               <FaShoppingCart className="mt-1 mr-1" />
-              <span>Add to Cart</span>
+              <span>カートに追加</span>
             </div>
           ) : (
-            "Out of Stock"
+            "在庫なし"
           )}
         </button>
       </div>

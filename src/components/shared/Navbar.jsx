@@ -56,15 +56,14 @@ const Navbar = () => {
     <>
       <Link to="/" className={`${styles.Text}`}>
         {path === "/" && <span>*</span>}
-        Home
+        ホーム
       </Link>
-      <Link className={`${styles.Text}`}>About</Link>
       <Link to="/products" className={`${styles.Text}`}>
         {path === "/products" && <span>*</span>}
-        Our shop
+        商品
       </Link>
       <Link to="/contact" className={`${styles.Text}`}>
-        Contact
+        問い合わせ
       </Link>
       <Link to="/cart" className={`${styles.Text}`}>
         <div className="flex gap-3">
@@ -78,7 +77,7 @@ const Navbar = () => {
           >
             <FaShoppingCart size={25} />
           </Badge>
-          <span className={`${styles.Text} ${styles.cartText}`}> My Cart</span>
+          <span className={`${styles.Text} ${styles.cartText}`}>カート</span>
         </div>
       </Link>
       {auth?.user && auth.user?.id ? (
@@ -88,7 +87,7 @@ const Navbar = () => {
         />
       ) : (
         <button className={`${styles.Text}`} onClick={() => setModalOpen(true)}>
-          Login
+          ログイン
         </button>
       )}
     </>

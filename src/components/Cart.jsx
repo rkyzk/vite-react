@@ -26,14 +26,14 @@ const Cart = () => {
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
       {!cart.length ? (
-        <p className="w-30 m-auto">No items in cart</p>
+        <p className="w-30 m-auto">カートは空です。</p>
       ) : (
         <>
           <div className="flex w-full gap-1">
             <span className="w-1/12"></span>
-            <span className="w-4/12 font-bold">product</span>
-            <span className="w-2/12 font-bold">qty</span>
-            <span className="w-2/12 font-bold">unit price</span>
+            <span className="w-4/12 font-bold">商品</span>
+            <span className="w-2/12 font-bold">数個</span>
+            <span className="w-2/12 font-bold">単価</span>
           </div>
           <hr className="mt-1" />
           {cart.map((item, idx) => {
@@ -41,7 +41,7 @@ const Cart = () => {
             return <CartItem key={idx} {...data} />;
           })}
           <div className="flex w-full mt-3">
-            <strong className="w-7/12 text-right">sub total: </strong>
+            <strong className="w-7/12 text-right">合計: </strong>
             <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
           </div>
           <div className="flex w-full mt-3">
@@ -51,7 +51,7 @@ const Cart = () => {
                   py-1 px-2 sm:mr-8 mx-auto"
               onClick={() => handleCheckout()}
             >
-              Proceed to Check out
+              購入手続きに進む
             </button>
             <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
               <AuthModal props={props} />

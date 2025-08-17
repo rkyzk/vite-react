@@ -66,7 +66,7 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
           className={`${styles.Btn} mx-auto rounded-0 text-gray align-self-center
            px-2 py-1 hover:bg-neutral-600 hover:text-white`}
         >
-          remove item
+          カートから削除
         </button>
       </div>
       <hr className="mt-3" />

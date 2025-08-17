@@ -22,7 +22,8 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
-      payload: error?.response?.data?.message || "Failed to fetch products",
+      payload:
+        error?.response?.data?.message || "商品情報を取得できませんでした。",
     });
   }
 };
@@ -44,7 +45,9 @@ export const fetchCategories = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "IS_ERROR",
-      payload: error?.response?.data?.message || "Failed to fetch categories",
+      payload:
+        error?.response?.data?.message ||
+        "カテゴリー情報を取得できませんでした。",
       page: "Filter",
     });
   }
@@ -68,7 +71,8 @@ export const fetchFeaturedProducts = () => async (dispatch, getState) => {
     dispatch({
       type: "IS_ERROR",
       payload:
-        error?.response?.data?.message || "Failed to fetch featured products",
+        error?.response?.data?.message ||
+        "お勧め商品情報を取得できませんでした。",
     });
   }
 };
@@ -99,7 +103,8 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
     dispatch({
       type: "IS_ERROR",
       payload:
-        error?.response?.data?.message || "Failed to fetch product detail",
+        error?.response?.data?.message ||
+        "商品詳細情報を取得できませんでした。",
     });
   }
 };
@@ -286,12 +291,12 @@ export const sendLoginRequest =
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
-          payload: "Username and password don't match.",
+          payload: "ユーザ名またはパスワードが間違っています。",
           page: "login",
         });
         return false;
       } else {
-        toast.error("Error occurred.  Please try again.");
+        toast.error("エラー発生。再度ログインしてください。");
         return false;
       }
     }
@@ -300,7 +305,7 @@ export const sendLoginRequest =
 export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   await api.post("/auth/signout");
   dispatch({ type: "LOGOUT_USER" });
-  toast.success("You've been logged out.");
+  toast.success("ログアウトしました。");
   localStorage.setItem("auth", null);
   navigate(`/`);
 };
@@ -310,7 +315,7 @@ export const sendRegisterRequest =
     setLoader(true);
     try {
       const { data } = await api.post("/auth/signup", sendData);
-      toast.success("Your've been registered.");
+      toast.success("アカウント登録しました。");
       reset();
       return true;
     } catch (error) {
@@ -318,7 +323,7 @@ export const sendRegisterRequest =
         type: "IS_ERROR",
         payload:
           error?.response?.data?.message ||
-          "Something went wrong, please try again.",
+          "エラー発生。再度アカウント登録してください。",
         page: "register",
       });
       return false;

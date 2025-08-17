@@ -52,7 +52,7 @@ const PaymentForm = ({ props }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex-col py-4">
-      <h2 className={`${styles.paymentHeading}`}>Payment Information</h2>
+      <h2 className={`${styles.paymentHeading}`}>カード情報</h2>
       {isLoading ? (
         <Spinner />
       ) : (
@@ -66,7 +66,7 @@ const PaymentForm = ({ props }) => {
               hover:bg-stone-300 hover:text-stone-800"
             disabled={!stripe || isLoading}
           >
-            {!isLoading ? `Proceed to pay ¥${totalPrice}` : "Processing"}
+            {!isLoading ? `¥${totalPrice}を支払い商品を購入する` : "手続中"}
           </button>
         </div>
       )}

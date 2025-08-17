@@ -9,12 +9,6 @@ const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
 
-  // const categories = [
-  //   { categoryId: 1, categoryName: "tulips" },
-  //   { categoryId: 2, categoryName: "hyacinth" },
-  //   { categoryId: 3, categoryName: "crocus" },
-  // ];
-
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -58,7 +52,7 @@ const Filter = () => {
       {/* Category drowdown */}
       <div>
         <FormControl className="focus:outline-none" size="small">
-          <InputLabel labelId="category-select-label">Category</InputLabel>
+          <InputLabel labelId="category-select-label">カテゴリー</InputLabel>
           <Select
             labelId="category-select-label"
             value={category}
@@ -68,7 +62,7 @@ const Filter = () => {
           >
             {category !== 0 && (
               <MenuItem key={0} value={0}>
-                all
+                すべて
               </MenuItem>
             )}
             {categories.map((item) => (

@@ -43,7 +43,7 @@ const Register = (state) => {
             className="mt-4 px-2 d-flex flex-col m-auto
           items-center gap-2"
           >
-            <h2>Register (for New Customers)</h2>
+            <legend className="text-sm text-center">新規アカウント登録</legend>
             {errorMessage && page === "register" && (
               <span className="text-sm font-semibold text-red-600 mt-0">
                 {errorMessage}
@@ -55,7 +55,7 @@ const Register = (state) => {
                 name="username"
                 type="text"
                 required
-                placeholder="your username"
+                placeholder="ユーザ名（英数字3〜20文字）"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("username", {
                   pattern: {
@@ -76,7 +76,7 @@ const Register = (state) => {
                 name="email"
                 type="text"
                 required
-                placeholder="your email"
+                placeholder="メール"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("email", {
                   pattern: {
@@ -97,7 +97,7 @@ const Register = (state) => {
                 name="password"
                 type="password"
                 required
-                placeholder="password"
+                placeholder="パスワード"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("password", {
                   pattern: {
@@ -119,7 +119,7 @@ const Register = (state) => {
               className="bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
                 hover:opacity-50rounded-lg py-1 px-3"
             >
-              {loader ? <Spinner /> : <>register</>}
+              {loader ? <Spinner /> : <>登録</>}
             </button>
           </form>
         </>

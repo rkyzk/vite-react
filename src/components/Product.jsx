@@ -86,7 +86,7 @@ const Product = () => {
                   {isAvailable ? (
                     <div className="flex">
                       <FaShoppingCart className="mt-1 mr-1" />
-                      <span>Add to Cart</span>
+                      <span>カートに追加</span>
                     </div>
                   ) : (
                     "Out of Stock"

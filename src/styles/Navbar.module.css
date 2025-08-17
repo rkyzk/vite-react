@@ -1,9 +1,8 @@
 .Text {
   text-decoration: none;
   color: #696969;
-  font-family: "Amatic SC", sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .Text:hover {

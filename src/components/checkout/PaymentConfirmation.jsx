@@ -46,11 +46,11 @@ const PaymentConfirmation = () => {
     <>
       {order && (
         <div className="px-2 py-4 mx-auto md:w-9/12">
-          <h2>Thank you for your purchase. Your order has been placed.</h2>
-          <h3>Order Summary</h3>
+          <h2>ご注文ありがとうございました。配送の手続きを進めます。</h2>
+          <h3>注文内容</h3>
           <div className="xs:flex-col sm:flex sm:gap-x-28">
             <div className="py-1">
-              <span>Shipping Address:</span>
+              <span>住所</span>
               <AddressCard address={order.shippingAddr} />
             </div>
             {order.billingAddr?.fullname.length > 0 && (
