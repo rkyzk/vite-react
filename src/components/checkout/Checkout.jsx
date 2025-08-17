@@ -1,10 +1,13 @@
 import StripePayment from "./StripePayment";
 import AddressForm from "./AddressForm";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storeAddress } from "../../store/actions";
+import Modal from "@mui/material/Modal";
+import AuthModal from "../auth/AuthModal";
 
 export const Checkout = () => {
+  const auth = useSelector((state) => state.auth);
   const initAddr = {
     addressId: "",
     fullname: "",
@@ -38,6 +41,16 @@ export const Checkout = () => {
   const [showErrorsSA, setShowErrorsSA] = useState(false);
   const [showErrorsBA, setShowErrorsBA] = useState(false);
   const [billAddrCheck, setBillAddrCheck] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  if (auth === null) {
+    const state = false;
+    const props = { state, setModalOpen };
+    return (
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <AuthModal props={props} />
+      </Modal>
+    );
+  }
   const dispatch = useDispatch();
   const storeAddr = () => {
     dispatch(storeAddress(sAddress));
