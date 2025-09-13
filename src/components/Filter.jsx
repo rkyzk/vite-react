@@ -9,7 +9,6 @@ import { fetchCategories, clearErrorMessage } from "../store/actions";
 const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
-  const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { categories } = useSelector((state) => state.categories);
@@ -28,7 +27,7 @@ const Filter = () => {
       searchTerms === ""
         ? searchParams.delete("keywords")
         : searchParams.set("keywords", searchTerms);
-      navigate(`${pathname}?${searchParams.toString()}`);
+      navigate(`?${searchParams.toString()}`);
     }, 700);
     return () => clearTimeout(handler);
   }, [category, keywords]);
