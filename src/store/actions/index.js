@@ -311,6 +311,10 @@ export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
   dispatch({ type: "LOGOUT_USER" });
   toast.success("ログアウトしました。");
   localStorage.setItem("auth", null);
+  localStorage.setItem("cartItems", []);
+  dispatch({
+    type: "CLEAR_CART",
+  });
   navigate(`/`);
 };
 
