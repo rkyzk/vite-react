@@ -29,13 +29,12 @@ const Filter = () => {
         ? searchParams.delete("keywords")
         : searchParams.set("keywords", searchTerms);
       navigate(`${pathname}?${searchParams.toString()}`);
-      console.log("searched" + keywords);
     }, 700);
     return () => clearTimeout(handler);
   }, [category, keywords]);
 
   useEffect(() => {
-    !categories && dispatch(fetchCategories());
+    Object.keys(categories).length === 0 && dispatch(fetchCategories());
   }, []);
 
   const handleClearFilter = () => {

@@ -111,7 +111,11 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
 
 export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   const { products } = getState().products;
-  const productData = products.find((item) => item.id === id);
+  let productData = products.find((item) => item.id === id);
+  if (!productData) {
+    const { featuredProducts } = getState().products;
+    productData = featuredProducts.find((item) => item.id === id);
+  }
   const isQuantityInStock = qty <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
