@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "../styles/Filter.module.css";
 import { fetchCategories, clearErrorMessage } from "../store/actions";
 

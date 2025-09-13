@@ -84,10 +84,7 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
     });
     let { productDetails } = getState().products;
     let newProdDetails = { ...productDetails };
-    if (
-      Object.keys(newProdDetails).length === 0 ||
-      !Object.hasOwn(productDetails, id)
-    ) {
+    if (newProdDetails.length === 0 || !Object.hasOwn(productDetails, id)) {
       const { data } = await api.get(`/public/product/detail/${id}`);
       newProdDetails[id] = data;
       dispatch({
@@ -136,7 +133,6 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
 };
 
 export const sendOrderAsUser = (data) => async (dispatch, getState) => {
-  console.log("send order as user");
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -219,7 +215,6 @@ export const sendOrderWithNewAddresses =
       sAddrId = shippingAddress.addressId;
     }
     if (tempBAddress?.fullname.length > 0) {
-      console.log("218");
       if (tempBAddress.saveAddr) {
         try {
           responseBAddr = await api.post(`/addresses`, tempBAddress);
@@ -236,7 +231,6 @@ export const sendOrderWithNewAddresses =
       } else {
         try {
           responseBAddr = await api.post(`/addresses/anonym`, tempBAddress);
-          console.log("235");
         } catch (error) {
           console.log(error);
         }
@@ -262,7 +256,6 @@ export const sendOrderWithNewAddresses =
     };
     try {
       const response = await api.post(`/order/newaddresses`, sendData);
-      console.log(response.data);
       if (response.data) {
         dispatch({
           type: "STORE_ORDER_SUMMARY",

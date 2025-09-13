@@ -104,11 +104,11 @@ const Product = () => {
             </div>
             <div className="mt-2">
               {productDetail &&
-                Object.keys(productDetail).map((item, id) => {
+                productDetail.map((item, id) => {
                   return (
                     <p className="font-bold" key={id}>
-                      {item !== "Description" && <>{item} : </>}
-                      <span className="font-normal">{productDetail[item]}</span>
+                      {item["key"] !== "Description" && <>{item["key"]} : </>}
+                      <span className="font-normal">{item["value"]}</span>
                     </p>
                   );
                 })}
