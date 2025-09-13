@@ -29,6 +29,12 @@ https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-he
 - 商品届け先住所の入力バリデーションを項目ごとに特化したものにする
 - 請求先住所の入力バリデーションが未実装
 
+## 教材
+
+Udemy のコース "Java Spring Boot professional eCommerce project master class"</br>
+https://github.com/EmbarkXOfficial/spring-boot-course
+を参考にし作成。
+
 ## To allow toast notifications
 
 Chrome:
@@ -152,3 +158,7 @@ https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip
 https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html
 
 \
+
+9/6
+new s address ok
+update s address ok

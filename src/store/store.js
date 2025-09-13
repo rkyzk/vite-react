@@ -6,15 +6,20 @@ import cartReducer from "./reducers/cartReducer";
 import orderReducer from "./reducers/orderReducer";
 import authReducer from "./reducers/authReducer";
 
-//const cartItems = [];
+// const cartItems = [];
+// localStorage.removeItem("cartItems");
 const cartItems = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
+
 // const auth = [];
+// localStorage.removeItem("auth");
 const auth = localStorage.getItem("auth")
   ? JSON.parse(localStorage.getItem("auth"))
   : null;
 
+// const products = [];
+// localStorage.removeItem("products");
 const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];

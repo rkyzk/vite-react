@@ -36,9 +36,14 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      tempSAddress || tempBAddress
-        ? dispatch(sendOrderWithNewAddresses(sendData))
-        : dispatch(sendOrderAsUser(sendData));
+      if (
+        tempSAddress?.fullname.length == 0 &&
+        tempBAddress?.fullname.length == 0
+      ) {
+        dispatch(sendOrderAsUser(sendData));
+      } else {
+        dispatch(sendOrderWithNewAddresses(sendData));
+      }
     }
   }, [clientSecret]);
 
@@ -46,16 +51,16 @@ const PaymentConfirmation = () => {
     <>
       {order && (
         <div className="px-2 py-4 mx-auto md:w-9/12">
-          <h2>ご注文ありがとうございました。配送の手続きを進めます。</h2>
-          <h3>注文内容</h3>
+          <p>ご注文ありがとうございました。配送の手続きを進めます。</p>
+          <legend className="text-xs">注文内容</legend>
           <div className="xs:flex-col sm:flex sm:gap-x-28">
             <div className="py-1">
-              <span>住所</span>
+              <span>お届け先：</span>
               <AddressCard address={order.shippingAddr} />
             </div>
             {order.billingAddr?.fullname.length > 0 && (
               <div className="py-1">
-                <span>Billing Address:</span>
+                <span>請求先:</span>
                 <AddressCard address={order.billingAddr} />
               </div>
             )}

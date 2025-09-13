@@ -1,8 +1,7 @@
 import StripePayment from "./StripePayment";
 import AddressForm from "./AddressForm";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { storeAddress } from "../../store/actions";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
 import AuthModal from "../auth/AuthModal";
 
@@ -16,17 +15,13 @@ export const Checkout = () => {
     city: "",
     province: "",
     postalCode: "",
-    countryCode: "",
+    countryCode: "15",
     saveAddr: true,
   };
   const addrErrs = {
     fullname: false,
-    streetAddress1: false,
-    streetAddress2: false,
-    city: false,
-    province: false,
     postalCode: false,
-    countryCode: false,
+    streetAddress2: false,
   };
   const [sAddress, setSAddress] = useState({
     ...initAddr,
@@ -38,11 +33,18 @@ export const Checkout = () => {
   });
   const [errors, setErrors] = useState(addrErrs);
   const [billAddrErrors, setBillAddrErrors] = useState(addrErrs);
+  const [billAddrCheck, setBillAddrCheck] = useState(true);
   const [showErrorsSA, setShowErrorsSA] = useState(false);
   const [showErrorsBA, setShowErrorsBA] = useState(false);
-  const [billAddrCheck, setBillAddrCheck] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const dispatch = useDispatch();
+  useEffect(() => {}, [
+    showErrorsSA,
+    showErrorsBA,
+    errors,
+    billAddrErrors,
+    billAddrCheck,
+  ]);
+
   if (auth === null) {
     const state = false;
     const props = { state, setModalOpen };
@@ -52,64 +54,64 @@ export const Checkout = () => {
       </Modal>
     );
   }
-
-  const storeAddr = () => {
-    dispatch(storeAddress(sAddress));
-    !billAddrCheck && dispatch(storeAddress(bAddress));
-  };
-  const validateInput = () => {
+  const validateInputSAddr = () => {
     let result = true;
+    let newErrors = {
+      ...addrErrs,
+    };
     // validate input for shipping address
-    for (let key in errors) {
-      let errs = errors;
-      if (key === "streetAddress2") {
-        if (sAddress[key].length === 1) {
-          errs["streetAddress2"] = true;
-          setErrors(errs);
-          result = false;
-        } else {
-          errs["streetAddress2"] = false;
-          setErrors(errs);
-        }
-      } else {
-        if (sAddress[key].length < 2) {
-          console.log(key);
-          errs[key] = true;
-          setErrors(errs);
-          setShowErrorsSA(true);
-          result = false;
-        } else {
-          errs[key] = false;
-          setErrors(errs);
-        }
-      }
-      console.log(errors);
+    if (sAddress.fullname.length < 3) {
+      newErrors = {
+        ...newErrors,
+        fullname: true,
+      };
+      result = false;
     }
-    // check if there are any input for billing address
-    // let isEntered = false;
-    // for (let key in bAddress) {
-    //   if (bAddress[key].trim() !== "") {
-    //     isEntered = true;
-    //     break;
-    //   }
-    // }
-    // validate input only when at least one field has been entered.
-    // if (isEntered) {
-    //   for (let key in bAddress) {
-    //     let errs = errors;
-    //     if (bAddress[key].length < 2) {
-    //       errs[key] = true;
-    //       setBillAddrErrors(errs);
-    //     }
-    //     !showErrorsBA && setShowErrorsBA(true);
-    //   }
-    // }
-    if (result) {
-      return true;
-    } else {
-      setShowErrorsSA(true);
-      return false;
+    if (sAddress.postalCode === "") {
+      newErrors = {
+        ...newErrors,
+        postalCode: true,
+      };
+      result = false;
     }
+    if (sAddress.streetAddress2.length < 2) {
+      newErrors = {
+        ...newErrors,
+        streetAddress2: true,
+      };
+      result = false;
+    }
+    setErrors(newErrors);
+    !result && !showErrorsSA && setShowErrorsSA(true);
+    result && setShowErrorsSA(false);
+    return result;
+  };
+
+  const validateInputBAddr = () => {
+    let result = true;
+    if (bAddress.fullname.length < 3) {
+      setBillAddrErrors({
+        ...billAddrErrors,
+        fullname: true,
+      });
+      result = false;
+    }
+    if (bAddress.postalCode === "") {
+      setBillAddrErrors({
+        ...billAddrErrors,
+        postalCode: true,
+      });
+      result = false;
+    }
+    if (bAddress.streetAddress2.length < 2) {
+      setBillAddrErrors({
+        ...billAddrErrors,
+        streetAddress2: true,
+      });
+      result = false;
+    }
+    result ? setShowErrorsBA(false) : setShowErrorsBA(true);
+    return result;
   };
   const props = {
     sAddress,
@@ -118,17 +120,20 @@ export const Checkout = () => {
     setErrors,
     bAddress,
     setBAddress,
-    billAddrErrors,
-    setBillAddrErrors,
     showErrorsSA,
     showErrorsBA,
+    billAddrErrors,
+    setBillAddrErrors,
     initAddr,
     billAddrCheck,
     setBillAddrCheck,
   };
   const stripePaymentProps = {
-    storeAddr,
-    validateInput,
+    sAddress,
+    bAddress,
+    validateInputSAddr,
+    validateInputBAddr,
+    billAddrCheck,
   };
 
   return (

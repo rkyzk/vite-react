@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import HeroBanner from "./HeroBanner";
 import { useEffect } from "react";
-import { fetchFeaturedProducts, clearErrorMessage } from "../../store/actions";
+import {
+  fetchFeaturedProducts,
+  clearErrorMessage,
+  fetchProducts,
+} from "../../store/actions";
 import ProductCard from "../ProductCard";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { PiPlantLight } from "react-icons/pi";
@@ -11,11 +15,13 @@ import homeStyles from "../../styles/Home.module.css";
 
 const Home = () => {
   const { featuredProducts } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products);
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(clearErrorMessage());
     !featuredProducts && dispatch(fetchFeaturedProducts());
+    !products && dispatch(fetchProducts(""));
   }, []);
 
   return (

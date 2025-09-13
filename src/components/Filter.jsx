@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import styles from "../styles/Filter.module.css";
+import { fetchCategories, clearErrorMessage } from "../store/actions";
 
 const Filter = () => {
   const [keywords, setKeywords] = useState("");
   const [category, setCategory] = useState(0);
-
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { categories } = useSelector((state) => state.categories);
   const { errorMessage, page } = useSelector((state) => state.errors);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handler = setTimeout(() => {
+      errorMessage && dispatch(clearErrorMessage());
       category === 0
         ? searchParams.delete("category")
         : searchParams.set("category", category);
@@ -27,10 +29,14 @@ const Filter = () => {
         ? searchParams.delete("keywords")
         : searchParams.set("keywords", searchTerms);
       navigate(`${pathname}?${searchParams.toString()}`);
+      console.log("searched" + keywords);
     }, 700);
-
     return () => clearTimeout(handler);
   }, [category, keywords]);
+
+  useEffect(() => {
+    !categories && dispatch(fetchCategories());
+  }, []);
 
   const handleClearFilter = () => {
     setCategory(0);
@@ -52,7 +58,7 @@ const Filter = () => {
       {/* Category drowdown */}
       <div>
         <FormControl className="focus:outline-none" size="small">
-          <InputLabel labelId="category-select-label">カテゴリー</InputLabel>
+          <InputLabel labelId="category-select-label">花種</InputLabel>
           <Select
             labelId="category-select-label"
             value={category}

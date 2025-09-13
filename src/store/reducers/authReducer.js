@@ -19,6 +19,7 @@ const authReducer = (state = initialState, action) => {
         user: null,
         shippingAddress: null,
         billingAddress: null,
+        clientSecret: null,
       };
     case "STORE_BILLING_ADDRESS":
       return {
@@ -40,6 +41,12 @@ const authReducer = (state = initialState, action) => {
         ...state,
         tempSAddress: action.payload,
       };
+    case "CLEAR_TEMP_BILLING_ADDRESS":
+      delete state["tempBAddress"];
+      return state;
+    case "CLEAR_TEMP_SHIPPING_ADDRESS":
+      delete state["tempSAddress"];
+      return state;
     case "DELETE_BILLING_ADDRESS":
       return {
         ...state,
@@ -54,16 +61,6 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         clientSecret: null,
-      };
-    case "CLEAR_TEMP_S_ADDRESS":
-      return {
-        ...state,
-        tempSAddress: null,
-      };
-    case "CLEAR_TEMP_B_ADDRESS":
-      return {
-        ...state,
-        tempBAddress: null,
       };
     default:
       return state;

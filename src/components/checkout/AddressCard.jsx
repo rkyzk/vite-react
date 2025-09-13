@@ -4,14 +4,21 @@ const AddressCard = ({ address }) => {
   return (
     <div className={`${styles.Address}`}>
       <span>{address?.fullname}</span>
-      <span>{address?.streetAddress1}</span>
-      {address?.streetAddress2 && (
-        <span className="block">{address.streetAddress2}</span>
+      <span className="block">
+        {address?.postalCode.substring(0, 3)}-{address?.postalCode.substring(3)}
+      </span>
+      <span className="block">
+        {address?.province}
+        {address?.city}
+      </span>
+      {address?.streetAddress2 ? (
+        <span>
+          {address?.streetAddress1}
+          {address.streetAddress2}
+        </span>
+      ) : (
+        <span>{address?.streetAddress1}</span>
       )}
-      <span className="block">{address?.city}</span>
-      <span className="block">{address?.province}</span>
-      <span className="block">{address?.postalCode}</span>
-      <span className="block">{address?.countryCode}</span>
     </div>
   );
 };

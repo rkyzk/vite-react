@@ -6,6 +6,7 @@ import {
   updateCart,
   fetchProductDetail,
   clearErrorMessage,
+  fetchProducts,
 } from "../store/actions";
 import { FaShoppingCart, FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "./shared/Spinner";
@@ -20,10 +21,14 @@ const Product = () => {
   const { productName, quantity, price, imageName } = product[0];
   const [qty, setQty] = useState(1);
   const { productDetails } = useSelector((state) => state.products);
-  const productDetail = productDetails ? productDetails[Number(id)] : {};
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-    dispatch(fetchProductDetail(Number(id)));
+  let productDetail = productDetails ? productDetails[Number(id)] : {};
+  useEffect((productDetail) => {
+    errorMessage && dispatch(clearErrorMessage());
+    !products && dispatch(fetchProducts(""));
+    if (!productDetails || !productDetail) {
+      dispatch(fetchProductDetail(Number(id)));
+    }
+    productDetail = productDetails ? productDetails[Number(id)] : {};
   }, []);
 
   const isAvailable = quantity && Number(quantity) > 0;

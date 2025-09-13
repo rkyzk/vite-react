@@ -84,15 +84,16 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
     });
     let { productDetails } = getState().products;
     let newProdDetails = { ...productDetails };
-    if (Object.hasOwn(productDetails, id)) {
-    } else {
+    if (
+      Object.keys(newProdDetails).length === 0 ||
+      !Object.hasOwn(productDetails, id)
+    ) {
       const { data } = await api.get(`/public/product/detail/${id}`);
       newProdDetails[id] = data;
       dispatch({
         type: "STORE_PRODUCT_DETAIL",
         payload: newProdDetails,
       });
-      console.log("stored");
     }
     dispatch({
       type: "IS_SUCCESS",
@@ -117,7 +118,7 @@ export const updateCart = (id, qty, toast) => (dispatch, getState) => {
       type: "UPDATE_CART",
       payload: { ...productData, purchaseQty: qty },
     });
-    toast.success("Item added in cart");
+    toast.success("商品をカートに追加しました。");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   }
 };
@@ -131,6 +132,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
 };
 
 export const sendOrderAsUser = (data) => async (dispatch, getState) => {
+  console.log("send order as user");
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -163,8 +165,8 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
         type: "REMOVE_CLIENT_SECRET",
       });
     }
-    localStorage.setItem("cart", getState.carts.cart);
-    localStorage.setItem("auth", getState().auth);
+    localStorage.setItem("cart", null);
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
     return;
   } catch (error) {
     console.log(error);
@@ -173,6 +175,7 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
 
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
+    console.log("send order with new addresses");
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -212,6 +215,7 @@ export const sendOrderWithNewAddresses =
       sAddrId = shippingAddress.addressId;
     }
     if (tempBAddress?.fullname.length > 0) {
+      console.log("218");
       if (tempBAddress.saveAddr) {
         try {
           responseBAddr = await api.post(`/addresses`, tempBAddress);
@@ -225,20 +229,20 @@ export const sendOrderWithNewAddresses =
         } catch (error) {
           console.log(error);
         }
-        console.log("saved");
       } else {
         try {
           responseBAddr = await api.post(`/addresses/anonym`, tempBAddress);
+          console.log("235");
         } catch (error) {
           console.log(error);
         }
       }
     }
-    let bAddrId;
+    let bAddrId = 0;
     if (responseBAddr) {
       bAddrId = responseBAddr.data.addressId;
     } else if (billingAddress) {
-      billingAddress.addressId;
+      bAddrId = billingAddress.addressId;
     }
     const sendData = {
       shippingAddressId: sAddrId,
@@ -254,6 +258,7 @@ export const sendOrderWithNewAddresses =
     };
     try {
       const response = await api.post(`/order/newaddresses`, sendData);
+      console.log(response.data);
       if (response.data) {
         dispatch({
           type: "STORE_ORDER_SUMMARY",
@@ -267,7 +272,7 @@ export const sendOrderWithNewAddresses =
         });
       }
       localStorage.setItem("cart", null);
-      localStorage.setItem("auth", getState().auth);
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
     } catch (error) {
       console.log(error);
     }
@@ -345,16 +350,6 @@ export const getUserAddress = () => async (dispatch, getState) => {
   }
 };
 
-export const sendSaveNewAddressReq =
-  (address) => async (dispatch, getState) => {
-    const { data } = await api.post(`/addresses`, address);
-    let type = address.billingAddress
-      ? "STORE_BILLING_ADDRESS"
-      : "STORE_SHIPPING_ADDRESS";
-    dispatch({ type: type, payload: data });
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
-  };
-
 export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   try {
@@ -362,7 +357,11 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
     let type = address.billingAddress
       ? "STORE_BILLING_ADDRESS"
       : "STORE_SHIPPING_ADDRESS";
+    let clearType = address.billingAddress
+      ? "CLEAR_TEMP_BILLING_ADDRESS"
+      : "CLEAR_TEMP_SHIPPING_ADDRESS";
     dispatch({ type: type, payload: data });
+    dispatch({ type: clearType });
   } catch (error) {
     console.log(error);
   }
@@ -383,7 +382,7 @@ export const deleteAddress = (id, toast) => async (dispatch, getState) => {
     console.log(error);
   }
   dispatch({ type: "DELETE_BILLING_ADDRESS" });
-  toast.success("Billing Address has been deleted");
+  toast.success("請求先住所が削除されました。");
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
@@ -406,5 +405,3 @@ export const createClientSecret =
 export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });
 };
-
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));

@@ -15,7 +15,13 @@ const stripePromise = loadStripe(
  * Displays payment form when client secret is available.
  */
 const StripePayment = ({ stripePaymentProps }) => {
-  const { storeAddr, validateInput } = stripePaymentProps;
+  const {
+    sAddress,
+    bAddress,
+    validateInputSAddr,
+    validateInputBAddr,
+    billAddrCheck,
+  } = stripePaymentProps;
   const auth = useSelector((state) => state.auth);
   const clientSecret = auth?.clientSecret ? auth.clientSecret : null;
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
@@ -35,8 +41,11 @@ const StripePayment = ({ stripePaymentProps }) => {
   const props = {
     clientSecret,
     totalPrice,
-    storeAddr,
-    validateInput,
+    sAddress,
+    bAddress,
+    validateInputSAddr,
+    validateInputBAddr,
+    billAddrCheck,
   };
 
   return (
