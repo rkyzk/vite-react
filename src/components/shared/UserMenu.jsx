@@ -21,7 +21,7 @@ const UserMenu = ({ id, username, roles }) => {
   };
   const handleLogout = () => {
     handleClose();
-    dispatch(sendLogoutRequest(navigate, toast));
+    dispatch(sendLogoutRequest(id, navigate, toast));
   };
 
   return (

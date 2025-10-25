@@ -1,15 +1,2 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-
-.menu {
-  display: block;
-  flex-direction: column;
-  width: 150px;
-  position: absolute;
-  top: 50px;
-  right: 13px;
-  z-index: 2;
-  background-color: #fff;
-  opacity: 0.9;
-  gap: 0px;
-}

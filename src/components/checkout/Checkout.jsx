@@ -7,6 +7,7 @@ import AuthModal from "../auth/AuthModal";
 
 export const Checkout = () => {
   const auth = useSelector((state) => state.auth);
+  const { errorMessage, page } = useSelector((state) => state.errors);
   const initAddr = {
     addressId: "",
     fullname: "",
@@ -50,7 +51,9 @@ export const Checkout = () => {
     const props = { state, setModalOpen };
     return (
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <AuthModal props={props} />
+        (errorMessage === "リフレッシュトークン有効期限切れ" ?
+        <Login props={props} />:
+        <AuthModal props={props} />)
       </Modal>
     );
   }

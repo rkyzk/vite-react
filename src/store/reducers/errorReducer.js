@@ -26,6 +26,7 @@ const errorReducer = (state = initialState, action) => {
     case "CLEAR_ERROR_MESSAGE":
       return {
         ...state,
+        isLoading: false,
         errorMessage: null,
       };
     default:

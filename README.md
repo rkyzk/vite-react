@@ -27,7 +27,7 @@ https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-he
 
 - ハンバーガーメニューにするとユーザ名をクリックした際プルダウンが表示された途端消えてしまう
 - 商品届け先住所の入力バリデーションを項目ごとに特化したものにする
-- 請求先住所の入力バリデーションが未実装
+  validation, login form,
 
 ## 教材
 

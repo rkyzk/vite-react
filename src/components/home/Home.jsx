@@ -25,10 +25,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="px-2 sm:px-8 lg:px-14">
+    <div className="px-2 mt-1 sm:px-8 lg:px-14">
       <HeroBanner />
-      <div className="flex lg:mt-4">
-        <p className="max-w-[600px] mx-auto">
+      <div className="flex">
+        <p className="max-w-[640px] mx-auto">
           無農薬でチューリップ、ヒヤシンスなどの球根を栽培・販売しています。
           <br />
           お庭やベランダでの家庭菜園はもちろん、季節のギフトやプレゼントにもオススメです。
@@ -39,7 +39,7 @@ const Home = () => {
         className={`${homeStyles.FeaturedHeading} flex flex-row justify-start mt-2`}
       >
         <PiPlantLight className="text-3xl" />
-        <h2 className="text-slate-600 w-[165px] ml-2 mt-1">おすすめ商品</h2>
+        <h2 className="text-slate-600 w-[165px] ml-2 mt-1">おすすめ</h2>
       </div>
       <div className="flex">
         {isLoading ? (

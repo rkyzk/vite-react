@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -36,7 +36,6 @@ const Login = ({ props }) => {
     );
     if (result) {
       dispatch(clearErrorMessage());
-      dispatch(getUserAddress());
       setLoader(false);
       setModalOpen(false);
       toast.success("ログインしました。");
@@ -46,6 +45,9 @@ const Login = ({ props }) => {
       setModalOpen(true);
     }
   };
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
 
   return (
     <form
@@ -66,7 +68,7 @@ const Login = ({ props }) => {
           name="username"
           type="text"
           required
-          placeholder="ユーザ名"
+          placeholder="ユーザ名またはメール"
           className="bg-white pl-2 py-1 rounded-lg border-black"
           errors={errors}
         />

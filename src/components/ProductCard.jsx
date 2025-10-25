@@ -22,16 +22,14 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
         src={`/src/assets/products/${imageName}`}
         alt={productName}
       />
-      <h2 className="mt-1 text-xl text-gray-900">
+      <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">
         {truncateText(productName, 50)}
-      </h2>
+      </p>
       <div className="flex">
-        <div>
-          <p>&yen;{price} (球根12個)</p>
-        </div>
-        <div className={`${styles.Link} ml-4`}>
-          <Link to={`/product/${id}`}>商品詳細を見る</Link>
-        </div>
+        <p>&yen;{price} (球根12個)</p>
+        <Link className="ml-5 text-shadow-amber-400" to={`/product/${id}`}>
+          商品詳細を見る
+        </Link>
       </div>
       <div className="flex justify-end gap-1">
         {isAvailable && (

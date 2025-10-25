@@ -43,7 +43,7 @@ const Products = () => {
           </div>
         )}
       </div>
-      <PaginationSection totalPages={Number(pagination.totalPages)} />
+      <PaginationSection totalPages={Number(pagination?.totalPages)} />
     </>
   );
 };

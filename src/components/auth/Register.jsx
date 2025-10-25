@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { sendRegisterRequest } from "../../store/actions";
+import { sendRegisterRequest, clearErrorMessage } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -33,6 +33,10 @@ const Register = (state) => {
     }
   };
 
+  useEffect(() => {
+    dispatch(clearErrorMessage());
+  }, []);
+
   return (
     <>
       {show && (
@@ -54,13 +58,12 @@ const Register = (state) => {
                 id="username"
                 name="username"
                 type="text"
-                required
                 placeholder="ユーザ名（英数字3〜20文字）"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("username", {
                   pattern: {
                     value: /^([a-zA-Z0-9]){3,20}$/,
-                    message: "Username must be 3 to 20 characters",
+                    message: "ユーザ名は3〜20文字登録してください",
                   },
                 })}
               />
@@ -75,7 +78,6 @@ const Register = (state) => {
                 id="email"
                 name="email"
                 type="text"
-                required
                 placeholder="メール"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("email", {
@@ -96,7 +98,6 @@ const Register = (state) => {
                 id="password"
                 name="password"
                 type="password"
-                required
                 placeholder="パスワード"
                 className="w-80 bg-white pl-2 py-1 rounded-lg border-black"
                 {...register("password", {

@@ -235,7 +235,7 @@ const AddressForm = ({ props }) => {
             type="text"
             className={`${styles.Input}`}
             value={isShippingAddr ? sZip : bZip}
-            maxlength="7"
+            maxLength="7"
             onChange={(e) => handleChangeZip(e, isShippingAddr)}
             onBlur={(e) => handleCheckZip(e, isShippingAddr)}
           />

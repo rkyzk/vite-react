@@ -12,7 +12,7 @@ const Filter = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { categories } = useSelector((state) => state.categories);
-  const { errorMessage, page } = useSelector((state) => state.errors);
+  const { errorMessage } = useSelector((state) => state.errors);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,7 +78,6 @@ const Filter = () => {
             ))}
           </Select>
         </FormControl>
-        {page === "Filter" && errorMessage && <>{errorMessage}</>}
       </div>
       <button
         onClick={() => handleClearFilter()}

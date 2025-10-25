@@ -23,21 +23,13 @@
 }
 
 @media screen and (max-width: 767px) {
-  .navBarMd {
-    display: none;
-  }
-
-  .navBar {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-    position: absolute;
-    top: 48px;
-    right: 20px;
+  header > .MuiContainer-root > .MuiToolbar-root > .menuItems {
+    width: 120px !important;
+    height: 250px !important;
+    position: absolute !important;
+    top: 48px !important;
+    left: 20px !important;
     z-index: 2;
-    background-color: white;
-    opacity: 0.9;
-    padding: 3px 25px 3px;
+    background-color: #fff;
   }
 }

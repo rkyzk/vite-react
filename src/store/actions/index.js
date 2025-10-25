@@ -20,6 +20,7 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
     });
     localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
+    console.log(error.response.data);
     dispatch({
       type: "IS_ERROR",
       payload:
@@ -43,6 +44,7 @@ export const fetchCategories = () => async (dispatch) => {
     });
     dispatch({ type: "IS_SUCCESS" });
   } catch (error) {
+    console.log(error.response.data);
     dispatch({
       type: "IS_ERROR",
       payload:
@@ -175,7 +177,6 @@ export const sendOrderAsUser = (data) => async (dispatch, getState) => {
 
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
-    console.log("send order with new addresses");
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -285,6 +286,9 @@ export const sendLoginRequest =
         type: "LOGIN_USER",
         payload: data,
       });
+      dispatch({
+        type: "CLEAR_ERROR_MESSAGE",
+      });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       reset();
       return true;
@@ -303,8 +307,8 @@ export const sendLoginRequest =
     }
   };
 
-export const sendLogoutRequest = (navigate, toast) => async (dispatch) => {
-  await api.post("/auth/signout");
+export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
+  await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
   toast.success("ログアウトしました。");
   localStorage.setItem("auth", null);
@@ -395,11 +399,30 @@ export const createClientSecret =
     };
     try {
       const { data } = await api.post(`/order/stripe-client-secret`, sendData);
-      console.log(data);
       dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
     } catch (error) {
-      console.log(error);
+      if (error.status === 420) {
+        console.log("420");
+        const { data } = await api.post(`/auth/refreshtoken`);
+        if (data.message === "JWT token has been refreshed successfully.") {
+          console.log("jwt refreshed");
+          getClientSecret(sendData);
+        } else if (data.message === "Refresh token has expired.") {
+          console.log(data);
+          const { user } = getState().auth.user;
+          let { data } = await api.get(`/auth/signout/${user.id}`);
+          console.log(data);
+          dispatch({ type: "LOGOUT_USER" });
+          localStorage.setItem("auth", null);
+          dispatch({
+            type: "IS_ERROR",
+            payload: "リフレッシュトークン有効期限切れ",
+          });
+        }
+      } else {
+        console.log(error);
+      }
     }
   };
 
