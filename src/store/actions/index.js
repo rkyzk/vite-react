@@ -370,16 +370,21 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
       : "CLEAR_TEMP_SHIPPING_ADDRESS";
     dispatch({ type: type, payload: data });
     dispatch({ type: clearType });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
-  localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
 export const storeAddress = (address) => async (dispatch, getState) => {
   address.billingAddress
     ? dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address })
     : dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
+export const clearBAddress = () => async (dispatch, getState) => {
+  dispatch({ type: "CLEAR_TEMP_BILLING_ADDRESS" });
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
@@ -391,6 +396,51 @@ export const deleteAddress = (id, toast) => async (dispatch, getState) => {
   }
   dispatch({ type: "DELETE_BILLING_ADDRESS" });
   toast.success("請求先住所が削除されました。");
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
+export const validateAddr = (sAddr) => async (dispatch, getState) => {
+  let address = sAddr
+    ? { ...getState().auth.tempSAddress }
+    : { ...getState().auth.tempBAddress };
+  let result =
+    address.postalCode !== "" &&
+    address.fullname.length >= 3 &&
+    address.streetAddress2.length >= 2;
+  let newErrors = {
+    postalCode: address.postalCode === "",
+    fullname: address.fullname.length < 3,
+    streetAddress2: address.streetAddress2.length < 2,
+  };
+  result && sAddr
+    ? dispatch({ type: "CLEAR_SADDRESS_ERRORS" })
+    : dispatch({ type: "STORE_SADDRESS_ERRORS", payload: newErrors });
+  result && !sAddr
+    ? dispatch({ type: "CLEAR_BADDRESS_ERRORS" })
+    : dispatch({ type: "STORE_BADDRESS_ERRORS", payload: newErrors });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+  return result;
+};
+
+export const storeSAddressErrors =
+  (newErrors) => async (dispatch, getState) => {
+    dispatch({ type: "STORE_SADDRESS_ERRORS", payload: newErrors });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  };
+
+export const storeBAddressErrors =
+  (newErrors) => async (dispatch, getState) => {
+    dispatch({ type: "STORE_BADDRESS_ERRORS", payload: newErrors });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  };
+
+export const clearSAddressErrors = () => async (dispatch, getState) => {
+  dispatch({ type: "CLEAR_SADDRESS_ERRORS" });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
+
+export const clearBAddressErrors = () => async (dispatch, getState) => {
+  dispatch({ type: "CLEAR_BADDRESS_ERRORS" });
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 

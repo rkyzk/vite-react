@@ -75,7 +75,7 @@ function Navbar() {
           </Link>
         </div>
         {auth?.user && auth.user?.id ? (
-          <Box sx={{ flexGrow: 0 }} className="mt-1">
+          <Box sx={{ flexGrow: 0 }} className="mt-[-2px]">
             <IconButton sx={{ p: 0 }}>
               <UserMenu
                 {...auth.user}

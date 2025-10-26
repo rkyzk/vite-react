@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

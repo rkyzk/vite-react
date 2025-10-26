@@ -5,6 +5,9 @@ const initialState = {
   tempSAddress: null,
   tempBAddress: null,
   clientSecret: null,
+  sAddrErrs: null,
+  bAddrErrs: null,
+  addrChecked: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -51,6 +54,28 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         billingAddress: null,
+      };
+    case "STORE_SADDRESS_ERRORS":
+      return {
+        ...state,
+        sAddrErrs: action.payload,
+        addrChecked: true,
+      };
+    case "STORE_BADDRESS_ERRORS":
+      return {
+        ...state,
+        bAddrErrs: action.payload,
+        addrChecked: true,
+      };
+    case "CLEAR_SADDRESS_ERRORS":
+      return {
+        ...state,
+        sAddrErrs: null,
+      };
+    case "CLEAR_BADDRESS_ERRORS":
+      return {
+        ...state,
+        bAddrErrs: null,
       };
     case "STORE_CLIENT_SECRET":
       return {

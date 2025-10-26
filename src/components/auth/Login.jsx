@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrorMessage, sendLoginRequest } from "../../store/actions";
+import {
+  clearErrorMessage,
+  getUserAddress,
+  sendLoginRequest,
+} from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -31,6 +35,7 @@ const Login = ({ props }) => {
       sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
     );
     if (result) {
+      dispatch(getUserAddress());
       dispatch(clearErrorMessage());
       setLoader(false);
       setModalOpen(false);

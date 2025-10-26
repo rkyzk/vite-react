@@ -1,32 +1,40 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getAddress } from "jposta";
 import { useEffect, useState } from "react";
-import { sendUpdateAddressReq, deleteAddress } from "../../store/actions";
+import {
+  sendUpdateAddressReq,
+  deleteAddress,
+  storeAddress,
+  clearBAddress,
+  validateAddr,
+} from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import AddressCard from "./AddressCard";
 import toast from "react-hot-toast";
 
 const AddressForm = ({ props }) => {
-  const {
-    sAddress,
-    setSAddress,
-    errors,
-    setErrors,
-    bAddress,
-    setBAddress,
-    billAddrErrors,
-    setBillAddrErrors,
-    showErrorsSA,
-    showErrorsBA,
-    initAddr,
-    billAddrCheck,
-    setBillAddrCheck,
-  } = props;
-  const auth = useSelector((state) => state.auth);
-  const shippingAddress =
-    auth && auth?.shippingAddress ? auth.shippingAddress : null;
-  const billingAddress =
-    auth && auth?.billingAddress ? auth.billingAddress : null;
+  const { billAddrCheck, setBillAddrCheck } = props;
+  const { shippingAddress, billingAddress, sAddrErrs, bAddrErrs, addrChecked } =
+    useSelector((state) => state.auth);
+  const initAddr = {
+    addressId: "",
+    fullname: "",
+    streetAddress1: "",
+    streetAddress2: "",
+    city: "",
+    province: "",
+    postalCode: "",
+    countryCode: "15",
+    saveAddr: true,
+  };
+  const [sAddress, setSAddress] = useState({
+    ...initAddr,
+    billingAddress: false,
+  });
+  const [bAddress, setBAddress] = useState({
+    ...initAddr,
+    billingAddress: true,
+  });
   const [editSAddr, setEditSAddr] = useState(false);
   const [editBAddr, setEditBAddr] = useState(false);
   const [saveSAddr, setSaveSAddr] = useState(true);
@@ -35,6 +43,7 @@ const AddressForm = ({ props }) => {
   const [bZip, setBZip] = useState("");
   const [errMsgSZip, setErrMsgSZip] = useState("");
   const [errMsgBZip, setErrMsgBZip] = useState("");
+  const dispatch = useDispatch();
 
   /**
    * 住所を取得
@@ -68,22 +77,7 @@ const AddressForm = ({ props }) => {
   };
 
   const fetchAddress = async (sAddr) => {
-    let newErrors = {
-      ...errors,
-    };
-    if (sAddr) {
-      newErrors = {
-        ...errors,
-        postalCode: false,
-      };
-      setErrors(newErrors);
-    } else {
-      newErrors = {
-        ...billAddrErrors,
-        postalCode: false,
-      };
-      setBillAddrErrors(newErrors);
-    }
+    addrChecked && dispatch(validateAddr(sAddr));
     const res = await getAddress(sAddr ? sZip : bZip);
     if (res === null) {
       sAddr
@@ -126,11 +120,14 @@ const AddressForm = ({ props }) => {
       }
     }
   };
+
   const handleChangeAddress = (e, isShippingAddr) => {
-    isShippingAddr &&
+    if (isShippingAddr) {
       setSAddress({ ...sAddress, [e.target.name]: e.target.value });
-    !isShippingAddr &&
+    } else {
       setBAddress({ ...bAddress, [e.target.name]: e.target.value });
+    }
+    addrChecked && dispatch(validateAddr(isShippingAddr));
   };
 
   const toggleSaveAddr = (isShippingAddr) => {
@@ -143,7 +140,6 @@ const AddressForm = ({ props }) => {
     }
   };
 
-  const dispatch = useDispatch();
   const saveAddress = (address) => {
     dispatch(sendUpdateAddressReq(address));
     setEditSAddr(false);
@@ -177,7 +173,7 @@ const AddressForm = ({ props }) => {
       setBAddress({ ...billingAddress, saveAddr: true });
       setBZip(billingAddress.postalCode);
     }
-  }, [auth]);
+  }, [shippingAddress, billingAddress]);
 
   useEffect(() => {
     if (!shippingAddress || editSAddr) {
@@ -197,7 +193,22 @@ const AddressForm = ({ props }) => {
       }
     }
   }, [bZip]);
-  useEffect(() => {}, [showErrorsSA, showErrorsBA, errors, billAddrErrors]);
+  useEffect(() => {
+    const sAddrHandler = setTimeout(() => {
+      dispatch(storeAddress(sAddress));
+    }, 700);
+    return () => clearTimeout(sAddrHandler);
+  }, [sAddress]);
+  useEffect(() => {
+    const bAddrHandler = setTimeout(() => {
+      if (!billAddrCheck) {
+        dispatch(storeAddress(bAddress));
+      } else {
+        dispatch(clearBAddress());
+      }
+    }, 700);
+    return () => clearTimeout(bAddrHandler);
+  }, [bAddress, billAddrCheck]);
 
   const addressForm = (address, isShippingAddr) => {
     return (
@@ -217,8 +228,8 @@ const AddressForm = ({ props }) => {
             value={address.fullname}
             onChange={(e) => handleChangeAddress(e, isShippingAddr)}
           />
-          {((showErrorsSA && isShippingAddr && errors.fullname) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.fullname)) && (
+          {((isShippingAddr && sAddrErrs?.fullname) ||
+            (!isShippingAddr && bAddrErrs?.fullname)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
               氏名を入力してください
             </span>
@@ -248,8 +259,8 @@ const AddressForm = ({ props }) => {
               {errMsgBZip}
             </span>
           )}
-          {((showErrorsSA && isShippingAddr && errors.postalCode) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.postalCode)) &&
+          {((isShippingAddr && sAddrErrs?.postalCode) ||
+            (!isShippingAddr && sAddrErrs?.postalCode)) &&
             errMsgSZip.length === 0 && (
               <span className="text-sm font-semibold text-red-600 mt-0">
                 郵便番号を入力してください
@@ -302,10 +313,8 @@ const AddressForm = ({ props }) => {
             value={address.streetAddress2}
             onChange={(e) => handleChangeAddress(e, isShippingAddr)}
           />
-          {((showErrorsSA && isShippingAddr && errors.streetAddress2) ||
-            (showErrorsBA &&
-              !isShippingAddr &&
-              billAddrErrors.streetAddress2)) && (
+          {((isShippingAddr && sAddrErrs?.streetAddress2) ||
+            (!isShippingAddr && bAddrErrs?.streetAddress2)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
               番地を入力してください
             </span>
