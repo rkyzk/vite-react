@@ -15,6 +15,7 @@ const errorReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        errorMessage: null,
       };
     case "IS_ERROR":
       return {

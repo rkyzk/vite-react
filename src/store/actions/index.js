@@ -85,8 +85,11 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
       type: "IS_FETCHING",
     });
     let { productDetails } = getState().products;
-    let newProdDetails = { ...productDetails };
-    if (newProdDetails.length === 0 || !Object.hasOwn(productDetails, id)) {
+    let newProdDetails = productDetails ? { ...productDetails } : {};
+    if (
+      Object.keys(newProdDetails).length === 0 ||
+      !Object.hasOwn(productDetails, id)
+    ) {
       const { data } = await api.get(`/public/product/detail/${id}`);
       newProdDetails[id] = data;
       dispatch({

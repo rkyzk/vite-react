@@ -40,7 +40,7 @@ function Navbar() {
 
   const menuItems = (
     <>
-      <div className="xs:flex-col md:flex md:gap-3">
+      <div className={`${styles.menuItems}`}>
         <div>
           <Link to="/" style={{ color: "#333" }}>
             {path === "/" && <span>◆</span>}
@@ -75,18 +75,19 @@ function Navbar() {
           </Link>
         </div>
         {auth?.user && auth.user?.id ? (
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0 }} className="mt-1">
             <IconButton sx={{ p: 0 }}>
               <UserMenu
                 {...auth.user}
-                clasName={`${styles.Text} "absolute top-30 right-5"`}
+                clasName={`${styles.Text} absolute top-30 right-5`}
               />
             </IconButton>
           </Box>
         ) : (
           <Button
             onClick={() => setModalOpen(true)}
-            style={{ color: "#333", fontSize: "1.0rem", marginTop: "-13px" }}
+            style={{ color: "#333", fontSize: "1rem", marginTop: "-14px" }}
+            className={`${styles.loginBtn}`}
           >
             ログイン
           </Button>
@@ -113,8 +114,8 @@ function Navbar() {
               flexGrow: 1,
               display: { xs: "flex", md: "none" },
               marginLeft: 2,
+              justifyContent: "end",
             }}
-            className="justify-end"
           >
             <Button
               id="basic-button"
@@ -129,11 +130,14 @@ function Navbar() {
           </Box>
           <div
             id="menuItems"
-            className="hidden px-3 py-2"
+            sx={{
+              display: { xs: "flex", md: "none" },
+            }}
+            className={`${styles.menuBox} hidden px-3 py-2`}
             style={{
               backgroundColor: "#fff",
               width: "120px",
-              height: "140px",
+              height: "160px",
               position: "absolute",
               top: 50,
               right: 40,

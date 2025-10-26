@@ -3,7 +3,7 @@ import "../styles/Contact.module.css";
 const Contact = () => {
   return (
     <div className="px-2 max-w-7xl mx-auto w-full md:w-9/12 mt-2 flex-column">
-      <h2 className="mx-auto w-[300px]">問い合わせ（作成中）</h2>
+      <h2 className="mx-auto w-[300px]">問い合わせ</h2>
       <form method="post" className="flex-column w-full sm:w-95 mx-auto">
         <div className="flex-column">
           <lable for="name" className="block">

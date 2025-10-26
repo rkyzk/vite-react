@@ -68,7 +68,6 @@ const AddressForm = ({ props }) => {
   };
 
   const fetchAddress = async (sAddr) => {
-    console.log("fetchaddresss" + sAddr);
     let newErrors = {
       ...errors,
     };

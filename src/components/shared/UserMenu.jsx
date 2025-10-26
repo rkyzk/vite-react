@@ -26,7 +26,7 @@ const UserMenu = ({ id, username, roles }) => {
 
   return (
     <div>
-      <div className={`${styles.Text}`} onClick={handleClick}>
+      <div className="text-base text-gray-800 mt-[-1px]" onClick={handleClick}>
         {username}さん
       </div>
       <Menu
@@ -35,7 +35,6 @@ const UserMenu = ({ id, username, roles }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>注文履歴</MenuItem>
         <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
       </Menu>
       {open && <BackDrop />}

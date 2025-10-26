@@ -18,7 +18,7 @@ function App() {
   return (
     <Fragment>
       <Router>
-        <div className="bg-neutral-100 min-h-screen mt-15 pt-3">
+        <div className="bg-neutral-100 min-h-screen pt-15">
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

@@ -22,10 +22,15 @@ const Product = () => {
   const [qty, setQty] = useState(1);
   const { productDetails } = useSelector((state) => state.products);
   let productDetail = productDetails ? productDetails[Number(id)] : {};
+
   useEffect((productDetail) => {
     errorMessage && dispatch(clearErrorMessage());
     !products && dispatch(fetchProducts(""));
-    if (!productDetails || !productDetail) {
+    if (
+      productDetails === undefined ||
+      productDetail === undefined ||
+      Object.keys(productDetail).length === 0
+    ) {
       dispatch(fetchProductDetail(Number(id)));
     }
     productDetail = productDetails ? productDetails[Number(id)] : {};
@@ -104,6 +109,7 @@ const Product = () => {
             </div>
             <div className="mt-2">
               {productDetail &&
+                Object.keys(productDetail).length !== 0 &&
                 productDetail.map((item, id) => {
                   return (
                     <p className="font-bold" key={id}>

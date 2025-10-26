@@ -47,7 +47,7 @@ const Register = (state) => {
             className="mt-4 px-2 d-flex flex-col m-auto
           items-center gap-2"
           >
-            <legend className="text-sm text-center">新規アカウント登録</legend>
+            <legend className="text-sm text-center">新規アカウント作成</legend>
             {errorMessage && page === "register" && (
               <span className="text-sm font-semibold text-red-600 mt-0">
                 {errorMessage}
