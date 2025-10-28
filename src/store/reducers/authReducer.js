@@ -50,7 +50,12 @@ const authReducer = (state = initialState, action) => {
     case "CLEAR_TEMP_SHIPPING_ADDRESS":
       delete state["tempSAddress"];
       return state;
-    case "DELETE_BILLING_ADDRESS":
+    case "DELETE_S_ADDRESS":
+      return {
+        ...state,
+        shippingAddress: null,
+      };
+    case "DELETE_B_ADDRESS":
       return {
         ...state,
         billingAddress: null,

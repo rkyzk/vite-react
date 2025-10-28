@@ -77,10 +77,7 @@ function Navbar() {
         {auth?.user && auth.user?.id ? (
           <Box sx={{ flexGrow: 0 }} className="mt-[-2px]">
             <IconButton sx={{ p: 0 }}>
-              <UserMenu
-                {...auth.user}
-                clasName={`${styles.Text} absolute top-30 right-5`}
-              />
+              <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
             </IconButton>
           </Box>
         ) : (

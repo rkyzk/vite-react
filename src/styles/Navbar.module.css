@@ -1,25 +1,8 @@
 .Text {
   text-decoration: none;
-  color: #333 iportan !important;
+  color: #333 !important;
   font-size: 1rem;
   font-weight: 400;
-}
-
-.Text:hover {
-  text-decoration: underline !important;
-  color: #1c4ba8;
-  opacity: 100%;
-}
-
-.navBarMd {
-  display: flex;
-  gap: 28px;
-  margin-top: 10px;
-}
-
-.navBar,
-.cartText {
-  display: none;
 }
 
 .menuItems {

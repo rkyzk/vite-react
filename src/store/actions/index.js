@@ -388,16 +388,19 @@ export const clearBAddress = () => async (dispatch, getState) => {
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
-export const deleteAddress = (id, toast) => async (dispatch, getState) => {
-  try {
-    await api.delete(`/addresses/${id}`);
-  } catch (error) {
-    console.log(error);
-  }
-  dispatch({ type: "DELETE_BILLING_ADDRESS" });
-  toast.success("請求先住所が削除されました。");
-  localStorage.setItem("auth", JSON.stringify(getState().auth));
-};
+export const deleteAddress =
+  (sAddr, id, toast) => async (dispatch, getState) => {
+    try {
+      await api.delete(`/addresses/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    sAddr
+      ? dispatch({ type: "DELETE_S_ADDRESS" })
+      : dispatch({ type: "DELETE_B_ADDRESS" });
+    toast.success("住所が削除されました。");
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  };
 
 export const validateAddr = (sAddr) => async (dispatch, getState) => {
   let address = sAddr
@@ -436,6 +439,7 @@ export const storeBAddressErrors =
 
 export const clearSAddressErrors = () => async (dispatch, getState) => {
   dispatch({ type: "CLEAR_SADDRESS_ERRORS" });
+  console.log("fired");
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 

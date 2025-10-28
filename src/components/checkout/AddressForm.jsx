@@ -7,6 +7,8 @@ import {
   storeAddress,
   clearBAddress,
   validateAddr,
+  clearSAddressErrors,
+  clearBAddressErrors,
 } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import AddressCard from "./AddressCard";
@@ -49,10 +51,19 @@ const AddressForm = ({ props }) => {
    * 住所を取得
    */
   const handleChangeZip = (e, isShippingAddr) => {
+    let zip = e.target.value;
     if (isShippingAddr) {
-      setSZip(e.target.value);
-    } else {
-      setBZip(e.target.value);
+      setSZip(zip);
+      if (
+        (isShippingAddr && (!shippingAddress || editSAddr)) ||
+        (!isShippingAddr && (!billingAddress || editBAddr))
+      ) {
+        if (zip.length === 7) {
+          fetchAddress(zip, isShippingAddr);
+        } else {
+          clearAddr(isShippingAddr);
+        }
+      }
     }
   };
 
@@ -63,7 +74,6 @@ const AddressForm = ({ props }) => {
         province: "",
         city: "",
         streetAddress1: "",
-        streetAddress2: "",
       });
     } else {
       setBAddress({
@@ -71,14 +81,13 @@ const AddressForm = ({ props }) => {
         province: "",
         city: "",
         streetAddress1: "",
-        streetAddress2: "",
       });
     }
   };
 
-  const fetchAddress = async (sAddr) => {
+  const fetchAddress = async (zip, sAddr) => {
     addrChecked && dispatch(validateAddr(sAddr));
-    const res = await getAddress(sAddr ? sZip : bZip);
+    const res = await getAddress(zip);
     if (res === null) {
       sAddr
         ? setErrMsgSZip("正しい郵便番号を入力してください。")
@@ -107,26 +116,28 @@ const AddressForm = ({ props }) => {
     }
   };
 
-  const handleCheckZip = (e, isShippingAddr) => {
-    if (isShippingAddr) {
-      if (sZip.length !== 7) {
-        setErrMsgSZip("7桁入力してください");
-        return;
-      }
+  const showEditForm = (sAddr) => {
+    if (sAddr) {
+      setSZip(sAddress.postalCode);
+      setEditSAddr(true);
     } else {
-      if (bZip.length !== 7) {
-        setErrMsgBZip("7桁入力してください");
-        return;
-      }
+      setBZip(bAddress.postalCode);
+      setEditBAddr(true);
     }
   };
 
+  const handleCheckZip = (e, isShippingAddr) => {
+    isShippingAddr && sZip.length !== 7 && setErrMsgSZip("7桁入力してください");
+    !isShippingAddr &&
+      bZip.length !== 7 &&
+      setErrMsgBZip("7桁入力してください");
+    return;
+  };
+
   const handleChangeAddress = (e, isShippingAddr) => {
-    if (isShippingAddr) {
-      setSAddress({ ...sAddress, [e.target.name]: e.target.value });
-    } else {
-      setBAddress({ ...bAddress, [e.target.name]: e.target.value });
-    }
+    isShippingAddr
+      ? setSAddress({ ...sAddress, [e.target.name]: e.target.value })
+      : setBAddress({ ...bAddress, [e.target.name]: e.target.value });
     addrChecked && dispatch(validateAddr(isShippingAddr));
   };
 
@@ -140,25 +151,42 @@ const AddressForm = ({ props }) => {
     }
   };
 
-  const saveAddress = (address) => {
-    dispatch(sendUpdateAddressReq(address));
-    setEditSAddr(false);
-    setEditBAddr(false);
+  const saveAddress = async (address) => {
+    let result = await dispatch(validateAddr(!address.billingAddress));
+    if (result) {
+      dispatch(sendUpdateAddressReq(address));
+      address.billingAddress ? setEditBAddr(false) : setEditSAddr(false);
+    }
   };
 
-  const handleDeleteBAddress = (id) => {
-    dispatch(deleteAddress(id, toast));
-    setBAddress({ ...initAddr, billingAddress: true });
-    setEditBAddr(false);
+  const handleDeleteAddress = (isShippingAddr) => {
+    dispatch(
+      deleteAddress(
+        isShippingAddr,
+        isShippingAddr ? sAddress.id : bAddress.id,
+        toast
+      )
+    );
+    if (isShippingAddr) {
+      setSAddress({ ...initAddr, billingAddress: false });
+      setEditSAddr(false);
+    } else {
+      setBAddress({ ...initAddr, billingAddress: true });
+      setEditBAddr(false);
+    }
   };
 
   const handleCancelEditAddress = (isShippingAddr) => {
     if (isShippingAddr) {
-      setSAddress({ ...sAddress, ...shippingAddress });
+      setSAddress({ ...shippingAddress, billingAddress: false });
       setEditSAddr(false);
+      setErrMsgSZip("");
+      dispatch(clearSAddressErrors());
     } else {
-      setBAddress({ ...bAddress, ...billingAddress });
+      setBAddress({ ...billingAddress, billingAddress: true });
       setEditBAddr(false);
+      setErrMsgBZip("");
+      dispatch(clearBAddressErrors());
     }
   };
   const handleSubmit = (e) => {
@@ -167,23 +195,12 @@ const AddressForm = ({ props }) => {
   useEffect(() => {
     if (shippingAddress) {
       setSAddress({ ...shippingAddress, saveAddr: true });
-      setSZip(shippingAddress.postalCode);
     }
     if (billingAddress) {
       setBAddress({ ...billingAddress, saveAddr: true });
-      setBZip(billingAddress.postalCode);
     }
   }, [shippingAddress, billingAddress]);
 
-  useEffect(() => {
-    if (!shippingAddress || editSAddr) {
-      if (sZip.length === 7) {
-        fetchAddress(true);
-      } else {
-        clearAddr(true);
-      }
-    }
-  }, [sZip]);
   useEffect(() => {
     if (!billingAddress || editBAddr) {
       if (bZip.length === 7) {
@@ -209,6 +226,34 @@ const AddressForm = ({ props }) => {
     }, 700);
     return () => clearTimeout(bAddrHandler);
   }, [bAddress, billAddrCheck]);
+
+  const editButtons = (isShippingAddr) => {
+    return (
+      <div className="flex">
+        <button
+          className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
+                    hover:bg-stone-300 hover:text-stone-800"
+          onClick={() => saveAddress(isShippingAddr ? sAddress : bAddress)}
+        >
+          保存
+        </button>
+        <button
+          className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
+                    hover:bg-stone-300 hover:text-stone-800"
+          onClick={() => handleCancelEditAddress(isShippingAddr)}
+        >
+          キャンセル
+        </button>
+        <button
+          className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
+                      hover:bg-stone-300 hover:text-stone-800"
+          onClick={() => handleDeleteAddress(isShippingAddr)}
+        >
+          アドレスを削除
+        </button>
+      </div>
+    );
+  };
 
   const addressForm = (address, isShippingAddr) => {
     return (
@@ -355,7 +400,7 @@ const AddressForm = ({ props }) => {
                 <button
                   className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
                   hover:bg-stone-300 hover:text-stone-800"
-                  onClick={() => setEditSAddr(true)}
+                  onClick={() => showEditForm(true)}
                 >
                   編集
                 </button>
@@ -363,24 +408,7 @@ const AddressForm = ({ props }) => {
             ) : (
               <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
                 {addressForm(sAddress, true)}
-                {shippingAddress && (
-                  <div className="flex gap-1">
-                    <button
-                      className="mt-2 bg-stone-600 text-white py-1 px-2
-                      hover:bg-stone-300 hover:text-stone-800"
-                      onClick={() => saveAddress(sAddress)}
-                    >
-                      保存
-                    </button>
-                    <button
-                      className="mt-2 bg-stone-600 text-white py-1 px-2
-                      hover:bg-stone-300 hover:text-stone-800"
-                      onClick={() => handleCancelEditAddress(true)}
-                    >
-                      キャンセル
-                    </button>
-                  </div>
-                )}
+                {editButtons(true)}
               </div>
             )}
           </div>
@@ -392,7 +420,7 @@ const AddressForm = ({ props }) => {
                 <button
                   className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
                   hover:bg-stone-300 hover:text-stone-800"
-                  onClick={() => setEditBAddr(true)}
+                  onClick={() => showEditForm(false)}
                 >
                   編集
                 </button>
