@@ -46,6 +46,7 @@
   flex-direction: column;
   row-gap: 2px;
   width: 300px;
+  margin-top: 2px !important;
 }
 
 .InputItem {

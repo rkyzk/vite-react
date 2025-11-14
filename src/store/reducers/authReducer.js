@@ -1,13 +1,15 @@
 const initialState = {
   user: null,
-  shippingAddress: null,
-  billingAddress: null,
+  sAddressList: null,
+  bAddressList: null,
   tempSAddress: null,
   tempBAddress: null,
   clientSecret: null,
   sAddrErrs: null,
   bAddrErrs: null,
   addrChecked: false,
+  selectedSAddrId: 0,
+  selectedBAddrId: 0,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -20,29 +22,29 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT_USER":
       return {
         user: null,
-        shippingAddress: null,
-        billingAddress: null,
+        sAddressList: null,
+        bAddressList: null,
         clientSecret: null,
       };
-    case "STORE_BILLING_ADDRESS":
+    case "STORE_SADDRESSLIST":
       return {
         ...state,
-        billingAddress: action.payload,
+        sAddressList: action.payload,
       };
-    case "STORE_SHIPPING_ADDRESS":
+    case "STORE_BADDRESSLIST":
       return {
         ...state,
-        shippingAddress: action.payload,
+        bAddressList: action.payload,
       };
     case "STORE_TEMP_BILLING_ADDRESS":
       return {
         ...state,
-        tempBAddress: action.payload,
+        tempBAddress: { ...action.payload, shippingAddress: false },
       };
     case "STORE_TEMP_SHIPPING_ADDRESS":
       return {
         ...state,
-        tempSAddress: action.payload,
+        tempSAddress: { ...action.payload, shippingAddress: true },
       };
     case "CLEAR_TEMP_BILLING_ADDRESS":
       delete state["tempBAddress"];
@@ -53,12 +55,12 @@ const authReducer = (state = initialState, action) => {
     case "DELETE_S_ADDRESS":
       return {
         ...state,
-        shippingAddress: null,
+        sAddressList: action.payload,
       };
     case "DELETE_B_ADDRESS":
       return {
         ...state,
-        billingAddress: null,
+        bAddressList: action.payload,
       };
     case "STORE_SADDRESS_ERRORS":
       return {
@@ -91,6 +93,27 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         clientSecret: null,
+      };
+    case "SET_ADDR_CHECKED_FALSE":
+      return {
+        ...state,
+        addrChecked: false,
+      };
+    case "SET_SELECTED_SADDRESS":
+      return {
+        ...state,
+        selectedSAddrId: action.payload,
+      };
+    case "SET_SELECTED_BADDRESS":
+      return {
+        ...state,
+        selectedBAddrId: action.payload,
+      };
+    case "CLEAR_SELECTED_ADDRESS":
+      return {
+        ...state,
+        selectedSAddrId: 0,
+        selectedBAddrId: 0,
       };
     default:
       return state;

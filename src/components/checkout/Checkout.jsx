@@ -1,13 +1,12 @@
 import StripePayment from "./StripePayment";
-import AddressForm from "./AddressForm";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
 import AuthModal from "../auth/AuthModal";
+import AddressList from "./AddressList";
 
 export const Checkout = () => {
   const auth = useSelector((state) => state.auth);
-  const { errorMessage, page } = useSelector((state) => state.errors);
 
   const [billAddrCheck, setBillAddrCheck] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,7 +22,6 @@ export const Checkout = () => {
       </Modal>
     );
   }
-
   const props = {
     billAddrCheck,
     setBillAddrCheck,
@@ -35,7 +33,7 @@ export const Checkout = () => {
   return (
     <div className="flex">
       <div className="px-2 mx-auto">
-        <AddressForm props={props} />
+        <AddressList props={props} />
         <StripePayment stripePaymentProps={stripePaymentProps} />
       </div>
     </div>

@@ -6,7 +6,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import styles from "../../styles/PaymentForm.module.css";
-import { validateAddr } from "../../store/actions";
+import { validateAddress, saveNewAddress } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
 
 /**
@@ -19,9 +19,10 @@ const PaymentForm = ({ props }) => {
   const { clientSecret, totalPrice } = props;
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState(null);
-  const { shippingAddress, billingAddress, tempSAddress, tempBAddress } =
-    useSelector((state) => state.auth);
+  const [errorMessage, setErrorMessage] = useState([]);
+  const { tempSAddress, tempBAddress, bAddrEqualsSAddr } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   const paymentElementOptions = {
     layout: "tabs",
@@ -32,9 +33,16 @@ const PaymentForm = ({ props }) => {
     if (!stripe || !elements) {
       return;
     }
-    let isValid = await dispatch(validateAddr(true));
-    if (!shippingAddress && !isValid) {
-      setErrorMessage("住所を正しく記入してください。");
+    let isValid = true;
+    let errorMsgs = [];
+    if (tempSAddress) {
+      isValid = await dispatch(validateAddress(tempSAddress, true));
+    }
+    if (!bAddrEqualsSAddr) {
+      isValid &= await dispatch(validateAddress(tempBAddress, false));
+    }
+    if (!isValid) {
+      errorMsgs.push("住所を正しく記入してください。");
       return;
     } else {
       setErrorMessage(null);

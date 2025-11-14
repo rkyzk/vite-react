@@ -5,7 +5,8 @@ const AddressCard = ({ address }) => {
     <div className={`${styles.Address}`}>
       <span>{address?.fullname}</span>
       <span className="block">
-        {address?.postalCode.substring(0, 3)}-{address?.postalCode.substring(3)}
+        {address?.postalCode?.substring(0, 3)}-
+        {address?.postalCode?.substring(3)}
       </span>
       <span className="block">
         {address?.province}

@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import {
-  sendOrderAsUser,
-  sendOrderWithNewAddresses,
-} from "../../store/actions";
+import { sendOrder, sendOrderWithNewAddresses } from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 
@@ -15,11 +12,11 @@ const PaymentConfirmation = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
   const cart = useSelector((state) => state.carts.cart);
-  const auth = useSelector((state) => state.auth);
-  const tempSAddress = auth && auth.tempSAddress ? auth.tempSAddress : null;
-  const tempBAddress = auth && auth.tempBAddress ? auth.tempBAddress : null;
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
+  const { selectedSAddrId, selectedBAddrId, user } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,14 +33,9 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      if (
-        tempSAddress?.fullname.length == 0 &&
-        tempBAddress?.fullname.length == 0
-      ) {
-        dispatch(sendOrderAsUser(sendData));
-      } else {
-        dispatch(sendOrderWithNewAddresses(sendData));
-      }
+      selectedSAddrId === 0 || selectedBAddrId === 0
+        ? dispatch(sendOrderWithNewAddresses(sendData, user.id))
+        : dispatch(sendOrder(sendData));
     }
   }, [clientSecret]);
 
