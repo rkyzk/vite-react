@@ -123,7 +123,7 @@ const AddressForm = ({ address, isSAddr }) => {
   };
 
   const handleDeleteAddress = () => {
-    dispatch(deleteAddress(isSAddr, address.id, toast));
+    dispatch(deleteAddress(isSAddr, address.addressId, toast));
     setTempAddress({ ...initAddr, shippingAddress: isSAddr });
     setEditAddr(false);
   };
@@ -365,8 +365,8 @@ const AddressForm = ({ address, isSAddr }) => {
               </span>
             </div>
           )}
-        {((isSAddr && sAddressList?.length > 1) ||
-          (!isSAddr && bAddressList?.length > 1)) && <>{saveButtons()}hello</>}
+        {/* {((isSAddr && sAddressList?.length > 1) ||
+          (!isSAddr && bAddressList?.length > 1)) && <>{saveButtons()}</>} */}
       </form>
     );
   };
@@ -381,8 +381,8 @@ const AddressForm = ({ address, isSAddr }) => {
       ) : (
         <div
           className={`${isSAddr && editAddr && "s-addr"}
-          ${styles.addressCardBox} ${styles.sAddressBox}
-          ${!isSAddr && editAddr && "b-addr"}`}
+          ${!isSAddr && editAddr && "b-addr"}
+          ${styles.addressCardBox} ${styles.sAddressBox}`}
         >
           {addressForm()}
           {editAddr && <>{saveButtons()}</>}

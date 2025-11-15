@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import AddressForm from "./AddressForm";
 import { changeSelectedAddr, clearAddressData } from "../../store/actions";
 

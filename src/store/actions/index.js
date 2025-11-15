@@ -260,16 +260,16 @@ export const sendOrderWithNewAddresses =
           type: "CLEAR_CART",
         });
         if (selectedBAddrId === -1 && tempBAddress.saveAddr) {
-          let bList = [];
-          bList.push(address);
+          let bList = [...bAddressList];
+          bList.push(tempBAddress);
           dispatch({
             type: "STORE_BADDRESSLIST",
             payload: bList,
           });
         }
         if (selectedSAddrId === 0 && tempSAddress.saveAddr) {
-          let sList = [];
-          sList.push(address);
+          let sList = [...sAddressList];
+          sList.push(tempSAddress);
           dispatch({
             type: "STORE_SADDRESSLIST",
             payload: sList,
@@ -393,7 +393,6 @@ export const sendRegisterRequest =
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
-    console.log(data);
     let sList = getState().auth.sAddressList;
     let bList = getState().auth.bAddressList;
     let selectedSId = 0;
@@ -473,12 +472,27 @@ export const validateAddress = (address, sAddr) => async (dispatch) => {
   return result;
 };
 
+// delete address from sList
 export const deleteAddress =
   (sAddr, id, toast) => async (dispatch, getState) => {
     try {
-      await api.delete(`/addresses/${id}`);
+      await api.delete(`/addresses/${Number(id)}`);
     } catch (error) {
       console.log(error);
+    }
+    const { sAddressList, bAddressList } = getState().auth;
+    if (sAddr) {
+      let sList = [...sAddressList];
+      sList = sList.filter((address) => {
+        return address.addressId !== id;
+      });
+      dispatch({ type: "STORE_SADDRESSLIST", payload: sList });
+    } else {
+      let bList = [...bAddressList];
+      bList = bList.filter((address) => {
+        return address.addressId !== id;
+      });
+      dispatch({ type: "STORE_BADDRESSLIST", payload: bList });
     }
     // remove the address with the id from sList or bList
     toast.success("住所が削除されました。");
