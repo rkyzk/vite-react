@@ -136,6 +136,7 @@ const AddressForm = ({ address, isSAddr }) => {
   };
 
   const handleStoreAddress = () => {
+    console.log("form139: " + isSAddr);
     dispatch(storeAddress(tempAddress, isSAddr));
   };
   useEffect(() => {
@@ -154,7 +155,7 @@ const AddressForm = ({ address, isSAddr }) => {
         <button
           className="m-2 bg-stone-600 text-white py-1 px-2
                     hover:bg-stone-300 hover:text-stone-800"
-          onClick={() => handleCancelEditAddress(tempAddress.shippingAddress)}
+          onClick={() => handleCancelEditAddress(isSAddr)}
         >
           キャンセル
         </button>

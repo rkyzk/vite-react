@@ -33,7 +33,7 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      selectedSAddrId === 0 || selectedBAddrId === 0
+      selectedSAddrId === 0 || selectedBAddrId === -1
         ? dispatch(sendOrderWithNewAddresses(sendData, user.id))
         : dispatch(sendOrder(sendData));
     }

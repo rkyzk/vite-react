@@ -204,7 +204,8 @@ export const sendOrderWithNewAddresses =
       tempBAddress,
       selectedSAddrId,
       selectedBAddrId,
-      bAddrEqualsSAddr,
+      sAddressList,
+      bAddressList,
     } = getState().auth;
     const address = {
       addressId: 0,
@@ -225,7 +226,7 @@ export const sendOrderWithNewAddresses =
       sAddress = { ...tempSAddress, addressId: selectedSAddrId, user: user };
     }
     let bAddress = null;
-    if (selectedBAddrId === 0 && !bAddrEqualsSAddr) {
+    if (selectedBAddrId === -1) {
       let user = tempBAddress.saveAddr ? { userId: userId } : null;
       bAddress = { ...tempBAddress, addressId: selectedBAddrId, user: user };
     }
@@ -235,9 +236,9 @@ export const sendOrderWithNewAddresses =
           ? { ...address, addressId: selectedSAddrId }
           : sAddress,
       billingAddressDTO:
-        selectedBAddrId !== 0
-          ? { ...address, addressId: selectedBAddrId }
-          : bAddress,
+        selectedBAddrId === -1
+          ? bAddress
+          : { ...address, addressId: selectedBAddrId },
       cartDTO: {
         cartItems: items,
         totalPrice: totalPrice,
@@ -248,6 +249,7 @@ export const sendOrderWithNewAddresses =
       pgResponseMessage: data.pgResponseMessage,
     };
     try {
+      console.log("send new order " + sendData);
       const response = await api.post(`/order/newaddresses`, sendData);
       if (response.data) {
         dispatch({
@@ -256,6 +258,25 @@ export const sendOrderWithNewAddresses =
         });
         dispatch({
           type: "CLEAR_CART",
+        });
+        if (selectedBAddrId === -1 && tempBAddress.saveAddr) {
+          let bList = [];
+          bList.push(address);
+          dispatch({
+            type: "STORE_BADDRESSLIST",
+            payload: bList,
+          });
+        }
+        if (selectedSAddrId === 0 && tempSAddress.saveAddr) {
+          let sList = [];
+          sList.push(address);
+          dispatch({
+            type: "STORE_SADDRESSLIST",
+            payload: sList,
+          });
+        }
+        dispatch({
+          type: "CLEAR_TEMP_BILLING_ADDRESS",
         });
         dispatch({
           type: "CLEAR_TEMP_BILLING_ADDRESS",
@@ -374,7 +395,6 @@ export const getUserAddress = () => async (dispatch, getState) => {
     const { data } = await api.get(`/user/addresses`);
     console.log(data);
     let sList = getState().auth.sAddressList;
-    console.log(sList);
     let bList = getState().auth.bAddressList;
     let selectedSId = 0;
     let selectedBId = 0;
@@ -406,7 +426,6 @@ export const getUserAddress = () => async (dispatch, getState) => {
   }
 };
 
-// default address
 export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   try {
@@ -428,7 +447,6 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 export const storeAddress =
   (address, isSAddr) => async (dispatch, getState) => {
     if (address) {
-      console.log("index 339: " + isSAddr);
       isSAddr
         ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
         : dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address });
@@ -437,8 +455,6 @@ export const storeAddress =
   };
 
 export const validateAddress = (address, sAddr) => async (dispatch) => {
-  console.log(address);
-  console.log("443" + sAddr);
   let result =
     address.postalCode !== "" &&
     address.fullname.length >= 3 &&

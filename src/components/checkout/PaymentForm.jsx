@@ -6,7 +6,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import styles from "../../styles/PaymentForm.module.css";
-import { validateAddress, saveNewAddress } from "../../store/actions";
+import { validateAddress } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
 
 /**
@@ -20,7 +20,7 @@ const PaymentForm = ({ props }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState([]);
-  const { tempSAddress, tempBAddress, bAddrEqualsSAddr } = useSelector(
+  const { tempSAddress, tempBAddress, selectedBAddrId } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const PaymentForm = ({ props }) => {
     if (tempSAddress) {
       isValid = await dispatch(validateAddress(tempSAddress, true));
     }
-    if (!bAddrEqualsSAddr) {
+    if (selectedBAddrId === -1) {
       isValid &= await dispatch(validateAddress(tempBAddress, false));
     }
     if (!isValid) {

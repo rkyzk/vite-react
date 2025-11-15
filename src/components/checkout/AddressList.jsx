@@ -55,7 +55,7 @@ const AddressList = () => {
                 />
                 <span>他の住所に配送する</span>
               </label>
-              {sAddressList && selectedSAddrId === 0 && <AddressForm />}
+              {sAddressList && selectedSAddrId === 0 && <AddressForm isSAddr />}
             </div>
           )}
         </div>

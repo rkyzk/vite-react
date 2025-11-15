@@ -47,11 +47,15 @@ const authReducer = (state = initialState, action) => {
         tempSAddress: { ...action.payload, shippingAddress: true },
       };
     case "CLEAR_TEMP_BILLING_ADDRESS":
-      delete state["tempBAddress"];
-      return state;
+      return {
+        ...state,
+        tempBAddress: null,
+      };
     case "CLEAR_TEMP_SHIPPING_ADDRESS":
-      delete state["tempSAddress"];
-      return state;
+      return {
+        ...state,
+        tempSAddress: null,
+      };
     case "DELETE_S_ADDRESS":
       return {
         ...state,
