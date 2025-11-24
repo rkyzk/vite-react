@@ -24,12 +24,16 @@ function Navbar() {
   const state = false;
   const props = { state, setModalOpen };
 
-  const closeMenu = () => {
-    let menu = document.getElementById("menuItems");
-    setTimeout(() => {
-      menu.classList.add("hidden");
-      document.removeEventListener("mouseup", closeMenu);
-    }, 100);
+  const closeMenu = (e) => {
+    console.log(e.target);
+    console.log(e.target.id);
+    if (e.target.id !== "user") {
+      let menu = document.getElementById("menuItems");
+      setTimeout(() => {
+        menu.classList.add("hidden");
+        document.removeEventListener("mouseup", closeMenu);
+      }, 100);
+    }
   };
 
   const handleSetMenuOpen = () => {
@@ -40,26 +44,26 @@ function Navbar() {
 
   const menuItems = (
     <>
-      <div className={`${styles.menuItems}`}>
+      <div className="flex-col md:flex md:flex-row md:gap-x-[25px]">
         <div>
           <Link to="/" style={{ color: "#333" }}>
-            {path === "/" && <span>◆</span>}
+            {path === "/" && <span>・</span>}
             ホーム
           </Link>
         </div>
-        <div>
+        <div className={`${styles.menuItems}`}>
           <Link to="/products" style={{ color: "#333" }}>
             {path === "/products" && <span>◆</span>}
             商品
           </Link>
         </div>
-        <div>
+        <div className={`${styles.menuItems}`}>
           <Link to="/contact" style={{ color: "#333" }}>
             {path === "/contact" && <span>◆</span>}
             問い合わせ
           </Link>
         </div>
-        <div>
+        <div className={`${styles.menuItemCart}`}>
           <Link to="/cart" style={{ color: "#333" }}>
             <div className="flex gap-3">
               <Badge
@@ -75,7 +79,7 @@ function Navbar() {
           </Link>
         </div>
         {auth?.user && auth.user?.id ? (
-          <Box sx={{ flexGrow: 0 }} className="mt-[-2px]">
+          <Box sx={{ flexGrow: 0 }}>
             <IconButton sx={{ p: 0 }}>
               <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
             </IconButton>
@@ -109,10 +113,10 @@ function Navbar() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "flex", md: "none" },
               marginLeft: 2,
               justifyContent: "end",
             }}
+            className="flex md:hidden"
           >
             <Button
               id="basic-button"
@@ -127,9 +131,6 @@ function Navbar() {
           </Box>
           <div
             id="menuItems"
-            sx={{
-              display: { xs: "flex", md: "none" },
-            }}
             className={`${styles.menuBox} hidden px-3 py-2`}
             style={{
               backgroundColor: "#fff",
@@ -143,17 +144,17 @@ function Navbar() {
             }}
           >
             {menuItems}
+            {/* burgerMenu */}
           </div>
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "none", md: "flex" },
               gap: 2,
               marginLeft: 4,
               marginTop: 2,
               fontFamily: "sans-serif",
             }}
-            className="md:justify-end"
+            className="hidden md:flex md:justify-end"
           >
             {menuItems}
           </Box>

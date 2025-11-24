@@ -17,7 +17,7 @@ const AddressForm = ({ address, isSAddr }) => {
     addressId: 0,
     fullname: "",
     defaultAddressFlg: false,
-    shippingAddress: true,
+    shippingAddress: isSAddr,
     streetAddress1: "",
     streetAddress2: "",
     streetAddress3: "",
@@ -83,9 +83,9 @@ const AddressForm = ({ address, isSAddr }) => {
   const showEditForm = () => {
     setZip(tempAddress.postalCode);
     setEditAddr(true);
-    setTimeout(() => {
-      document.addEventListener("click", hideEditForm);
-    }, 200);
+    // setTimeout(() => {
+    //   document.addEventListener("click", hideEditForm);
+    // }, 200);
   };
 
   const handleCheckZip = () => {
@@ -94,29 +94,24 @@ const AddressForm = ({ address, isSAddr }) => {
   };
 
   const handleChangeAddress = (e) => {
-    setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
+    if (e.target.name === "saveAddr" || e.target.name === "defaultAddressFlg") {
+      setTempAddress({
+        ...tempAddress,
+        [e.target.name]: !tempAddress[e.target.name],
+      });
+    } else {
+      setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
+    }
     addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
-  };
-
-  const toggleSaveAddr = () => {
-    setTempAddress({
-      ...tempAddress,
-      saveAddr: !tempAddress.saveAddr,
-    });
-  };
-
-  const toggledeDefaultAddressFlg = () => {
-    setTempAddress({
-      ...tempAddress,
-      defaultAddressFlg: !tempAddress.defaultAddressFlg,
-    });
+    dispatch(storeAddress(tempAddress, isSAddr));
   };
 
   const saveAddress = async () => {
-    let result = await dispatch(validateAddress(isSAddr));
+    let result = await dispatch(validateAddress(tempAddress, isSAddr));
     if (result) {
       dispatch(sendUpdateAddressReq(tempAddress));
       setEditAddr(false);
+      dispatch(clearAddressErrors(isSAddr));
     } else {
       return;
     }
@@ -126,6 +121,7 @@ const AddressForm = ({ address, isSAddr }) => {
     dispatch(deleteAddress(isSAddr, address.addressId, toast));
     setTempAddress({ ...initAddr, shippingAddress: isSAddr });
     setEditAddr(false);
+    dispatch(clearAddressErrors(isSAddr));
   };
 
   const handleCancelEditAddress = (sAddr) => {
@@ -136,12 +132,15 @@ const AddressForm = ({ address, isSAddr }) => {
   };
 
   const handleStoreAddress = () => {
-    console.log("form139: " + isSAddr);
     dispatch(storeAddress(tempAddress, isSAddr));
   };
   useEffect(() => {
     address && setTempAddress(address);
   }, []);
+
+  // useEffect(() => {
+  //   console.log(tempAddress);
+  // }, [tempAddress]);
 
   const saveButtons = () => {
     return (
@@ -179,6 +178,32 @@ const AddressForm = ({ address, isSAddr }) => {
         >
           この住所を削除
         </button>
+      </div>
+    );
+  };
+
+  const defaultRadioBtn = () => {
+    return (
+      <div className={`${isSAddr ? "s-addr" : "b-addr"} flex`}>
+        <label
+          htmlFor="defaultAddressFlg"
+          className={`${isSAddr ? "s-addr" : "b-addr"}`}
+        >
+          <input
+            type="radio"
+            id="defaultAddressFlg"
+            name="defaultAddressFlg"
+            value="defaultAddress"
+            checked={tempAddress.defaultAddressFlg}
+            onClick={(e) => handleChangeAddress(e)}
+            className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
+          />
+        </label>
+        <span>
+          デフォルトに設定
+          <br />
+          (次回以降上に表示する)
+        </span>
       </div>
     );
   };
@@ -329,44 +354,15 @@ const AddressForm = ({ address, isSAddr }) => {
                 type="radio"
                 id="saveAddr"
                 name="saveAddr"
-                value={tempAddress?.saveAddr}
-                checked={tempAddress?.saveAddr}
-                onClick={() => toggleSaveAddr()}
-                onChange={(e) => handleChangeAddress(e)}
+                value="saveAddr"
+                checked={tempAddress.saveAddr}
+                onClick={(e) => handleChangeAddress(e)}
                 className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
               />
               <span>この住所を保存</span>
             </label>
           </div>
         )}
-        {!address &&
-          ((isSAddr && sAddressList?.length > 0) ||
-            (!isSAddr && bAddressList?.length > 0)) && (
-            <div className={`${isSAddr ? "s-addr" : "b-addr"} flex`}>
-              <label
-                htmlFor="save-addr"
-                className={`${isSAddr ? "s-addr" : "b-addr"}`}
-              >
-                <input
-                  type="radio"
-                  id="saveAddr"
-                  name="saveAddr"
-                  value={tempAddress?.defaultAddressFlg}
-                  checked={tempAddress?.defaultAddressFlg}
-                  onClick={() => toggledeDefaultAddressFlg()}
-                  onChange={(e) => handleChangeAddress(e)}
-                  className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
-                />
-              </label>
-              <span>
-                デフォルトに設定
-                <br />
-                (次回以降上に表示する)
-              </span>
-            </div>
-          )}
-        {/* {((isSAddr && sAddressList?.length > 1) ||
-          (!isSAddr && bAddressList?.length > 1)) && <>{saveButtons()}</>} */}
       </form>
     );
   };
@@ -385,6 +381,8 @@ const AddressForm = ({ address, isSAddr }) => {
           ${styles.addressCardBox} ${styles.sAddressBox}`}
         >
           {addressForm()}
+          {((isSAddr && sAddressList?.length > 0) ||
+            (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
           {editAddr && <>{saveButtons()}</>}
         </div>
       )}

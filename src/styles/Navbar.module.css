@@ -5,21 +5,17 @@
   font-weight: 400;
 }
 
-.menuItems {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 768px) {
   .menuBox {
     display: none;
   }
 }
 
-@media screen and (max-width: 899px) {
+@media screen and (max-width: 767px) {
   .menuItems {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    margin-top: 5px;
+  }
+  .menuItemCart {
+    margin-top: 8px;
   }
 }

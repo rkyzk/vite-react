@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddressForm from "./AddressForm";
 import { changeSelectedAddr, clearAddressData } from "../../store/actions";
 
@@ -12,7 +12,6 @@ const AddressList = () => {
     dispatch(changeSelectedAddr(isSAddr, Number(e.target.value)));
   };
 
-  useEffect(() => {}, [selectedSAddrId, selectedBAddrId]);
   useEffect(() => {
     dispatch(clearAddressData());
   }, []);
@@ -61,7 +60,7 @@ const AddressList = () => {
         </div>
         <div>
           <h2 className="mt-4 text-xs font-extralight">請求先:</h2>
-          <div className="mt-[-10px]">
+          <div>
             <label htmlFor="selected-b-addr0">
               <input
                 type="radio"
@@ -75,18 +74,10 @@ const AddressList = () => {
             </label>
             <span className="ml-1">お届け先と同じ</span>
           </div>
-          {selectedBAddrId !== 0 && !bAddressList && (
-            <div className="mt-[-23px]">
-              <AddressForm />
-            </div>
-          )}
           {bAddressList?.map((address) => {
             return (
-              <div
-                key={address.addressId}
-                className="mt-2 flex align-items-center gap-x-2"
-              >
-                <label htmlFor={`selected-b-addr` + address.addressId}>
+              <div key={address.addressId} className="mt-2 flex gap-x-2">
+                <label htmlFor={`selected-b-addr` + address?.addressId}>
                   <input
                     type="radio"
                     id={`selected-b-addr` + address.addressId}
@@ -101,20 +92,18 @@ const AddressList = () => {
               </div>
             );
           })}
-          {bAddressList?.length > 0 && (
-            <label htmlFor="selected-b-addr-1" className="mt-3">
-              <input
-                type="radio"
-                id="selected-b-addr-1"
-                name="selected-b-addr-1"
-                value="-1"
-                checked={selectedBAddrId === -1}
-                onChange={(e) => handleSelectAddress(e, false)}
-                className="m-1"
-              />
-              <span>他アドレスを使用する</span>
-            </label>
-          )}
+          <label htmlFor="selected-b-addr-1" className="mt-3">
+            <input
+              type="radio"
+              id="selected-b-addr-1"
+              name="selected-b-addr-1"
+              value="-1"
+              checked={selectedBAddrId === -1}
+              onChange={(e) => handleSelectAddress(e, false)}
+              className="m-1"
+            />
+            <span>他の住所を使用する</span>
+          </label>
           {selectedBAddrId === -1 && <AddressForm />}
         </div>
       </div>
