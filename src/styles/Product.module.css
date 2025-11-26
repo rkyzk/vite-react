@@ -2,7 +2,7 @@
   width: 430px;
   height: 344px;
   object-fit: cover;
-  object-position: center top;
+  object-position: 50% 50%;
   margin: auto;
 }
 

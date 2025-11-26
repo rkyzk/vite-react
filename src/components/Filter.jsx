@@ -6,9 +6,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "../styles/Filter.module.css";
 import { fetchCategories, clearErrorMessage } from "../store/actions";
 
-const Filter = () => {
+const Filter = ({ categoryId }) => {
   const [keywords, setKeywords] = useState("");
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState(categoryId);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { categories } = useSelector((state) => state.categories);
@@ -33,6 +33,7 @@ const Filter = () => {
   }, [category, keywords]);
 
   useEffect(() => {
+    setCategory(Number(categoryId));
     Object.keys(categories).length === 0 && dispatch(fetchCategories());
   }, []);
 
@@ -43,7 +44,7 @@ const Filter = () => {
   };
 
   return (
-    <div className="flex flex-col mx-auto gap-2 sm:flex-row sm:justify-center">
+    <div className="flex flex-col mx-auto mt-2 gap-2 sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"
@@ -60,7 +61,7 @@ const Filter = () => {
           <Select
             labelId="category-select-label"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setCategory(Number(e.target.value))}
             label="category"
             className="py-1 w-64 bg-white focus:outline-gray focus:outline-none"
           >
@@ -71,7 +72,7 @@ const Filter = () => {
             )}
             {categories.map((item) => (
               <MenuItem key={item.categoryId} value={item.categoryId}>
-                <span className={`${styles.SelectItems} "text-slate-700"`}>
+                <span className={`${styles.SelectItems} text-slate-700`}>
                   {item.categoryName}
                 </span>
               </MenuItem>

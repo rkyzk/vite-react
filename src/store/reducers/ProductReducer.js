@@ -30,6 +30,7 @@ const productReducer = (state = initialState, action) => {
         ...state,
         productDetails: action.payload,
       };
+    case "CLEAR_PRODUCTS":
     default:
       return state;
   }

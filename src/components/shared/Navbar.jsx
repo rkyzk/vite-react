@@ -25,8 +25,6 @@ function Navbar() {
   const props = { state, setModalOpen };
 
   const closeMenu = (e) => {
-    console.log(e.target);
-    console.log(e.target.id);
     if (e.target.id !== "user") {
       let menu = document.getElementById("menuItems");
       setTimeout(() => {

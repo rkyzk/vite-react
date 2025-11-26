@@ -18,7 +18,7 @@ const Product = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products } = useSelector((state) => state.products);
   const product = products.filter((prod) => prod.id === Number(id));
-  const { productName, quantity, price, imageName } = product[0];
+  const { productName, quantity, price, imageName, category } = product[0];
   const [qty, setQty] = useState(1);
   const { productDetails } = useSelector((state) => state.products);
   let productDetail = productDetails ? productDetails[Number(id)] : {};
@@ -52,7 +52,7 @@ const Product = () => {
         </div>
       ) : (
         <div
-          className={`${styles.Box} xs:grid-col-1 md:grid-cols-2 md:mt-5 grid justify-center xs:px-3 sm:px-5 lg:px-14`}
+          className={`${styles.Box} xs:grid-col-1 md:mt-5 md:grid-cols-2 grid justify-center xs:px-3 sm:px-5 lg:px-14`}
         >
           <div>
             <img
@@ -61,21 +61,27 @@ const Product = () => {
               alt={productName}
             />
           </div>
-          <div className="mt-3 md:mt-0">
+          <div>
             <h2 className="text-2xl">{productName}</h2>
             <div className={`${styles.PrcQty} my-1 gap-1`}>
-              <div className="mt-1">
-                <span className="text-md">&yen;{price}（球根12個入り）</span>
+              <div>
+                {category.categoryId === 4 ? (
+                  <span>&yen;{price} (球根6個)</span>
+                ) : (
+                  <span>&yen;{price} (球根12個)</span>
+                )}
               </div>
-              <div className={`${styles.QtyAddBtn} flex`}>
+            </div>
+            <div className="flex gap-2">
+              <div className="mt-[-2px] flex gap-2">
                 {isAvailable && (
-                  <div className="mr-1">
-                    <label htmlFor="quantity" className="mr-2">
+                  <div>
+                    <label className="mt-1 mr-1" htmlFor="quantity">
                       数個
                     </label>
                     <select
                       name="quantity"
-                      className="border bg-white rounded-lg py-2 pl-1"
+                      className="border bg-white rounded-lg pb-1 ml-1"
                       onChange={(e) => setQty(Number(e.target.value))}
                     >
                       {[...Array(30)]
@@ -88,26 +94,26 @@ const Product = () => {
                     </select>
                   </div>
                 )}
-                <button
-                  className={`${
-                    isAvailable
-                      ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
-                      : "bg-gray-400 text-gray-700"
-                  } ${styles.Button} p-1`}
-                  onClick={() => addToCart(id)}
-                >
-                  {isAvailable ? (
-                    <div className="flex">
-                      <FaShoppingCart className="mt-1 mr-1" />
-                      <span>カートに追加</span>
-                    </div>
-                  ) : (
-                    "Out of Stock"
-                  )}
-                </button>
               </div>
+              <button
+                className={`${
+                  isAvailable
+                    ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
+                    : "bg-gray-400 text-gray-700"
+                } ${styles.Button} p-1 ml-2`}
+                onClick={() => addToCart(id)}
+              >
+                {isAvailable ? (
+                  <div className="flex">
+                    <FaShoppingCart className="mt-1 mr-1" />
+                    <span>カートに追加</span>
+                  </div>
+                ) : (
+                  "在庫なし"
+                )}
+              </button>
             </div>
-            <div className="mt-2">
+            <div className="mt-4">
               {productDetail &&
                 Object.keys(productDetail).length !== 0 &&
                 productDetail.map((item, id) => {

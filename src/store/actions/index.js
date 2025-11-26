@@ -1,10 +1,13 @@
 import api from "../../api/axiosDefaults";
 
 export const fetchProducts = (queryString) => async (dispatch, getState) => {
+  dispatch({
+    type: "CLEAR_PRODUCTS",
+  });
+  dispatch({
+    type: "IS_FETCHING",
+  });
   try {
-    dispatch({
-      type: "IS_FETCHING",
-    });
     const { data } = await api.get(`/public/products?${queryString}`);
     dispatch({
       type: "FETCH_PRODUCTS",
@@ -15,18 +18,18 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
       totalElements: data.totalElements,
       totalPages: data.totalPages,
     });
-    dispatch({
-      type: "IS_SUCCESS",
-    });
-    localStorage.setItem("products", JSON.stringify(getState().products));
   } catch (error) {
-    console.log(error.response.data);
     dispatch({
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message || "商品情報を取得できませんでした。",
     });
   }
+
+  dispatch({
+    type: "IS_SUCCESS",
+  });
+  localStorage.setItem("products", JSON.stringify(getState().products));
 };
 
 export const fetchCategories = () => async (dispatch) => {

@@ -1,8 +1,9 @@
 import ProductCard from "./ProductCard";
 import { useSelector, useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
 import useProductFilter from "../hooks/useProductFilter";
-import { fetchProducts, clearErrorMessage } from "../store/actions";
+import { clearErrorMessage } from "../store/actions";
 import { useEffect } from "react";
 import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
@@ -12,17 +13,17 @@ import Spinner from "./shared/Spinner";
 const Products = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products, pagination } = useSelector((state) => state.products);
+  const [searchParams] = useSearchParams();
 
   useProductFilter();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(clearErrorMessage());
-    dispatch(fetchProducts(""));
   }, []);
 
   return (
     <>
-      <Filter />
+      <Filter categoryId={`${searchParams.get("category")}`} />
       <div className="px-2 py-10 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
           <Spinner />

@@ -1,26 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
 import HeroBanner from "./HeroBanner";
 import { useEffect } from "react";
-import {
-  fetchFeaturedProducts,
-  clearErrorMessage,
-  fetchProducts,
-} from "../../store/actions";
-import ProductCard from "../ProductCard";
+import { clearErrorMessage, fetchProducts } from "../../store/actions";
 import { FaExclamationTriangle } from "react-icons/fa";
-import { PiPlantLight } from "react-icons/pi";
 import Spinner from "../shared/Spinner";
-import styles from "../../styles/Products.module.css";
-import homeStyles from "../../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const { featuredProducts } = useSelector((state) => state.products);
   const { products } = useSelector((state) => state.products);
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const dispatch = useDispatch();
+  const IMAGES = [
+    { 0: 1, 1: "チューリップ", 2: "tulipa-barcelona.jpg" },
+    { 0: 2, 1: "ヒヤシンス", 2: "grape-hyacinth.jpg" },
+    { 0: 3, 1: "クロッカス", 2: "advance-crocus.jpg" },
+    { 0: 4, 1: "ダリア", 2: "dahlia-white-nettie.jpg" },
+  ];
   useEffect(() => {
     dispatch(clearErrorMessage());
-    !featuredProducts && dispatch(fetchFeaturedProducts());
     !products && dispatch(fetchProducts(""));
   }, []);
 
@@ -35,12 +33,6 @@ const Home = () => {
         </p>
       </div>
       <hr />
-      <div
-        className={`${homeStyles.FeaturedHeading} flex flex-row justify-start mt-2`}
-      >
-        <PiPlantLight className="text-3xl" />
-        <h2 className="text-slate-600 w-[165px] ml-2 mt-1">おすすめ</h2>
-      </div>
       <div className="flex">
         {isLoading ? (
           <Spinner className="ml-20" />
@@ -51,11 +43,22 @@ const Home = () => {
           </>
         ) : (
           <div
-            className={`${styles.imgGap} mx-auto grid gap-y-10 xs:grid-col-1 sm:gap-x-4  sm:grid-cols-2 lg:grid-cols-3
-                      2xl:grid-cols-4`}
+            className="mx-auto grid gap-3 xs:grid-col-1 sm:grid-cols-2 lg:grid-cols-3
+                      2xl:grid-cols-4"
           >
-            {featuredProducts?.map((product, i) => (
-              <ProductCard key={i} {...product} />
+            {IMAGES.map((elem) => (
+              <div className={`${styles.Card} relative`}>
+                <Link to={`/products?category=${elem[0]}`}>
+                  <img
+                    className={`${styles.imgSize} cursor-pointer absolute`}
+                    src={`/src/assets/products/${elem[2]}`}
+                    alt={elem[1]}
+                  />
+                  <p className="text-white absolute top-1 left-1 text-xl">
+                    {elem[1]}
+                  </p>
+                </Link>
+              </div>
             ))}
           </div>
         )}
