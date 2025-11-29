@@ -45,7 +45,7 @@ function Navbar() {
       <div className="flex-col md:flex md:flex-row md:gap-x-[25px]">
         <div>
           <Link to="/" style={{ color: "#333" }}>
-            {path === "/" && <span>・</span>}
+            {path === "/" && <span>◆</span>}
             ホーム
           </Link>
         </div>

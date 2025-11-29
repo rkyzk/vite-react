@@ -23,10 +23,10 @@ const ProductCard = ({
   };
 
   return (
-    <div className={`${styles.Card} "relative"`}>
+    <div className={`${styles.Card} relative`}>
       <Link className="cursor-pointer text-center" to={`/product/${id}`}>
         <img
-          className={`${styles.imgSize} "cursor-pointer"`}
+          className={`${styles.imgSize} cursor-pointer`}
           src={`/src/assets/products/${imageName}`}
           alt={productName}
         />
