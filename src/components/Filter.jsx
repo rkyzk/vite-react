@@ -44,7 +44,7 @@ const Filter = ({ categoryId }) => {
   };
 
   return (
-    <div className="flex flex-col mx-auto mt-2 gap-2 sm:flex-row sm:justify-center">
+    <div className="flex flex-col mx-auto mt-4 gap-2 sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"

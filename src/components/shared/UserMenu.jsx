@@ -40,6 +40,9 @@ const UserMenu = ({ id, username, roles }) => {
         className="ml-[-15px]"
       >
         <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+        <MenuItem>
+          <Link style={{ color: "#333" }}>購入履歴・レビュー投稿</Link>
+        </MenuItem>
       </Menu>
       {open && <BackDrop />}
     </div>

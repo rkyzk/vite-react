@@ -10,31 +10,51 @@ import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout/Checkout";
 import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
+import AuthModal from "./components/auth/AuthModal";
 import { Toaster } from "react-hot-toast";
-import { Fragment } from "react";
 import Product from "./components/Product";
+import { useState } from "react";
+import Modal from "@mui/material/Modal";
 
 function App() {
+  // ログインダイアログ
+  const [modalOpen, setModalOpen] = useState(false);
+  // カートページの「購入手続きに進む」クリック時にログインした際はフラグをtrueにする。
+  const [checkoutFlg, setCheckoutFlg] = useState(false);
   return (
-    <Fragment>
+    <>
       <Router>
         <div className="bg-neutral-100 min-h-screen pt-15">
-          <Navbar />
+          <Navbar setModalOpen={setModalOpen} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  setModalOpen={setModalOpen}
+                  setCheckoutFlg={setCheckoutFlg}
+                />
+              }
+            />
+            <Route
+              path="/checkout"
+              element={<Checkout setModalOpen={setModalOpen} />}
+            />
             <Route path="/order-confirm" element={<PaymentConfirmation />} />
             <Route path="/product/:id" element={<Product />} />
           </Routes>
           <Footer />
         </div>
+        <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+          <AuthModal setModalOpen={setModalOpen} checkoutFlg={checkoutFlg} />
+        </Modal>
       </Router>
       <Toaster position="top-center" duration="4000" />
-    </Fragment>
+    </>
   );
 }
 

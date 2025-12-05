@@ -42,7 +42,7 @@ const Product = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex mt-3">
       {isLoading ? (
         <Spinner className="mx-auto" />
       ) : errorMessage ? (
@@ -63,7 +63,7 @@ const Product = () => {
           </div>
           <div>
             <h2 className="text-2xl">{productName}</h2>
-            <div className={`${styles.PrcQty} my-1 gap-1`}>
+            <div className={`${styles.PrcQty} mt-3 gap-1`}>
               <div>
                 {category.categoryId === 4 ? (
                   <span>&yen;{price} (球根6個)</span>
@@ -72,8 +72,8 @@ const Product = () => {
                 )}
               </div>
             </div>
-            <div className="flex gap-2">
-              <div className="mt-[-2px] flex gap-2">
+            <div className="flex gap-2 mt-2">
+              <div className="flex gap-2">
                 {isAvailable && (
                   <div>
                     <label className="mt-1 mr-1" htmlFor="quantity">

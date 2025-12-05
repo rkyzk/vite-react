@@ -6,7 +6,7 @@ import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
-const Register = (state) => {
+const Register = ({ checkoutFlg }) => {
   const [loader, setLoader] = useState(false);
   const [show, setShow] = useState(true);
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Register = (state) => {
 
   const handleRegister = async (data) => {
     let result = await dispatch(
-      sendRegisterRequest(data, reset, toast, setLoader, navigate, state)
+      sendRegisterRequest(data, reset, toast, setLoader, navigate, checkoutFlg)
     );
     if (result) {
       setLoader(false);

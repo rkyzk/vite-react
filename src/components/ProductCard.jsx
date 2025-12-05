@@ -41,7 +41,7 @@ const ProductCard = ({
           )}
         </div>
       </Link>
-      <div className="mt-[-2px] flex justify-center gap-2">
+      <div className="mt-[-12px] flex justify-center gap-2">
         {isAvailable && (
           <div>
             <label className="mt-1 mr-1" htmlFor="quantity">

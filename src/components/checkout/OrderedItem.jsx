@@ -6,7 +6,7 @@ const OrderedItem = ({ data }) => {
       <div className="flex-col w-6/12">
         <span>{data.product.productName}</span>
         <img
-          className={`${styles.imgSize} "w-5/12"`}
+          className={`${styles.imgSize} w-5/12`}
           src={`/src/assets/products/${data.product.imageName}`}
           alt={data.product.productName}
         ></img>

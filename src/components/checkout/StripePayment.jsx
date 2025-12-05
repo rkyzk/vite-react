@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect } from "react";
-import { createClientSecret } from "../../store/actions";
+import { createClientSecret, refreshJWTToken } from "../../store/actions";
 import PaymentForm from "./PaymentForm";
 import Spinner from "../shared/Spinner";
 
@@ -34,6 +34,16 @@ const StripePayment = ({ stripePaymentProps }) => {
   useEffect(() => {
     !clientSecret && dispatch(createClientSecret(totalPrice));
   }, []);
+
+  useEffect(() => {
+    if (errorMessage === "JWT有効期限切れ") {
+      if (dispatch(refreshJWTToken())) {
+        dispatch(createClientSecret(totalPrice));
+      } else {
+        // login prompt
+      }
+    }
+  }, [dispatch, errorMessage]);
 
   if (isLoading) {
     return <Spinner />;

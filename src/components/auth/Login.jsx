@@ -14,8 +14,7 @@ import { IoEyeOutline } from "react-icons/io5";
 /**
  * log users in
  */
-const Login = ({ props }) => {
-  const { state, setModalOpen } = props;
+const Login = ({ setModalOpen, checkoutFlg }) => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +31,15 @@ const Login = ({ props }) => {
 
   const handleLogin = async (data) => {
     let result = await dispatch(
-      sendLoginRequest(data, reset, toast, setLoader, navigate, state, path)
+      sendLoginRequest(
+        data,
+        reset,
+        toast,
+        setLoader,
+        navigate,
+        checkoutFlg,
+        path
+      )
     );
     if (result) {
       dispatch(getUserAddress());
@@ -40,7 +47,7 @@ const Login = ({ props }) => {
       setLoader(false);
       setModalOpen(false);
       toast.success("ログインしました。");
-      state ? navigate(`/checkout`) : navigate(path);
+      checkoutFlg ? navigate("/checkout") : navigate(path);
     } else {
       setLoader(false);
       setModalOpen(true);

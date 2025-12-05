@@ -25,7 +25,6 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
         error?.response?.data?.message || "商品情報を取得できませんでした。",
     });
   }
-
   dispatch({
     type: "IS_SUCCESS",
   });
@@ -440,7 +439,7 @@ export const getUserAddress = () => async (dispatch, getState) => {
     let bList = getState().auth.bAddressList;
     let selectedSId = 0;
     let selectedBId = 0;
-    data.map((address) => {
+    data?.map((address) => {
       if (address.shippingAddress) {
         if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
         if (address.defaultAddressFlg) selectedSId = address.addressId;
@@ -646,27 +645,27 @@ export const createClientSecret =
     } catch (error) {
       if (error.status === 420) {
         console.log("420");
-        const { data } = await api.post(`/auth/refreshtoken`);
-        if (data.message === "JWT token has been refreshed successfully.") {
-          console.log("jwt refreshed");
-          getClientSecret(sendData);
-        } else if (data.message === "Refresh token has expired.") {
-          console.log(data);
-          const { user } = getState().auth.user;
-          let { data } = await api.get(`/auth/signout/${user.id}`);
-          console.log(data);
-          dispatch({ type: "LOGOUT_USER" });
-          localStorage.setItem("auth", null);
-          dispatch({
-            type: "IS_ERROR",
-            payload: "リフレッシュトークン有効期限切れ",
-          });
-        }
+        dispatch({ type: "IS_ERROR", payload: "JWT有効期限切れ" });
       } else {
         console.log(error);
       }
     }
   };
+
+export const refreshJWTToken = () => async (getState, dispatch) => {
+  const { data } = await api.post(`/auth/refreshtoken`);
+  if (data.message === "JWT token has been refreshed successfully.") {
+    dispatch({ type: "CLEAR_ERROR_MESSAGE" });
+    return true;
+  } else {
+    console.log(data);
+    const { user } = getState().auth.user;
+    let { data } = await api.get(`/auth/signout/${user.id}`);
+    dispatch({ type: "LOGOUT_USER" });
+    localStorage.setItem("auth", null);
+    return false;
+  }
+};
 
 export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });

@@ -1,15 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from "@mui/material/Modal";
-import AuthModal from "./auth/AuthModal";
 
-const Cart = () => {
+const Cart = ({ setModalOpen, setCheckoutFlg }) => {
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
   const user = auth?.user;
-  const [modalOpen, setModalOpen] = useState(false);
 
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -18,10 +14,13 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    user ? navigate("/checkout") : setModalOpen(true);
+    if (user) {
+      navigate("/checkout");
+    } else {
+      setModalOpen(true);
+      setCheckoutFlg(true);
+    }
   };
-  const state = true;
-  const props = { state, setModalOpen };
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
@@ -52,9 +51,6 @@ const Cart = () => {
             >
               購入手続きに進む
             </button>
-            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-              <AuthModal props={props} />
-            </Modal>
           </div>
         </>
       )}
