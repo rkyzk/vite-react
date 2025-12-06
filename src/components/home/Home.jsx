@@ -47,7 +47,7 @@ const Home = () => {
                       2xl:grid-cols-4"
           >
             {IMAGES.map((elem) => (
-              <div className={`${styles.Card} relative`}>
+              <div key={elem[0]} className={`${styles.Card} relative`}>
                 <Link to={`/products?category=${elem[0]}`}>
                   <img
                     className={`${styles.imgSize} cursor-pointer absolute`}

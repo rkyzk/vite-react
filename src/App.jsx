@@ -24,29 +24,31 @@ function App() {
   return (
     <>
       <Router>
-        <div className="bg-neutral-100 min-h-screen pt-15">
-          <Navbar setModalOpen={setModalOpen} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route
-              path="/cart"
-              element={
-                <Cart
-                  setModalOpen={setModalOpen}
-                  setCheckoutFlg={setCheckoutFlg}
-                />
-              }
-            />
-            <Route
-              path="/checkout"
-              element={<Checkout setModalOpen={setModalOpen} />}
-            />
-            <Route path="/order-confirm" element={<PaymentConfirmation />} />
-            <Route path="/product/:id" element={<Product />} />
-          </Routes>
+        <div className="bg-neutral-100 pt-15">
+          <div className="min-h-10/12">
+            <Navbar setModalOpen={setModalOpen} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route
+                path="/cart"
+                element={
+                  <Cart
+                    setModalOpen={setModalOpen}
+                    setCheckoutFlg={setCheckoutFlg}
+                  />
+                }
+              />
+              <Route
+                path="/checkout"
+                element={<Checkout setModalOpen={setModalOpen} />}
+              />
+              <Route path="/order-confirm" element={<PaymentConfirmation />} />
+              <Route path="/product/:id" element={<Product />} />
+            </Routes>
+          </div>
           <Footer />
         </div>
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>

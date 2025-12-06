@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ const StripePayment = ({ stripePaymentProps }) => {
   const clientSecret = auth?.clientSecret ? auth.clientSecret : null;
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const cart = useSelector((state) => state.carts.cart);
+  const navigate = useNavigate();
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -39,8 +41,7 @@ const StripePayment = ({ stripePaymentProps }) => {
     if (errorMessage === "JWT有効期限切れ") {
       if (dispatch(refreshJWTToken())) {
         dispatch(createClientSecret(totalPrice));
-      } else {
-        // login prompt
+        navigate("/checkout");
       }
     }
   }, [dispatch, errorMessage]);
@@ -59,13 +60,13 @@ const StripePayment = ({ stripePaymentProps }) => {
   };
 
   return (
-    <>
+    <div className="flex justify-center">
       {clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
           <PaymentForm props={props} />
         </Elements>
       )}
-    </>
+    </div>
   );
 };
 

@@ -78,7 +78,12 @@ function Navbar({ setModalOpen }) {
       ) : (
         <Button
           onClick={() => setModalOpen(true)}
-          style={{ color: "#333", fontSize: "1rem", marginTop: "-14px" }}
+          style={{
+            color: "#333",
+            fontSize: "1rem",
+            marginTop: "-13px",
+            fontWeight: "400",
+          }}
           className={`${styles.loginBtn}`}
         >
           ログイン
@@ -96,7 +101,7 @@ function Navbar({ setModalOpen }) {
             style={{ color: "#500" }}
           />
           <h1 className="font-[Ole] font-bold" style={{ color: "#500" }}>
-            Wild Blossom
+            Wild Blossom Garden
           </h1>
         </Link>
         <Box

@@ -345,8 +345,7 @@ export const saveNewAddress =
   };
 
 export const sendLoginRequest =
-  (sendData, reset, toast, setLoader, navigate, state, path) =>
-  async (dispatch, getState) => {
+  (sendData, reset, toast, setLoader) => async (dispatch, getState) => {
     setLoader(true);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
@@ -439,6 +438,7 @@ export const getUserAddress = () => async (dispatch, getState) => {
     let bList = getState().auth.bAddressList;
     let selectedSId = 0;
     let selectedBId = 0;
+    console.log(data.length);
     data?.map((address) => {
       if (address.shippingAddress) {
         if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
@@ -644,7 +644,6 @@ export const createClientSecret =
       localStorage.setItem("auth", JSON.stringify(getState().auth));
     } catch (error) {
       if (error.status === 420) {
-        console.log("420");
         dispatch({ type: "IS_ERROR", payload: "JWT有効期限切れ" });
       } else {
         console.log(error);
@@ -654,11 +653,11 @@ export const createClientSecret =
 
 export const refreshJWTToken = () => async (getState, dispatch) => {
   const { data } = await api.post(`/auth/refreshtoken`);
-  if (data.message === "JWT token has been refreshed successfully.") {
+  if (data.message === "JWT refreshed.") {
+    console.log("jwt:" + JSON.stringify(data));
     dispatch({ type: "CLEAR_ERROR_MESSAGE" });
     return true;
   } else {
-    console.log(data);
     const { user } = getState().auth.user;
     let { data } = await api.get(`/auth/signout/${user.id}`);
     dispatch({ type: "LOGOUT_USER" });

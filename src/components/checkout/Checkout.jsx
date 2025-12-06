@@ -18,6 +18,7 @@ export const Checkout = ({ setModalOpen }) => {
   const stripePaymentProps = {
     billAddrCheck,
   };
+  console.log("fired checkout");
 
   return (
     <>

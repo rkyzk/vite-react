@@ -31,19 +31,10 @@ const Login = ({ setModalOpen, checkoutFlg }) => {
 
   const handleLogin = async (data) => {
     let result = await dispatch(
-      sendLoginRequest(
-        data,
-        reset,
-        toast,
-        setLoader,
-        navigate,
-        checkoutFlg,
-        path
-      )
+      sendLoginRequest(data, reset, toast, setLoader)
     );
     if (result) {
       dispatch(getUserAddress());
-      dispatch(clearErrorMessage());
       setLoader(false);
       setModalOpen(false);
       toast.success("ログインしました。");
