@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { sendOrder, sendOrderWithNewAddresses } from "../../store/actions";
+import {
+  sendOrder,
+  sendOrderWithNewAddresses,
+  getUserAddress,
+} from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 

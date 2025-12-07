@@ -16,7 +16,7 @@ const FooterComponent = () => {
             rel="noopener"
             aria-label="Visit our facebook page (opens in a new tab)"
           >
-            <FaFacebook className="ml-2 text-amber-900" />
+            <FaFacebook className="text-amber-900" />
           </a>
         </li>
         <li>
@@ -32,7 +32,7 @@ const FooterComponent = () => {
       </ul>
       <p className="text-center text-amber-900">ワイルドブロッサムガーデン</p>
       <div className="w-full flex justify-center mt-[-15px]">
-        <p className="text-center text-amber-900 w-[240px] text-xs">
+        <p className="text-center text-amber-900 w-[210px] text-xs">
           Copy Right reserved 2025 @Wild Blossom Garden
         </p>
       </div>

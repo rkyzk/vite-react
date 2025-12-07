@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <Router>
-        <div className="bg-neutral-100 min-h-screen pt-15">
+        <div className="bg-neutral-100 min-h-screen pt-20">
           <div style={{ minHeight: "70vh" }}>
             <Navbar setModalOpen={setModalOpen} />
             <Routes>

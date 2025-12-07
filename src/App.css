@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 div {
-  font-family: Raleway;
+  font-family: "M PLUS Rounded 1c";
 }
 
 a {
@@ -10,7 +10,6 @@ a {
 
 input {
   background-color: #fff;
-  border-radius: 10px;
 }
 
 button:hover {

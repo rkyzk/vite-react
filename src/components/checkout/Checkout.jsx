@@ -6,8 +6,9 @@ import AddressList from "./AddressList";
 export const Checkout = ({ setModalOpen }) => {
   const auth = useSelector((state) => state.auth);
   const [billAddrCheck, setBillAddrCheck] = useState(true);
+  const cart = useSelector((state) => state.carts.cart);
 
-  // どうなる？
+  // ログインしていない時はログインダイアログを表示
   if (auth === null) {
     setModalOpen(true);
   }
@@ -18,12 +19,19 @@ export const Checkout = ({ setModalOpen }) => {
   const stripePaymentProps = {
     billAddrCheck,
   };
-  console.log("fired checkout");
 
   return (
     <>
-      <AddressList props={props} />
-      <StripePayment stripePaymentProps={stripePaymentProps} />
+      {cart.length > 0 ? (
+        <>
+          <AddressList props={props} />
+          <StripePayment stripePaymentProps={stripePaymentProps} />
+        </>
+      ) : (
+        <div className="w-full">
+          <p className="w-[140px] m-auto">カートは空です。</p>
+        </div>
+      )}
     </>
   );
 };

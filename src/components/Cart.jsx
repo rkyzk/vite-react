@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Cart = ({ setModalOpen, setCheckoutFlg }) => {
   return (
     <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
       {!cart.length ? (
-        <p className="w-[250px] m-auto">カートは空です。</p>
+        <p className="w-[140px] m-auto">カートは空です。</p>
       ) : (
         <>
           <div className="flex w-full gap-1">

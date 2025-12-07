@@ -26,7 +26,7 @@ const AddressForm = ({ address, isSAddr }) => {
     postalCode: "",
     saveAddr: true,
   };
-  const [tempAddress, setTempAddress] = useState(initAddr);
+  const [tempAddress, setTempAddress] = useState(address || initAddr);
   const { sAddrErrs, bAddrErrs, addrChecked, sAddressList, bAddressList } =
     useSelector((state) => state.auth);
   const [editAddr, setEditAddr] = useState(false);
@@ -103,7 +103,7 @@ const AddressForm = ({ address, isSAddr }) => {
       setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
     }
     addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
-    dispatch(storeAddress(tempAddress, isSAddr));
+    // dispatch(storeAddress(tempAddress, isSAddr));
   };
 
   const saveAddress = async () => {
@@ -134,13 +134,6 @@ const AddressForm = ({ address, isSAddr }) => {
   const handleStoreAddress = () => {
     dispatch(storeAddress(tempAddress, isSAddr));
   };
-  useEffect(() => {
-    address && setTempAddress(address);
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(tempAddress);
-  // }, [tempAddress]);
 
   const saveButtons = () => {
     return (
@@ -214,7 +207,7 @@ const AddressForm = ({ address, isSAddr }) => {
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
         onBlur={() => handleStoreAddress()}
-        className={`${isSAddr ? "s-addr" : "b-addr"} pl-2`}
+        className={`${isSAddr ? "s-addr" : "b-addr"}`}
       >
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
           <label
@@ -238,7 +231,11 @@ const AddressForm = ({ address, isSAddr }) => {
             </span>
           )}
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${
+            styles.InputItem
+          } mt-1`}
+        >
           <label
             htmlFor="postalCode"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -268,7 +265,11 @@ const AddressForm = ({ address, isSAddr }) => {
               </span>
             )}
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${
+            styles.InputItem
+          } mt-1`}
+        >
           <label
             htmlFor="province"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -283,7 +284,11 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.prefecture}
           />
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${
+            styles.InputItem
+          } mt-1`}
+        >
           <label
             htmlFor="city"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -298,7 +303,11 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.city}
           />
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${
+            styles.InputItem
+          } mt-1`}
+        >
           <label
             htmlFor="streetAddress1"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -311,7 +320,11 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.streetAddress1}
           />
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${
+            styles.InputItem
+          } mt-1`}
+        >
           <label
             htmlFor="streetAddress2"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -378,7 +391,7 @@ const AddressForm = ({ address, isSAddr }) => {
         <div
           className={`${isSAddr && editAddr && "s-addr"}
           ${!isSAddr && editAddr && "b-addr"}
-          ${styles.addressCardBox} ${styles.sAddressBox}`}
+          ${isSAddr && "mt-[30px]"}`}
         >
           {addressForm()}
           {((isSAddr && sAddressList?.length > 0) ||

@@ -27,7 +27,7 @@ const UserMenu = ({ id, username, roles }) => {
     <div>
       <div
         id="user"
-        className="text-base text-gray-800 mt-[-3px]"
+        className="text-base text-gray-800 mt-[-4px]"
         onClick={handleClick}
       >
         {username}さん

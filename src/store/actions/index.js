@@ -428,7 +428,6 @@ const updateAddressList = (address) => async (getState, dispatch) => {
       dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
     dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
   }
-  console.log("address");
 };
 
 export const getUserAddress = () => async (dispatch, getState) => {
@@ -510,37 +509,38 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 };
 
 export const storeAddress = (address) => async (dispatch, getState) => {
-  // updateAddressList(address);
-  if (address.shippingAddress) {
-    let oldSList = getState().auth.sAddressList;
-    let newSList = [];
-    newSList = oldSList
-      ? oldSList.map((addr) =>
-          address.defaultAddressFlg &&
-          addr.defaultAddressFlg &&
-          addr.id !== address.id
-            ? { ...addr, defaultAddressFlg: false }
-            : addr
-        )
-      : [address];
-    address.defaultAddressFlg &&
-      dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
-    dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
-  } else {
-    let oldBList = getState().auth.bAddressList;
-    let newBList = [];
-    newBList = oldBList
-      ? oldBList.map((addr) =>
-          address.defaultAddressFlg &&
-          addr.defaultAddressFlg &&
-          addr.id !== address.id
-            ? { ...addr, defaultAddressFlg: false }
-            : addr
-        )
-      : [address];
-    address.defaultAddressFlg &&
-      dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
-    dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
+  if (address.addressId !== 0) {
+    if (address.shippingAddress) {
+      let oldSList = getState().auth.sAddressList;
+      let newSList = [];
+      newSList = oldSList
+        ? oldSList.map((addr) =>
+            address.defaultAddressFlg &&
+            addr.defaultAddressFlg &&
+            addr.id !== address.id
+              ? { ...addr, defaultAddressFlg: false }
+              : addr
+          )
+        : [address];
+      address.defaultAddressFlg &&
+        dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
+      dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
+    } else {
+      let oldBList = getState().auth.bAddressList;
+      let newBList = [];
+      newBList = oldBList
+        ? oldBList.map((addr) =>
+            address.defaultAddressFlg &&
+            addr.defaultAddressFlg &&
+            addr.id !== address.id
+              ? { ...addr, defaultAddressFlg: false }
+              : addr
+          )
+        : [address];
+      address.defaultAddressFlg &&
+        dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
+      dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
+    }
   }
   address.shippingAddress
     ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
@@ -654,7 +654,6 @@ export const createClientSecret =
 export const refreshJWTToken = () => async (getState, dispatch) => {
   const { data } = await api.post(`/auth/refreshtoken`);
   if (data.message === "JWT refreshed.") {
-    console.log("jwt:" + JSON.stringify(data));
     dispatch({ type: "CLEAR_ERROR_MESSAGE" });
     return true;
   } else {
