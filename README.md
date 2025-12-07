@@ -1,7 +1,11 @@
 # EC サイト アプリ Frontend(React)
 
 12/7
-get addresses data after purchase ###　ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
+get addresses data after purchase
+
+delete default address, and set another address to selectedAddress
+
+###　ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
 
 - ホームページ
   https://shop.hanano-yamato.co.jp

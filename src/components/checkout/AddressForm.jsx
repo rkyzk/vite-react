@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getAddress } from "jposta";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   sendUpdateAddressReq,
   deleteAddress,

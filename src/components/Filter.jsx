@@ -18,7 +18,7 @@ const Filter = ({ categoryId }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       errorMessage && dispatch(clearErrorMessage());
-      category === 0
+      category === null || category === ""
         ? searchParams.delete("category")
         : searchParams.set("category", category);
       // Trim spaces of keywords. Replace spaces in the middle with '_'
@@ -33,12 +33,11 @@ const Filter = ({ categoryId }) => {
   }, [category, keywords]);
 
   useEffect(() => {
-    setCategory(Number(categoryId));
     Object.keys(categories).length === 0 && dispatch(fetchCategories());
   }, []);
 
   const handleClearFilter = () => {
-    setCategory(0);
+    setCategory(null);
     setKeywords("");
     navigate({ pathname: window.location.pathname });
   };

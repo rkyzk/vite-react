@@ -501,7 +501,6 @@ export const validateAddress = (address, sAddr) => async (dispatch) => {
   return result;
 };
 
-// delete address from sList
 export const deleteAddress =
   (sAddr, id, toast) => async (dispatch, getState) => {
     try {
@@ -509,21 +508,22 @@ export const deleteAddress =
     } catch (error) {
       console.log(error);
     }
-    const { sAddressList, bAddressList } = getState().auth;
-    if (sAddr) {
-      let sList = [...sAddressList];
-      sList = sList.filter((address) => {
-        return address.addressId !== id;
-      });
-      dispatch({ type: "STORE_SADDRESSLIST", payload: sList });
-    } else {
-      let bList = [...bAddressList];
-      bList = bList.filter((address) => {
-        return address.addressId !== id;
-      });
-      dispatch({ type: "STORE_BADDRESSLIST", payload: bList });
+    const { sAddressList, bAddressList, selectedSAddrId, selectedBAddrId } =
+      getState().auth;
+    let newList = sAddr ? [...sAddressList] : [...bAddressList];
+    newList = newList.filter((address) => {
+      return address.addressId !== id;
+    });
+    if (sAddr && selectedSAddrId === Number(id)) {
+      let newSelectedAddrId = newList[0].addressId;
+      dispatch({ type: "SET_SELECTED_SADDRESS", payload: newSelectedAddrId });
     }
-    // remove the address with the id from sList or bList
+    if (!sAddr && selectedBAddrId === Number(id)) {
+      let newSelectedAddrId = newList[0].addressId;
+      dispatch({ type: "SET_SELECTED_BADDRESS", payload: newSelectedAddrId });
+    }
+    let type = sAddr ? "STORE_SADDRESSLIST" : "STORE_BADDRESSLIST";
+    dispatch({ type: type, payload: newList });
     toast.success("住所が削除されました。");
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };

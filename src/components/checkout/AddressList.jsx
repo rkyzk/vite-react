@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 import AddressForm from "./AddressForm";
 import { changeSelectedAddr, clearAddressData } from "../../store/actions";
 
@@ -23,7 +22,7 @@ const AddressList = () => {
           {!sAddressList && <AddressForm isSAddr />}
           {sAddressList?.map((address) => {
             return (
-              <div key={address.addressId} className="mt-2 flex gap-x-2">
+              <div key={address.addressId} className="mt-3 flex gap-x-2">
                 <label htmlFor={`selected-addr` + address.addressId}>
                   <input
                     type="radio"
@@ -59,7 +58,7 @@ const AddressList = () => {
         </div>
         <div>
           <h2 className="text-[0.7rem] font-extralight">請求先</h2>
-          <div className="mt-[-4px] ml-[10px]">
+          <div className="mt-[-4px]">
             <label htmlFor="selected-b-addr0">
               <input
                 type="radio"
@@ -75,7 +74,7 @@ const AddressList = () => {
           </div>
           {bAddressList?.map((address) => {
             return (
-              <div key={address.addressId} className="mt-2 flex gap-x-2">
+              <div key={address.addressId} className="mt-3 flex gap-x-2">
                 <label htmlFor={`selected-b-addr` + address?.addressId}>
                   <input
                     type="radio"
@@ -91,7 +90,7 @@ const AddressList = () => {
               </div>
             );
           })}
-          <label htmlFor="selected-b-addr-1" className="ml-[10px]">
+          <label htmlFor="selected-b-addr-1" className="mt-3">
             <input
               type="radio"
               id="selected-b-addr-1"

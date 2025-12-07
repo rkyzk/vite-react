@@ -14,7 +14,7 @@ const useProductFilter = () => {
       : 1;
     const category = searchParams.get("category") || null;
     const keywords = searchParams.get("keywords") || null;
-    if (category) params.set("category", Number(category));
+    if (category) params.set("category", category);
     if (keywords) params.set("keywords", keywords);
     params.set("pageNumber", currPage - 1);
     const queryString = params.toString();
