@@ -1,16 +1,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getAddress } from "jposta";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   sendUpdateAddressReq,
   deleteAddress,
-  storeAddress,
   clearAddressErrors,
   validateAddress,
+  storeTempAddress,
 } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import toast from "react-hot-toast";
 import AddressCard from "./AddressCard";
+import InputWithLabel from "../shared/InputWithLabel";
 
 const AddressForm = ({ address, isSAddr }) => {
   const initAddr = {
@@ -93,7 +94,7 @@ const AddressForm = ({ address, isSAddr }) => {
     return;
   };
 
-  const handleChangeAddress = (e) => {
+  const handleChangeAddress = async (e) => {
     if (e.target.name === "saveAddr" || e.target.name === "defaultAddressFlg") {
       setTempAddress({
         ...tempAddress,
@@ -102,9 +103,15 @@ const AddressForm = ({ address, isSAddr }) => {
     } else {
       setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
     }
-    addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
-    // dispatch(storeAddress(tempAddress, isSAddr));
   };
+  useEffect(() => {
+    dispatch(storeTempAddress(tempAddress));
+    addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
+  }, [tempAddress]);
+
+  useEffect(() => {
+    dispatch(clearAddressErrors());
+  }, []);
 
   const saveAddress = async () => {
     let result = await dispatch(validateAddress(tempAddress, isSAddr));
@@ -129,10 +136,6 @@ const AddressForm = ({ address, isSAddr }) => {
     setEditAddr(false);
     setErrMsgZip("");
     dispatch(clearAddressErrors(sAddr));
-  };
-
-  const handleStoreAddress = () => {
-    dispatch(storeAddress(tempAddress, isSAddr));
   };
 
   const saveButtons = () => {
@@ -206,23 +209,17 @@ const AddressForm = ({ address, isSAddr }) => {
       <form
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
-        onBlur={() => handleStoreAddress()}
-        className={`${isSAddr ? "s-addr" : "b-addr"}`}
+        className={`${isSAddr ? "s-addr" : "b-addr"}
+        ${editAddr && "bg-neutral-300 w-[275px] pl-2 pb-2"}`}
       >
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
-          <label
-            htmlFor="fullname"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
-          >
-            氏名:
-          </label>
-          <input
+          <InputWithLabel
             id="fullname"
-            name="fullname"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.fullname}
-            onChange={(e) => handleChangeAddress(e, isSAddr)}
+            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
+            children="氏名:"
+            isSAddr={isSAddr}
           />
           {((isSAddr && sAddrErrs?.fullname) ||
             (!isSAddr && bAddrErrs?.fullname)) && (
@@ -270,18 +267,12 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <label
-            htmlFor="province"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
-          >
-            都道府県:
-          </label>
-          <input
-            id="province"
-            name="province"
+          <InputWithLabel
+            id="prefecture"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.prefecture}
+            children="都道府県:"
+            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -289,18 +280,12 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <label
-            htmlFor="city"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
-          >
-            市区町村:
-          </label>
-          <input
+          <InputWithLabel
             id="city"
-            name="city"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.city}
+            children="市区町村:"
+            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -308,16 +293,11 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <label
-            htmlFor="streetAddress1"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
-          ></label>
-          <input
+          <InputWithLabel
             id="streetAddress1"
-            name="streetAddress1"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
             value={tempAddress?.streetAddress1}
+            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -325,19 +305,13 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <label
-            htmlFor="streetAddress2"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
-          >
-            番地・建物名・部屋番号:
-          </label>
-          <input
+          <InputWithLabel
             id="streetAddress2"
-            name="streetAddress2"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.streetAddress2}
-            onChange={(e) => handleChangeAddress(e)}
+            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
+            children="番地・建物名・部屋番号:"
+            isSAddr={isSAddr}
           />
           {(isSAddr && sAddrErrs?.streetAddress2) ||
             (!isSAddr && bAddrErrs?.streetAddress2 && (
@@ -347,35 +321,29 @@ const AddressForm = ({ address, isSAddr }) => {
             ))}
         </div>
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
-          <label
-            htmlFor="streetAddress3"
-            className={`${isSAddr ? "s-addr" : "b-addr"} hidden`}
-          ></label>
-          <input
+          <InputWithLabel
             id="streetAddress3"
-            name="streetAddress3"
             type="text"
-            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
             value={tempAddress?.streetAddress3}
-            onChange={(e) => handleChangeAddress(e)}
+            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
+            isSAddr={isSAddr}
           />
         </div>
-        {!address && (
-          <div>
-            <label htmlFor="save-addr">
-              <input
-                type="radio"
-                id="saveAddr"
-                name="saveAddr"
-                value="saveAddr"
-                checked={tempAddress.saveAddr}
-                onClick={(e) => handleChangeAddress(e)}
-                className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
-              />
-              <span>この住所を保存</span>
-            </label>
-          </div>
-        )}
+        <div>
+          <label htmlFor="save-addr">
+            <input
+              type="radio"
+              id="saveAddr"
+              name="saveAddr"
+              value="saveAddr"
+              checked={tempAddress.saveAddr}
+              onClick={(e) => handleChangeAddress(e)}
+              className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
+            />
+            <span>この住所を保存</span>
+          </label>
+        </div>
+        {editAddr && <>{saveButtons()}</>}
       </form>
     );
   };
@@ -396,7 +364,6 @@ const AddressForm = ({ address, isSAddr }) => {
           {addressForm()}
           {((isSAddr && sAddressList?.length > 0) ||
             (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
-          {editAddr && <>{saveButtons()}</>}
         </div>
       )}
     </>

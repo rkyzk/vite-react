@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import AddressForm from "./AddressForm";
-import { changeSelectedAddr, clearAddressData } from "../../store/actions";
+import { changeSelectedAddr } from "../../store/actions";
 
 const AddressList = () => {
   const { sAddressList, bAddressList, selectedSAddrId, selectedBAddrId } =
@@ -9,10 +9,6 @@ const AddressList = () => {
   const handleSelectAddress = (e, isSAddr) => {
     dispatch(changeSelectedAddr(isSAddr, Number(e.target.value)));
   };
-
-  // useEffect(() => {
-  //   dispatch(clearAddressData());
-  // }, []);
 
   return (
     <div className="flex">

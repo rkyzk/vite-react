@@ -231,9 +231,9 @@ export const sendOrderWithNewAddresses =
     }
     const sendData = {
       shippingAddressDTO:
-        selectedSAddrId !== 0
-          ? { ...address, addressId: selectedSAddrId }
-          : sAddress,
+        selectedSAddrId === 0
+          ? sAddress
+          : { ...address, addressId: selectedSAddrId },
       billingAddressDTO:
         selectedBAddrId === -1
           ? bAddress
@@ -442,40 +442,40 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   }
 };
 
-export const storeAddress = (address) => async (dispatch, getState) => {
-  if (address.addressId !== 0) {
-    if (address.shippingAddress) {
-      let oldSList = getState().auth.sAddressList;
-      let newSList = [];
-      newSList = oldSList
-        ? oldSList.map((addr) =>
-            address.defaultAddressFlg &&
-            addr.defaultAddressFlg &&
-            addr.id !== address.id
-              ? { ...addr, defaultAddressFlg: false }
-              : addr
-          )
-        : [address];
-      address.defaultAddressFlg &&
-        dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
-      dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
-    } else {
-      let oldBList = getState().auth.bAddressList;
-      let newBList = [];
-      newBList = oldBList
-        ? oldBList.map((addr) =>
-            address.defaultAddressFlg &&
-            addr.defaultAddressFlg &&
-            addr.id !== address.id
-              ? { ...addr, defaultAddressFlg: false }
-              : addr
-          )
-        : [address];
-      address.defaultAddressFlg &&
-        dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
-      dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
-    }
-  }
+export const storeTempAddress = (address) => async (dispatch, getState) => {
+  //   if (address.addressId !== 0) {
+  //     if (address.shippingAddress) {
+  //       let oldSList = getState().auth.sAddressList;
+  //       let newSList = [];
+  //       newSList = oldSList
+  //         ? oldSList.map((addr) =>
+  //             address.defaultAddressFlg &&
+  //             addr.defaultAddressFlg &&
+  //             addr.id !== address.id
+  //               ? { ...addr, defaultAddressFlg: false }
+  //               : addr
+  //           )
+  //         : [address];
+  //       address.defaultAddressFlg &&
+  //         dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
+  //       dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
+  //     } else {
+  //       let oldBList = getState().auth.bAddressList;
+  //       let newBList = [];
+  //       newBList = oldBList
+  //         ? oldBList.map((addr) =>
+  //             address.defaultAddressFlg &&
+  //             addr.defaultAddressFlg &&
+  //             addr.id !== address.id
+  //               ? { ...addr, defaultAddressFlg: false }
+  //               : addr
+  //           )
+  //         : [address];
+  //       address.defaultAddressFlg &&
+  //         dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
+  //       dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
+  //     }
+  //   }
   address.shippingAddress
     ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
     : dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address });
@@ -514,6 +514,7 @@ export const deleteAddress =
     newList = newList.filter((address) => {
       return address.addressId !== id;
     });
+    // 削除された住所がselectedAddressだったらリストの次の住所をselectedAddressに設定
     if (sAddr && selectedSAddrId === Number(id)) {
       let newSelectedAddrId = newList[0].addressId;
       dispatch({ type: "SET_SELECTED_SADDRESS", payload: newSelectedAddrId });
