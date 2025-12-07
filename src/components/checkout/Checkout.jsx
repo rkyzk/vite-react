@@ -25,6 +25,7 @@ export const Checkout = ({ setModalOpen }) => {
       {cart.length > 0 ? (
         <>
           <AddressList props={props} />
+          <hr className="mx-3" />
           <StripePayment stripePaymentProps={stripePaymentProps} />
         </>
       ) : (

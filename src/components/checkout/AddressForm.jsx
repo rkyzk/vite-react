@@ -391,7 +391,7 @@ const AddressForm = ({ address, isSAddr }) => {
         <div
           className={`${isSAddr && editAddr && "s-addr"}
           ${!isSAddr && editAddr && "b-addr"}
-          ${isSAddr && "mt-[30px]"}`}
+          ${isSAddr && !sAddressList && !bAddressList && "mt-[52px]"}`}
         >
           {addressForm()}
           {((isSAddr && sAddressList?.length > 0) ||

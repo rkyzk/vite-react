@@ -204,14 +204,8 @@ export const sendOrderWithNewAddresses =
     const items = cart.map((item) => {
       return { product: { ...item }, quantity: item.purchaseQty };
     });
-    const {
-      tempSAddress,
-      tempBAddress,
-      selectedSAddrId,
-      selectedBAddrId,
-      sAddressList,
-      bAddressList,
-    } = getState().auth;
+    const { tempSAddress, tempBAddress, selectedSAddrId, selectedBAddrId } =
+      getState().auth;
     const address = {
       addressId: 0,
       fullname: "",
@@ -263,38 +257,6 @@ export const sendOrderWithNewAddresses =
         dispatch({
           type: "CLEAR_CART",
         });
-        if (selectedBAddrId === -1 && tempBAddress.saveAddr) {
-          let bList = [...bAddressList];
-          if (tempBAddress.defaultAddressFlg) {
-            bList.unshift(tempBAddress);
-            dispatch({
-              type: "SET_SELECTED_BADDRESS",
-              payload: tempBAddress.addressId,
-            });
-          } else {
-            bList.push(tempBAddress);
-          }
-          dispatch({
-            type: "STORE_BADDRESSLIST",
-            payload: bList,
-          });
-        }
-        if (selectedSAddrId === 0 && tempSAddress.saveAddr) {
-          let sList = [...sAddressList];
-          if (tempSAddress.defaultAddressFlg) {
-            sList.unshift(tempSAddress);
-            dispatch({
-              type: "SET_SELECTED_SADDRESS",
-              payload: tempSAddress.addressId,
-            });
-          } else {
-            sList.push(tempSAddress);
-          }
-          dispatch({
-            type: "STORE_SADDRESSLIST",
-            payload: sList,
-          });
-        }
         dispatch({
           type: "CLEAR_TEMP_BILLING_ADDRESS",
         });
@@ -310,9 +272,10 @@ export const sendOrderWithNewAddresses =
       }
       localStorage.setItem("cart", null);
       localStorage.setItem("auth", JSON.stringify(getState().auth));
-      return;
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 
@@ -406,30 +369,6 @@ export const sendRegisterRequest =
     }
   };
 
-const updateAddressList = (address) => async (getState, dispatch) => {
-  if (address.shippingAddress) {
-    let oldSList = getState().auth.sAddressList;
-    let newSList = [];
-    newSList = oldSList.map((addr) => {
-      addr.defaultAddressFlg && addr.id !== address.id
-        ? { ...addr, defaultAddressFlg: false }
-        : addr;
-    });
-    address.defaultAddressFlg &&
-      dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
-    dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
-  } else {
-    let oldBList = getState().auth.bAddressList;
-    let newBList = [];
-    newBList = oldBList.map((addr) => {
-      addr.defaultAddressFlg ? { ...addr, defaultAddressFlg: false } : addr;
-    });
-    address.defaultAddressFlg &&
-      dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
-    dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
-  }
-};
-
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
@@ -449,7 +388,7 @@ export const getUserAddress = () => async (dispatch, getState) => {
         bList === null ? (bList = [address]) : bList.push(address);
       }
     });
-    console.log(data);
+    console.log("getting user addresses" + data);
     sList && dispatch({ type: "STORE_SADDRESSLIST", payload: sList });
     bList && dispatch({ type: "STORE_BADDRESSLIST", payload: bList });
     dispatch({
@@ -471,37 +410,32 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   try {
     const { data } = await api.put(`/addresses/${id}`, address);
-    if (address.shippingAddress) {
-      let oldSList = getState().auth.sAddressList;
-      let newSList = [];
-      newSList = oldSList.map((addr) => {
-        if (addr.addressId === 0) return data;
-        // 新規登録の住所がデフォルト設定の場合、前のデフォルト住所のフラグをfalseに変更
-        return address.defaultAddressFlg && addr.defaultAddressFlg
+    let oldList = data.shippingAddress
+      ? getState().auth.sAddressList
+      : getState().auth.bAddressList;
+    let newList = [];
+    newList = oldList.map((addr) => {
+      // 新規登録の住所がデフォルト設定の場合、前のデフォルト住所のフラグをfalseに変更
+      if (addr.addressId === id) {
+        return data;
+      } else {
+        return data.defaultAddressFlg && addr.defaultAddressFlg
           ? { ...addr, defaultAddressFlg: false }
           : addr;
-      });
-      address.defaultAddressFlg &&
-        dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
-      dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
-    } else {
-      let oldBList = getState().auth.bAddressList;
-      let newBList = [];
-      newBList = oldBList.map((addr) =>
-        address.defaultAddressFlg &&
-        addr.defaultAddressFlg &&
-        addr.addressId !== address.addressId
-          ? { ...addr, defaultAddressFlg: false }
-          : addr
-      );
-      address.defaultAddressFlg &&
-        dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
-      dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
-    }
-    let type = address.shippingAddress
+      }
+    });
+    let type = data.shippingAddress
+      ? "SET_SELECTED_SADDRESS"
+      : "SET_SELECTED_BADDRESS";
+    data.defaultAddressFlg && dispatch({ type: type, payload: data.addressId });
+    let storeListType = data.shippingAddress
+      ? "STORE_SADDRESSLIST"
+      : "STORE_BADDRESSLIST";
+    dispatch({ type: storeListType, payload: newList });
+    let clearType = data.shippingAddress
       ? "CLEAR_TEMP_SHIPPING_ADDRESS"
       : "CLEAR_TEMP_BILLING_ADDRESS";
-    dispatch({ type: type });
+    dispatch({ type: clearType });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);

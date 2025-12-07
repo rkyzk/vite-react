@@ -24,6 +24,7 @@ const PaymentConfirmation = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("use effect running");
     if (
       paymentIntent &&
       clientSecret &&
@@ -37,9 +38,14 @@ const PaymentConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
-      selectedSAddrId === 0 || selectedBAddrId === -1
-        ? dispatch(sendOrderWithNewAddresses(sendData, user.id))
-        : dispatch(sendOrder(sendData));
+      if (selectedSAddrId === 0 || selectedBAddrId === -1) {
+        // 新しい住所が使われるとき住所のデータも含め注文リクエストする
+        dispatch(sendOrderWithNewAddresses(sendData, user.id));
+        // // 住所更新された時はDBより再度取得
+        // dispatch(getUserAddress());
+      } else {
+        dispatch(sendOrder(sendData));
+      }
     }
   }, [clientSecret]);
 
@@ -54,14 +60,16 @@ const PaymentConfirmation = () => {
               <span>お届け先：</span>
               <AddressCard address={order.shippingAddr} />
             </div>
-            {order.billingAddr?.fullname.length > 0 && (
-              <div className="py-1">
-                <span>請求先:</span>
+            <div className="py-1">
+              <span>請求先:</span>
+              {order.billingAddr?.fullname.length > 0 ? (
                 <AddressCard address={order.billingAddr} />
-              </div>
-            )}
+              ) : (
+                <p>お届け先と同じ</p>
+              )}
+            </div>
           </div>
-          <div>
+          <div className="mt-3">
             <OrderedItemsTable cart={order.cart} />
           </div>
         </div>

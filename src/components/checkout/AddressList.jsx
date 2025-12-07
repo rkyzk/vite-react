@@ -19,7 +19,7 @@ const AddressList = () => {
     <div className="flex">
       <div className="mx-auto grid gap-x-5 xs:grid-col-1 sm:grid-cols-2 md:w-[620px] lg:w-[680px] lg:gap-x-[40px]">
         <div>
-          <h2 className="text-xs font-extralight">お届け先:</h2>
+          <h2 className="text-[0.7rem] font-extralight">お届け先</h2>
           {!sAddressList && <AddressForm isSAddr />}
           {sAddressList?.map((address) => {
             return (
@@ -58,7 +58,7 @@ const AddressList = () => {
           )}
         </div>
         <div>
-          <h2 className="text-xs font-extralight">請求先:</h2>
+          <h2 className="text-[0.7rem] font-extralight">請求先</h2>
           <div className="mt-[-4px] ml-[10px]">
             <label htmlFor="selected-b-addr0">
               <input
