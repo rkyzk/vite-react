@@ -1,9 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useEffect } from "react";
-import { createClientSecret, refreshJWTToken } from "../../store/actions";
 import PaymentForm from "./PaymentForm";
 import Spinner from "../shared/Spinner";
 
@@ -25,26 +22,12 @@ const StripePayment = ({ stripePaymentProps }) => {
   } = stripePaymentProps;
   const auth = useSelector((state) => state.auth);
   const clientSecret = auth?.clientSecret ? auth.clientSecret : null;
-  const { isLoading, errorMessage } = useSelector((state) => state.errors);
+  const { isLoading } = useSelector((state) => state.errors);
   const cart = useSelector((state) => state.carts.cart);
-  const navigate = useNavigate();
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
   );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    !clientSecret && dispatch(createClientSecret(totalPrice));
-  }, []);
-
-  useEffect(() => {
-    if (errorMessage === "JWT有効期限切れ") {
-      if (dispatch(refreshJWTToken())) {
-        dispatch(createClientSecret(totalPrice));
-        navigate("/checkout");
-      }
-    }
-  }, [dispatch, errorMessage]);
 
   if (isLoading) {
     return <Spinner />;
@@ -62,7 +45,7 @@ const StripePayment = ({ stripePaymentProps }) => {
   return (
     <div className="flex">
       {clientSecret && (
-        <div className="xs:w-[330px] mx-auto md:w-[620px] lg:w-[680px]">
+        <div className="xs:px-1 mx-auto sm:w-11/12 sm:max-w-[400px] md:max-w-[620px] lg:w-[680px]">
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentForm props={props} />
           </Elements>

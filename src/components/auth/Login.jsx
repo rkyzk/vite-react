@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearErrorMessage,
   getUserAddress,
   sendLoginRequest,
+  setCommandIdx,
 } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import { useForm } from "react-hook-form";
@@ -14,11 +14,12 @@ import { IoEyeOutline } from "react-icons/io5";
 /**
  * log users in
  */
-const Login = ({ setModalOpen, checkoutFlg }) => {
+const Login = () => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage, page } = useSelector((state) => state.errors);
+  const { errorMessage } = useSelector((state) => state.errors);
+  const { checkout } = useSelector((state) => state.modal);
   const {
     register,
     handleSubmit,
@@ -30,23 +31,11 @@ const Login = ({ setModalOpen, checkoutFlg }) => {
   const path = useLocation().pathname;
 
   const handleLogin = async (data) => {
-    let result = await dispatch(
-      sendLoginRequest(data, reset, toast, setLoader)
-    );
-    if (result) {
-      dispatch(getUserAddress());
-      setLoader(false);
-      setModalOpen(false);
-      toast.success("ログインしました。");
-      checkoutFlg ? navigate("/checkout") : navigate(path);
-    } else {
-      setLoader(false);
-      setModalOpen(true);
-    }
+    await dispatch(sendLoginRequest(data, reset, toast, setLoader));
+    dispatch(setCommandIdx(0));
+    dispatch(getUserAddress());
+    checkout ? navigate("/checkout") : navigate(path);
   };
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-  }, []);
 
   return (
     <form
@@ -55,7 +44,7 @@ const Login = ({ setModalOpen, checkoutFlg }) => {
           items-center"
     >
       <legend className="text-sm text-center">ログイン</legend>
-      {errorMessage && page === "login" && (
+      {errorMessage && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
         </span>

@@ -1,12 +1,16 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
+import {
+  clearAuthData,
+  setModalCheckout,
+  setModalOpen,
+} from "../store/actions";
 
-const Cart = ({ setModalOpen, setCheckoutFlg }) => {
+const Cart = () => {
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
-  const user = auth?.user;
-
+  const dispatch = useDispatch();
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -14,11 +18,12 @@ const Cart = ({ setModalOpen, setCheckoutFlg }) => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    if (user) {
+    if (auth && auth.user) {
+      dispatch(clearAuthData());
       navigate("/checkout");
     } else {
-      setModalOpen(true);
-      setCheckoutFlg(true);
+      dispatch(setModalCheckout());
+      dispatch(setModalOpen());
     }
   };
 
@@ -46,7 +51,7 @@ const Cart = ({ setModalOpen, setCheckoutFlg }) => {
           <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
             <button
               className={`mt-1 bg-stone-700 text-white
-                  py-1 px-2 sm:mr-8`}
+                py-1 px-2 sm:mr-8`}
               onClick={() => handleCheckout()}
             >
               購入手続きに進む

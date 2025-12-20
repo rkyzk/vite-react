@@ -1,7 +1,6 @@
 const initialState = {
   isLoading: false,
   errorMessage: null,
-  page: null,
 };
 
 const errorReducer = (state = initialState, action) => {
@@ -22,7 +21,6 @@ const errorReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         errorMessage: action.payload,
-        page: action.page,
       };
     case "CLEAR_ERROR_MESSAGE":
       return {

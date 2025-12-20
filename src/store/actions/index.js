@@ -190,12 +190,19 @@ export const sendOrder = (data) => async (dispatch, getState) => {
     localStorage.setItem("cart", null);
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
-    console.log(error);
+    if (error.status === 420) {
+      dispatch({
+        type: "SET_COMMAND_IDX",
+        payload: 1,
+      });
+    }
+    return false;
   }
 };
 
 export const sendOrderWithNewAddresses =
-  (data, userId) => async (dispatch, getState) => {
+  (data) => async (dispatch, getState) => {
+    const id = getState().auth.user.id;
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -221,12 +228,12 @@ export const sendOrderWithNewAddresses =
     };
     let sAddress = null;
     if (selectedSAddrId === 0) {
-      let user = tempSAddress.saveAddr ? { userId: userId } : null;
+      let user = tempSAddress.saveAddr ? { userId: id } : null;
       sAddress = { ...tempSAddress, addressId: selectedSAddrId, user: user };
     }
     let bAddress = null;
     if (selectedBAddrId === -1) {
-      let user = tempBAddress.saveAddr ? { userId: userId } : null;
+      let user = tempBAddress.saveAddr ? { userId: id } : null;
       bAddress = { ...tempBAddress, addressId: selectedBAddrId, user: user };
     }
     const sendData = {
@@ -274,7 +281,12 @@ export const sendOrderWithNewAddresses =
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       return true;
     } catch (error) {
-      console.log(error);
+      if (error.status === 420) {
+        dispatch({
+          type: "SET_COMMAND_IDX",
+          payload: 1,
+        });
+      }
       return false;
     }
   };
@@ -317,11 +329,18 @@ export const sendLoginRequest =
         payload: data,
       });
       dispatch({
+        type: "SET_COMMAND_IDX",
+        payload: 0,
+      });
+      dispatch({
         type: "CLEAR_ERROR_MESSAGE",
       });
+      dispatch({
+        type: "SET_FALSE",
+      });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
+      toast.success("ログインしました。");
       reset();
-      return true;
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
@@ -329,10 +348,9 @@ export const sendLoginRequest =
           payload: "ユーザ名またはパスワードが間違っています。",
           page: "login",
         });
-        return false;
       } else {
+        console.log(error?.response?.data?.message);
         toast.error("エラー発生。再度ログインしてください。");
-        return false;
       }
     }
   };
@@ -340,13 +358,24 @@ export const sendLoginRequest =
 export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
-  toast.success("ログアウトしました。");
   localStorage.setItem("auth", null);
-  localStorage.setItem("cartItems", []);
-  dispatch({
-    type: "CLEAR_CART",
-  });
-  navigate(`/`);
+  console.log("LOGGED OUT!!!!");
+  if (navigate) {
+    toast.success("ログアウトしました。");
+    localStorage.setItem("cartItems", []);
+    dispatch({
+      type: "CLEAR_CART",
+    });
+    dispatch({
+      type: "CLEAR_ERROR_MESSAGE",
+    });
+    navigate(`/`);
+  } else {
+    dispatch({
+      type: "IS_ERROR",
+      payload: "再度ログインしてください。",
+    });
+  }
 };
 
 export const sendRegisterRequest =
@@ -376,8 +405,8 @@ export const getUserAddress = () => async (dispatch, getState) => {
     let bList = getState().auth.bAddressList;
     let selectedSId = 0;
     let selectedBId = 0;
-    console.log(data.length);
     data?.map((address) => {
+      console.log(address);
       if (address.shippingAddress) {
         if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
         if (address.defaultAddressFlg) selectedSId = address.addressId;
@@ -388,7 +417,6 @@ export const getUserAddress = () => async (dispatch, getState) => {
         bList === null ? (bList = [address]) : bList.push(address);
       }
     });
-    console.log("getting user addresses" + data);
     sList && dispatch({ type: "STORE_SADDRESSLIST", payload: sList });
     bList && dispatch({ type: "STORE_BADDRESSLIST", payload: bList });
     dispatch({
@@ -443,61 +471,33 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 };
 
 export const storeTempAddress = (address) => async (dispatch, getState) => {
-  //   if (address.addressId !== 0) {
-  //     if (address.shippingAddress) {
-  //       let oldSList = getState().auth.sAddressList;
-  //       let newSList = [];
-  //       newSList = oldSList
-  //         ? oldSList.map((addr) =>
-  //             address.defaultAddressFlg &&
-  //             addr.defaultAddressFlg &&
-  //             addr.id !== address.id
-  //               ? { ...addr, defaultAddressFlg: false }
-  //               : addr
-  //           )
-  //         : [address];
-  //       address.defaultAddressFlg &&
-  //         dispatch({ type: "SET_SELECTED_SADDRESS", payload: address.addressId });
-  //       dispatch({ type: "STORE_SADDRESSLIST", payload: newSList });
-  //     } else {
-  //       let oldBList = getState().auth.bAddressList;
-  //       let newBList = [];
-  //       newBList = oldBList
-  //         ? oldBList.map((addr) =>
-  //             address.defaultAddressFlg &&
-  //             addr.defaultAddressFlg &&
-  //             addr.id !== address.id
-  //               ? { ...addr, defaultAddressFlg: false }
-  //               : addr
-  //           )
-  //         : [address];
-  //       address.defaultAddressFlg &&
-  //         dispatch({ type: "SET_SELECTED_BADDRESS", payload: address.addressId });
-  //       dispatch({ type: "STORE_BADDRESSLIST", payload: newBList });
-  //     }
-  //   }
   address.shippingAddress
     ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
     : dispatch({ type: "STORE_TEMP_BILLING_ADDRESS", payload: address });
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
-export const validateAddress = (address, sAddr) => async (dispatch) => {
+export const validateAddress = (sAddr) => async (dispatch, getState) => {
+  const { tempSAddress, tempBAddress } = getState().auth;
+  let address = sAddr ? tempSAddress : tempBAddress;
   let result =
     address.postalCode !== "" &&
-    address.fullname.length >= 3 &&
-    address.streetAddress2.length >= 2;
+    address.fullname.length > 1 &&
+    address.streetAddress2.length > 1;
   let newErrors = {
     postalCode: address.postalCode === "",
-    fullname: address.fullname.length < 3,
+    fullname: address.fullname.length < 2,
     streetAddress2: address.streetAddress2.length < 2,
   };
-  result && sAddr
-    ? dispatch({ type: "CLEAR_SADDRESS_ERRORS" })
-    : dispatch({ type: "STORE_SADDRESS_ERRORS", payload: newErrors });
-  result && !sAddr
-    ? dispatch({ type: "CLEAR_BADDRESS_ERRORS" })
-    : dispatch({ type: "STORE_BADDRESS_ERRORS", payload: newErrors });
+  if (sAddr) {
+    result
+      ? dispatch({ type: "CLEAR_SADDRESS_ERRORS" })
+      : dispatch({ type: "STORE_SADDRESS_ERRORS", payload: newErrors });
+  } else {
+    result
+      ? dispatch({ type: "CLEAR_BADDRESS_ERRORS" })
+      : dispatch({ type: "STORE_BADDRESS_ERRORS", payload: newErrors });
+  }
   return result;
 };
 
@@ -512,15 +512,15 @@ export const deleteAddress =
       getState().auth;
     let newList = sAddr ? [...sAddressList] : [...bAddressList];
     newList = newList.filter((address) => {
-      return address.addressId !== id;
+      return address.addressId !== Number(id);
     });
     // 削除された住所がselectedAddressだったらリストの次の住所をselectedAddressに設定
     if (sAddr && selectedSAddrId === Number(id)) {
-      let newSelectedAddrId = newList[0].addressId;
+      let newSelectedAddrId = newList.length > 0 ? newList[0].addressId : 0;
       dispatch({ type: "SET_SELECTED_SADDRESS", payload: newSelectedAddrId });
     }
     if (!sAddr && selectedBAddrId === Number(id)) {
-      let newSelectedAddrId = newList[0].addressId;
+      let newSelectedAddrId = newList.length > 0 ? newList[0].addressId : 0;
       dispatch({ type: "SET_SELECTED_BADDRESS", payload: newSelectedAddrId });
     }
     let type = sAddr ? "STORE_SADDRESSLIST" : "STORE_BADDRESSLIST";
@@ -557,49 +557,82 @@ export const changeSelectedAddr =
   };
 
 export const clearAddressData = () => async (dispatch, getState) => {
-  dispatch({ type: "TOGGLE_BADDRESS_EQUALS_SADDRESS", payload: true });
   dispatch({ type: "CLEAR_BADDRESS_ERRORS" });
   dispatch({ type: "CLEAR_SADDRESS_ERRORS" });
   dispatch({ type: "SET_ADDR_CHECKED_FALSE" });
-  dispatch({ type: "CLEAR_SADDRESS_ERRORS" });
   dispatch({ type: "CLEAR_TEMP_SHIPPING_ADDRESS" });
   dispatch({ type: "CLEAR_TEMP_BILLING_ADDRESS" });
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
-export const createClientSecret =
-  (totalPrice) => async (dispatch, getState) => {
-    const sendData = {
-      amount: Number(totalPrice),
-      currency: "jpy",
-    };
-    try {
-      const { data } = await api.post(`/order/stripe-client-secret`, sendData);
-      dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
-      localStorage.setItem("auth", JSON.stringify(getState().auth));
-    } catch (error) {
-      if (error.status === 420) {
-        dispatch({ type: "IS_ERROR", payload: "JWT有効期限切れ" });
-      } else {
-        console.log(error);
-      }
-    }
-  };
+export const clearAuthData = () => async (dispatch, getState) => {
+  dispatch({ type: "STORE_CLIENT_SECRET", payload: null });
+  localStorage.setItem("auth", JSON.stringify(getState().auth));
+};
 
-export const refreshJWTToken = () => async (getState, dispatch) => {
-  const { data } = await api.post(`/auth/refreshtoken`);
-  if (data.message === "JWT refreshed.") {
-    dispatch({ type: "CLEAR_ERROR_MESSAGE" });
-    return true;
-  } else {
-    const { user } = getState().auth.user;
-    let { data } = await api.get(`/auth/signout/${user.id}`);
-    dispatch({ type: "LOGOUT_USER" });
-    localStorage.setItem("auth", null);
-    return false;
+export const createClientSecret = () => async (dispatch, getState) => {
+  const { cart } = getState().carts;
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr?.price * curr?.purchaseQty,
+    0
+  );
+  const sendData = {
+    amount: Number(totalPrice),
+    currency: "jpy",
+  };
+  console.log("GETTING CLIENT SECRET!!!!");
+  try {
+    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
+  } catch (error) {
+    if (error.status === 420) {
+      dispatch({ type: "SET_COMMAND_IDX", payload: 1 });
+    } else {
+      dispatch({ type: "IS_ERROR", payload: error.message });
+    }
   }
+};
+
+export const sendRefreshJwtTokenRequest = () => async (dispatch, getState) => {
+  console.log("GETTING REFRESH TOKEN!!!!");
+  try {
+    let { data } = await api.post(`/auth/refreshtoken`);
+    if (data.message === "Refresh Token has expired.") {
+      console.log("REFRESH TOKEN EXPIRED!!!!");
+      dispatch({ type: "SET_COMMAND_IDX", payload: 2 });
+    } else {
+      dispatch({ type: "SET_COMMAND_IDX", payload: 0 });
+    }
+  } catch (error) {
+    dispatch({ type: "IS_ERROR", payload: error.message });
+  }
+};
+
+export const setErrorMessage = (msg) => async (dispatch) => {
+  dispatch({ type: "IS_ERROR", payload: msg });
 };
 
 export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });
+};
+
+export const setModalOpen = () => async (dispatch, getState) => {
+  dispatch({ type: "OPEN_MODAL" });
+};
+
+export const setModalLogin = () => async (dispatch, getState) => {
+  dispatch({ type: "LOGIN_ONLY" });
+};
+
+export const setModalCheckout = () => async (dispatch, getState) => {
+  dispatch({ type: "CHECKOUT" });
+};
+
+export const closeModal = () => async (dispatch, getState) => {
+  dispatch({ type: "SET_FALSE" });
+};
+
+export const setCommandIdx = (idx) => async (dispatch, getState) => {
+  dispatch({ type: "SET_COMMAND_IDX", payload: idx });
 };

@@ -5,7 +5,6 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import styles from "../../styles/PaymentForm.module.css";
 import { validateAddress } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -20,9 +19,7 @@ const PaymentForm = ({ props }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState([]);
-  const { tempSAddress, tempBAddress, selectedBAddrId } = useSelector(
-    (state) => state.auth
-  );
+  const { tempSAddress, selectedBAddrId } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const paymentElementOptions = {
     layout: "tabs",
@@ -34,15 +31,14 @@ const PaymentForm = ({ props }) => {
       return;
     }
     let isValid = true;
-    let errorMsgs = [];
     if (tempSAddress) {
-      isValid = await dispatch(validateAddress(tempSAddress, true));
+      isValid = await dispatch(validateAddress(true));
     }
     if (selectedBAddrId === -1) {
-      isValid &= await dispatch(validateAddress(tempBAddress, false));
+      isValid &= await dispatch(validateAddress(false));
     }
     if (!isValid) {
-      errorMsgs.push("住所を正しく記入してください。");
+      setErrorMessage("住所を正しく記入してください。");
       return;
     } else {
       setErrorMessage(null);
@@ -63,12 +59,12 @@ const PaymentForm = ({ props }) => {
   const isLoading = !stripe || !elements;
 
   return (
-    <form onSubmit={handleSubmit} className="flex-col py-4">
-      <h2 className={`${styles.paymentHeading}`}>カード情報</h2>
+    <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
+      <h2 className="text-[0.7rem] font-normal">カード情報</h2>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className={`${styles.paymentForm}`}>
+        <div>
           <PaymentElement options={paymentElementOptions} />
           {errorMessage && (
             <div className="text-red-500 mt-2">{errorMessage}</div>

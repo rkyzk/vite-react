@@ -4,19 +4,21 @@ import { GiPlantsAndAnimals } from "react-icons/gi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Badge } from "@mui/material";
 import styles from "../../styles/Navbar.module.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import UserMenu from "./UserMenu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import { setModalOpen } from "../../store/actions";
 
-function Navbar({ setModalOpen }) {
+function Navbar() {
   const cart = useSelector((state) => state.carts.cart);
   const cartItemsQty = cart ? cart.length : 0;
   const path = useLocation().pathname;
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const closeMenu = (e) => {
     if (e.target.id !== "user") {
@@ -77,7 +79,7 @@ function Navbar({ setModalOpen }) {
         </Box>
       ) : (
         <Button
-          onClick={() => setModalOpen(true)}
+          onClick={() => dispatch(setModalOpen())}
           style={{
             color: "#333",
             fontSize: "1rem",

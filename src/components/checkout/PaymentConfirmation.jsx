@@ -1,10 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
   sendOrder,
   sendOrderWithNewAddresses,
   getUserAddress,
+  sendLogoutRequest,
+  setModalLogin,
+  setModalOpen,
+  sendRefreshJwtTokenRequest,
+  setCommandIdx,
+  setModalCheckout,
 } from "../../store/actions";
 import AddressCard from "./AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
@@ -18,13 +24,25 @@ const PaymentConfirmation = () => {
   const cart = useSelector((state) => state.carts.cart);
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
-  const { selectedSAddrId, selectedBAddrId, user } = useSelector(
+  const { selectedSAddrId, selectedBAddrId, commandIdx, user } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("use effect running");
+    console.log(commandIdx);
+    const refreshJwtToken = async () => {
+      await dispatch(sendRefreshJwtTokenRequest());
+    };
+    const logoutUser = async () => {
+      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      dispatch(sendLogoutRequest(user.id, null, null));
+      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      dispatch(setModalLogin());
+      dispatch(setModalCheckout());
+      dispatch(setModalOpen());
+    };
     if (
       paymentIntent &&
       clientSecret &&
@@ -32,22 +50,34 @@ const PaymentConfirmation = () => {
       cart &&
       cart?.length > 0
     ) {
-      const sendData = {
-        pgName: "Stripe",
-        pgPaymentId: paymentIntent,
-        pgStatus: "succeeded",
-        pgResponseMessage: "Payment successful",
-      };
-      if (selectedSAddrId === 0 || selectedBAddrId === -1) {
-        // 新しい住所が使われるとき住所のデータも含め注文リクエストする
-        dispatch(sendOrderWithNewAddresses(sendData, user.id));
-        // // 住所更新された時はDBより再度取得
-        // dispatch(getUserAddress());
-      } else {
-        dispatch(sendOrder(sendData));
+      if (commandIdx === 0) {
+        console.log("command idx 0!!!");
+        const sendData = {
+          pgName: "Stripe",
+          pgPaymentId: paymentIntent,
+          pgStatus: "succeeded",
+          pgResponseMessage: "Payment successful",
+        };
+        if (selectedSAddrId === 0 || selectedBAddrId === -1) {
+          // 新しい住所が使われるとき住所のデータも含め注文リクエストする
+          dispatch(sendOrderWithNewAddresses(sendData));
+        } else {
+          dispatch(sendOrder(sendData));
+        }
+      } else if (commandIdx === 1) {
+        console.log("command idx 1!!!");
+        refreshJwtToken();
+      } else if (commandIdx === 2) {
+        console.log("command idx 2!!!");
+        logoutUser();
       }
     }
-  }, [clientSecret]);
+  }, [commandIdx]);
+
+  useEffect(() => {
+    // 住所更新された時はDBより再度取得
+    dispatch(getUserAddress());
+  }, [order]);
 
   return (
     <>

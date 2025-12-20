@@ -7,6 +7,11 @@ const InputWithLabel = ({
   onInputChange,
   children,
   isSAddr,
+  maxLength,
+  min,
+  errors,
+  errorMsg,
+  register,
 }) => (
   <>
     <label
@@ -15,14 +20,34 @@ const InputWithLabel = ({
     >
       {children}
     </label>
-    <input
-      id={id}
-      name={id}
-      type={type}
-      className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
-      value={value}
-      onChange={(e) => onInputChange(e)}
-    />
+    {register ? (
+      <input
+        id={id}
+        name={id}
+        type={type}
+        className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+        value={value}
+        {...register(id, {
+          required: true,
+          validate: (value) => value.length > min,
+        })}
+        maxLength={maxLength}
+      />
+    ) : (
+      <input
+        id={id}
+        name={id}
+        type={type}
+        className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+        value={value}
+        maxLength={maxLength}
+      />
+    )}
+    {id in ["fullname", "streetAddress2", "postalCode"] && errors[id] && (
+      <span className="text-sm font-semibold text-red-600 mt-0">
+        {errorMsg}
+      </span>
+    )}
   </>
 );
 

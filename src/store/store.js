@@ -5,6 +5,7 @@ import categoryReducer from "./reducers/categoryReducer";
 import cartReducer from "./reducers/cartReducer";
 import orderReducer from "./reducers/orderReducer";
 import authReducer from "./reducers/authReducer";
+import modalReducer from "./reducers/modalReducer";
 
 // const cartItems = [];
 // localStorage.removeItem("cartItems");
@@ -24,6 +25,10 @@ const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
 
+// const modal = localStorage.getItem("modal")
+//   ? JSON.parse(localStorage.getItem("modal"))
+//   : null;
+
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,
@@ -38,6 +43,7 @@ const store = configureStore({
     carts: cartReducer,
     order: orderReducer,
     auth: authReducer,
+    modal: modalReducer,
   },
   preloadedState: initialState,
 });

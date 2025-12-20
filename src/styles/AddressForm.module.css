@@ -31,9 +31,8 @@
 .Input {
   line-height: 1.5rem;
   padding: 2px 8px !important;
-  width: 90%;
   border: #c9c4c4 solid 1px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .note {

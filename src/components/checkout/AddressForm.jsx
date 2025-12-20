@@ -4,14 +4,13 @@ import { useState, useEffect } from "react";
 import {
   sendUpdateAddressReq,
   deleteAddress,
-  clearAddressErrors,
   validateAddress,
   storeTempAddress,
+  clearAddressErrors,
 } from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
 import toast from "react-hot-toast";
 import AddressCard from "./AddressCard";
-import InputWithLabel from "../shared/InputWithLabel";
 
 const AddressForm = ({ address, isSAddr }) => {
   const initAddr = {
@@ -71,22 +70,9 @@ const AddressForm = ({ address, isSAddr }) => {
     });
   };
 
-  const hideEditForm = (e) => {
-    if (
-      (isSAddr && !e.target.classList.contains("s-addr")) ||
-      (!isSAddr && !e.target.classList.contains("b-addr"))
-    ) {
-      handleCancelEditAddress(isSAddr);
-      document.removeEventListener("click", hideEditForm);
-    }
-  };
-
   const showEditForm = () => {
     setZip(tempAddress.postalCode);
     setEditAddr(true);
-    // setTimeout(() => {
-    //   document.addEventListener("click", hideEditForm);
-    // }, 200);
   };
 
   const handleCheckZip = () => {
@@ -94,7 +80,7 @@ const AddressForm = ({ address, isSAddr }) => {
     return;
   };
 
-  const handleChangeAddress = async (e) => {
+  const handleChangeAddress = (e) => {
     if (e.target.name === "saveAddr" || e.target.name === "defaultAddressFlg") {
       setTempAddress({
         ...tempAddress,
@@ -104,17 +90,9 @@ const AddressForm = ({ address, isSAddr }) => {
       setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
     }
   };
-  useEffect(() => {
-    dispatch(storeTempAddress(tempAddress));
-    addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
-  }, [tempAddress]);
-
-  useEffect(() => {
-    dispatch(clearAddressErrors());
-  }, []);
 
   const saveAddress = async () => {
-    let result = await dispatch(validateAddress(tempAddress, isSAddr));
+    let result = await dispatch(validateAddress(isSAddr));
     if (result) {
       dispatch(sendUpdateAddressReq(tempAddress));
       setEditAddr(false);
@@ -137,6 +115,11 @@ const AddressForm = ({ address, isSAddr }) => {
     setErrMsgZip("");
     dispatch(clearAddressErrors(sAddr));
   };
+
+  useEffect(() => {
+    dispatch(storeTempAddress(tempAddress));
+    addrChecked && dispatch(validateAddress(isSAddr));
+  }, [tempAddress]);
 
   const saveButtons = () => {
     return (
@@ -195,11 +178,7 @@ const AddressForm = ({ address, isSAddr }) => {
             className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
           />
         </label>
-        <span>
-          デフォルトに設定
-          <br />
-          (次回以降上に表示する)
-        </span>
+        <span>デフォルトに設定(次回以降上に表示)</span>
       </div>
     );
   };
@@ -210,16 +189,22 @@ const AddressForm = ({ address, isSAddr }) => {
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
         className={`${isSAddr ? "s-addr" : "b-addr"}
-        ${editAddr && "bg-neutral-300 w-[275px] pl-2 pb-2"}`}
+        ${editAddr && "bg-neutral-300 pl-2 pb-2"}`}
       >
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
-          <InputWithLabel
+          <label
+            htmlFor="fullname"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            氏名:
+          </label>
+          <input
             id="fullname"
+            name="fullname"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.fullname}
-            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
-            children="氏名:"
-            isSAddr={isSAddr}
+            onChange={(e) => handleChangeAddress(e, isSAddr)}
           />
           {((isSAddr && sAddrErrs?.fullname) ||
             (!isSAddr && bAddrErrs?.fullname)) && (
@@ -267,12 +252,18 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <InputWithLabel
-            id="prefecture"
+          <label
+            htmlFor="province"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            都道府県:
+          </label>
+          <input
+            id="province"
+            name="province"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.prefecture}
-            children="都道府県:"
-            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -280,12 +271,18 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <InputWithLabel
+          <label
+            htmlFor="city"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            市区町村:
+          </label>
+          <input
             id="city"
+            name="city"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.city}
-            children="市区町村:"
-            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -293,11 +290,16 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <InputWithLabel
+          <label
+            htmlFor="streetAddress1"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          ></label>
+          <input
             id="streetAddress1"
+            name="streetAddress1"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
             value={tempAddress?.streetAddress1}
-            isSAddr={isSAddr}
           />
         </div>
         <div
@@ -305,28 +307,39 @@ const AddressForm = ({ address, isSAddr }) => {
             styles.InputItem
           } mt-1`}
         >
-          <InputWithLabel
+          <label
+            htmlFor="streetAddress2"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            番地・建物名・部屋番号:
+          </label>
+          <input
             id="streetAddress2"
+            name="streetAddress2"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.streetAddress2}
-            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
-            children="番地・建物名・部屋番号:"
-            isSAddr={isSAddr}
+            onChange={(e) => handleChangeAddress(e)}
           />
-          {(isSAddr && sAddrErrs?.streetAddress2) ||
-            (!isSAddr && bAddrErrs?.streetAddress2 && (
-              <span className="text-sm font-semibold text-red-600 mt-0">
-                番地を入力してください
-              </span>
-            ))}
+          {((isSAddr && sAddrErrs?.streetAddress2) ||
+            (!isSAddr && bAddrErrs?.streetAddress2)) && (
+            <span className="text-sm font-semibold text-red-600 mt-0">
+              番地を入力してください
+            </span>
+          )}
         </div>
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
-          <InputWithLabel
+          <label
+            htmlFor="streetAddress3"
+            className={`${isSAddr ? "s-addr" : "b-addr"} hidden`}
+          ></label>
+          <input
             id="streetAddress3"
+            name="streetAddress3"
             type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
             value={tempAddress?.streetAddress3}
-            onInputChange={(e) => handleChangeAddress(e, isSAddr)}
-            isSAddr={isSAddr}
+            onChange={(e) => handleChangeAddress(e)}
           />
         </div>
         <div>
@@ -359,7 +372,7 @@ const AddressForm = ({ address, isSAddr }) => {
         <div
           className={`${isSAddr && editAddr && "s-addr"}
           ${!isSAddr && editAddr && "b-addr"}
-          ${isSAddr && !sAddressList && !bAddressList && "mt-[52px]"}`}
+          ${isSAddr && !sAddressList && !bAddressList && "md:mt-[52px]"}`}
         >
           {addressForm()}
           {((isSAddr && sAddressList?.length > 0) ||

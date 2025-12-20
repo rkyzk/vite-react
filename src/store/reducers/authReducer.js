@@ -10,6 +10,7 @@ const initialState = {
   addrChecked: false,
   selectedSAddrId: 0,
   selectedBAddrId: 0,
+  commandIdx: 0,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -93,11 +94,6 @@ const authReducer = (state = initialState, action) => {
         ...state,
         clientSecret: action.payload,
       };
-    case "REMOVE_CLIENT_SECRET":
-      return {
-        ...state,
-        clientSecret: null,
-      };
     case "SET_ADDR_CHECKED_FALSE":
       return {
         ...state,
@@ -118,6 +114,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         selectedSAddrId: 0,
         selectedBAddrId: 0,
+      };
+    case "SET_COMMAND_IDX":
+      return {
+        ...state,
+        commandIdx: action.payload,
       };
     default:
       return state;
