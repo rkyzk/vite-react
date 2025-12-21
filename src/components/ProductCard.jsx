@@ -2,7 +2,7 @@ import truncateText from "../utils/truncateText";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateCart } from "../store/actions";
+import { updateCartAddQty } from "../store/actions";
 import styles from "../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ const ProductCard = ({
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCart(id, qty, toast));
+    dispatch(updateCartAddQty(id, qty, toast));
   };
 
   return (

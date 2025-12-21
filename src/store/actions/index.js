@@ -1,5 +1,6 @@
 import api from "../../api/axiosDefaults";
 
+/** 商品情報を取得 */
 export const fetchProducts = (queryString) => async (dispatch, getState) => {
   dispatch({
     type: "CLEAR_PRODUCTS",
@@ -31,9 +32,9 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
   localStorage.setItem("products", JSON.stringify(getState().products));
 };
 
+/** カテゴリーを取得 */
 export const fetchCategories = () => async (dispatch) => {
   try {
-    // dispatch({ type: "CATEGORY_LOADER" });
     const { data } = await api.get(`/public/categories`);
     dispatch({
       type: "FETCH_CATEGORIES",
@@ -57,6 +58,7 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
+/* 未使用 */
 export const fetchFeaturedProducts = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -81,6 +83,7 @@ export const fetchFeaturedProducts = () => async (dispatch, getState) => {
   }
 };
 
+/** 商品詳細を取得 */
 export const fetchProductDetail = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -113,24 +116,40 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
   }
 };
 
-export const updateCart = (id, qty, toast) => (dispatch, getState) => {
+/** 「カートに追加」ボタンからカートを更新（qty:追加する個数） */
+export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
   const { products } = getState().products;
+  const { cart } = getState().carts;
   let productData = products.find((item) => item.id === id);
-  if (!productData) {
-    const { featuredProducts } = getState().products;
-    productData = featuredProducts.find((item) => item.id === id);
-  }
-  const isQuantityInStock = qty <= productData.quantity;
+  let item = cart.find((item) => item.id === id);
+  let newQty = item ? item.purchaseQty + Number(qty) : Number(qty);
+  const isQuantityInStock = Number(newQty) <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
       type: "UPDATE_CART",
-      payload: { ...productData, purchaseQty: qty },
+      payload: { ...productData, purchaseQty: newQty },
     });
     toast.success("商品をカートに追加しました。");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   }
 };
 
+/** Cartページプルダウンからカートを更新（qty:購入個数） */
+export const updateCart = (id, qty, toast) => (dispatch, getState) => {
+  const { products } = getState().products;
+  let productData = products.find((item) => item.id === id);
+  const isQuantityInStock = qty <= productData.quantity;
+  if (isQuantityInStock) {
+    dispatch({
+      type: "UPDATE_CART",
+      payload: { ...productData, purchaseQty: qty },
+    });
+    toast.success("商品の購入個数を更新しました。");
+    localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+  }
+};
+
+/** カートから商品を削除 */
 export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   dispatch({
     type: "REMOVE_FROM_CART",
@@ -139,6 +158,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
+/** 注文をリクエスト（住所登録なし）*/
 export const sendOrder = (data) => async (dispatch, getState) => {
   const cart = getState().carts.cart;
   const totalPrice = cart.reduce(
@@ -200,6 +220,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
   }
 };
 
+/** 注文をリクエスト（住所登録あり）*/
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
     const id = getState().auth.user.id;
@@ -291,6 +312,7 @@ export const sendOrderWithNewAddresses =
     }
   };
 
+/** 編集した住所のDB更新 */
 export const saveNewAddress =
   (address, sAddr) => async (dispatch, getState) => {
     let responseAddr = null;
@@ -319,6 +341,7 @@ export const saveNewAddress =
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
 
+/** ログインリクエスト送信 */
 export const sendLoginRequest =
   (sendData, reset, toast, setLoader) => async (dispatch, getState) => {
     setLoader(true);
@@ -355,6 +378,7 @@ export const sendLoginRequest =
     }
   };
 
+/** ログアウトリクエスト送信 */
 export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
@@ -378,6 +402,7 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   }
 };
 
+/** アカウント登録リクエストを送信 */
 export const sendRegisterRequest =
   (sendData, reset, toast, setLoader) => async (dispatch) => {
     setLoader(true);
@@ -398,6 +423,7 @@ export const sendRegisterRequest =
     }
   };
 
+/** ログイン中ユーザの住所を取得しReduxに保存 */
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);

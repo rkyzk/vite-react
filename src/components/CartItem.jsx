@@ -5,8 +5,8 @@ import styles from "../styles/CartItem.module.css";
 const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
   const dispatch = useDispatch();
 
-  const handleUpdateCart = (id, qty) => {
-    dispatch(updateCart(id, qty));
+  const handleUpdateCart = (id, e) => {
+    dispatch(updateCart(id, Number(e.target.value)));
   };
 
   const handleRemoveItem = (productId) => {
@@ -31,7 +31,7 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
         <div className="w-2/12 flex">
           <select
             id={`quantity-${id}`}
-            onChange={(e) => handleUpdateCart(id, Number(e.target.value))}
+            onChange={(e) => handleUpdateCart(id, e)}
             className="mt-4 border bg-white rounded-lg
             py-2 pl-1 h-10"
           >
