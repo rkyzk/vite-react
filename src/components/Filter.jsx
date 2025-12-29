@@ -37,13 +37,13 @@ const Filter = ({ categoryId }) => {
   }, []);
 
   const handleClearFilter = () => {
-    setCategory(null);
+    setCategory("");
     setKeywords("");
     navigate({ pathname: window.location.pathname });
   };
 
   return (
-    <div className="flex flex-col mx-auto mt-4 gap-2 sm:flex-row sm:justify-center">
+    <div className="px-2 flex flex-col mx-auto mt-4 gap-2 sm:px-8 sm:w-auto sm:flex-row sm:justify-center">
       {/* Search box */}
       <input
         type="text"

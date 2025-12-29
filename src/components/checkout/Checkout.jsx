@@ -2,6 +2,7 @@ import StripePayment from "./StripePayment";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddressList from "./AddressList";
+import Cart from "../Cart";
 import {
   createClientSecret,
   sendRefreshJwtTokenRequest,
@@ -55,8 +56,9 @@ export const Checkout = () => {
       {cart.length > 0 ? (
         <>
           <AddressList props={props} />
-          <hr className="mx-3" />
+          <hr className="mx-4" />
           <StripePayment stripePaymentProps={stripePaymentProps} />
+          <Cart />
         </>
       ) : (
         <div className="w-full">

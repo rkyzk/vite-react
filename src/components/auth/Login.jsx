@@ -18,20 +18,24 @@ const Login = () => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { errorMessage } = useSelector((state) => state.errors);
+  const { errorMessage, page } = useSelector((state) => state.errors);
   const { checkout } = useSelector((state) => state.modal);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    mode: "onTouched",
+  const [data, setData] = useState({
+    username: "",
+    password: "",
   });
   const path = useLocation().pathname;
 
-  const handleLogin = async (data) => {
-    await dispatch(sendLoginRequest(data, reset, toast, setLoader));
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    await dispatch(sendLoginRequest(data, toast, setLoader));
     dispatch(setCommandIdx(0));
     dispatch(getUserAddress());
     checkout ? navigate("/checkout") : navigate(path);
@@ -39,36 +43,35 @@ const Login = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(handleLogin)}
-      className="px-2 flex flex-col mx-auto mb-5
+      onSubmit={handleLogin}
+      className="px-2 pt-1 flex flex-col mx-auto mb-5
           items-center"
     >
-      <legend className="text-sm text-center">ログイン</legend>
-      {errorMessage && (
+      <h2 className="text-[0.7rem] font-extralight text-center">
+        アカウントをお持ちの方
+      </h2>
+      {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">
           {errorMessage}
         </span>
       )}
-      <div className="w-80 flex flex-col gap-2">
+      <div className="w-80 flex flex-col gap-2 mt-2">
         <input
-          {...register("username")}
           id="username"
           name="username"
           type="text"
-          required
           placeholder="ユーザ名またはメール"
-          className="bg-white pl-2 py-1 rounded-lg border-black"
-          errors={errors}
+          className="bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
+          onChange={(e) => handleChange(e)}
         />
         <div className="flex">
           <input
-            {...register("password")}
             id="password"
             name="password"
-            required
             type="password"
             placeholder="パスワード"
-            className="bg-white pl-2 py-1 rounded-lg w-80  border-black"
+            className="bg-white pl-2 py-1 rounded-lg w-80 border border-neutral-500 outline-none"
+            onChange={(e) => handleChange(e)}
           />
           <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
         </div>

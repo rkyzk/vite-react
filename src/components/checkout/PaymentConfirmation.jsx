@@ -21,7 +21,7 @@ const PaymentConfirmation = () => {
   const paymentIntent = searchParams.get("payment_intent");
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
-  const cart = useSelector((state) => state.carts.cart);
+  const { cart } = useSelector((state) => state.carts);
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
   const { selectedSAddrId, selectedBAddrId, commandIdx, user } = useSelector(
@@ -31,7 +31,6 @@ const PaymentConfirmation = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(commandIdx);
     const refreshJwtToken = async () => {
       await dispatch(sendRefreshJwtTokenRequest());
     };
@@ -51,7 +50,6 @@ const PaymentConfirmation = () => {
       cart?.length > 0
     ) {
       if (commandIdx === 0) {
-        console.log("command idx 0!!!");
         const sendData = {
           pgName: "Stripe",
           pgPaymentId: paymentIntent,
@@ -65,10 +63,8 @@ const PaymentConfirmation = () => {
           dispatch(sendOrder(sendData));
         }
       } else if (commandIdx === 1) {
-        console.log("command idx 1!!!");
         refreshJwtToken();
       } else if (commandIdx === 2) {
-        console.log("command idx 2!!!");
         logoutUser();
       }
     }

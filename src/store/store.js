@@ -25,10 +25,6 @@ const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
 
-// const modal = localStorage.getItem("modal")
-//   ? JSON.parse(localStorage.getItem("modal"))
-//   : null;
-
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,

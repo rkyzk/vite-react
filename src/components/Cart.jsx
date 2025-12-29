@@ -7,7 +7,7 @@ import {
   setModalOpen,
 } from "../store/actions";
 
-const Cart = () => {
+const Cart = ({ cartPage }) => {
   const cart = useSelector((state) => state.carts.cart);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -28,7 +28,11 @@ const Cart = () => {
   };
 
   return (
-    <div className="px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2">
+    <div
+      className={`px-2 max-w-7xl mx-auto w-full lg:w-9/12 mt-2 ${
+        !cartPage && "mt-5"
+      }`}
+    >
       {!cart.length ? (
         <p className="w-[140px] m-auto">カートは空です。</p>
       ) : (
@@ -39,24 +43,26 @@ const Cart = () => {
             <span className="w-2/12 font-bold">数個</span>
             <span className="w-2/12 font-bold">単価</span>
           </div>
-          <hr className="mt-1" />
+          <hr className="mt-1 mx-4" />
           {cart.map((item, idx) => {
-            let data = { ...item, idx: idx };
+            let data = { ...item, idx: idx, cartPage };
             return <CartItem key={idx} {...data} />;
           })}
           <div className="flex w-full mt-3">
-            <strong className="w-7/12 text-right">合計: </strong>
+            <strong className="w-7/12 text-right">小計: </strong>
             <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
           </div>
-          <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
-            <button
-              className={`mt-1 bg-stone-700 text-white
+          {cartPage && (
+            <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
+              <button
+                className={`mt-1 bg-stone-700 text-white
                 py-1 px-2 sm:mr-8`}
-              onClick={() => handleCheckout()}
-            >
-              購入手続きに進む
-            </button>
-          </div>
+                onClick={() => handleCheckout()}
+              >
+                購入手続きに進む
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

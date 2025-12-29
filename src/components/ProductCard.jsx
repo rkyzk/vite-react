@@ -19,7 +19,7 @@ const ProductCard = ({
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCartAddQty(id, qty, toast));
+    dispatch(updateCartAddQty(id, Number(qty), toast));
   };
 
   return (

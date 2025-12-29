@@ -122,12 +122,16 @@ export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
   const { cart } = getState().carts;
   let productData = products.find((item) => item.id === id);
   let item = cart.find((item) => item.id === id);
-  let newQty = item ? item.purchaseQty + Number(qty) : Number(qty);
-  const isQuantityInStock = Number(newQty) <= productData.quantity;
+  let newQty = item ? item.purchaseQty + qty : qty;
+  const isQuantityInStock = newQty <= productData.quantity;
   if (isQuantityInStock) {
     dispatch({
       type: "UPDATE_CART",
-      payload: { ...productData, purchaseQty: newQty },
+      payload: {
+        ...productData,
+        purchaseQty: newQty,
+        quantity: productData.quantity - qty,
+      },
     });
     toast.success("商品をカートに追加しました。");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
@@ -136,13 +140,25 @@ export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
 
 /** Cartページプルダウンからカートを更新（qty:購入個数） */
 export const updateCart = (id, qty, toast) => (dispatch, getState) => {
-  const { products } = getState().products;
-  let productData = products.find((item) => item.id === id);
-  const isQuantityInStock = qty <= productData.quantity;
+  const { cart } = getState().carts;
+  let cartItemData = cart?.find((item) => item.id === id);
+  let isQuantityInStock;
+  let oldPurchaseQty = cartItemData.purchaseQty;
+  let qtyAdded = qty - oldPurchaseQty;
+  // TBD;
+  if (cartItemData) {
+    isQuantityInStock = qtyAdded <= cartItemData.quantity;
+  } else {
+    // ありえない
+  }
   if (isQuantityInStock) {
     dispatch({
       type: "UPDATE_CART",
-      payload: { ...productData, purchaseQty: qty },
+      payload: {
+        ...cartItemData,
+        purchaseQty: qty,
+        quantity: cartItemData.quantity - qtyAdded,
+      },
     });
     toast.success("商品の購入個数を更新しました。");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
@@ -160,7 +176,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
 
 /** 注文をリクエスト（住所登録なし）*/
 export const sendOrder = (data) => async (dispatch, getState) => {
-  const cart = getState().carts.cart;
+  const { cart } = getState().carts;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
     0
@@ -343,7 +359,7 @@ export const saveNewAddress =
 
 /** ログインリクエスト送信 */
 export const sendLoginRequest =
-  (sendData, reset, toast, setLoader) => async (dispatch, getState) => {
+  (sendData, toast, setLoader) => async (dispatch, getState) => {
     setLoader(true);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
@@ -363,17 +379,24 @@ export const sendLoginRequest =
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       toast.success("ログインしました。");
-      reset();
     } catch (error) {
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
-          payload: "ユーザ名またはパスワードが間違っています。",
-          page: "login",
+          payload: {
+            errorMessage: "ユーザ名またはパスワードが間違っています。",
+            page: "login",
+          },
         });
       } else {
         console.log(error?.response?.data?.message);
-        toast.error("エラー発生。再度ログインしてください。");
+        dispatch({
+          type: "IS_ERROR",
+          payload: {
+            errorMessage: "エラー発生。再度ログインしてください。",
+            page: "login",
+          },
+        });
       }
     }
   };
@@ -404,20 +427,29 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
 
 /** アカウント登録リクエストを送信 */
 export const sendRegisterRequest =
-  (sendData, reset, toast, setLoader) => async (dispatch) => {
+  (sendData, toast, setLoader) => async (dispatch) => {
     setLoader(true);
+    console.log(sendData.username);
+    console.log(sendData.password);
+    console.log(sendData.email);
+    let correctedSendData = {
+      username: sendData.username,
+      email: sendData.email,
+      password: sendData.password,
+    };
     try {
-      const { data } = await api.post("/auth/signup", sendData);
+      const { data } = await api.post("/auth/signup", correctedSendData);
       toast.success("アカウント登録しました。");
-      reset();
       return true;
     } catch (error) {
       dispatch({
         type: "IS_ERROR",
-        payload:
-          error?.response?.data?.message ||
-          "エラー発生。再度アカウント登録してください。",
-        page: "register",
+        payload: {
+          errorMessage:
+            error?.response?.data?.message ||
+            "エラー発生。再度アカウント登録してください。",
+          page: "register",
+        },
       });
       return false;
     }
@@ -427,8 +459,8 @@ export const sendRegisterRequest =
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
-    let sList = getState().auth.sAddressList;
-    let bList = getState().auth.bAddressList;
+    let sList = [];
+    let bList = [];
     let selectedSId = 0;
     let selectedBId = 0;
     data?.map((address) => {
@@ -436,11 +468,11 @@ export const getUserAddress = () => async (dispatch, getState) => {
       if (address.shippingAddress) {
         if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
         if (address.defaultAddressFlg) selectedSId = address.addressId;
-        sList === null ? (sList = [address]) : sList.push(address);
+        sList.push(address);
       } else {
         if (selectedBId === 0) selectedBId = address.addressId;
         if (address.defaultAddressFlg) selectedBId = address.addressId;
-        bList === null ? (bList = [address]) : bList.push(address);
+        bList.push(address);
       }
     });
     sList && dispatch({ type: "STORE_SADDRESSLIST", payload: sList });
