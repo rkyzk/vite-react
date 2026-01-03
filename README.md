@@ -5,6 +5,9 @@ get addresses data after purchase
 
 delete default address, and set another address to selectedAddress
 
+carousel: react click
+https://react-slick.neostack.com/docs/get-started
+
 ###　ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
 
 - ホームページ

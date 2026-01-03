@@ -26,7 +26,6 @@ const Register = () => {
       setUsernameErrs(true);
       return false;
     } else {
-      console.log(data.regUsername);
       setUsernameErrs(false);
       return true;
     }

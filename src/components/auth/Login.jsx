@@ -7,7 +7,6 @@ import {
   setCommandIdx,
 } from "../../store/actions";
 import Spinner from "../shared/Spinner";
-import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoEyeOutline } from "react-icons/io5";
 

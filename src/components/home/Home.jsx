@@ -6,6 +6,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "../shared/Spinner";
 import styles from "../../styles/Home.module.css";
 import { Link } from "react-router-dom";
+import SimpleSlider from "./SimpleSlider";
 
 const Home = () => {
   const { products } = useSelector((state) => state.products);
@@ -63,6 +64,7 @@ const Home = () => {
           </div>
         )}
       </div>
+      <SimpleSlider />
     </div>
   );
 };

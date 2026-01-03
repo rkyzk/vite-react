@@ -32,8 +32,8 @@ const FooterComponent = () => {
       </ul>
       <p className="text-center text-amber-900">ワイルドブロッサムガーデン</p>
       <div className="w-full flex justify-center mt-[-15px]">
-        <p className="text-center text-amber-900 w-[210px] text-xs">
-          Copy Right reserved 2025 @Wild Blossom Garden
+        <p className="text-center text-amber-900 w-[220px] text-xs">
+          Copyright 2025 @ Wild Blossom Garden All Rights Reserved.
         </p>
       </div>
     </div>

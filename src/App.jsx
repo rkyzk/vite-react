@@ -9,6 +9,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout/Checkout";
+import OrderHistory from "./components/orderHistory/OrderHistory";
 import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
 import { Toaster } from "react-hot-toast";
 import Product from "./components/Product";
@@ -35,6 +36,7 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirm" element={<PaymentConfirmation />} />
               <Route path="/product/:id" element={<Product />} />
+              <Route path="/order-history" element={<OrderHistory />} />
             </Routes>
           </div>
           <Footer />

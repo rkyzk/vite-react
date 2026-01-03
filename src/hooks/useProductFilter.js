@@ -12,10 +12,12 @@ const useProductFilter = () => {
     const currPage = searchParams.get("page")
       ? Number(searchParams.get("page"))
       : 1;
-    const category = searchParams.get("category");
+    const category = searchParams.get("category") || null;
     const keywords = searchParams.get("keywords") || null;
+    const colors = searchParams.get("colors") || null;
     if (category && category != "") params.set("category", category);
     if (keywords) params.set("keywords", keywords);
+    if (colors) params.set("colors", colors);
     params.set("pageNumber", currPage - 1);
     const queryString = params.toString();
     dispatch(fetchProducts(queryString));

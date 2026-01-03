@@ -3,23 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
 import useProductFilter from "../hooks/useProductFilter";
-import { clearErrorMessage } from "../store/actions";
-import { useEffect } from "react";
 import Filter from "./Filter";
 import PaginationSection from "./shared/PaginationSection";
 import styles from "../styles/Products.module.css";
 import Spinner from "./shared/Spinner";
 
 const Products = () => {
-  const { isLoading, errorMessage } = useSelector((state) => state.errors);
+  const { isLoading, errorMessage, page } = useSelector(
+    (state) => state.errors
+  );
   const { products, pagination } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
 
   useProductFilter();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-  }, []);
 
   return (
     <>
@@ -27,7 +23,7 @@ const Products = () => {
       <div className="px-2 py-10 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
           <Spinner />
-        ) : errorMessage ? (
+        ) : errorMessage && page === "products" ? (
           <>
             <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />
             <p className="text-lg text-slate-600">{errorMessage}</p>

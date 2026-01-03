@@ -6,6 +6,7 @@ import cartReducer from "./reducers/cartReducer";
 import orderReducer from "./reducers/orderReducer";
 import authReducer from "./reducers/authReducer";
 import modalReducer from "./reducers/modalReducer";
+import reviewReducer from "./reducers/reviewReducer";
 
 // const cartItems = [];
 // localStorage.removeItem("cartItems");
@@ -25,10 +26,14 @@ const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
 
+const reviews = localStorage.getItem("reviews")
+  ? JSON.parse(localStorage.getItem("reviews"))
+  : [];
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,
   products: products,
+  reviews: reviews,
 };
 
 const store = configureStore({
@@ -40,6 +45,7 @@ const store = configureStore({
     order: orderReducer,
     auth: authReducer,
     modal: modalReducer,
+    reviews: reviewReducer,
   },
   preloadedState: initialState,
 });

@@ -20,11 +20,27 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
       totalPages: data.totalPages,
     });
   } catch (error) {
-    dispatch({
-      type: "IS_ERROR",
-      payload:
-        error?.response?.data?.message || "商品情報を取得できませんでした。",
-    });
+    if (error.status === 404) {
+      dispatch({
+        type: "IS_ERROR",
+        payload: {
+          errorMessage:
+            error?.response?.data?.message || "該当する商品がありません。",
+          page: "products",
+        },
+      });
+    } else {
+      dispatch({
+        type: "IS_ERROR",
+        payload: {
+          errorMessage:
+            error?.response?.data?.message ||
+            "商品情報を取得できませんでした。",
+          page: "products",
+        },
+      });
+    }
+    return;
   }
   dispatch({
     type: "IS_SUCCESS",
@@ -464,7 +480,6 @@ export const getUserAddress = () => async (dispatch, getState) => {
     let selectedSId = 0;
     let selectedBId = 0;
     data?.map((address) => {
-      console.log(address);
       if (address.shippingAddress) {
         if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
         if (address.defaultAddressFlg) selectedSId = address.addressId;
@@ -526,6 +541,50 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+/** 注文履歴を取得 */
+export const fetchOrderHistory = () => async (dispatch, getState) => {
+  dispatch({
+    type: "IS_FETCHING",
+  });
+  try {
+    const { data } = await api.get(`/order-history`);
+    dispatch({
+      type: "STORE_ORDER_HISTORY",
+      payload: data,
+      // lastPage: data.lastPage,
+      // pageNumber: data.pageNumber,
+      // pageSize: data.pageSize,
+      // totalElements: data.totalElements,
+      // totalPages: data.totalPages,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      dispatch({
+        type: "IS_ERROR",
+        payload: {
+          errorMessage:
+            error?.response?.data?.message || "購入履歴はありません。",
+          page: "order-history",
+        },
+      });
+    } else {
+      dispatch({
+        type: "IS_ERROR",
+        payload: {
+          errorMessage:
+            error?.response?.data?.message ||
+            "購入履歴を取得できませんでした。",
+          page: "order-history",
+        },
+      });
+    }
+    return;
+  }
+  dispatch({
+    type: "IS_SUCCESS",
+  });
 };
 
 export const storeTempAddress = (address) => async (dispatch, getState) => {
@@ -664,6 +723,33 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch, getState) => {
     }
   } catch (error) {
     dispatch({ type: "IS_ERROR", payload: error.message });
+  }
+};
+
+export const submitReview =
+  (content, stars, orderId, toast) => async (dispatch) => {
+    let sendData = {
+      reviewContent: content,
+      stars: stars,
+    };
+    try {
+      let { data } = await api.post(`/review/${orderId}`, sendData);
+      toast.success(`注文番号${orderId}に関するレビューを投稿しました。`);
+    } catch (error) {
+      toast.error(`エラー発生。`);
+    }
+  };
+
+export const fetchReviews = () => async (dispatch, getState) => {
+  try {
+    let { data } = await api.get(`/public/reviews`);
+    dispatch({
+      type: "STORE_REVIEWS",
+      payload: data,
+    });
+    localStorage.setItem("reviews", JSON.stringify(getState().reviews));
+  } catch (error) {
+    console.log(error);
   }
 };
 
