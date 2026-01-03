@@ -13,7 +13,7 @@ const SimpleSlider = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: Math.floor(reviews?.content.length / 3),
+    slidesToScroll: Math.floor(reviews?.content?.length / 3),
   };
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,41 +29,43 @@ const SimpleSlider = () => {
             <div>
               <ReviewEntry
                 idx={0}
-                num={reviews?.content.length >= 3 ? 3 : reviews?.content.length}
+                num={
+                  reviews?.content?.length >= 3 ? 3 : reviews?.content?.length
+                }
               />
             </div>
-            {reviews?.content.length > 3 && (
+            {reviews?.content?.length > 3 && (
               <div>
                 <ReviewEntry
                   idx={3}
                   num={
-                    reviews?.content.length >= 6
+                    reviews?.content?.length >= 6
                       ? 3
-                      : reviews?.content.length - 3
+                      : reviews?.content?.length - 3
                   }
                 />
               </div>
             )}
-            {reviews?.content.length > 6 && (
+            {reviews?.content?.length > 6 && (
               <div>
                 <ReviewEntry
                   idx={6}
                   num={
-                    reviews?.content.length >= 9
+                    reviews?.content?.length >= 9
                       ? 3
-                      : reviews?.content.length - 6
+                      : reviews?.content?.length - 6
                   }
                 />
               </div>
             )}
-            {reviews?.content.length > 9 && (
+            {reviews?.content?.length > 9 && (
               <div>
                 <ReviewEntry
                   idx={9}
                   num={
-                    reviews?.content.length >= 12
+                    reviews?.content?.length >= 12
                       ? 3
-                      : reviews?.content.length - 9
+                      : reviews?.content?.length - 9
                   }
                 />
               </div>

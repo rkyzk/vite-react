@@ -8,7 +8,7 @@ const ReviewEntry = ({ idx, num }) => {
   const date = (data) => data?.substring(0, 10).replaceAll("-", "/");
   return (
     <div className="grid xs:w-[310px] xs:grid-col-1 sm:w-[615px] sm:gap-2 sm:grid-cols-2 lg:w-[920px] lg:grid-cols-3">
-      {reviews.content.slice(idx, idx + num).map((entry) => (
+      {reviews?.content?.slice(idx, idx + num).map((entry) => (
         <Box
           key={entry.id}
           className={`${styles.Entry}`}

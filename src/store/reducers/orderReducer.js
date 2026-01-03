@@ -1,6 +1,7 @@
 const initialState = {
   order: {},
   orderList: null,
+  pagination: {},
 };
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,6 +18,14 @@ const orderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderList: action.payload,
+        pagination: {
+          ...state.pagination,
+          totalElements: action.totalElements,
+          totalPages: action.totalPages,
+          lastPage: action.lastPage,
+          pageNumber: action.pageNumber,
+          pageSize: action.pageSize,
+        },
       };
     default:
       return state;

@@ -553,12 +553,13 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
     dispatch({
       type: "STORE_ORDER_HISTORY",
       payload: data,
-      // lastPage: data.lastPage,
-      // pageNumber: data.pageNumber,
-      // pageSize: data.pageSize,
-      // totalElements: data.totalElements,
-      // totalPages: data.totalPages,
+      lastPage: data.lastPage,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
     });
+    localStorage.setItem("order", JSON.stringify(getState().order));
   } catch (error) {
     if (error.status === 404) {
       dispatch({
@@ -743,11 +744,12 @@ export const submitReview =
 export const fetchReviews = () => async (dispatch, getState) => {
   try {
     let { data } = await api.get(`/public/reviews`);
+    console.log(data);
     dispatch({
       type: "STORE_REVIEWS",
       payload: data,
     });
-    localStorage.setItem("reviews", JSON.stringify(getState().reviews));
+    //localStorage.setItem("reviews", JSON.stringify(getState().reviews));
   } catch (error) {
     console.log(error);
   }

@@ -73,7 +73,10 @@ const CheckboxesGroup = ({
         {colorLabel?.length > 0 ? colorLabel : <span>色でフィルター</span>}
       </button>
       {colorFilter && (
-        <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{ display: "flex" }}
+          className="absolute z-2 bg-white border border-neutral-600 w-[150px]"
+        >
           <FormControl
             sx={{ m: 1 }}
             component="fieldset"
@@ -178,8 +181,8 @@ const CheckboxesGroup = ({
             </FormGroup>
             <button
               onClick={() => handleFilterByColors()}
-              className="colorFilter border outline-none border-[#333] p-1
-              hover:text-white hover:bg-slate-800"
+              className="colorFilter w-[100px] border outline-none border-slate-900 p-1
+               hover:text-white hover:bg-slate-800 hover:opacity-50"
             >
               絞り込み
             </button>

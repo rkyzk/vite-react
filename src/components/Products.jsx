@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
 import useProductFilter from "../hooks/useProductFilter";
