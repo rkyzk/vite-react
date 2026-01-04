@@ -744,12 +744,11 @@ export const submitReview =
 export const fetchReviews = () => async (dispatch, getState) => {
   try {
     let { data } = await api.get(`/public/reviews`);
-    console.log(data);
+    console.log(data.reviews);
     dispatch({
       type: "STORE_REVIEWS",
       payload: data,
     });
-    //localStorage.setItem("reviews", JSON.stringify(getState().reviews));
   } catch (error) {
     console.log(error);
   }

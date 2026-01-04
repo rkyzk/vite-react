@@ -3,7 +3,6 @@ import { FaInstagram } from "react-icons/fa";
 
 /**
  * フッター
- * リンク
  */
 const FooterComponent = () => {
   return (
@@ -33,7 +32,7 @@ const FooterComponent = () => {
       <p className="text-center text-amber-900">ワイルドブロッサムガーデン</p>
       <div className="w-full flex justify-center mt-[-15px]">
         <p className="text-center text-amber-900 w-[220px] text-xs">
-          Copyright 2025 @ Wild Blossom Garden All Rights Reserved.
+          Copyright 2025 @Wild Blossom Garden All Rights Reserved.
         </p>
       </div>
     </div>

@@ -14,6 +14,7 @@ const cartItems = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
+localStorage.removeItem("reviews");
 // const auth = [];
 // localStorage.removeItem("auth");
 const auth = localStorage.getItem("auth")
@@ -26,15 +27,10 @@ const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
 
-const order = localStorage.getItem("order")
-  ? JSON.parse(localStorage.getItem("order"))
-  : [];
-
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,
   products: products,
-  order: order,
 };
 
 const store = configureStore({

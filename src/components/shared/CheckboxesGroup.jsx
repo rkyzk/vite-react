@@ -67,10 +67,14 @@ const CheckboxesGroup = ({
     <div className="relative">
       <button
         onClick={() => handleClickColorFilter()}
-        className={`${styles.ClearBtn} md:width-[130px]
+        className={`${styles.ColorFilter} md:width-[130px]
             outline-none px-1 py-[10px]`}
       >
-        {colorLabel?.length > 0 ? colorLabel : <span>色でフィルター</span>}
+        {colorLabel?.length > 0 ? (
+          colorLabel
+        ) : (
+          <span className="text-stone-600">色でフィルター</span>
+        )}
       </button>
       {colorFilter && (
         <Box
@@ -181,7 +185,7 @@ const CheckboxesGroup = ({
             </FormGroup>
             <button
               onClick={() => handleFilterByColors()}
-              className="colorFilter w-[100px] border outline-none border-slate-900 p-1
+              className="colorFilter w-[120px] border outline-none border-slate-900 p-1
                hover:text-white hover:bg-slate-800 hover:opacity-50"
             >
               絞り込み

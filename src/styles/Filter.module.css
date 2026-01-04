@@ -2,6 +2,31 @@
   font-family: Raleway, sans-serif;
 }
 
-.ClearBtn {
-  border: 1px #666 solid;
+.ClearBtn,
+.ColorFilter {
+  border-radius: 5px;
+  width: auto;
+}
+.ColorFilter {
+  border: #aaa solid 1px;
+  height: 48px;
+  background-color: #fff;
+}
+
+.SerachInput {
+  width: 250px !important;
+}
+
+.InputGroup {
+  width: 630px;
+}
+
+@media screen and (max-width: 639px) {
+  .ClearBtn {
+    width: 280px;
+  }
+
+  .SerachInput {
+    width: 280px !important;
+  }
 }

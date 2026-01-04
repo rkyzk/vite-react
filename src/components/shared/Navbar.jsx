@@ -47,7 +47,7 @@ function Navbar() {
       <div className={`${styles.menuItems}`}>
         <Link to="/products" style={{ color: "#333" }}>
           {path === "/products" && <span>◆</span>}
-          商品
+          ショップ
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
