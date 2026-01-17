@@ -43,6 +43,12 @@
   }
 }
 
+@media screen and (max-width: 660px) {
+  .Card {
+    margin-bottom: 15px !important;
+  }
+}
+
 @media screen and (max-width: 639px) {
   .imgSize {
     width: 400px !important;

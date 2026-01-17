@@ -16,7 +16,8 @@ const useProductFilter = () => {
     const keywords = searchParams.get("keywords") || null;
     const colors = searchParams.get("colors") || null;
     const sort = searchParams.get("sortBy") || null;
-    if (category && category != "") params.set("category", category);
+    if (category && category !== "" && category !== 0)
+      params.set("category", category);
     if (keywords) params.set("keywords", keywords);
     if (colors) params.set("colors", colors);
     if (sort) params.set("sortBy", sort);

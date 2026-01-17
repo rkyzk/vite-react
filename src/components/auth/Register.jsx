@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendRegisterRequest, clearErrorMessage } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
+import styles from "../../styles/Auth.module.css";
 
 const Register = () => {
   const [loader, setLoader] = useState(false);
@@ -157,8 +158,8 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          className="bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
-                hover:opacity-50rounded-lg py-1 px-3"
+          className={`${styles.Button} mt-2 bg-stone-600 text-white hover:bg-stone-300
+                  hover:opacity-10 py-1 px-3`}
         >
           {loader ? <Spinner /> : <>登録</>}
         </button>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
-import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "../styles/Filter.module.css";
 import { fetchCategories, clearErrorMessage } from "../store/actions";
@@ -12,7 +11,7 @@ const Filter = ({ categoryId }) => {
   const [category, setCategory] = useState(categoryId);
   const [colors, setColors] = useState("");
   const [colorLabel, setColorLabel] = useState("");
-  const [sort, setSort] = useState("random");
+  const [sort, setSort] = useState("label");
   const initialColorState = {
     red: false,
     orange: false,
@@ -33,7 +32,13 @@ const Filter = ({ categoryId }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       errorMessage && dispatch(clearErrorMessage());
-      if (category === null || category === "" || category === "null") {
+      searchParams.delete("page");
+      if (
+        category === null ||
+        category === "" ||
+        category === "null" ||
+        category === 0
+      ) {
         searchParams.delete("category");
       } else {
         searchParams.set("category", category);
@@ -47,7 +52,7 @@ const Filter = ({ categoryId }) => {
       colors === ""
         ? searchParams.delete("colors")
         : searchParams.set("colors", colors);
-      sort === "random"
+      sort === "label" || sort === "random"
         ? searchParams.delete("sortBy")
         : searchParams.set("sortBy", sort);
       navigate(`?${searchParams.toString()}`);
@@ -65,50 +70,53 @@ const Filter = ({ categoryId }) => {
     setColors("");
     setColorState(initialColorState);
     setColorLabel("");
-    setSort("random");
+    setSort("label");
     navigate({ pathname: window.location.pathname });
   };
 
   return (
-    <div className="flex-col items-center">
-      <div
-        className={`${styles.InputGroup} flex flex-col mx-auto mt-4 gap-2 w-auto sm:flex-row justify-center`}
-      >
-        {/* Search box */}
-        <input
-          type="text"
-          placeholder="キーワードを入力"
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
-          className={`${styles.SerachInput} border border-gray-900 rounded-md bg-stone-100
-                   h-12 px-1 py-2`}
-        />
-        {/* Category drowdown */}
-        <div className="flex gap-1 w-[280px]">
-          <FormControl className="focus:outline-none" size="small">
-            <InputLabel labelId="category-select-label">花種</InputLabel>
-            <Select
-              labelId="category-select-label"
-              value={category}
-              onChange={(e) => setCategory(Number(e.target.value))}
-              label="category"
-              className="py-1 w-64 bg-white border-none outline-none focus:outline-gray focus:outline-none"
-              style={{ width: "150px" }}
-            >
-              {category !== 0 && (
-                <MenuItem key={0} value={0}>
-                  すべて
-                </MenuItem>
-              )}
-              {categories.map((item) => (
-                <MenuItem key={item.categoryId} value={item.categoryId}>
-                  <span className={`${styles.SelectItems} text-slate-700`}>
-                    {item.categoryName}
-                  </span>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    <div className="flex flex-col sm:flex-row sm:justify-center sm:mt-4">
+      <div className={`w-[550px] ${styles.FilterInput} flex-col items-center`}>
+        <div className="flex flex-col mx-auto gap-1 sm:gap-2 sm:flex-row">
+          {/* Search box */}
+          <input
+            type="text"
+            placeholder="キーワードを入力"
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
+            className={`${styles.SerachInput} text-slate-700 border border-gray-900 rounded-md bg-stone-100
+                   px-1 py-2`}
+          />
+          {/* Category drowdown */}
+          <select
+            labelId="category-select-label"
+            value={category}
+            onChange={(e) => setCategory(Number(e.target.value))}
+            name="category"
+            className="py-1 w-64 bg-white border border-slate-800 rounded-md
+                h-[40px] outline-none focus:outline-none"
+            style={{ width: "200px" }}
+          >
+            {category === "null" && (
+              <option defaultChecked>花種でフィルター</option>
+            )}
+            {categories.map((item) => (
+              <option
+                key={item.categoryId}
+                value={item.categoryId}
+                className="font-sans text-slate-700"
+              >
+                {item.categoryName}
+              </option>
+            ))}
+            {category >= 0 && (
+              <option value={0} className="font-sans text-slate-700">
+                すべての花種
+              </option>
+            )}
+          </select>
+        </div>
+        <div className="mt-1 flex flex-col gap-y-1 sm:flex-row sm:gap-x-1">
           <CheckboxesGroup
             colorState={colorState}
             setColorState={setColorState}
@@ -116,46 +124,42 @@ const Filter = ({ categoryId }) => {
             colorLabel={colorLabel}
             setColorLabel={setColorLabel}
           />
+          <select
+            id="order-by"
+            name="sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className={`${styles.OrderBy} py-1 w-64 bg-white h-[40px]
+            sm:mt-2 border border-slate-800`}
+            style={{ width: "200px" }}
+            defaultValue="label"
+          >
+            {sort === "label" ? (
+              <option value="label" className="font-sans text-slate-700">
+                並べ替え
+              </option>
+            ) : (
+              <option value="random" className="font-sans text-slate-700">
+                ランダム
+              </option>
+            )}
+            <option value="sales_count" className="font-sans text-slate-700">
+              人気順
+            </option>
+            <option value="price" className="font-sans text-slate-700">
+              価格(低⇨高)
+            </option>
+          </select>
         </div>
+      </div>
+      <div className={`w-[65px] ${styles.ClearBtnBox}`}>
         <button
           onClick={() => handleClearFilter()}
-          className={`${styles.ClearBtn} px-1 h-[34px] mt-2 bg-amber-950 text-white hover:opacity-50 xs:width=[320px]`}
+          className={`${styles.ClearBtn} px-1 h-[34px]
+            bg-amber-950 text-white hover:opacity-50`}
         >
           クリア
         </button>
-      </div>
-      <div className={`${styles.InputGroup} mx-auto px-3`}>
-        <FormControl
-          size="small"
-          className="mt-2 outline-none focus:outline-gray active:outline-black"
-        >
-          <InputLabel id="select-label">並べ替え</InputLabel>
-          <Select
-            labelId="select-label"
-            id="simple-select"
-            value={sort}
-            label="並べ替え"
-            onChange={(e) => setSort(e.target.value)}
-            className="py-1 w-64 bg-white"
-            style={{ width: "150px" }}
-          >
-            <MenuItem value="random">
-              <span className={`${styles.SelectItems} text-slate-700`}>
-                ランダム
-              </span>
-            </MenuItem>
-            <MenuItem value="sales_count">
-              <span className={`${styles.SelectItems} text-slate-700`}>
-                人気順
-              </span>
-            </MenuItem>
-            <MenuItem value="price">
-              <span className={`${styles.SelectItems} text-slate-700`}>
-                価格(安い順)
-              </span>
-            </MenuItem>
-          </Select>
-        </FormControl>
       </div>
     </div>
   );

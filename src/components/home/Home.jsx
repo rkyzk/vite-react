@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <div className="px-2 mt-1 sm:px-8 lg:px-14">
       <HeroBanner />
-      <div className="flex mt-1">
+      <div className={`${styles.Intro} flex mt-1 px-2`}>
         <p className="max-w-[640px] mx-auto">
           無農薬でチューリップ、ヒヤシンスなどの球根を栽培・販売しています。
           <br />

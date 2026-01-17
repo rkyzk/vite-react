@@ -9,6 +9,7 @@ import {
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { IoEyeOutline } from "react-icons/io5";
+import styles from "../../styles/Auth.module.css";
 
 /**
  * log users in
@@ -77,8 +78,8 @@ const Login = () => {
       </div>
       <button
         type="submit"
-        className="mt-2 bg-stone-600 text-white hover:bg-stone-300 hover:text-stone-800
-          hover:opacity-10 rounded-lg py-1 px-3"
+        className={`${styles.Button} mt-2 text-white bg-stone-600 hover:bg-stone-300
+          hover:opacity-10 py-1 px-3`}
       >
         {loader ? <Spinner /> : <>ログイン</>}
       </button>

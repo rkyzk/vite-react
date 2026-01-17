@@ -38,8 +38,13 @@ const CheckboxesGroup = ({
       }
       idx++;
     }
-    setColors(colorArr.toString().replaceAll(",", "_"));
-    setColorLabel(label.toString() + "でフィルター");
+    if (colorArr.length === 0) {
+      setColorLabel("");
+      setColors("");
+    } else {
+      setColors(colorArr.toString().replaceAll(",", "_"));
+      setColorLabel(label.toString() + "でフィルター");
+    }
     document.removeEventListener("mouseup", closeColorFilter);
     setColorFilter(false);
   };
@@ -67,13 +72,13 @@ const CheckboxesGroup = ({
     <div className="relative">
       <button
         onClick={() => handleClickColorFilter()}
-        className={`${styles.ColorFilter} md:width-[130px]
-            outline-none px-1 py-[10px]`}
+        className={`${styles.ColorFilter} text-left bg-white h-[40px]
+          border px-1 border-slate-800 outline-none`}
       >
         {colorLabel?.length > 0 ? (
           colorLabel
         ) : (
-          <span className="text-stone-600">色でフィルター</span>
+          <span className="text-slate-700">色でフィルター</span>
         )}
       </button>
       {colorFilter && (
@@ -188,7 +193,7 @@ const CheckboxesGroup = ({
               className="colorFilter w-[120px] border outline-none border-slate-900 p-1
                hover:text-white hover:bg-slate-800 hover:opacity-50"
             >
-              絞り込み
+              適用
             </button>
           </FormControl>
         </Box>

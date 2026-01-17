@@ -7,7 +7,7 @@ import { FaInstagram } from "react-icons/fa";
 const FooterComponent = () => {
   return (
     <div className="h-40 w-full pt-10 mt-auto">
-      <ul className="d-flex justify-content-center">
+      <ul className="ml-[-32px] d-flex justify-center">
         <li>
           <a
             href={"https://www.facebook.com"}
@@ -32,7 +32,7 @@ const FooterComponent = () => {
       <p className="text-center text-amber-900">ワイルドブロッサムガーデン</p>
       <div className="w-full flex justify-center mt-[-15px]">
         <p className="text-center text-amber-900 w-[220px] text-xs">
-          Copyright 2025 @Wild Blossom Garden All Rights Reserved.
+          Copyright 2025 @Wild Blossom Garden All Rights Reserved
         </p>
       </div>
     </div>
