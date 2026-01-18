@@ -47,8 +47,8 @@ export const Checkout = () => {
       dispatch(setModalOpen());
     };
     if (commandIdx === 0) getClientSecret();
-    if (commandIdx === 1) refreshJwtToken();
-    if (commandIdx === 2) logoutUser();
+    if (commandIdx === 1) refreshJwtToken(); // JWTが期限切れの時、更新をリクエスト
+    if (commandIdx === 2) logoutUser(); // refreshTokenが期限切れの時、ユーザをログアウトする
   }, [commandIdx]);
 
   return (
@@ -56,9 +56,8 @@ export const Checkout = () => {
       {cart.length > 0 ? (
         <>
           <AddressList props={props} />
-          <hr className="mx-4" />
-          <StripePayment stripePaymentProps={stripePaymentProps} />
           <Cart />
+          <StripePayment stripePaymentProps={stripePaymentProps} />
         </>
       ) : (
         <div className="w-full">

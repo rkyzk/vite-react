@@ -13,7 +13,7 @@ const Cart = ({ cartPage }) => {
   const dispatch = useDispatch();
   const totalPrice = cart?.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
+    0,
   );
   const navigate = useNavigate();
 
@@ -49,8 +49,14 @@ const Cart = ({ cartPage }) => {
             return <CartItem key={idx} {...data} />;
           })}
           <div className="flex w-full mt-3">
-            <strong className="w-7/12 text-right">小計: </strong>
-            <strong className="w-2/12 pl-3">&yen;{totalPrice}</strong>
+            <p className="font-sans font-bold letter w-7/12 text-right">
+              小計:{" "}
+            </p>
+            <p
+              className={`font-sans font-bold tracking-2 w-2/12 ${cartPage ? "pl-3" : "pl-5"}`}
+            >
+              &yen;{totalPrice}
+            </p>
           </div>
           {cartPage && (
             <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
