@@ -6,7 +6,6 @@ import Home from "./components/home/Home";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import About from "./components/About";
-import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout/Checkout";
 import OrderHistory from "./components/orderHistory/OrderHistory";
@@ -17,6 +16,7 @@ import Modal from "@mui/material/Modal";
 import AuthModal from "./components/auth/AuthModal";
 import { closeModal } from "./store/actions";
 import { useSelector } from "react-redux";
+import ContactPage from "./components/ContactPage/ContactPage";
 
 function App() {
   const { open } = useSelector((state) => state.modal);
@@ -31,7 +31,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirm" element={<PaymentConfirmation />} />

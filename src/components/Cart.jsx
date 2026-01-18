@@ -49,9 +49,7 @@ const Cart = ({ cartPage }) => {
             return <CartItem key={idx} {...data} />;
           })}
           <div className="flex w-full mt-3">
-            <p className="font-sans font-bold letter w-7/12 text-right">
-              小計:{" "}
-            </p>
+            <p className="font-sans font-bold w-7/12 text-right">小計: </p>
             <p
               className={`font-sans font-bold tracking-2 w-2/12 ${cartPage ? "pl-3" : "pl-5"}`}
             >

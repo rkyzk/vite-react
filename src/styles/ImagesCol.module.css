@@ -1,0 +1,23 @@
+.Images {
+  display: block !important;
+}
+
+.ColWidth {
+  width: calc((100vw - 510px) / 2) !important;
+}
+
+.Images {
+  width: 300px !important;
+}
+
+@media screen and (max-width: 1110px) {
+  .Images {
+    width: calc((100vw - 510px) / 2) !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .Images {
+    display: none !important;
+  }
+}
