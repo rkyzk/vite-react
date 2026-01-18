@@ -20,6 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { errorMessage, page } = useSelector((state) => state.errors);
   const { checkout } = useSelector((state) => state.modal);
+  const { loginOnly } = useSelector((state) => state.modal);
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -48,7 +49,7 @@ const Login = () => {
           items-center"
     >
       <h2 className="text-[0.7rem] font-extralight text-center">
-        アカウントをお持ちの方
+        {loginOnly ? <>ログイン</> : <>アカウントをお持ちの方</>}
       </h2>
       {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">

@@ -3,6 +3,7 @@ import OrderItem from "./OrderItem";
 import ReviewForm from "./ReviewForm";
 import { TiPencil } from "react-icons/ti";
 import Modal from "@mui/material/Modal";
+import styles from "../../styles/Order.module.css";
 
 const Order = ({
   orderId,
@@ -42,7 +43,7 @@ const Order = ({
         <div className="sm:ml-10">注文番号：{orderId}</div>
       </div>
       <div className="xs:flex-col sm:flex sm:flex-row sm:items-center">
-        <div className="sm:w-[430px] md:w-[500px]">
+        <div className="sm:w-[430px] md:w-[470px] lg:w-[500px]">
           {cart?.cartItems.map((item, idx) => (
             <OrderItem
               {...item}
@@ -51,19 +52,23 @@ const Order = ({
             />
           ))}
         </div>
-        <div className="h-[18px] ml-[50px] mb-4">
+        <div
+          className={`${styles.ReviewBtn} h-[18px] mb-4 ml-[50px] mt-2 sm:mt-0 sm:ml-[20px] md:ml-0`}
+        >
           {review ? (
             <p className="w-[141px] mt-1 bg-slate-600 text-white p-1">
               レビュー投稿済み
             </p>
           ) : (
-            <button
-              onClick={() => setOpen(true)}
-              className="flex border border-black p-1"
-            >
-              <TiPencil className="mt-1" />
-              レビューを書く
-            </button>
+            <div>
+              <button
+                onClick={() => setOpen(true)}
+                className="flex border border-black p-1"
+              >
+                <TiPencil className="mt-1" />
+                レビューを書く
+              </button>
+            </div>
           )}
         </div>
       </div>
