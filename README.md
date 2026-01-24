@@ -24,8 +24,10 @@ https://www.919g.co.jp/blog/?p=7420<br/>
   spinner:</br>
   https://tw-elements.com/docs/standard/components/spinners/
 
-- 画像葉したサイトより利用
+- 画像は下サイトより取得
   https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/<br/>
+
+https://northernwildflowers.ca/collections/shop-seeds/products/smooth-aster
 
 https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
 
