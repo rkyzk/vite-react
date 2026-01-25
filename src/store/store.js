@@ -27,10 +27,15 @@ const products = localStorage.getItem("products")
   ? JSON.parse(localStorage.getItem("products"))
   : [];
 
+const reviews = localStorage.getItem("reviews")
+  ? JSON.parse(localStorage.getItem("reviews"))
+  : [];
+
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,
   products: products,
+  reviews: reviews,
 };
 
 const store = configureStore({

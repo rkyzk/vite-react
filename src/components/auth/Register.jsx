@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { sendRegisterRequest, clearErrorMessage } from "../../store/actions";
+import {
+  sendRegisterRequest,
+  clearErrorMessage,
+  setModalLogin,
+} from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import styles from "../../styles/Auth.module.css";
@@ -47,7 +51,7 @@ const Register = () => {
   const validatePassword = useCallback(() => {
     if (
       !data.regEmail.match(
-        /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,16}$/
+        /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,16}$/,
       )
     ) {
       setPwErrs(true);
@@ -68,10 +72,11 @@ const Register = () => {
       return;
     }
     let result = await dispatch(
-      sendRegisterRequest(data, toast, setLoader, navigate, checkout)
+      sendRegisterRequest(data, toast, setLoader, navigate, checkout),
     );
     if (result) {
       setLoader(false);
+      dispatch(setModalLogin());
     } else {
       setLoader(false);
     }
@@ -103,7 +108,7 @@ const Register = () => {
         className="mt-4 px-2 d-flex flex-col m-auto
           items-center gap-2"
       >
-        <h2 className="text-[0.7rem] font-extralight text-center">
+        <h2 className={`${styles.Text} font-extralight text-center`}>
           アカウントを新規作成される方
         </h2>
         {errorMessage && page === "register" && (

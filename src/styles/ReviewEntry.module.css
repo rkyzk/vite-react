@@ -1,95 +1,13 @@
-@media screen and (min-width: 1500px) {
-  .Entry {
-    margin-left: -190px !important;
-  }
+.EntryBox {
+  width: 280px !important;
+  height: 200px !important;
+  background-color: #fff;
+  padding: 2px 5px;
+  color: #333;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 3px !important;
 }
 
-@media screen and (min-width: 1400px) {
-  .Entry {
-    margin-left: -200px !important;
-  }
-}
-
-@media screen and (min-width: 1300px) {
-  .Entry {
-    margin-left: -230px !important;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .Entry {
-    margin-left: -250px !important;
-  }
-}
-
-@media screen and (min-width: 1100px) {
-  .Entry {
-    margin-left: -280px !important;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .Entry {
-    margin-left: -300px !important;
-  }
-}
-
-@media screen and (max-width: 1023px) {
-  .Entry {
-    margin-left: -140px !important;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .Entry {
-    margin-left: -160px !important;
-  }
-}
-
-@media screen and (max-width: 870px) {
-  .Entry {
-    margin-left: -170px !important;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .Entry {
-    margin-left: -180px !important;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .Entry {
-    margin-left: -200px !important;
-  }
-}
-
-@media screen and (max-width: 639px) {
-  .Entry {
-    margin-left: -50px !important;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .Entry {
-    margin-left: -60px !important;
-  }
-}
-
-@media screen and (max-width: 530px) {
-  .Entry {
-    margin-left: -70px !important;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .Entry {
-    margin-left: -80px !important;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .Entry {
-    margin-left: -98px !important;
-  }
+.Text {
+  font-size: 1.5rem !important;
 }

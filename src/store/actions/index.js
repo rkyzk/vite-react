@@ -195,7 +195,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
+    0,
   );
   const items = cart.map((item) => {
     return { product: { ...item }, quantity: item.purchaseQty };
@@ -259,7 +259,7 @@ export const sendOrderWithNewAddresses =
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
       (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-      0
+      0,
     );
     const items = cart.map((item) => {
       return { product: { ...item }, quantity: item.purchaseQty };
@@ -445,28 +445,35 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
 export const sendRegisterRequest =
   (sendData, toast, setLoader) => async (dispatch) => {
     setLoader(true);
-    console.log(sendData.username);
-    console.log(sendData.password);
-    console.log(sendData.email);
     let correctedSendData = {
-      username: sendData.username,
-      email: sendData.email,
-      password: sendData.password,
+      username: sendData.regUsername,
+      email: sendData.regEmail,
+      password: sendData.regPassword,
     };
     try {
       const { data } = await api.post("/auth/signup", correctedSendData);
-      toast.success("アカウント登録しました。");
+      toast.success("アカウント登録しました。ログインしてください。");
       return true;
     } catch (error) {
-      dispatch({
-        type: "IS_ERROR",
-        payload: {
-          errorMessage:
-            error?.response?.data?.message ||
-            "エラー発生。再度アカウント登録してください。",
-          page: "register",
-        },
-      });
+      if (error.response?.data?.message === "Username is already used.") {
+        dispatch({
+          type: "IS_ERROR",
+          payload: {
+            errorMessage: "ユーザ名は既に使用されています。",
+            page: "register",
+          },
+        });
+      } else {
+        dispatch({
+          type: "IS_ERROR",
+          payload: {
+            errorMessage:
+              error?.response?.data?.message ||
+              "エラー発生。再度アカウント登録してください。",
+            page: "register",
+          },
+        });
+      }
       return false;
     }
   };
@@ -692,7 +699,7 @@ export const createClientSecret = () => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
-    0
+    0,
   );
   const sendData = {
     amount: Number(totalPrice),
@@ -736,8 +743,10 @@ export const submitReview =
     try {
       let { data } = await api.post(`/review/${orderId}`, sendData);
       toast.success(`注文番号${orderId}に関するレビューを投稿しました。`);
+      return true;
     } catch (error) {
       toast.error(`エラー発生。`);
+      return false;
     }
   };
 
@@ -749,6 +758,7 @@ export const fetchReviews = () => async (dispatch, getState) => {
       type: "STORE_REVIEWS",
       payload: data,
     });
+    localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
     console.log(error);
   }
@@ -762,22 +772,22 @@ export const clearErrorMessage = () => async (dispatch) => {
   dispatch({ type: "CLEAR_ERROR_MESSAGE" });
 };
 
-export const setModalOpen = () => async (dispatch, getState) => {
+export const setModalOpen = () => async (dispatch) => {
   dispatch({ type: "OPEN_MODAL" });
 };
 
-export const setModalLogin = () => async (dispatch, getState) => {
+export const setModalLogin = () => async (dispatch) => {
   dispatch({ type: "LOGIN_ONLY" });
 };
 
-export const setModalCheckout = () => async (dispatch, getState) => {
+export const setModalCheckout = () => async (dispatch) => {
   dispatch({ type: "CHECKOUT" });
 };
 
-export const closeModal = () => async (dispatch, getState) => {
+export const closeModal = () => async (dispatch) => {
   dispatch({ type: "SET_FALSE" });
 };
 
-export const setCommandIdx = (idx) => async (dispatch, getState) => {
+export const setCommandIdx = (idx) => async (dispatch) => {
   dispatch({ type: "SET_COMMAND_IDX", payload: idx });
 };

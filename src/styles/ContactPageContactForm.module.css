@@ -18,10 +18,19 @@
 
 .Form {
   border-radius: 5px !important;
+  margin-top: 15px;
+}
+
+.InputFields {
+  width: 480px !important;
 }
 
 @media screen and (max-width: 540px) {
   .Form {
+    width: 90% !important;
+    margin-top: 0;
+  }
+  .InputFields {
     width: 90% !important;
   }
 }

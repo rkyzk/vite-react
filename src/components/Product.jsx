@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
-  updateCart,
+  updateCartAddQty,
   fetchProductDetail,
   clearErrorMessage,
   fetchProducts,
@@ -38,11 +38,11 @@ const Product = () => {
 
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCart(Number(id), qty, toast));
+    dispatch(updateCartAddQty(Number(id), qty, toast));
   };
 
   return (
-    <div className="flex mt-3">
+    <div className="flex mt-3 px-1">
       {isLoading ? (
         <Spinner className="mx-auto" />
       ) : errorMessage ? (
@@ -52,7 +52,7 @@ const Product = () => {
         </div>
       ) : (
         <div
-          className={`${styles.Box} xs:grid-col-1 md:mt-5 md:grid-cols-2 grid justify-center xs:px-3 sm:px-5 lg:px-14`}
+          className={`${styles.Box} xs:grid-col-1 md:mt-5 md:grid-cols-2 grid`}
         >
           <div>
             <img
@@ -61,9 +61,9 @@ const Product = () => {
               alt={productName}
             />
           </div>
-          <div>
+          <div className={`${styles.Description}`}>
             <h2 className="text-2xl">{productName}</h2>
-            <div className={`${styles.PrcQty} mt-3 gap-1`}>
+            <div className={`${styles.PrcQty} mt-3 gap-1 ml-4`}>
               <div>
                 {category.categoryId === 4 ? (
                   <span>&yen;{price} (球根6個)</span>
@@ -72,7 +72,7 @@ const Product = () => {
                 )}
               </div>
             </div>
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-2 ml-4">
               <div className="flex gap-2">
                 {isAvailable && (
                   <div>
@@ -118,10 +118,27 @@ const Product = () => {
                 Object.keys(productDetail).length !== 0 &&
                 productDetail.map((item, id) => {
                   return (
-                    <p className="font-bold" key={id}>
-                      {item["key"] !== "Description" && <>{item["key"]} : </>}
-                      <span className="font-normal">{item["value"]}</span>
-                    </p>
+                    <div
+                      className={
+                        item["key"] === "Description" ? "mb-4" : "mb-1"
+                      }
+                      style={{ display: "flex" }}
+                    >
+                      {item["key"] === "Description" ? (
+                        <>{item["value"]}</>
+                      ) : (
+                        <>
+                          <div className="w-[120px]">
+                            <span className="text-md/5 font-bold" key={id}>
+                              {item["key"]}
+                            </span>
+                          </div>
+                          <div style={{ width: "calc(100% - 120px)" }}>
+                            <span>{item["value"]}</span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   );
                 })}
             </div>

@@ -3,12 +3,12 @@ import Box from "@mui/material/Box";
 import Stars from "../shared/Stars";
 import styles from "../../styles/ReviewEntry.module.css";
 
-const ReviewEntry = ({ idx, num }) => {
+const ReviewEntry = () => {
   const { reviews } = useSelector((state) => state.reviews);
-  const date = (data) => data?.substring(0, 10).replaceAll("-", "/");
+
   return (
-    <div className="grid xs:w-[310px] xs:grid-col-1 sm:w-[615px] sm:gap-2 sm:grid-cols-2 lg:w-[920px] lg:grid-cols-3">
-      {reviews?.content?.slice(idx, idx + num).map((entry) => (
+    <>
+      {reviews?.content?.map((entry) => (
         <Box
           key={entry.id}
           className={`${styles.Entry}`}
@@ -31,16 +31,15 @@ const ReviewEntry = ({ idx, num }) => {
             }),
           })}
         >
-          <Stars stars={entry.stars} />
           <p className="text-left mt-2">{entry.reviewContent}</p>
-          <p className="text-right font-bold">
-            {date(entry.createdAt)}
-            <br />
-            {entry.user.username}
-          </p>
+          <Stars stars={entry.stars} />
+          <div>
+            <p className="text-right font-bold">{date(entry.createdAt)}</p>
+            <p>{entry.user.username}</p>
+          </div>
         </Box>
       ))}
-    </div>
+    </>
   );
 };
 

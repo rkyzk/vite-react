@@ -35,6 +35,13 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .Description {
+    margin-top: 15px !important;
+    width: 90%;
+    margin: auto;
+  }
+}
 @media screen and (max-width: 680px) {
   .Img {
     width: 310px !important;
@@ -45,18 +52,18 @@
   }
 }
 
-@media screen and (max-width: 639px) {
-  .Box {
-    width: 95%;
-    margin: auto;
-  }
-}
-
 @media screen and (max-width: 440px) {
   .Qty {
     margin-top: 2px;
   }
   .PrcQty {
     flex-direction: column;
+  }
+}
+
+@media screen and (min-width: 370px) {
+  .Description {
+    width: 95% !important;
+    margin: auto;
   }
 }

@@ -1,7 +1,12 @@
 # EC サイト アプリ Frontend(React)
 
 12/7
-get addresses data after purchase
+address
+review function, carousel on home page
+product detail pages
+login/register dialog hide/show password
+only a few left/out of stock
+after writing a review, display "review submitted" on frontend
 
 delete default address, and set another address to selectedAddress
 
@@ -142,6 +147,10 @@ not logged in => Checkout => log in => should go back to checkout page
 but goes to home page
 
 ## Credits
+
+code snippets:
+box shadow (review entries on home page)
+https://getcssscan.com/css-box-shadow-examples
 
 decription:
 https://www.gardenia.net

@@ -10,7 +10,9 @@ import SimpleSlider from "./SimpleSlider";
 
 const Home = () => {
   const { products } = useSelector((state) => state.products);
-  const { isLoading, errorMessage } = useSelector((state) => state.errors);
+  const { isLoading, errorMessage, page } = useSelector(
+    (state) => state.errors,
+  );
   const dispatch = useDispatch();
   const IMAGES = [
     { 0: 1, 1: "チューリップ", 2: "tulipa-barcelona.jpg" },
@@ -37,7 +39,7 @@ const Home = () => {
       <div className="flex">
         {isLoading ? (
           <Spinner className="ml-20" />
-        ) : errorMessage ? (
+        ) : errorMessage && page === "home" ? (
           <>
             <FaExclamationTriangle className="text-slate-600 text-3xl ml-20 mr-2" />
             <p className="text-lg text-slate-600">{errorMessage}</p>

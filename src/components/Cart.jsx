@@ -57,7 +57,14 @@ const Cart = ({ cartPage }) => {
             </p>
           </div>
           {cartPage && (
-            <div className="flex w-full mt-3 justify-end sm:pr-5 md:pr-10">
+            <div className="flex w-full mt-3 justify-end gap-2 sm:pr-5 md:pr-10">
+              <button
+                className={`mt-1 bg-stone-700 text-white
+                py-1 px-2 sm:mr-8`}
+                onClick={() => navigate("/products")}
+              >
+                買い物を続ける
+              </button>
               <button
                 className={`mt-1 bg-stone-700 text-white
                 py-1 px-2 sm:mr-8`}

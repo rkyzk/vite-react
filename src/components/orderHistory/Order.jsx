@@ -5,14 +5,7 @@ import { TiPencil } from "react-icons/ti";
 import Modal from "@mui/material/Modal";
 import styles from "../../styles/Order.module.css";
 
-const Order = ({
-  orderId,
-  orderDate,
-  cart,
-  review,
-  shippingAddress,
-  billingAddress,
-}) => {
+const Order = ({ orderId, orderDate, cart, review }) => {
   const [open, setOpen] = useState(false);
   const closeReviewForm = () => {
     setOpen(false);

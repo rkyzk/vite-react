@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import Order from "./Order";
 import PaginationSection from "../shared/PaginationSection";
+import styles from "../../styles/OrderHistory.module.css";
 
 const OrderHistory = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const OrderHistory = () => {
 
   return (
     <div className="px-2 max-w-7xl mx-auto w-full md:w-10/12 lg:w-9/12">
-      <h2>購入履歴</h2>
+      <h2 className={`${styles.Text}`}>購入履歴</h2>
       {page === "order-history" && errorMessage ? (
         <div className="flex justify-center">
           <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />

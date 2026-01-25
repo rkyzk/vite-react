@@ -48,7 +48,7 @@ const Login = () => {
       className="px-2 pt-1 flex flex-col mx-auto mb-5
           items-center"
     >
-      <h2 className="text-[0.7rem] font-extralight text-center">
+      <h2 className={`${styles.Text} font-extralight text-center`}>
         {loginOnly ? <>ログイン</> : <>アカウントをお持ちの方</>}
       </h2>
       {errorMessage && page === "login" && (

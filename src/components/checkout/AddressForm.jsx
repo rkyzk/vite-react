@@ -285,11 +285,7 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.city}
           />
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
           <label
             htmlFor="streetAddress1"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}

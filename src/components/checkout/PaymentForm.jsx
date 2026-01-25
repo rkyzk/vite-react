@@ -7,6 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { validateAddress } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import styles from "../../styles/PaymentForm.module.css";
 
 /**
  * Displays stripe's payment element
@@ -60,7 +61,7 @@ const PaymentForm = ({ props }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
-      <h2 className="text-[0.7rem] font-normal">カード情報</h2>
+      <h2 className={`${styles.Text}`}>カード情報</h2>
       {isLoading ? (
         <Spinner />
       ) : (

@@ -2,5 +2,9 @@
   border-radius: 5px;
 }
 
+.Text {
+  font-size: 1.2rem !important;
+}
+
 @media screen and (max-width: 639px) {
 }

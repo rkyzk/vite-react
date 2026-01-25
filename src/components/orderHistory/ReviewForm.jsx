@@ -4,11 +4,13 @@ import { submitReview } from "../../store/actions";
 import toast from "react-hot-toast";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const ReviewForm = ({ closeReviewForm, orderId }) => {
   const [content, setContent] = useState("");
   const [stars, setStars] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   /** ダイアログの外をクリックしたらダイアログを閉じる */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
@@ -18,10 +20,14 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    let result;
     if (content.trim() !== "") {
-      dispatch(submitReview(content, stars, orderId, toast));
+      result = dispatch(submitReview(content, stars, orderId, toast));
     }
     closeReviewForm();
+    if (result) {
+      navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+    }
   };
   useEffect(() => {
     // 初回レンダーリングでイベントリスナーを追加
@@ -37,7 +43,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
     ) : (
       <FaStar
         id={`fastar${idx}`}
-        className="text-2xl"
+        className="text-2xl text-yellow-500"
         onClick={() => setStars(idx)}
       />
     );

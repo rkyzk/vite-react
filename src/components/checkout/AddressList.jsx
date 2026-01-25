@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import AddressForm from "./AddressForm";
 import { changeSelectedAddr } from "../../store/actions";
+import styles from "../../styles/AddressList.module.css";
 
 const AddressList = () => {
   const { sAddressList, bAddressList, selectedSAddrId, selectedBAddrId } =
@@ -12,9 +13,13 @@ const AddressList = () => {
 
   return (
     <div className="flex">
-      <div className="w-[290px] mx-auto grid gap-x-5 xs:grid-col-1 md:grid-cols-2 sm:w-11/12 sm:max-w-[400px] md:max-w-[620px] lg:w-[680px] lg:gap-x-[40px]">
-        <div>
-          <h2 className="text-[0.7rem] font-extralight">お届け先</h2>
+      <div
+        className="w-[290px] mx-auto grid gap-x-5 xs:grid-col-1
+        md:grid-cols-2 sm:w-11/12 sm:max-w-[400px] md:max-w-[680px]
+        lg:max-w-[720px] lg:gap-x-[150px]"
+      >
+        <div className="w-[280px]">
+          <h2 className={`${styles.Text} font-extralight`}>お届け先</h2>
           {(!sAddressList || sAddressList.length == 0) && (
             <AddressForm isSAddr />
           )}
@@ -55,8 +60,8 @@ const AddressList = () => {
           )}
         </div>
         <hr className="xs:mx-1 xs:mt-30px md:hidden" />
-        <div className="xs:mt-[50px] md:mt-0">
-          <h2 className="text-[0.7rem] font-extralight">請求先</h2>
+        <div className="xs:mt-[50px] md:mt-0 w-[280px]">
+          <h2 className={`${styles.Text} font-extralight`}>請求先</h2>
           <div className="mt-[-4px]">
             <label htmlFor="selected-b-addr0">
               <input
