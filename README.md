@@ -8,6 +8,9 @@ login/register dialog hide/show password
 only a few left/out of stock
 after writing a review, display "review submitted" on frontend
 
+bugs:
+from p.2 => product detail page => back => should display p.2 but shows p.1
+
 delete default address, and set another address to selectedAddress
 
 carousel: react click
@@ -152,6 +155,9 @@ code snippets:
 box shadow (review entries on home page)
 https://getcssscan.com/css-box-shadow-examples
 
+getting window width
+https://qiita.com/koji0705/items/b87601540c306290ca27
+
 decription:
 https://www.gardenia.net
 
@@ -179,6 +185,8 @@ https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-he
 dahlia images
 https://www.edenbrothers.com/products/dahlia-bulbs-belle-of-barmera
 
+tulips images
+https://www.peternyssen.com/autumn-planting/tulips.html?p=2
 \
 
 9/6

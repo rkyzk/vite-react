@@ -1,6 +1,4 @@
-.EntryBox {
-  width: 280px !important;
-  height: 200px !important;
+.Entry {
   background-color: #fff;
   padding: 2px 5px;
   color: #333;
