@@ -1,3 +1,9 @@
 .Text {
-  font-size: 1.5rem !important;
+  font-size: 1.2rem !important;
+}
+
+.Button:hover {
+  color: #111 !important;
+  border: #222 solid 1px;
+  background-color: aliceblue;
 }

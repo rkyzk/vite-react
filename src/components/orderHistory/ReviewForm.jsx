@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { submitReview } from "../../store/actions";
 import toast from "react-hot-toast";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import {
+  sendRefreshJwtTokenRequest,
+  sendLogoutRequest,
+  setModalLogin,
+  setModalOpen,
+} from "../../store/actions";
 
 const ReviewForm = ({ closeReviewForm, orderId }) => {
   const [content, setContent] = useState("");
   const [stars, setStars] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { commandIdx, user } = useSelector((state) => state.auth);
   /** ダイアログの外をクリックしたらダイアログを閉じる */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
@@ -18,17 +28,53 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
       document.removeEventListener("mouseup", handleCloseModal);
     }
   };
-  const handleSubmit = (e) => {
+  const handleChangeText = (e) => {
+    error && setError("");
+    setContent(e.target.value);
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let result;
     if (content.trim() !== "") {
-      result = dispatch(submitReview(content, stars, orderId, toast));
-    }
-    closeReviewForm();
-    if (result) {
-      navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+      setSubmitted(true);
+      result = await dispatch(submitReview(content, stars, orderId, toast));
+      closeReviewForm();
+      if (result) {
+        navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+      }
+    } else {
+      setError("コメントを記入してください。");
     }
   };
+  useEffect(() => {
+    let result;
+    const logoutUser = async () => {
+      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      dispatch(sendLogoutRequest(user.id, null, null));
+      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      await dispatch(setModalLogin());
+      dispatch(setModalOpen());
+    };
+    if (submitted) {
+      switch (commandIdx) {
+        case 0:
+          result = dispatch(submitReview(content, stars, orderId, toast));
+          closeReviewForm();
+          if (result) {
+            navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+          }
+          break;
+        case 1:
+          // JWTが期限切れの時、更新をリクエスト
+          dispatch(sendRefreshJwtTokenRequest());
+          break;
+        case 2:
+          // refreshTokenが期限切れの時、ユーザをログアウトする
+          logoutUser();
+      }
+    }
+  }, [commandIdx]);
+
   useEffect(() => {
     // 初回レンダーリングでイベントリスナーを追加
     document.addEventListener("mouseup", (e) => handleCloseModal(e));
@@ -62,9 +108,9 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
         <textarea
           id="review"
           name="review"
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => handleChangeText(e)}
           value={content}
-          className="border border-neutral-800"
+          className="border border-neutral-800 p-2"
           rows="10"
           cols="50"
         ></textarea>
@@ -75,6 +121,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           {scoreStars(4)}
           {scoreStars(5)}
         </div>
+        {error && <span style={{ color: "red" }}>{error}</span>}
         <button className="mt-2 px-2 py-1 outline-none bg-amber-950 text-white hover:opacity-50">
           レビューを投稿する
         </button>

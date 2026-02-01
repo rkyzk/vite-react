@@ -11,7 +11,6 @@ import Slider from "react-slick";
 const SimpleSlider = () => {
   const width = useWindowWidth();
   const { reviews } = useSelector((state) => state.reviews);
-  console.log(width);
   const [elems, setElems] = useState([]);
   const getElemsPerSlide = () => {
     if (width < 610) {
@@ -54,8 +53,6 @@ const SimpleSlider = () => {
       let numSlides = getTotalSlides();
       let idx = 0;
       let newElems = [];
-      console.log(reviews.totalElements);
-      console.log(elemsPerSlide);
       for (let i = 0; i < numSlides; i++) {
         newElems.push(<ReviewEntry key={i} num={elemsPerSlide} idx={idx} />);
         idx += elemsPerSlide;

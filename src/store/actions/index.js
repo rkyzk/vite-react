@@ -379,6 +379,7 @@ export const sendLoginRequest =
     setLoader(true);
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
+      setLoader(false);
       dispatch({
         type: "LOGIN_USER",
         payload: data,
@@ -395,7 +396,9 @@ export const sendLoginRequest =
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       toast.success("ログインしました。");
+      return true;
     } catch (error) {
+      setLoader(false);
       if (error?.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
@@ -414,6 +417,7 @@ export const sendLoginRequest =
           },
         });
       }
+      return false;
     }
   };
 
@@ -422,7 +426,6 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
   localStorage.setItem("auth", null);
-  console.log("LOGGED OUT!!!!");
   if (navigate) {
     toast.success("ログアウトしました。");
     localStorage.setItem("cartItems", []);
@@ -577,6 +580,8 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
           page: "order-history",
         },
       });
+    } else if (error.status === 420) {
+      dispatch({ type: "SET_COMMAND_IDX", payload: 1 });
     } else {
       dispatch({
         type: "IS_ERROR",
@@ -675,9 +680,13 @@ export const clearAddressErrors = (sAddr) => async (dispatch, getState) => {
 
 export const changeSelectedAddr =
   (isSAddr, selectedAddrId) => async (dispatch, getState) => {
-    isSAddr
-      ? dispatch({ type: "SET_SELECTED_SADDRESS", payload: selectedAddrId })
-      : dispatch({ type: "SET_SELECTED_BADDRESS", payload: selectedAddrId });
+    if (isSAddr) {
+      dispatch({ type: "SET_SELECTED_SADDRESS", payload: selectedAddrId });
+      dispatch({ type: "CLEAR_SADDRESS_ERRORS" });
+    } else {
+      dispatch({ type: "SET_SELECTED_BADDRESS", payload: selectedAddrId });
+      dispatch({ type: "CLEAR_BADDRESS_ERRORS" });
+    }
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
 
@@ -705,7 +714,6 @@ export const createClientSecret = () => async (dispatch, getState) => {
     amount: Number(totalPrice),
     currency: "jpy",
   };
-  console.log("GETTING CLIENT SECRET!!!!");
   try {
     const { data } = await api.post(`/order/stripe-client-secret`, sendData);
     dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
@@ -720,11 +728,9 @@ export const createClientSecret = () => async (dispatch, getState) => {
 };
 
 export const sendRefreshJwtTokenRequest = () => async (dispatch, getState) => {
-  console.log("GETTING REFRESH TOKEN!!!!");
   try {
     let { data } = await api.post(`/auth/refreshtoken`);
     if (data.message === "Refresh Token has expired.") {
-      console.log("REFRESH TOKEN EXPIRED!!!!");
       dispatch({ type: "SET_COMMAND_IDX", payload: 2 });
     } else {
       dispatch({ type: "SET_COMMAND_IDX", payload: 0 });

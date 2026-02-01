@@ -36,10 +36,10 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await dispatch(sendLoginRequest(data, toast, setLoader));
+    let result = await dispatch(sendLoginRequest(data, toast, setLoader));
     dispatch(setCommandIdx(0));
     dispatch(getUserAddress());
-    checkout ? navigate("/checkout") : navigate(path);
+    result && checkout ? navigate("/checkout") : navigate(path);
   };
 
   return (

@@ -20,7 +20,9 @@ const PaymentForm = ({ props }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState([]);
-  const { tempSAddress, selectedBAddrId } = useSelector((state) => state.auth);
+  const { selectedSAddrId, selectedBAddrId } = useSelector(
+    (state) => state.auth,
+  );
   const dispatch = useDispatch();
   const paymentElementOptions = {
     layout: "tabs",
@@ -32,7 +34,7 @@ const PaymentForm = ({ props }) => {
       return;
     }
     let isValid = true;
-    if (tempSAddress) {
+    if (selectedSAddrId === 0) {
       isValid = await dispatch(validateAddress(true));
     }
     if (selectedBAddrId === -1) {
@@ -71,8 +73,8 @@ const PaymentForm = ({ props }) => {
             <div className="text-red-500 mt-2">{errorMessage}</div>
           )}
           <button
-            className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
-              hover:bg-stone-300 hover:text-stone-800"
+            className={`${styles.Button} mt-2 mx-auto bg-stone-600 text-white p-1
+              hover:bg-stone-300`}
             disabled={!stripe || isLoading}
           >
             {isLoading ? <Spinner /> : `¥${totalPrice}を支払い商品を購入する`}

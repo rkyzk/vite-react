@@ -97,7 +97,7 @@ const Filter = ({ categoryId }) => {
                 h-[40px] outline-none focus:outline-none"
             style={{ width: "200px" }}
           >
-            {category === "null" && (
+            {(category === "null" || category === "") && (
               <option defaultChecked>花種でフィルター</option>
             )}
             {categories.map((item) => (

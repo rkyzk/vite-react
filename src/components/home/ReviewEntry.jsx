@@ -7,7 +7,6 @@ const ReviewEntry = ({ key, num, idx }) => {
   const { reviews } = useSelector((state) => state.reviews);
   const width = useWindowWidth();
   const date = (data) => data?.substring(0, 10).replaceAll("-", "/");
-  console.log("review entry: " + key + ", " + num + ", " + idx);
   // className={`flex ${num < 3 ? "justify-start" : "justify-center"} gap-x-3 ml-[-10px]`}
   return (
     <div

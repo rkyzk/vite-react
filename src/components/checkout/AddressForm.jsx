@@ -123,16 +123,16 @@ const AddressForm = ({ address, isSAddr }) => {
 
   const saveButtons = () => {
     return (
-      <div className={`gap-x-1 pl-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
+      <div className={`gap-x-1 px-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
         <button
-          className="mt-2 bg-stone-600 text-white py-1 px-2 hover:bg-stone-300 hover:text-stone-800"
+          className={`${styles.Button} mt-2 bg-stone-600 text-white py-1 px-2 hover:bg-stone-300`}
           onClick={() => saveAddress(tempAddress)}
         >
           保存
         </button>
         <button
-          className="m-2 bg-stone-600 text-white py-1 px-2
-                    hover:bg-stone-300 hover:text-stone-800"
+          className={`${styles.Button} m-2 bg-stone-600 text-white py-1 px-2
+                    hover:bg-stone-300`}
           onClick={() => handleCancelEditAddress(isSAddr)}
         >
           キャンセル
@@ -144,15 +144,15 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className="mt-2 flex justify-start gap-x-2">
         <button
-          className="text-stone-900 p-1 hover:bg-stone-300"
+          className={`${styles.EditBtn}text-stone-900 p-1`}
           style={{ border: "#555 solid 1px" }}
           onClick={() => showEditForm(true)}
         >
           編集
         </button>
         <button
-          className="bg-stone-600 text-white py-1 px-2
-                     hover:text-stone-800 hover:bg-stone-300 "
+          className={`${styles.EditBtn}text-stone-900 p-1`}
+          style={{ border: "#555 solid 1px" }}
           onClick={() => handleDeleteAddress()}
         >
           この住所を削除
@@ -189,7 +189,7 @@ const AddressForm = ({ address, isSAddr }) => {
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
         className={`${isSAddr ? "s-addr" : "b-addr"}
-        ${editAddr && "bg-neutral-300 pl-2 pb-2"}`}
+          ${editAddr && "bg-neutral-300 px-2 py-1"} ${styles.Form}`}
       >
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
           <label
