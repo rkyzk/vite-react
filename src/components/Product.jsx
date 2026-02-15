@@ -42,7 +42,7 @@ const Product = () => {
   };
 
   return (
-    <div className="flex mt-3 px-1">
+    <div className="flex mt-3 justify-center px-1">
       {isLoading ? (
         <Spinner className="mx-auto" />
       ) : errorMessage ? (

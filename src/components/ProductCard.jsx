@@ -27,7 +27,7 @@ const ProductCard = ({
       <Link className="cursor-pointer text-center" to={`/product/${id}`}>
         <img
           className={`${styles.imgSize} cursor-pointer`}
-          src={`/src/assets/products/${imageName}`}
+          src={`/images/products/${category.categoryId}/${imageName}`}
           alt={productName}
         />
         <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">

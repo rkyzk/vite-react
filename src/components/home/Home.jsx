@@ -15,10 +15,10 @@ const Home = () => {
   );
   const dispatch = useDispatch();
   const IMAGES = [
-    { 0: 1, 1: "チューリップ", 2: "tulipa-barcelona.jpg" },
-    { 0: 2, 1: "ヒヤシンス", 2: "grape-hyacinth.jpg" },
-    { 0: 3, 1: "クロッカス", 2: "advance-crocus.jpg" },
-    { 0: 4, 1: "ダリア", 2: "dahlia-white-nettie.jpg" },
+    { 0: 1, 1: "チューリップ", 2: "1/tulipa-barcelona.jpg" },
+    { 0: 2, 1: "ヒヤシンス", 2: "2/grape-hyacinth.jpg" },
+    { 0: 3, 1: "クロッカス", 2: "3/advance-crocus.jpg" },
+    { 0: 4, 1: "ダリア", 2: "4/dahlia-white-nettie.jpg" },
   ];
   useEffect(() => {
     dispatch(clearErrorMessage());
@@ -54,7 +54,7 @@ const Home = () => {
                 <Link to={`/products?category=${elem[0]}`}>
                   <img
                     className={`${styles.imgSize} cursor-pointer absolute`}
-                    src={`/src/assets/products/${elem[2]}`}
+                    src={`/images/products/${elem[2]}`}
                     alt={elem[1]}
                   />
                   <p className="text-white absolute top-1 left-1 text-xl">

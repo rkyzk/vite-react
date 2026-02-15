@@ -15,6 +15,10 @@
   display: flex;
   justify-content: space-between;
 }
+.Box {
+  width: 75%;
+  max-width: 1000px;
+}
 
 @media screen and (min-width: 768px) {
   .Box {
@@ -38,8 +42,9 @@
 @media screen and (max-width: 767px) {
   .Description {
     margin-top: 15px !important;
-    width: 90%;
-    margin: auto;
+  }
+  .Box {
+    width: 80%;
   }
 }
 @media screen and (max-width: 680px) {
@@ -59,11 +64,7 @@
   .PrcQty {
     flex-direction: column;
   }
-}
-
-@media screen and (min-width: 370px) {
-  .Description {
-    width: 95% !important;
-    margin: auto;
+  .Box {
+    width: 100% !important;
   }
 }

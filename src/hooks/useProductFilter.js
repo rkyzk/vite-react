@@ -22,7 +22,8 @@ const useProductFilter = () => {
     if (colors) params.set("colors", colors);
     if (sort) params.set("sortBy", sort);
     params.set("pageNumber", currPage - 1);
-    const queryString = params.toString();
+    let queryString = params.toString();
+    if (queryString && queryString.length > 0) queryString = "?" + queryString;
     dispatch(fetchProducts(queryString));
   }, [dispatch, searchParams]);
 };

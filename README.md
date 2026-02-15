@@ -1,5 +1,7 @@
 # EC サイト アプリ Frontend(React)
 
+デプロイしたプロジェクトは[こちら]:(http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
+
 12/7
 address
 review function, carousel on home page
