@@ -1,6 +1,6 @@
 # EC サイト アプリ Frontend(Vite + React)
 
-<img src="./src/main/resources/images/homepage.jpg" style="width: 85%;" alt="Landing page" title="ホームページ">
+<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="ホームページ">
 
 デプロイしたプロジェクト:
 [Wild Blossom Garden](http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
