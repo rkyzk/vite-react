@@ -1,13 +1,15 @@
 # EC サイト アプリ Frontend(Vite + React)
 
-デプロイしたプロジェクトは[こちら]:(http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
+デプロイしたプロジェクト:
+[Wild Blossom Garden](http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
 
 ### 概要
 
 Java(Spring Boot)で作成したEコマースサイトのRest APIと連携するフロントエンドのプロジェクト。
-商品閲覧、検索、アカウント登録、買い物かごに追加、住所とカード情報を記入して購入手続きなどが可能。カードでの支払いの処理はStripe APIを利用。ユーザ認証にはJWTを利用。
+商品閲覧、検索、アカウント登録、買い物かごに追加、住所とカード情報を記入して購入手続きなどが可能。
 
-Rest APIのソースは[こちら]:(https://github.com/rkyzk/ecommerceapi)
+Rest APIのソース:
+[ECサイトAPI](https://github.com/rkyzk/ecommerceapi)
 
 ### 主な機能
 
@@ -36,36 +38,25 @@ Udemy のコース "Java Spring Boot professional eCommerce project master class
 https://github.com/EmbarkXOfficial/spring-boot-course
 を参考に作成。
 
-### 引用した文章
+### 引用した文章、画像
 
-- ホームページ
+- ホームページ<br/>
   https://shop.hanano-yamato.co.jp
 
-- 商品詳細ページ
+- 商品詳細ページ<br/>
   https://www.pref.toyama.jp/1613/sangyou/nourinsuisan/nougyou/kj00014132/kj00014132-011-01.html<br/>
-
-### 引用した画像
-
-ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
-
-https://www.919g.co.jp/blog/?p=7420<br/>
-
-- ソースを参考にしたサイト
-  https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</br>
-
-  spinner:</br>
-  https://tw-elements.com/docs/standard/components/spinners/
-
-- 画像は下サイトより取得
+  https://www.919g.co.jp/blog/?p=7420<br/>
   https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/<br/>
+  https://northernwildflowers.ca/collections/shop-seeds/products/smooth-aster<br/>
+  https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
+  https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
 
-https://northernwildflowers.ca/collections/shop-seeds/products/smooth-aster
+### 引用、参考にしたソース
 
-https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
+https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</br>
 
-https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
-
-## 今後修正すること
+spinner:</br>
+https://tw-elements.com/docs/standard/components/spinners/</br>
 
 ## To allow toast notifications
 
