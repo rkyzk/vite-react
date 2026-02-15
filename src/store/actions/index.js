@@ -571,7 +571,7 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
     });
     localStorage.setItem("order", JSON.stringify(getState().order));
   } catch (error) {
-    if (error.status === 404) {
+    if (error.status === 401) {
       dispatch({
         type: "IS_ERROR",
         payload: {
