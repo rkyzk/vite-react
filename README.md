@@ -1,30 +1,52 @@
-# EC サイト アプリ Frontend(React)
+# EC サイト アプリ Frontend(Vite + React)
 
 デプロイしたプロジェクトは[こちら]:(http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
 
-12/7
-address
-review function, carousel on home page
-product detail pages
-login/register dialog hide/show password
-only a few left/out of stock
-after writing a review, display "review submitted" on frontend
+### 概要
 
-bugs:
-from p.2 => product detail page => back => should display p.2 but shows p.1
+Java(Spring Boot)で作成したEコマースサイトのRest APIと連携するフロントエンドのプロジェクト。
+商品閲覧、検索、アカウント登録、買い物かごに追加、住所とカード情報を記入して購入手続きなどが可能。カードでの支払いの処理はStripe APIを利用。ユーザ認証にはJWTを利用。
 
-delete default address, and set another address to selectedAddress
+Rest APIのソースは[こちら]:(https://github.com/rkyzk/ecommerceapi)
 
-carousel: react click
-https://react-slick.neostack.com/docs/get-started
+### 主な機能
 
-###　ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
+1. 商品閲覧
+2. 商品検索（キーワード、花種、色でフィルター、人気順、価格が安い順に並び替え可能）
+3. アカウント登録、ログイン機能（JWT、リフレッシュトークン使用）
+4. 買い物かごに追加
+5. カートを表示（商品、個数、小計を表示）
+6. 購入手続き（住所登録、カード情報入力）
+7. 注文内容表示
+8. 購入履歴照会、レビュー投稿
+9. 問い合わせページ（フォーム表示のみ。実際メッセージ送信は行わない。）
+
+### 使用した言語、フレームワーク、ライブラリ、API
+
+JavaScript (Vite + React)<br/>
+
+### テスト
+
+全般的に動作確認済み。
+マニュアルテストを2026年2月以降実施予定。
+
+## 教材
+
+Udemy のコース "Java Spring Boot professional eCommerce project master class"</br>
+https://github.com/EmbarkXOfficial/spring-boot-course
+を参考に作成。
+
+### 引用した文章
 
 - ホームページ
   https://shop.hanano-yamato.co.jp
 
 - 商品詳細ページ
   https://www.pref.toyama.jp/1613/sangyou/nourinsuisan/nougyou/kj00014132/kj00014132-011-01.html<br/>
+
+### 引用した画像
+
+ホームのヒーローバナー下の文章と商品詳細のページの各商品に関する説明は下記サイトより引用
 
 https://www.919g.co.jp/blog/?p=7420<br/>
 
@@ -44,16 +66,6 @@ https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
 https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
 
 ## 今後修正すること
-
-- ハンバーガーメニューにするとユーザ名をクリックした際プルダウンが表示された途端消えてしまう
-- 商品届け先住所の入力バリデーションを項目ごとに特化したものにする
-  validation, login form,
-
-## 教材
-
-Udemy のコース "Java Spring Boot professional eCommerce project master class"</br>
-https://github.com/EmbarkXOfficial/spring-boot-course
-を参考にし作成。
 
 ## To allow toast notifications
 
