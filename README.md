@@ -50,6 +50,12 @@ https://github.com/EmbarkXOfficial/spring-boot-course
   https://northernwildflowers.ca/collections/shop-seeds/products/smooth-aster<br/>
   https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
   https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
+  https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/<br/>
+  https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip<br/>
+  https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html<br/>
+  https://www.edenbrothers.com/products/dahlia-bulbs-belle-of-barmera<br/>
+  https://www.peternyssen.com/autumn-planting/tulips.html?p=2<br/>
+  https://en.wikipedia.org/wiki/Crocus#/media/File:860808-Saffronfarm-01-IMG_7707-2.jpg<br/>
 
 ### 引用、参考にしたソース
 
@@ -57,12 +63,6 @@ https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</
 
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/</br>
-
-## To allow toast notifications
-
-Chrome:
-Settings > Privacy and Security > Pop-ups and redirects
-Under 'Default behaviors,' select 'Sites can send pop-ups and redirects'
 
 ## Tests
 
@@ -179,23 +179,3 @@ category pulldown from tailwindcss
 productCard
 quantity select box
 https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n
-
-products descriptions, images
-https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/
-
-https://www.gardenia.net/plant/tulipa-apricot-beauty-single-early-tulip
-
-https://www.peternyssen.com/autumn-planting/miscellaneous-bulbs/camassia/blue-heaven.html
-
-dahlia images
-https://www.edenbrothers.com/products/dahlia-bulbs-belle-of-barmera
-
-tulips images
-https://www.peternyssen.com/autumn-planting/tulips.html?p=2
-\
-crocus
-https://en.wikipedia.org/wiki/Crocus#/media/File:860808-Saffronfarm-01-IMG_7707-2.jpg
-
-9/6
-new s address ok
-update s address ok
