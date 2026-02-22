@@ -18,7 +18,6 @@ const SimpleSlider = () => {
     slidesToShow: 3,
     slidesToScroll: Math.ceil(reviews?.content?.length / 3),
   };
-  console.log(Math.ceil(reviews?.content?.length / 3));
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchReviews());

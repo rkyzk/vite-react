@@ -57,7 +57,7 @@ const Product = () => {
           <div>
             <img
               className={`${styles.Img}`}
-              src={`/src/assets/products/${imageName}`}
+              src={`/images/products/${category.categoryId}/${imageName}`}
               alt={productName}
             />
           </div>

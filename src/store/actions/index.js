@@ -154,14 +154,13 @@ export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
   }
 };
 
-/** Cartページプルダウンからカートを更新（qty:購入個数） */
+/** カートページプルダウンからカートを更新（qty:購入個数） */
 export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   const { cart } = getState().carts;
   let cartItemData = cart?.find((item) => item.id === id);
   let isQuantityInStock;
   let oldPurchaseQty = cartItemData.purchaseQty;
   let qtyAdded = qty - oldPurchaseQty;
-  // TBD;
   if (cartItemData) {
     isQuantityInStock = qtyAdded <= cartItemData.quantity;
   } else {
@@ -190,7 +189,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
-/** 注文をリクエスト（住所登録なし）*/
+/** 注文データを送信（登録済み住所を使用し、新規住所の登録なし）*/
 export const sendOrder = (data) => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
@@ -200,6 +199,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
   const items = cart.map((item) => {
     return { product: { ...item }, quantity: item.purchaseQty };
   });
+  // 届け先住所と請求先住所を取得
   let { selectedSAddrId, selectedBAddrId } = getState().auth;
   const sendData = {
     shippingAddressId: selectedSAddrId,
@@ -242,6 +242,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
     localStorage.setItem("cart", null);
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
+    // JWTが有効期限切れの時、再生成のリクエストを出すためcommandIdxを1に設定
     if (error.status === 420) {
       dispatch({
         type: "SET_COMMAND_IDX",
@@ -334,6 +335,7 @@ export const sendOrderWithNewAddresses =
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       return true;
     } catch (error) {
+      // JWTが有効期限切れの時、再生成のリクエストを出すためcommandIdxを1に設定
       if (error.status === 420) {
         dispatch({
           type: "SET_COMMAND_IDX",
@@ -344,7 +346,7 @@ export const sendOrderWithNewAddresses =
     }
   };
 
-/** 編集した住所のDB更新 */
+/** 住所をDBに登録 */
 export const saveNewAddress =
   (address, sAddr) => async (dispatch, getState) => {
     let responseAddr = null;
@@ -353,13 +355,13 @@ export const saveNewAddress =
       try {
         responseAddr = await api.post(`/addresses`, address);
       } catch (error) {
-        console.log(error);
+        console.log(error.response?.data?.message);
       }
     } else {
       try {
         responseAddr = await api.post(`/addresses/anonym`, address);
       } catch (error) {
-        console.log(error);
+        console.log(error.response?.data?.message);
       }
     }
     // store addressId
@@ -399,7 +401,7 @@ export const sendLoginRequest =
       return true;
     } catch (error) {
       setLoader(false);
-      if (error?.response?.data?.message === "Bad credentials") {
+      if (error.response?.data?.message === "Bad credentials") {
         dispatch({
           type: "IS_ERROR",
           payload: {
@@ -408,7 +410,7 @@ export const sendLoginRequest =
           },
         });
       } else {
-        console.log(error?.response?.data?.message);
+        console.log(error.response?.data?.message);
         dispatch({
           type: "IS_ERROR",
           payload: {
@@ -437,6 +439,8 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
     });
     navigate(`/`);
   } else {
+    // リフレッシュトークンが切れた際、再度ログインするようメッセージを設定。
+    // （その後ログインダイアログが表示される。）
     dispatch({
       type: "IS_ERROR",
       payload: "再度ログインしてください。",
@@ -513,10 +517,11 @@ export const getUserAddress = () => async (dispatch, getState) => {
     dispatch({ type: "INITIALIZE_BADDRESS_EQUALS_SADDRESS" });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
-    console.log(error);
+    console.log(error.response?.data?.message);
   }
 };
 
+/** 住所更新のリクエストを送信 */
 export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   try {
@@ -549,7 +554,7 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
     dispatch({ type: clearType });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
-    console.log(error);
+    console.log(error.response?.data?.message);
   }
 };
 
@@ -600,6 +605,7 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
   });
 };
 
+/** 住所をReduxに保存 */
 export const storeTempAddress = (address) => async (dispatch, getState) => {
   address.shippingAddress
     ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
@@ -607,6 +613,12 @@ export const storeTempAddress = (address) => async (dispatch, getState) => {
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
+/**
+ * 住所データを検証
+ *
+ * 名前2文字以上
+ * 番地番号2文字以上だったらtrueを返す
+ */
 export const validateAddress = (sAddr) => async (dispatch, getState) => {
   const { tempSAddress, tempBAddress } = getState().auth;
   let address = sAddr ? tempSAddress : tempBAddress;
@@ -631,12 +643,15 @@ export const validateAddress = (sAddr) => async (dispatch, getState) => {
   return result;
 };
 
+/**
+ * 住所を削除
+ */
 export const deleteAddress =
   (sAddr, id, toast) => async (dispatch, getState) => {
     try {
       await api.delete(`/addresses/${Number(id)}`);
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data?.message);
     }
     const { sAddressList, bAddressList, selectedSAddrId, selectedBAddrId } =
       getState().auth;
@@ -704,6 +719,9 @@ export const clearAuthData = () => async (dispatch, getState) => {
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
+/**
+ * ClientSecretの生成をリクエストし、Reduxに保存する
+ */
 export const createClientSecret = () => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
@@ -727,7 +745,10 @@ export const createClientSecret = () => async (dispatch, getState) => {
   }
 };
 
-export const sendRefreshJwtTokenRequest = () => async (dispatch, getState) => {
+/**
+ * Jwtの再生成をリクエストする
+ */
+export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
   try {
     let { data } = await api.post(`/auth/refreshtoken`);
     if (data.message === "Refresh Token has expired.") {
@@ -740,33 +761,37 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch, getState) => {
   }
 };
 
-export const submitReview =
-  (content, stars, orderId, toast) => async (dispatch) => {
-    let sendData = {
-      reviewContent: content,
-      stars: stars,
-    };
-    try {
-      let { data } = await api.post(`/review/${orderId}`, sendData);
-      toast.success(`注文番号${orderId}に関するレビューを投稿しました。`);
-      return true;
-    } catch (error) {
-      toast.error(`エラー発生。`);
-      return false;
-    }
+/**
+ * レビューをDBに登録
+ */
+export const submitReview = (content, stars, orderId, toast) => async () => {
+  let sendData = {
+    reviewContent: content,
+    stars: stars,
   };
+  try {
+    let { data } = await api.post(`/review/${orderId}`, sendData);
+    toast.success(`注文番号${orderId}に関するレビューを投稿しました。`);
+    return true;
+  } catch (error) {
+    toast.error(`エラー発生。`);
+    return false;
+  }
+};
 
+/**
+ * レビュー投稿を取得
+ */
 export const fetchReviews = () => async (dispatch, getState) => {
   try {
     let { data } = await api.get(`/public/reviews`);
-    console.log(data.reviews);
     dispatch({
       type: "STORE_REVIEWS",
       payload: data,
     });
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
-    console.log(error);
+    console.log(error.response?.data?.message);
   }
 };
 

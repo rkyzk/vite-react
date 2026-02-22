@@ -58,7 +58,6 @@ const SimpleSlider = () => {
         idx += elemsPerSlide;
       }
       setElems(newElems);
-      console.log(elems);
     }
   }, [reviews, width]);
 

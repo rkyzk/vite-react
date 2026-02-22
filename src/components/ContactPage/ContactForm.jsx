@@ -12,10 +12,10 @@ const ContactForm = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   return (
-    <div className="absolute top-95 mt-5 xxs:px-[10px] w-screen">
+    <div className="absolute top-95 mt-5 xxs:px-[10px] w-screen mb-2">
       <div
-        className={`${styles.Form} bg-slate-600 opacity-80 z-10
-          px-1 sm:px-2 max-w-[520px] h-[600px] mx-auto`}
+        className={`${styles.Form} bg-slate-600 opacity-90 z-10
+          px-1 sm:px-2 max-w-[520px] max-h-[600px] mx-auto pb-3`}
       >
         <form
           method="post"

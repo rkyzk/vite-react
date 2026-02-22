@@ -16,7 +16,7 @@ import Modal from "@mui/material/Modal";
 import AuthModal from "./components/auth/AuthModal";
 import { closeModal } from "./store/actions";
 import { useSelector } from "react-redux";
-import ContactPage from "./components/ContactPage/ContactPage";
+import ContactPage from "./components/contactPage/ContactPage";
 
 function App() {
   const { open } = useSelector((state) => state.modal);

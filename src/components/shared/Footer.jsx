@@ -6,7 +6,7 @@ import { FaInstagram } from "react-icons/fa";
  */
 const FooterComponent = () => {
   return (
-    <div className="h-40 w-full pt-10 mt-auto z-10">
+    <div className="z-10 h-40 w-full pt-10 mt-auto">
       <ul className="ml-[-32px] d-flex justify-center">
         <li>
           <a

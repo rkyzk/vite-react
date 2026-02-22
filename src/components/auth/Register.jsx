@@ -27,7 +27,6 @@ const Register = () => {
   const [pwErrs, setPwErrs] = useState(false);
   const validateUsername = useCallback(() => {
     if (data.regUsername.length < 3 || data.regUsername.length > 20) {
-      console.log("firing! " + data.regUsername.length);
       setUsernameErrs(true);
       return false;
     } else {
