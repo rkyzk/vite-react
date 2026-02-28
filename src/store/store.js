@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-//import productReducer from "./reducers/productReducer";
+import productReducer from "./reducers/productReducer";
 import errorReducer from "./reducers/errorReducer";
 import categoryReducer from "./reducers/categoryReducer";
 import cartReducer from "./reducers/cartReducer";
@@ -40,7 +40,7 @@ const initialState = {
 
 const store = configureStore({
   reducer: {
-    // products: productReducer,
+    products: productReducer,
     errors: errorReducer,
     categories: categoryReducer,
     carts: cartReducer,

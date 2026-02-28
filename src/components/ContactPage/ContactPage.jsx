@@ -1,6 +1,5 @@
 import ContactForm from "./ContactForm";
 import Footer from "../shared/Footer";
-// import ImagesColumn from "./ImagesColumn";
 import styles from "../../styles/ContactPageContactForm.module.css";
 
 const ContactPage = () => {
