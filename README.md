@@ -3,7 +3,7 @@
 <img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="ホームページ">
 
 デプロイしたプロジェクト:
-[Wild Blossom Garden](http://wild-blossom-garden.s3-website-ap-northeast-1.amazonaws.com)
+[Wild Blossom Garden](https://main.d318qultnvdzu6.amplifyapp.com)
 
 ### 概要
 
