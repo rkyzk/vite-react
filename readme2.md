@@ -1,3 +1,5 @@
+https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf
+
 ## Tests
 
 Sign up/Log in page
