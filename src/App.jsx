@@ -16,7 +16,7 @@ import Modal from "@mui/material/Modal";
 import AuthModal from "./components/auth/AuthModal";
 import { closeModal } from "./store/actions";
 import { useSelector } from "react-redux";
-//import ContactPage from "./components/contactPage/ContactPage";
+import ContactPage from "./components/contactPage/ContactPage";
 
 function App() {
   const { open } = useSelector((state) => state.modal);
@@ -31,7 +31,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/contact" element={<ContactPage />} /> */}
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirm" element={<PaymentConfirmation />} />
