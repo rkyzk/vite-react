@@ -1,44 +1,21 @@
 .Text {
   text-decoration: none;
-  color: #696969;
-  font-family: "Amatic SC", sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
+  color: #333 !important;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
-.Text:hover {
-  text-decoration: underline !important;
-  color: #1c4ba8;
-  opacity: 100%;
-}
-
-.navBarMd {
-  display: flex;
-  gap: 28px;
-  margin-top: 10px;
-}
-
-.navBar,
-.cartText {
-  display: none;
+@media screen and (min-width: 768px) {
+  .menuBox {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 767px) {
-  .navBarMd {
-    display: none;
+  .menuItems {
+    margin-top: 5px;
   }
-
-  .navBar {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-    position: absolute;
-    top: 48px;
-    right: 20px;
-    z-index: 2;
-    background-color: white;
-    opacity: 0.9;
-    padding: 3px 25px 3px;
+  .menuItemCart {
+    margin-top: 8px;
   }
 }

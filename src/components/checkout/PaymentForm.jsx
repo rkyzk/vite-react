@@ -5,6 +5,8 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { validateAddress } from "../../store/actions";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "../../styles/PaymentForm.module.css";
 
 /**
@@ -14,10 +16,14 @@ import styles from "../../styles/PaymentForm.module.css";
  * @param clientSecret, totalPrice
  */
 const PaymentForm = ({ props }) => {
-  const { clientSecret, totalPrice, storeAddr, validateInput } = props;
+  const { clientSecret, totalPrice } = props;
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState([]);
+  const { selectedSAddrId, selectedBAddrId } = useSelector(
+    (state) => state.auth,
+  );
+  const dispatch = useDispatch();
   const paymentElementOptions = {
     layout: "tabs",
   };
@@ -27,13 +33,18 @@ const PaymentForm = ({ props }) => {
     if (!stripe || !elements) {
       return;
     }
-    let isValid = validateInput();
+    let isValid = true;
+    if (selectedSAddrId === 0) {
+      isValid = await dispatch(validateAddress(true));
+    }
+    if (selectedBAddrId === -1) {
+      isValid &= await dispatch(validateAddress(false));
+    }
     if (!isValid) {
-      setErrorMessage("Enter valid address");
+      setErrorMessage("住所を正しく記入してください。");
       return;
     } else {
       setErrorMessage(null);
-      storeAddr();
     }
     const { error: submitError } = await elements.submit();
     const { error } = await stripe.confirmPayment({
@@ -51,22 +62,22 @@ const PaymentForm = ({ props }) => {
   const isLoading = !stripe || !elements;
 
   return (
-    <form onSubmit={handleSubmit} className="flex-col py-4">
-      <h2 className={`${styles.paymentHeading}`}>Payment Information</h2>
+    <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
+      <h2 className={`${styles.Text}`}>カード情報</h2>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className={`${styles.paymentForm}`}>
+        <div>
           <PaymentElement options={paymentElementOptions} />
           {errorMessage && (
             <div className="text-red-500 mt-2">{errorMessage}</div>
           )}
           <button
-            className="mt-2 mx-auto bg-stone-600 text-white py-1 px-2
-              hover:bg-stone-300 hover:text-stone-800"
+            className={`${styles.Button} mt-2 mx-auto bg-stone-600 text-white p-1
+              hover:bg-stone-300`}
             disabled={!stripe || isLoading}
           >
-            {!isLoading ? `Proceed to pay ¥${totalPrice}` : "Processing"}
+            {isLoading ? <Spinner /> : `¥${totalPrice}を支払い商品を購入する`}
           </button>
         </div>
       )}

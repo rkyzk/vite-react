@@ -25,13 +25,14 @@
 
 .Label {
   font-size: 1rem;
-  width: 160px;
+  width: 200px;
 }
 
 .Input {
-  line-height: 1.2rem;
-  padding: 2px 4px !important;
-  width: 90%;
+  line-height: 1.5rem;
+  padding: 2px 8px !important;
+  border: #c9c4c4 solid 1px;
+  border-radius: 5px;
 }
 
 .note {
@@ -39,18 +40,20 @@
   margin-top: -8px;
 }
 
-.addressCardBox {
-  background-color: rgb(204, 209, 209);
-  padding: 5px 0px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2px;
-  width: 300px;
-}
-
 .InputItem {
   display: flex;
   flex-direction: column;
+}
+
+.Button:hover,
+.EditBtn:hover {
+  color: #111 !important;
+  border: #222 solid 1px;
+  background-color: aliceblue;
+}
+
+.Form {
+  border-radius: 5px !important;
 }
 
 @media screen and (min-width: 640px) {

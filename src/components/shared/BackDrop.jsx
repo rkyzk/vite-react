@@ -1,5 +1,3 @@
-import React from "react";
-
 const BackDrop = ({ data }) => {
   return (
     <div

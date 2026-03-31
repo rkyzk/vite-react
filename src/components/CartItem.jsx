@@ -1,18 +1,22 @@
 import { useDispatch } from "react-redux";
 import { removeItemFromCart, updateCart } from "../store/actions";
 import styles from "../styles/CartItem.module.css";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import toast from "react-hot-toast";
 
-const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
+const CartItem = ({
+  idx,
+  id,
+  productName,
+  imageName,
+  price,
+  category,
+  purchaseQty,
+  cartPage,
+}) => {
   const dispatch = useDispatch();
 
-  const handleUpdateCart = (id, qty) => {
-    dispatch(updateCart(id, qty));
+  const handleUpdateCart = (id, e) => {
+    dispatch(updateCart(id, Number(e.target.value), toast));
   };
 
   const handleRemoveItem = (productId) => {
@@ -30,46 +34,55 @@ const CartItem = ({ idx, id, productName, imageName, price, purchaseQty }) => {
         <div className="w-4/12">
           <img
             className={`${styles.imgSize}`}
-            src={`/src/assets/products/${imageName}`}
+            src={`/images/products/${category.categoryId}/${imageName}`}
             alt={productName}
           />
         </div>
-        <div className="w-2/12 flex">
-          <select
-            id={`quantity-${id}`}
-            onChange={(e) => handleUpdateCart(id, Number(e.target.value))}
-            className="mt-4 border bg-white rounded-lg
+        {cartPage ? (
+          <div className="w-2/12 flex">
+            <select
+              id={`quantity-${id}`}
+              onChange={(e) => handleUpdateCart(id, e)}
+              className="mt-4 border bg-white rounded-lg
             py-2 pl-1 h-10"
-          >
-            {[...Array(30)]
-              .map((_, i) => i + 1)
-              .map((i) => {
-                if (purchaseQty === i) {
-                  return (
-                    <option className="text-center" key={i} value={i} selected>
-                      {i}
-                    </option>
-                  );
-                } else {
-                  return (
-                    <option key={i} value={i}>
-                      {i}
-                    </option>
-                  );
-                }
-              })}
-          </select>
-        </div>
+            >
+              {[...Array(30)]
+                .map((_, i) => i + 1)
+                .map((i) => {
+                  if (purchaseQty === i) {
+                    return (
+                      <option
+                        className="text-center"
+                        key={i}
+                        value={i}
+                        selected
+                      >
+                        {i}
+                      </option>
+                    );
+                  } else {
+                    return (
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    );
+                  }
+                })}
+            </select>
+          </div>
+        ) : (
+          <div className="w-2/12 mt-4 ml-2">{purchaseQty}</div>
+        )}
         <span className="w-2/12 mt-4">&yen;{price}</span>
         <button
           onClick={() => handleRemoveItem(id)}
-          className={`${styles.Btn} mx-auto rounded-0 text-gray align-self-center
-           px-2 py-1 hover:bg-neutral-600 hover:text-white`}
+          className={`${styles.Btn} mt-4 h-[30px]
+           px-1 hover:bg-neutral-600 hover:text-white`}
         >
-          remove item
+          削除
         </button>
       </div>
-      <hr className="mt-3" />
+      <hr className="mt-3 mx-4" />
     </>
   );
 };

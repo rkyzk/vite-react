@@ -2,7 +2,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { updateCart, fetchProductDetail } from "../store/actions";
+import {
+  updateCartAddQty,
+  fetchProductDetail,
+  clearErrorMessage,
+  fetchProducts,
+} from "../store/actions";
 import { FaShoppingCart, FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "./shared/Spinner";
 import styles from "../styles/Product.module.css";
@@ -13,21 +18,31 @@ const Product = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products } = useSelector((state) => state.products);
   const product = products.filter((prod) => prod.id === Number(id));
-  const { productName, quantity, price, imageName } = product[0];
+  const { productName, quantity, price, imageName, category } = product[0];
   const [qty, setQty] = useState(1);
   const { productDetails } = useSelector((state) => state.products);
-  const productDetail = productDetails ? productDetails[Number(id)] : {};
-  useEffect(() => {
-    dispatch(fetchProductDetail(Number(id)));
+  let productDetail = productDetails ? productDetails[Number(id)] : {};
+
+  useEffect((productDetail) => {
+    errorMessage && dispatch(clearErrorMessage());
+    !products && dispatch(fetchProducts(""));
+    if (
+      productDetails === undefined ||
+      productDetail === undefined ||
+      Object.keys(productDetail).length === 0
+    ) {
+      dispatch(fetchProductDetail(Number(id)));
+    }
+    productDetail = productDetails ? productDetails[Number(id)] : {};
   }, []);
 
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCart(Number(id), qty, toast));
+    dispatch(updateCartAddQty(Number(id), qty, toast));
   };
 
   return (
-    <div className="flex">
+    <div className="flex mt-3 justify-center px-1">
       {isLoading ? (
         <Spinner className="mx-auto" />
       ) : errorMessage ? (
@@ -37,32 +52,36 @@ const Product = () => {
         </div>
       ) : (
         <div
-          className={`${styles.Box} "xs:grid-col-1 md:grid-cols-2 md:mt-5 grid justify-center xs:px-3 sm:px-5 lg:px-14"`}
+          className={`${styles.Box} xs:grid-col-1 md:mt-5 md:grid-cols-2 grid`}
         >
           <div>
             <img
               className={`${styles.Img}`}
-              src={`/src/assets/products/${imageName}`}
+              src={`/images/products/${category.categoryId}/${imageName}`}
               alt={productName}
             />
           </div>
-          <div className="mt-3 md:mt-0">
-            <h1 className="text-xl font-semi-bold">{productName}</h1>
-            <div className={`${styles.PrcQty} "my-1 justify-between gap-1"`}>
-              <div className="mt-1">
-                <span className="text-md md:text-xl">
-                  &yen;{price} for 12 bulbs
-                </span>
+          <div className={`${styles.Description}`}>
+            <h2 className="text-2xl">{productName}</h2>
+            <div className={`${styles.PrcQty} mt-3 gap-1 ml-4`}>
+              <div>
+                {category.categoryId === 4 ? (
+                  <span>&yen;{price} (球根6個)</span>
+                ) : (
+                  <span>&yen;{price} (球根12個)</span>
+                )}
               </div>
-              <div className="flex">
+            </div>
+            <div className="flex gap-2 mt-2 ml-4">
+              <div className="flex gap-2">
                 {isAvailable && (
-                  <div className="mr-1">
-                    <label htmlFor="quantity" className="mr-2">
-                      Qty
+                  <div>
+                    <label className="mt-1 mr-1" htmlFor="quantity">
+                      数個
                     </label>
                     <select
                       name="quantity"
-                      className="border bg-white rounded-lg py-2 pl-1"
+                      className="border bg-white rounded-lg pb-1 ml-1"
                       onChange={(e) => setQty(Number(e.target.value))}
                     >
                       {[...Array(30)]
@@ -75,33 +94,51 @@ const Product = () => {
                     </select>
                   </div>
                 )}
-                <button
-                  className={`${
-                    isAvailable
-                      ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
-                      : "bg-gray-400 text-gray-700"
-                  } ${styles.Button} p-1 border`}
-                  onClick={() => addToCart(id)}
-                >
-                  {isAvailable ? (
-                    <div className="flex">
-                      <FaShoppingCart className="mt-1 mr-1" />
-                      <span>Add to Cart</span>
-                    </div>
-                  ) : (
-                    "Out of Stock"
-                  )}
-                </button>
               </div>
+              <button
+                className={`${
+                  isAvailable
+                    ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
+                    : "bg-gray-400 text-gray-700"
+                } ${styles.Button} p-1 ml-2`}
+                onClick={() => addToCart(id)}
+              >
+                {isAvailable ? (
+                  <div className="flex">
+                    <FaShoppingCart className="mt-1 mr-1" />
+                    <span>カートに追加</span>
+                  </div>
+                ) : (
+                  "在庫なし"
+                )}
+              </button>
             </div>
-            <div className="mt-2">
+            <div className="mt-4">
               {productDetail &&
-                Object.keys(productDetail).map((item, id) => {
+                Object.keys(productDetail).length !== 0 &&
+                productDetail.map((item, id) => {
                   return (
-                    <p className="font-bold" key={id}>
-                      {item !== "Description" && <>{item} : </>}
-                      <span className="font-normal">{productDetail[item]}</span>
-                    </p>
+                    <div
+                      className={
+                        item["key"] === "Description" ? "mb-4" : "mb-1"
+                      }
+                      style={{ display: "flex" }}
+                    >
+                      {item["key"] === "Description" ? (
+                        <>{item["value"]}</>
+                      ) : (
+                        <>
+                          <div className="w-[120px]">
+                            <span className="text-md/5 font-bold" key={id}>
+                              {item["key"]}
+                            </span>
+                          </div>
+                          <div style={{ width: "calc(100% - 120px)" }}>
+                            <span>{item["value"]}</span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   );
                 })}
             </div>

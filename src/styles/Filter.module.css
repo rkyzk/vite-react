@@ -1,9 +1,44 @@
-.SelectItems {
-  font-family: Raleway, sans-serif;
+.ClearBtn,
+.ColorFilter,
+.OrderBy {
+  border-radius: 5px;
 }
 
-.Btn {
-  border: 1px #666 solid;
-  height: 35px;
-  margin-top: 6px !important;
+.SerachInput {
+  width: 250px !important;
+}
+
+.ColorFilter {
+  width: 200px;
+}
+
+.InputGroup {
+  width: 630px;
+}
+
+.FilterInput {
+  width: 460px !important;
+}
+.CheckboxesGroup {
+  width: 150px !important;
+}
+.ClearBtnBox {
+  margin: 2px 4px !important;
+}
+
+@media screen and (max-width: 639px) {
+  .SerachInput,
+  .FilterInput {
+    width: 280px !important;
+    margin: auto !important;
+  }
+
+  .CheckboxesGroup,
+  .ColorFilter {
+    width: 200px !important;
+  }
+
+  .ClearBtnBox {
+    margin: 5px auto !important;
+  }
 }

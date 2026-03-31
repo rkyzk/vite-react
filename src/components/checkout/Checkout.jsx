@@ -1,129 +1,70 @@
 import StripePayment from "./StripePayment";
-import AddressForm from "./AddressForm";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { storeAddress } from "../../store/actions";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import AddressList from "./AddressList";
+import Cart from "../Cart";
+import {
+  createClientSecret,
+  sendRefreshJwtTokenRequest,
+  sendLogoutRequest,
+  setModalLogin,
+  setModalOpen,
+} from "../../store/actions";
 
 export const Checkout = () => {
-  const initAddr = {
-    addressId: "",
-    fullname: "",
-    streetAddress1: "",
-    streetAddress2: "",
-    city: "",
-    province: "",
-    postalCode: "",
-    countryCode: "",
-    saveAddr: true,
-  };
-  const addrErrs = {
-    fullname: false,
-    streetAddress1: false,
-    streetAddress2: false,
-    city: false,
-    province: false,
-    postalCode: false,
-    countryCode: false,
-  };
-  const [sAddress, setSAddress] = useState({
-    ...initAddr,
-    billingAddress: false,
-  });
-  const [bAddress, setBAddress] = useState({
-    ...initAddr,
-    billingAddress: true,
-  });
-  const [errors, setErrors] = useState(addrErrs);
-  const [billAddrErrors, setBillAddrErrors] = useState(addrErrs);
-  const [showErrorsSA, setShowErrorsSA] = useState(false);
-  const [showErrorsBA, setShowErrorsBA] = useState(false);
+  const auth = useSelector((state) => state.auth);
+  const clientSecret = auth?.clientSecret;
   const [billAddrCheck, setBillAddrCheck] = useState(true);
+  const cart = useSelector((state) => state.carts.cart);
   const dispatch = useDispatch();
-  const storeAddr = () => {
-    dispatch(storeAddress(sAddress));
-    !billAddrCheck && dispatch(storeAddress(bAddress));
-  };
-  const validateInput = () => {
-    let result = true;
-    // validate input for shipping address
-    for (let key in errors) {
-      let errs = errors;
-      if (key === "streetAddress2") {
-        if (sAddress[key].length === 1) {
-          errs["streetAddress2"] = true;
-          setErrors(errs);
-          result = false;
-        } else {
-          errs["streetAddress2"] = false;
-          setErrors(errs);
-        }
-      } else {
-        if (sAddress[key].length < 2) {
-          console.log(key);
-          errs[key] = true;
-          setErrors(errs);
-          setShowErrorsSA(true);
-          result = false;
-        } else {
-          errs[key] = false;
-          setErrors(errs);
-        }
-      }
-      console.log(errors);
-    }
-    // check if there are any input for billing address
-    // let isEntered = false;
-    // for (let key in bAddress) {
-    //   if (bAddress[key].trim() !== "") {
-    //     isEntered = true;
-    //     break;
-    //   }
-    // }
-    // validate input only when at least one field has been entered.
-    // if (isEntered) {
-    //   for (let key in bAddress) {
-    //     let errs = errors;
-    //     if (bAddress[key].length < 2) {
-    //       errs[key] = true;
-    //       setBillAddrErrors(errs);
-    //     }
-    //     !showErrorsBA && setShowErrorsBA(true);
-    //   }
-    // }
-    if (result) {
-      return true;
-    } else {
-      setShowErrorsSA(true);
-      return false;
-    }
-  };
+  const { errorMessage } = useSelector((state) => state.errors);
+  const commandIdx = auth?.commandIdx;
+
+  // ログインしていない時はログインダイアログを表示
+  // if (auth === null) {
+  //   setOpen(true);
+  // }
   const props = {
-    sAddress,
-    setSAddress,
-    errors,
-    setErrors,
-    bAddress,
-    setBAddress,
-    billAddrErrors,
-    setBillAddrErrors,
-    showErrorsSA,
-    showErrorsBA,
-    initAddr,
     billAddrCheck,
     setBillAddrCheck,
   };
   const stripePaymentProps = {
-    storeAddr,
-    validateInput,
+    billAddrCheck,
   };
 
+  useEffect(() => {
+    const getClientSecret = async () => {
+      !clientSecret && auth?.user && dispatch(createClientSecret());
+    };
+    const refreshJwtToken = async () => {
+      await dispatch(sendRefreshJwtTokenRequest());
+    };
+    const logoutUser = async () => {
+      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      dispatch(sendLogoutRequest(auth.user.id, null, null));
+      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      await dispatch(setModalLogin());
+      dispatch(setModalOpen());
+    };
+    if (commandIdx === 0) getClientSecret();
+    if (commandIdx === 1) refreshJwtToken(); // JWTが期限切れの時、更新をリクエスト
+    if (commandIdx === 2) logoutUser(); // refreshTokenが期限切れの時、ユーザをログアウトする
+  }, [commandIdx]);
+
   return (
-    <div className="flex">
-      <div className="px-2 mx-auto">
-        <AddressForm props={props} />
-        <StripePayment stripePaymentProps={stripePaymentProps} />
-      </div>
-    </div>
+    <>
+      {cart.length > 0 ? (
+        <>
+          <AddressList props={props} />
+          <Cart />
+          <StripePayment stripePaymentProps={stripePaymentProps} />
+        </>
+      ) : (
+        <div className="w-full">
+          <p className="w-[140px] m-auto">カートは空です。</p>
+        </div>
+      )}
+    </>
   );
 };
 

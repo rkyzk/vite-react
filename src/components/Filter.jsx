@@ -1,93 +1,166 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
-import { FormControl, MenuItem, Select, InputLabel } from "@mui/material";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "../styles/Filter.module.css";
+import { fetchCategories, clearErrorMessage } from "../store/actions";
+import CheckboxesGroup from "./shared/CheckboxesGroup";
 
-const Filter = () => {
+const Filter = ({ categoryId }) => {
   const [keywords, setKeywords] = useState("");
-  const [category, setCategory] = useState(0);
-
-  // const categories = [
-  //   { categoryId: 1, categoryName: "tulips" },
-  //   { categoryId: 2, categoryName: "hyacinth" },
-  //   { categoryId: 3, categoryName: "crocus" },
-  // ];
-
-  const pathname = useLocation().pathname;
+  const [category, setCategory] = useState(categoryId);
+  const [colors, setColors] = useState("");
+  const [colorLabel, setColorLabel] = useState("");
+  const [sort, setSort] = useState("label");
+  const initialColorState = {
+    red: false,
+    orange: false,
+    yellow: false,
+    blue: false,
+    pink: false,
+    purple: false,
+    white: false,
+    multi: false,
+  };
+  const [colorState, setColorState] = useState(initialColorState);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { categories } = useSelector((state) => state.categories);
-  const { errorMessage, page } = useSelector((state) => state.errors);
+  const { errorMessage } = useSelector((state) => state.errors);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      category === 0
-        ? searchParams.delete("category")
-        : searchParams.set("category", category);
+      errorMessage && dispatch(clearErrorMessage());
+      searchParams.delete("page");
+      if (
+        category === null ||
+        category === "" ||
+        category === "null" ||
+        category === 0
+      ) {
+        searchParams.delete("category");
+      } else {
+        searchParams.set("category", category);
+      }
       // Trim spaces of keywords. Replace spaces in the middle with '_'
       let trimmedKeywords = keywords.trim();
       let searchTerms = trimmedKeywords.replace(/\s+/g, "_");
       searchTerms === ""
         ? searchParams.delete("keywords")
         : searchParams.set("keywords", searchTerms);
-      navigate(`${pathname}?${searchParams.toString()}`);
+      colors === ""
+        ? searchParams.delete("colors")
+        : searchParams.set("colors", colors);
+      sort === "label" || sort === "random"
+        ? searchParams.delete("sortBy")
+        : searchParams.set("sortBy", sort);
+      navigate(`?${searchParams.toString()}`);
     }, 700);
-
     return () => clearTimeout(handler);
-  }, [category, keywords]);
+  }, [category, keywords, colors, sort]);
+
+  useEffect(() => {
+    Object.keys(categories).length === 0 && dispatch(fetchCategories());
+  }, []);
 
   const handleClearFilter = () => {
-    setCategory(0);
+    setCategory("");
     setKeywords("");
+    setColors("");
+    setColorState(initialColorState);
+    setColorLabel("");
+    setSort("label");
     navigate({ pathname: window.location.pathname });
   };
 
   return (
-    <div className="flex flex-col mx-auto w-64 gap-2 sm:flex-row sm:justify-center">
-      {/* Search box */}
-      <input
-        type="text"
-        placeholder="enter keyword"
-        value={keywords}
-        onChange={(e) => setKeywords(e.target.value)}
-        className="border-gray-500 rounded-md bg-stone-100
-                   h-12 px-1 py-2"
-      />
-      {/* Category drowdown */}
-      <div>
-        <FormControl className="focus:outline-none" size="small">
-          <InputLabel labelId="category-select-label">Category</InputLabel>
-          <Select
+    <div className="flex flex-col sm:flex-row sm:justify-center sm:mt-4">
+      <div className={`w-[550px] ${styles.FilterInput} flex-col items-center`}>
+        <div className="flex flex-col mx-auto gap-1 sm:gap-2 sm:flex-row">
+          {/* Search box */}
+          <input
+            type="text"
+            placeholder="キーワードを入力"
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
+            className={`${styles.SerachInput} text-slate-700 border border-gray-900 rounded-md bg-stone-100
+                   px-1 py-2`}
+          />
+          {/* Category drowdown */}
+          <select
             labelId="category-select-label"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            label="category"
-            className="py-1 w-64 bg-white focus:outline-gray focus:outline-none"
+            onChange={(e) => setCategory(Number(e.target.value))}
+            name="category"
+            className="py-1 w-64 bg-white border border-slate-800 rounded-md
+                h-[40px] outline-none focus:outline-none"
+            style={{ width: "200px" }}
           >
-            {category !== 0 && (
-              <MenuItem key={0} value={0}>
-                all
-              </MenuItem>
+            {(category === "null" || category === "") && (
+              <option defaultChecked>花種でフィルター</option>
             )}
             {categories.map((item) => (
-              <MenuItem key={item.categoryId} value={item.categoryId}>
-                <span className={`${styles.SelectItems} "text-slate-700"`}>
-                  {item.categoryName}
-                </span>
-              </MenuItem>
+              <option
+                key={item.categoryId}
+                value={item.categoryId}
+                className="font-sans text-slate-700"
+              >
+                {item.categoryName}
+              </option>
             ))}
-          </Select>
-        </FormControl>
-        {page === "Filter" && errorMessage && <>{errorMessage}</>}
+            {category >= 0 && (
+              <option value={0} className="font-sans text-slate-700">
+                すべての花種
+              </option>
+            )}
+          </select>
+        </div>
+        <div className="mt-1 flex flex-col gap-y-1 sm:flex-row sm:gap-x-1">
+          <CheckboxesGroup
+            colorState={colorState}
+            setColorState={setColorState}
+            setColors={setColors}
+            colorLabel={colorLabel}
+            setColorLabel={setColorLabel}
+          />
+          <select
+            id="order-by"
+            name="sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className={`${styles.OrderBy} py-1 w-64 bg-white h-[40px]
+            sm:mt-2 border border-slate-800`}
+            style={{ width: "200px" }}
+            defaultValue="label"
+          >
+            {sort === "label" ? (
+              <option value="label" className="font-sans text-slate-700">
+                並べ替え
+              </option>
+            ) : (
+              <option value="random" className="font-sans text-slate-700">
+                ランダム
+              </option>
+            )}
+            <option value="sales_count" className="font-sans text-slate-700">
+              人気順
+            </option>
+            <option value="price" className="font-sans text-slate-700">
+              価格(低⇨高)
+            </option>
+          </select>
+        </div>
       </div>
-      <button
-        onClick={() => handleClearFilter()}
-        className={`${styles.Btn} rounded-0 px-2 hover:bg-neutral-600 hover:text-white`}
-      >
-        clear
-      </button>
+      <div className={`w-[65px] ${styles.ClearBtnBox}`}>
+        <button
+          onClick={() => handleClearFilter()}
+          className={`${styles.ClearBtn} px-1 h-[34px]
+            bg-amber-950 text-white hover:opacity-50`}
+        >
+          クリア
+        </button>
+      </div>
     </div>
   );
 };

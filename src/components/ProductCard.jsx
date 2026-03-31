@@ -2,46 +2,54 @@ import truncateText from "../utils/truncateText";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateCart } from "../store/actions";
+import { updateCartAddQty } from "../store/actions";
 import styles from "../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const ProductCard = ({ id, productName, price, quantity, imageName }) => {
+const ProductCard = ({
+  id,
+  productName,
+  price,
+  quantity,
+  imageName,
+  category,
+}) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
   const addToCart = (id) => {
-    dispatch(updateCart(id, qty, toast));
+    dispatch(updateCartAddQty(id, Number(qty), toast));
   };
 
   return (
-    <div className={`${styles.Card} "relative"`}>
-      <img
-        className={`${styles.imgSize} "cursor-pointer"`}
-        src={`/src/assets/products/${imageName}`}
-        alt={productName}
-      />
-      <h2 className="mt-1 text-xl text-gray-900">
-        {truncateText(productName, 50)}
-      </h2>
-      <div className="flex">
-        <div>
-          <p>&yen;{price} for 12 bulbs</p>
+    <div className={`${styles.Card} relative`}>
+      <Link className="cursor-pointer text-center" to={`/product/${id}`}>
+        <img
+          className={`${styles.imgSize} cursor-pointer`}
+          src={`/images/products/${category.categoryId}/${imageName}`}
+          alt={productName}
+        />
+        <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">
+          {truncateText(productName, 50)}
+        </p>
+        <div className="text-orange-800 mt-[-2px]">
+          {category.categoryId === 4 ? (
+            <p>&yen;{price} (球根6個)</p>
+          ) : (
+            <p>&yen;{price} (球根12個)</p>
+          )}
         </div>
-        <div className={`${styles.Link} ml-4`}>
-          <Link to={`/product/${id}`}>View product</Link>
-        </div>
-      </div>
-      <div className="flex justify-end gap-1">
+      </Link>
+      <div className="mt-[-12px] flex justify-center gap-2">
         {isAvailable && (
-          <>
-            <label className="mt-1" htmlFor="quantity">
-              Qty
+          <div>
+            <label className="mt-1 mr-1" htmlFor="quantity">
+              数個
             </label>
             <select
               name="quantity"
-              className="border bg-white rounded-lg"
+              className="border bg-white pb-1 ml-1"
               onChange={(e) => setQty(Number(e.target.value))}
             >
               {[...Array(30)]
@@ -52,23 +60,23 @@ const ProductCard = ({ id, productName, price, quantity, imageName }) => {
                   </option>
                 ))}
             </select>
-          </>
+          </div>
         )}
         <button
           className={`${
             isAvailable
               ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
               : "bg-gray-400 text-gray-700"
-          } ${styles.Button} p-1`}
+          } ${styles.Button} p-1 ml-2`}
           onClick={() => addToCart(id)}
         >
           {isAvailable ? (
             <div className="flex">
               <FaShoppingCart className="mt-1 mr-1" />
-              <span>Add to Cart</span>
+              <span>カートに追加</span>
             </div>
           ) : (
-            "Out of Stock"
+            "在庫なし"
           )}
         </button>
       </div>

@@ -1,9 +1,9 @@
-.paymentForm {
-  max-width: 512px;
+.Text {
+  font-size: 1.2rem !important;
 }
 
-.paymentHeading {
-  font-family: Raleway, sans-serif !important;
-  font-size: 1.1rem;
-  font-weight: 400;
+.Button:hover {
+  color: #111 !important;
+  border: #222 solid 1px;
+  background-color: aliceblue;
 }
