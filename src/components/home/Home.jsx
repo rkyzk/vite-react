@@ -15,10 +15,26 @@ const Home = () => {
   );
   const dispatch = useDispatch();
   const IMAGES = [
-    { 0: 1, 1: "チューリップ", 2: "1/tulipa-barcelona.jpg" },
-    { 0: 2, 1: "ヒヤシンス", 2: "2/grape-hyacinth.jpg" },
-    { 0: 3, 1: "クロッカス", 2: "3/advance-crocus.jpg" },
-    { 0: 4, 1: "ダリア", 2: "4/dahlia-white-nettie.jpg" },
+    {
+      0: 1,
+      1: "Tulips",
+      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786200/ecommerce/images/products/1/tulipa-barcelona_zi4nhn.jpg",
+    },
+    {
+      0: 2,
+      1: "Hyacinths",
+      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786242/ecommerce/images/products/2/grape-hyacinth_nfkuoe.jpg",
+    },
+    {
+      0: 3,
+      1: "Crocusses",
+      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786237/ecommerce/images/products/3/advance-crocus_nymq0l.jpg",
+    },
+    {
+      0: 4,
+      1: "Dahlias",
+      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786222/ecommerce/images/products/4/dahlia-caf%C3%A9-au-lait_yya5yz.jpg",
+    },
   ];
   useEffect(() => {
     dispatch(clearErrorMessage());
@@ -28,11 +44,12 @@ const Home = () => {
   return (
     <div className="px-2 mt-1 sm:px-8 lg:px-14">
       <HeroBanner />
-      <div className={`${styles.Intro} flex mt-1 px-2`}>
+      <div className={`${styles.Intro} flex mt-2 px-2`}>
         <p className="max-w-[640px] mx-auto">
-          無農薬でチューリップ、ヒヤシンスなどの球根を栽培・販売しています。
-          <br />
-          お庭やベランダでの家庭菜園はもちろん、季節のギフトやプレゼントにもオススメです。
+          Bring your garden to life with Wild Blossom Garden! We specialize in
+          high-quality, organic bulbs from early spring crocuses to summer
+          dahlias. Pure, sustainable, and ready to plant. Explore our shop and
+          get growing!
         </p>
       </div>
       <hr />
@@ -54,7 +71,7 @@ const Home = () => {
                 <Link to={`/products?category=${elem[0]}`}>
                   <img
                     className={`${styles.imgSize} cursor-pointer absolute`}
-                    src={`/images/products/${elem[2]}`}
+                    src={`${elem[2]}`}
                     alt={elem[1]}
                   />
                   <p className="text-white absolute top-1 left-1 text-xl">

@@ -12,7 +12,7 @@ const ProductCard = ({
   productName,
   price,
   quantity,
-  imageName,
+  imagePath,
   category,
 }) => {
   const [qty, setQty] = useState(1);
@@ -27,7 +27,7 @@ const ProductCard = ({
       <Link className="cursor-pointer text-center" to={`/product/${id}`}>
         <img
           className={`${styles.imgSize} cursor-pointer`}
-          src={`/images/products/${category.categoryId}/${imageName}`}
+          src={`${imagePath}`}
           alt={productName}
         />
         <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">

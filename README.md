@@ -1,11 +1,19 @@
-# EC サイト アプリ Frontend(Vite + React)
+# Wild Blossom Garden: E-commerce App Frontend(Vite + React)
 
-<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="ホームページ">
+<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="top page">
 
-デプロイしたプロジェクト:
+Deployed project:
 [Wild Blossom Garden](https://main.d318qultnvdzu6.amplifyapp.com)
 
-### 概要
+#### Clone the project
+
+git clone <project's URL>
+install node
+cd into the project folder, and run npm install.
+nvm use --lts
+npm run dev
+
+### Overview
 
 Java(Spring Boot)で作成したEコマースサイトのRest APIと連携するフロントエンドのプロジェクト。
 商品閲覧、検索、アカウント登録、買い物かごに追加、住所とカード情報を記入して購入手続きなどが可能。

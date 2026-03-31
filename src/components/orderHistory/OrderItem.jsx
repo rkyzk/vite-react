@@ -1,7 +1,7 @@
 import styles from "../../styles/CartItem.module.css";
 
 const OrderItem = ({ idx, product, quantity, totalPrice }) => {
-  const { productName, imageName, price, category } = product;
+  const { productName, imagePath, price } = product;
   return (
     <>
       <div className="flex w-full gap-1 mt-2">
@@ -15,7 +15,7 @@ const OrderItem = ({ idx, product, quantity, totalPrice }) => {
         <div className="w-[200px]">
           <img
             className={`${styles.imgSize}`}
-            src={`/images/products/${category.categoryId}/${imageName}`}
+            src={`${imagePath}`}
             alt={productName}
           />
         </div>

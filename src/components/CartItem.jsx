@@ -7,9 +7,8 @@ const CartItem = ({
   idx,
   id,
   productName,
-  imageName,
+  imagePath,
   price,
-  category,
   purchaseQty,
   cartPage,
 }) => {
@@ -34,7 +33,7 @@ const CartItem = ({
         <div className="w-4/12">
           <img
             className={`${styles.imgSize}`}
-            src={`/images/products/${category.categoryId}/${imageName}`}
+            src={`${imagePath}`}
             alt={productName}
           />
         </div>

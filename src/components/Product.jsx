@@ -18,7 +18,7 @@ const Product = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.errors);
   const { products } = useSelector((state) => state.products);
   const product = products.filter((prod) => prod.id === Number(id));
-  const { productName, quantity, price, imageName, category } = product[0];
+  const { productName, quantity, price, imagePath, category } = product[0];
   const [qty, setQty] = useState(1);
   const { productDetails } = useSelector((state) => state.products);
   let productDetail = productDetails ? productDetails[Number(id)] : {};
@@ -57,7 +57,7 @@ const Product = () => {
           <div>
             <img
               className={`${styles.Img}`}
-              src={`/images/products/${category.categoryId}/${imageName}`}
+              src={`${imagePath}`}
               alt={productName}
             />
           </div>
