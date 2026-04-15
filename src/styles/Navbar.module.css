@@ -5,6 +5,11 @@
   font-weight: 400;
 }
 
+.NavItem:hover {
+  color: #8b3f04 !important;
+  text-decoration: underline !important;
+  opacity: 100% !important;
+}
 @media screen and (min-width: 768px) {
   .menuBox {
     display: none;

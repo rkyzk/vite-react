@@ -39,25 +39,37 @@ function Navbar() {
   const menuItems = (
     <div className="flex-col md:flex md:flex-row md:gap-x-[25px]">
       <div>
-        <Link to="/" style={{ color: "#333" }}>
+        <Link to="/" style={{ color: "#333" }} className={`${styles.NavItem}`}>
           {path === "/" && <span>◆</span>}
           HOME
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
-        <Link to="/products" style={{ color: "#333" }}>
+        <Link
+          to="/products"
+          style={{ color: "#333" }}
+          className={`${styles.NavItem}`}
+        >
           {path === "/products" && <span>◆</span>}
           SHOP
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
-        <Link to="/contact" style={{ color: "#333" }}>
+        <Link
+          to="/contact"
+          style={{ color: "#333" }}
+          className={`${styles.NavItem}`}
+        >
           {path === "/contact" && <span>◆</span>}
           CONTACT
         </Link>
       </div>
       <div className={`${styles.menuItemCart}`}>
-        <Link to="/cart" style={{ color: "#333" }}>
+        <Link
+          to="/cart"
+          style={{ color: "#333" }}
+          className={`${styles.NavItem}`}
+        >
           <div className="flex gap-3">
             <Badge
               showZero
@@ -81,12 +93,12 @@ function Navbar() {
         <Button
           onClick={() => dispatch(setModalOpen())}
           style={{
-            color: "#333",
+            color: "#444",
             fontSize: "1rem",
             marginTop: "-13px",
             fontWeight: "400",
           }}
-          className={`${styles.loginBtn}`}
+          className={`${styles.NavItem}`}
         >
           LOGIN
         </Button>
