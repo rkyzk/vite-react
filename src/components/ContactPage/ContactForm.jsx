@@ -21,18 +21,18 @@ const ContactForm = () => {
           method="post"
           className="flex-col flex items-center text-white pt-2"
         >
-          <h2 className="text-sm">問い合わせ</h2>
+          <h2 className="text-sm">Inquiry Form</h2>
           <span className="text-[0.9rem]">
-            ワイルドブロッサムガーデンではお客様により良いサービスを提供するため改善に努めております。
-            ワイルドブロッサムガーデン、または当サイトについてご意見やご感想、ご質問がありましたら
-            下フォームよりぜひご連絡ください。
+            If you have any questions, concerns or requests about our service,
+            feel free to send us messages, and we'll try to get back to you as
+            soon as possible.
           </span>
           <div
             className={`${styles.InputFields} flex flex-col mt-3 items-center`}
           >
             <div className="w-full flex-col">
               <lable for="name" className="block">
-                お名前:
+                Your full name:
               </lable>
               <input
                 id="name"
@@ -46,7 +46,7 @@ const ContactForm = () => {
             </div>
             <div className="w-full flex-col">
               <lable for="email" className="block">
-                メール:
+                Email:
               </lable>
               <input
                 id="email"
@@ -60,7 +60,7 @@ const ContactForm = () => {
             </div>
             <div className="w-full flex-col">
               <lable for="message" className="block">
-                メッセージ:
+                Message:
               </lable>
               <textarea
                 id="message"
@@ -77,7 +77,7 @@ const ContactForm = () => {
                 className="bg-amber-950 text-white px-4 py-1 hover:opacity-80"
                 style={{ borderRadius: "5px" }}
               >
-                送信
+                Submit
               </button>
             </div>
           </div>

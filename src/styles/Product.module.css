@@ -1,70 +1,65 @@
-.Img {
-  width: 430px;
-  height: 344px;
-  object-fit: cover;
-  object-position: 50% 50%;
-  margin: auto;
+.ImgSize,
+.Swiper {
+  width: 430px !important;
+  height: 344px !important;
 }
 
 .Button {
   border-radius: 0px !important;
-  border: 1px solid #555;
+  border: 1px solid #555 !important;
 }
 
 .PrcQty {
-  display: flex;
-  justify-content: space-between;
+  display: flex !important;
+  justify-content: space-between !important;
 }
-.Box {
-  width: 75%;
-  max-width: 1000px;
-}
-
-@media screen and (min-width: 768px) {
-  .Box {
-    gap: 15px;
-  }
-
-  .PrcQty {
-    flex-direction: column !important;
-  }
-  .QtyAddBtn {
-    justify-content: end;
+@media screen and (min-width: 1200px) {
+  .Description {
+    width: 80% !important;
   }
 }
-
+@media screen and (max-width: 1000px) {
+  .ImgSize,
+  .Swiper {
+    width: 310px !important;
+    height: 248px !important;
+  }
+}
 @media screen and (min-width: 890px) {
   .PrcQty {
     flex-direction: row !important;
   }
 }
+@media screen and (min-width: 768px) {
+  .PrcQty {
+    flex-direction: column !important;
+  }
+  .QtyAddBtn {
+    justify-content: end !important;
+  }
+  .Description {
+    margin-top: 2px !important;
+  }
+}
 
 @media screen and (max-width: 767px) {
-  .Description {
-    margin-top: 15px !important;
-  }
-  .Box {
-    width: 80%;
-  }
-}
-@media screen and (max-width: 680px) {
-  .Img {
-    width: 310px !important;
-    height: 264px !important;
-  }
-  h1 {
-    font-size: 1.6rem;
+  .ImgSize,
+  .Swiper {
+    width: 430px !important;
+    height: 344px !important;
   }
 }
 
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 500px) {
   .Qty {
-    margin-top: 2px;
+    margin-top: 2px !important;
   }
   .PrcQty {
-    flex-direction: column;
+    flex-direction: column !important;
   }
-  .Box {
-    width: 100% !important;
+  .ImgSize,
+  .Swiper {
+    width: 310px !important;
+    height: 248px !important;
   }
 }

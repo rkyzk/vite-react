@@ -30,7 +30,7 @@ const UserMenu = ({ id, username, roles }) => {
         className="text-base text-gray-800 mt-[-4px]"
         onClick={handleClick}
       >
-        {username}さん
+        {username}
       </div>
       <Menu
         id="basic-menu"
@@ -41,10 +41,10 @@ const UserMenu = ({ id, username, roles }) => {
       >
         <MenuItem onClick={handleClose}>
           <Link style={{ color: "#333" }} to="/order-history">
-            購入履歴・レビュー投稿
+            Order history & Write reviews
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+        <MenuItem onClick={handleLogout}>Log out</MenuItem>
       </Menu>
       {open && <BackDrop />}
     </div>

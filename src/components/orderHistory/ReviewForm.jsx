@@ -21,7 +21,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
   const navigate = useNavigate();
 
   const { commandIdx, user } = useSelector((state) => state.auth);
-  /** ダイアログの外をクリックしたらダイアログを閉じる */
+  /** Close dialog if outside the dialog is clicked. */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
       closeReviewForm();
@@ -40,18 +40,18 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
       result = await dispatch(submitReview(content, stars, orderId, toast));
       closeReviewForm();
       if (result) {
-        navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+        navigate("/order-history"); // so that 'submitted' will be displayed.
       }
     } else {
-      setError("コメントを記入してください。");
+      setError("Please enter your review.");
     }
   };
   useEffect(() => {
     let result;
     const logoutUser = async () => {
-      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      // If refreshToken has expired, log out the user.
       dispatch(sendLogoutRequest(user.id, null, null));
-      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      // Show only the login dialog (without register dialog)
       await dispatch(setModalLogin());
       dispatch(setModalOpen());
     };
@@ -61,22 +61,22 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           result = dispatch(submitReview(content, stars, orderId, toast));
           closeReviewForm();
           if (result) {
-            navigate("/order-history"); // 「レビュー投稿済み」と表示するため
+            navigate("/order-history"); // so that 'submitted' will be displayed.
           }
           break;
         case 1:
-          // JWTが期限切れの時、更新をリクエスト
+          // If JWT has expired, send a request to refresh it.
           dispatch(sendRefreshJwtTokenRequest());
           break;
         case 2:
-          // refreshTokenが期限切れの時、ユーザをログアウトする
+          // If the refresh token has expired, log out the user.
           logoutUser();
       }
     }
   }, [commandIdx]);
 
   useEffect(() => {
-    // 初回レンダーリングでイベントリスナーを追加
+    // Add eventlistener at first rendering.
     document.addEventListener("mouseup", (e) => handleCloseModal(e));
   }, []);
   const scoreStars = (idx) =>
@@ -104,7 +104,9 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
         className="px-2 pt-1 flex flex-col mx-auto mb-5
           items-center"
       >
-        <label htmlFor="review">ご感想をお聞かせください。</label>
+        <label htmlFor="review">
+          Feel free to share your opinions about the products.
+        </label>
         <textarea
           id="review"
           name="review"
@@ -123,7 +125,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
         </div>
         {error && <span style={{ color: "red" }}>{error}</span>}
         <button className="mt-2 px-2 py-1 outline-none bg-amber-950 text-white hover:opacity-50">
-          レビューを投稿する
+          Submit
         </button>
       </form>
     </div>

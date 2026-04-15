@@ -41,7 +41,7 @@ const PaymentForm = ({ props }) => {
       isValid &= await dispatch(validateAddress(false));
     }
     if (!isValid) {
-      setErrorMessage("住所を正しく記入してください。");
+      setErrorMessage("Enter valid address.");
       return;
     } else {
       setErrorMessage(null);
@@ -63,7 +63,7 @@ const PaymentForm = ({ props }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
-      <h2 className={`${styles.Text}`}>カード情報</h2>
+      <h2 className={`${styles.Text}`}>Card Information</h2>
       {isLoading ? (
         <Spinner />
       ) : (
@@ -77,7 +77,7 @@ const PaymentForm = ({ props }) => {
               hover:bg-stone-300`}
             disabled={!stripe || isLoading}
           >
-            {isLoading ? <Spinner /> : `¥${totalPrice}を支払い商品を購入する`}
+            {isLoading ? <Spinner /> : `Proceed to purchase`}
           </button>
         </div>
       )}

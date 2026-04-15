@@ -34,14 +34,14 @@ const Cart = ({ cartPage }) => {
       }`}
     >
       {!cart.length ? (
-        <p className="w-[140px] m-auto">カートは空です。</p>
+        <p className="w-[140px] m-auto">Your cart is empty.</p>
       ) : (
         <>
           <div className="flex w-full gap-1">
             <span className="w-1/12"></span>
-            <span className="w-4/12 font-bold">商品</span>
-            <span className="w-2/12 font-bold">数個</span>
-            <span className="w-2/12 font-bold">単価</span>
+            <span className="w-4/12 font-bold">Product</span>
+            <span className="w-2/12 font-bold">Quantity</span>
+            <span className="w-2/12 font-bold">Unit price</span>
           </div>
           <hr className="mt-1 mx-4" />
           {cart.map((item, idx) => {
@@ -63,14 +63,14 @@ const Cart = ({ cartPage }) => {
                 py-1 px-2 sm:mr-8`}
                 onClick={() => navigate("/products")}
               >
-                買い物を続ける
+                Continue shopping
               </button>
               <button
                 className={`mt-1 bg-stone-700 text-white
                 py-1 px-2 sm:mr-8`}
                 onClick={() => handleCheckout()}
               >
-                購入手続きに進む
+                Proceed to check out
               </button>
             </div>
           )}

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import {
   sendOrder,
@@ -9,7 +9,6 @@ import {
   setModalLogin,
   setModalOpen,
   sendRefreshJwtTokenRequest,
-  setCommandIdx,
   setModalCheckout,
 } from "../../store/actions";
 import AddressCard from "./AddressCard";
@@ -25,19 +24,18 @@ const PaymentConfirmation = () => {
   const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
   const { selectedSAddrId, selectedBAddrId, commandIdx, user } = useSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const refreshJwtToken = async () => {
       await dispatch(sendRefreshJwtTokenRequest());
     };
     const logoutUser = async () => {
-      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      // If refresh token has expired, log out the user.
       dispatch(sendLogoutRequest(user.id, null, null));
-      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      // Display the login dialog (no register form.)
       dispatch(setModalLogin());
       dispatch(setModalCheckout());
       dispatch(setModalOpen());
@@ -57,7 +55,8 @@ const PaymentConfirmation = () => {
           pgResponseMessage: "Payment successful",
         };
         if (selectedSAddrId === 0 || selectedBAddrId === -1) {
-          // 新しい住所が使われるとき住所のデータも含め注文リクエストする
+          // If new address has been entered, include the address data
+          // in the order request.
           dispatch(sendOrderWithNewAddresses(sendData));
         } else {
           dispatch(sendOrder(sendData));
@@ -71,7 +70,7 @@ const PaymentConfirmation = () => {
   }, [commandIdx]);
 
   useEffect(() => {
-    // 住所更新された時はDBより再度取得
+    // If the address has been updated, get the user addresses data from DB again.
     dispatch(getUserAddress());
   }, [order]);
 
@@ -79,19 +78,19 @@ const PaymentConfirmation = () => {
     <>
       {order && (
         <div className="px-2 py-4 mx-auto md:w-9/12">
-          <p>ご注文ありがとうございました。配送の手続きを進めます。</p>
-          <legend className="text-xs">注文内容</legend>
+          <p>Thank you for your order! Your order will be processed.</p>
+          <legend className="text-xs">Order Details</legend>
           <div className="xs:flex-col sm:flex sm:gap-x-28">
             <div className="py-1">
-              <span>お届け先：</span>
+              <span>Shipping address:</span>
               <AddressCard address={order.shippingAddr} />
             </div>
             <div className="py-1">
-              <span>請求先:</span>
+              <span>Billing Address:</span>
               {order.billingAddr?.fullname.length > 0 ? (
                 <AddressCard address={order.billingAddr} />
               ) : (
-                <p>お届け先と同じ</p>
+                <p>Same as shipping address.</p>
               )}
             </div>
           </div>

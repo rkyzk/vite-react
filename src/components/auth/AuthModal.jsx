@@ -7,7 +7,7 @@ import { closeModal } from "../../store/actions";
 const AuthModal = () => {
   const { loginOnly } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  /** ダイアログの外をクリックしたらダイアログを閉じる */
+  /** Close dialog if outside the dialog is clicked. */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
       dispatch(closeModal());
@@ -15,7 +15,7 @@ const AuthModal = () => {
     }
   };
   useEffect(() => {
-    // 初回レンダーリングでイベントリスナーを追加
+    // add event listener when mounted.
     document.addEventListener("mouseup", (e) => handleCloseModal(e));
   }, []);
 

@@ -20,7 +20,7 @@ export const Checkout = () => {
   const { errorMessage } = useSelector((state) => state.errors);
   const commandIdx = auth?.commandIdx;
 
-  // ログインしていない時はログインダイアログを表示
+  // If not logged in, show log in dialog
   // if (auth === null) {
   //   setOpen(true);
   // }
@@ -40,15 +40,15 @@ export const Checkout = () => {
       await dispatch(sendRefreshJwtTokenRequest());
     };
     const logoutUser = async () => {
-      // refreshTokenが有効期限切れの時はログアウトしてログイン画面を表示
+      // If refresh token has expired, log out the user and show the login dialog.
       dispatch(sendLogoutRequest(auth.user.id, null, null));
-      // ログインダイアログのみ表示（アカウント登録ダイアログは非表示）
+      // Show only the login dialog (no register form)
       await dispatch(setModalLogin());
       dispatch(setModalOpen());
     };
     if (commandIdx === 0) getClientSecret();
-    if (commandIdx === 1) refreshJwtToken(); // JWTが期限切れの時、更新をリクエスト
-    if (commandIdx === 2) logoutUser(); // refreshTokenが期限切れの時、ユーザをログアウトする
+    if (commandIdx === 1) refreshJwtToken(); // If JWT has expired, request to refresh token.
+    if (commandIdx === 2) logoutUser(); // If refresh token has expired, log out the user.
   }, [commandIdx]);
 
   return (
@@ -61,7 +61,7 @@ export const Checkout = () => {
         </>
       ) : (
         <div className="w-full">
-          <p className="w-[140px] m-auto">カートは空です。</p>
+          <p className="w-[140px] m-auto">Your cart is empty.</p>
         </div>
       )}
     </>

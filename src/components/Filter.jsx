@@ -81,7 +81,7 @@ const Filter = ({ categoryId }) => {
           {/* Search box */}
           <input
             type="text"
-            placeholder="キーワードを入力"
+            placeholder="enter keywords"
             value={keywords}
             onChange={(e) => setKeywords(e.target.value)}
             className={`${styles.SerachInput} text-slate-700 border border-gray-900 rounded-md bg-stone-100
@@ -98,7 +98,7 @@ const Filter = ({ categoryId }) => {
             style={{ width: "200px" }}
           >
             {(category === "null" || category === "") && (
-              <option defaultChecked>花種でフィルター</option>
+              <option defaultChecked>filter by categories</option>
             )}
             {categories.map((item) => (
               <option
@@ -111,7 +111,7 @@ const Filter = ({ categoryId }) => {
             ))}
             {category >= 0 && (
               <option value={0} className="font-sans text-slate-700">
-                すべての花種
+                All categories
               </option>
             )}
           </select>
@@ -136,18 +136,18 @@ const Filter = ({ categoryId }) => {
           >
             {sort === "label" ? (
               <option value="label" className="font-sans text-slate-700">
-                並べ替え
+                sort order
               </option>
             ) : (
               <option value="random" className="font-sans text-slate-700">
-                ランダム
+                random
               </option>
             )}
             <option value="sales_count" className="font-sans text-slate-700">
-              人気順
+              most sold
             </option>
             <option value="price" className="font-sans text-slate-700">
-              価格(低⇨高)
+              price (low to high)
             </option>
           </select>
         </div>
@@ -155,10 +155,10 @@ const Filter = ({ categoryId }) => {
       <div className={`w-[65px] ${styles.ClearBtnBox}`}>
         <button
           onClick={() => handleClearFilter()}
-          className={`${styles.ClearBtn} px-1 h-[34px]
+          className={`${styles.ClearBtn} px-2 h-[34px]
             bg-amber-950 text-white hover:opacity-50`}
         >
-          クリア
+          Clear
         </button>
       </div>
     </div>

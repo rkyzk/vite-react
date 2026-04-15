@@ -1,6 +1,6 @@
 import api from "../../api/axiosDefaults";
 
-/** 商品情報を取得 */
+/** ge products data */
 export const fetchProducts = (queryString) => async (dispatch, getState) => {
   dispatch({
     type: "CLEAR_PRODUCTS",
@@ -25,7 +25,7 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
         type: "IS_ERROR",
         payload: {
           errorMessage:
-            error?.response?.data?.message || "該当する商品がありません。",
+            error?.response?.data?.message || "No matching products found.",
           page: "products",
         },
       });
@@ -35,7 +35,7 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
         payload: {
           errorMessage:
             error?.response?.data?.message ||
-            "商品情報を取得できませんでした。",
+            "There was an error.  Unable to fetch products data.",
           page: "products",
         },
       });
@@ -48,7 +48,7 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
   localStorage.setItem("products", JSON.stringify(getState().products));
 };
 
-/** カテゴリーを取得 */
+/** get categories */
 export const fetchCategories = () => async (dispatch) => {
   try {
     const { data } = await api.get(`/public/categories`);
@@ -63,18 +63,18 @@ export const fetchCategories = () => async (dispatch) => {
     });
     dispatch({ type: "IS_SUCCESS" });
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error?.response?.data);
     dispatch({
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message ||
-        "カテゴリー情報を取得できませんでした。",
+        "There was an error. Failed to fetch category data.",
       page: "Filter",
     });
   }
 };
 
-/* 未使用 */
+/* currently not in use */
 export const fetchFeaturedProducts = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -94,12 +94,12 @@ export const fetchFeaturedProducts = () => async (dispatch, getState) => {
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message ||
-        "お勧め商品情報を取得できませんでした。",
+        "There was an error. Failed to fetch featured products.",
     });
   }
 };
 
-/** 商品詳細を取得 */
+/** get product details */
 export const fetchProductDetail = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -127,12 +127,12 @@ export const fetchProductDetail = (id) => async (dispatch, getState) => {
       type: "IS_ERROR",
       payload:
         error?.response?.data?.message ||
-        "商品詳細情報を取得できませんでした。",
+        "There was an error. Failed to fetch products details.",
     });
   }
 };
 
-/** 「カートに追加」ボタンからカートを更新（qty:追加する個数） */
+/** update product quantity in cart when "Add to Cart" is clicked. (qty: quantity to add) */
 export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
   const { products } = getState().products;
   const { cart } = getState().carts;
@@ -149,12 +149,13 @@ export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
         quantity: productData.quantity - qty,
       },
     });
-    toast.success("商品をカートに追加しました。");
+    toast.success("Products have been added to your cart.");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   }
 };
 
-/** カートページプルダウンからカートを更新（qty:購入個数） */
+/** Update product quantity in cart from the pull down botton on cart page.
+ * qty: total quantity of the product in cart */
 export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   const { cart } = getState().carts;
   let cartItemData = cart?.find((item) => item.id === id);
@@ -164,7 +165,7 @@ export const updateCart = (id, qty, toast) => (dispatch, getState) => {
   if (cartItemData) {
     isQuantityInStock = qtyAdded <= cartItemData.quantity;
   } else {
-    // ありえない
+    // normally impossible
   }
   if (isQuantityInStock) {
     dispatch({
@@ -175,12 +176,12 @@ export const updateCart = (id, qty, toast) => (dispatch, getState) => {
         quantity: cartItemData.quantity - qtyAdded,
       },
     });
-    toast.success("商品の購入個数を更新しました。");
+    toast.success("Product quantity in the card has been updated.");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   }
 };
 
-/** カートから商品を削除 */
+/** Delete a product from the cart */
 export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   dispatch({
     type: "REMOVE_FROM_CART",
@@ -189,7 +190,11 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
-/** 注文データを送信（登録済み住所を使用し、新規住所の登録なし）*/
+/**
+ * send request to place order
+ * (no new address data is included.
+ *  already existimg address will be used.)
+ */
 export const sendOrder = (data) => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
@@ -199,7 +204,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
   const items = cart.map((item) => {
     return { product: { ...item }, quantity: item.purchaseQty };
   });
-  // 届け先住所と請求先住所を取得
+  // get shipping and billing addresses
   let { selectedSAddrId, selectedBAddrId } = getState().auth;
   const sendData = {
     shippingAddressId: selectedSAddrId,
@@ -242,7 +247,8 @@ export const sendOrder = (data) => async (dispatch, getState) => {
     localStorage.setItem("cart", null);
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   } catch (error) {
-    // JWTが有効期限切れの時、再生成のリクエストを出すためcommandIdxを1に設定
+    // If JWT has expired, set commandIdx = 1 so a request will be sent
+    // to regenerate JWT.
     if (error.status === 420) {
       dispatch({
         type: "SET_COMMAND_IDX",
@@ -253,7 +259,7 @@ export const sendOrder = (data) => async (dispatch, getState) => {
   }
 };
 
-/** 注文をリクエスト（住所登録あり）*/
+/** Send request to place order (including new address data) */
 export const sendOrderWithNewAddresses =
   (data) => async (dispatch, getState) => {
     const id = getState().auth.user.id;
@@ -335,7 +341,8 @@ export const sendOrderWithNewAddresses =
       localStorage.setItem("auth", JSON.stringify(getState().auth));
       return true;
     } catch (error) {
-      // JWTが有効期限切れの時、再生成のリクエストを出すためcommandIdxを1に設定
+      // If JWT has expired, set commandIdx = 1 so a request will be sent
+      // to regenerate JWT.
       if (error.status === 420) {
         dispatch({
           type: "SET_COMMAND_IDX",
@@ -346,7 +353,7 @@ export const sendOrderWithNewAddresses =
     }
   };
 
-/** 住所をDBに登録 */
+/** Insert address in DB */
 export const saveNewAddress =
   (address, sAddr) => async (dispatch, getState) => {
     let responseAddr = null;
@@ -375,7 +382,7 @@ export const saveNewAddress =
     localStorage.setItem("auth", JSON.stringify(getState().auth));
   };
 
-/** ログインリクエスト送信 */
+/** Send Login request */
 export const sendLoginRequest =
   (sendData, toast, setLoader) => async (dispatch, getState) => {
     setLoader(true);
@@ -397,7 +404,7 @@ export const sendLoginRequest =
         type: "SET_FALSE",
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
-      toast.success("ログインしました。");
+      toast.success("You've been logged in.");
       return true;
     } catch (error) {
       setLoader(false);
@@ -405,7 +412,7 @@ export const sendLoginRequest =
         dispatch({
           type: "IS_ERROR",
           payload: {
-            errorMessage: "ユーザ名またはパスワードが間違っています。",
+            errorMessage: "Username or password is wrong",
             page: "login",
           },
         });
@@ -414,7 +421,7 @@ export const sendLoginRequest =
         dispatch({
           type: "IS_ERROR",
           payload: {
-            errorMessage: "エラー発生。再度ログインしてください。",
+            errorMessage: "There was an error.  Please try again.",
             page: "login",
           },
         });
@@ -423,13 +430,13 @@ export const sendLoginRequest =
     }
   };
 
-/** ログアウトリクエスト送信 */
+/** Send logout request */
 export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
   localStorage.setItem("auth", null);
   if (navigate) {
-    toast.success("ログアウトしました。");
+    toast.success("You've been logged out.");
     localStorage.setItem("cartItems", []);
     dispatch({
       type: "CLEAR_CART",
@@ -439,19 +446,21 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
     });
     navigate(`/`);
   } else {
-    // リフレッシュトークンが切れた際、再度ログインするようメッセージを設定。
-    // （その後ログインダイアログが表示される。）
+    // If refresh token has expired, prompt users to log in again.
     dispatch({
       type: "IS_ERROR",
-      payload: "再度ログインしてください。",
+      payload: "Please log in again.",
     });
   }
 };
 
-/** アカウント登録リクエストを送信 */
+/** Send register request */
 export const sendRegisterRequest =
   (sendData, toast, setLoader) => async (dispatch) => {
     setLoader(true);
+    dispatch({
+      type: "CLEAR_ERROR_MESSAGE",
+    });
     let correctedSendData = {
       username: sendData.regUsername,
       email: sendData.regEmail,
@@ -459,14 +468,14 @@ export const sendRegisterRequest =
     };
     try {
       const { data } = await api.post("/auth/signup", correctedSendData);
-      toast.success("アカウント登録しました。ログインしてください。");
+      toast.success("Your account has been created.  Please log in.");
       return true;
     } catch (error) {
-      if (error.response?.data?.message === "Username is already used.") {
+      if (error.response?.data?.message === "Username is already in use.") {
         dispatch({
           type: "IS_ERROR",
           payload: {
-            errorMessage: "ユーザ名は既に使用されています。",
+            errorMessage: "Username is already in use.",
             page: "register",
           },
         });
@@ -476,7 +485,7 @@ export const sendRegisterRequest =
           payload: {
             errorMessage:
               error?.response?.data?.message ||
-              "エラー発生。再度アカウント登録してください。",
+              "There was an error.  Please try again.",
             page: "register",
           },
         });
@@ -485,7 +494,7 @@ export const sendRegisterRequest =
     }
   };
 
-/** ログイン中ユーザの住所を取得しReduxに保存 */
+/** Get addresses of logged in user and store them in Redux. */
 export const getUserAddress = () => async (dispatch, getState) => {
   try {
     const { data } = await api.get(`/user/addresses`);
@@ -495,7 +504,9 @@ export const getUserAddress = () => async (dispatch, getState) => {
     let selectedBId = 0;
     data?.map((address) => {
       if (address.shippingAddress) {
-        if (selectedSId === 0) selectedSId = address.addressId; // 更新日時が最新の住所を設定
+        // set the last updated address as selected address.
+        if (selectedSId === 0) selectedSId = address.addressId;
+        // if default address exists, set it as selected address.
         if (address.defaultAddressFlg) selectedSId = address.addressId;
         sList.push(address);
       } else {
@@ -521,7 +532,7 @@ export const getUserAddress = () => async (dispatch, getState) => {
   }
 };
 
-/** 住所更新のリクエストを送信 */
+/** Send request to updated address */
 export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   let id = address.addressId;
   try {
@@ -531,7 +542,8 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
       : getState().auth.bAddressList;
     let newList = [];
     newList = oldList.map((addr) => {
-      // 新規登録の住所がデフォルト設定の場合、前のデフォルト住所のフラグをfalseに変更
+      // If new address is set as default address,
+      // set the default address flag of the old default address to false.
       if (addr.addressId === id) {
         return data;
       } else {
@@ -558,7 +570,7 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
   }
 };
 
-/** 注文履歴を取得 */
+/** Get order history of the user */
 export const fetchOrderHistory = () => async (dispatch, getState) => {
   dispatch({
     type: "IS_FETCHING",
@@ -581,7 +593,7 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
         type: "IS_ERROR",
         payload: {
           errorMessage:
-            error?.response?.data?.message || "購入履歴はありません。",
+            error?.response?.data?.message || "No order history found.",
           page: "order-history",
         },
       });
@@ -593,7 +605,7 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
         payload: {
           errorMessage:
             error?.response?.data?.message ||
-            "購入履歴を取得できませんでした。",
+            "There was an error. Failed to fetch order history.",
           page: "order-history",
         },
       });
@@ -605,7 +617,7 @@ export const fetchOrderHistory = () => async (dispatch, getState) => {
   });
 };
 
-/** 住所をReduxに保存 */
+/** Store addresses in Redux. */
 export const storeTempAddress = (address) => async (dispatch, getState) => {
   address.shippingAddress
     ? dispatch({ type: "STORE_TEMP_SHIPPING_ADDRESS", payload: address })
@@ -614,10 +626,11 @@ export const storeTempAddress = (address) => async (dispatch, getState) => {
 };
 
 /**
- * 住所データを検証
+ * Validate addresses
  *
- * 名前2文字以上
- * 番地番号2文字以上だったらtrueを返す
+ * postal code: error if empty
+ * fullname length: error if less than 2
+ * streetAddress1 length: error if less than 2
  */
 export const validateAddress = (sAddr) => async (dispatch, getState) => {
   const { tempSAddress, tempBAddress } = getState().auth;
@@ -644,7 +657,7 @@ export const validateAddress = (sAddr) => async (dispatch, getState) => {
 };
 
 /**
- * 住所を削除
+ * Delete address
  */
 export const deleteAddress =
   (sAddr, id, toast) => async (dispatch, getState) => {
@@ -659,7 +672,8 @@ export const deleteAddress =
     newList = newList.filter((address) => {
       return address.addressId !== Number(id);
     });
-    // 削除された住所がselectedAddressだったらリストの次の住所をselectedAddressに設定
+    // if selected address has been deleted,
+    // set the next address in the list as selected address
     if (sAddr && selectedSAddrId === Number(id)) {
       let newSelectedAddrId = newList.length > 0 ? newList[0].addressId : 0;
       dispatch({ type: "SET_SELECTED_SADDRESS", payload: newSelectedAddrId });
@@ -720,7 +734,7 @@ export const clearAuthData = () => async (dispatch, getState) => {
 };
 
 /**
- * ClientSecretの生成をリクエストし、Reduxに保存する
+ * Request client secret and store it in Redux.
  */
 export const createClientSecret = () => async (dispatch, getState) => {
   const { cart } = getState().carts;
@@ -746,7 +760,7 @@ export const createClientSecret = () => async (dispatch, getState) => {
 };
 
 /**
- * Jwtの再生成をリクエストする
+ * Request to regenerate JWT.
  */
 export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
   try {
@@ -762,7 +776,7 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
 };
 
 /**
- * レビューをDBに登録
+ * Insert reviews in DB
  */
 export const submitReview = (content, stars, orderId, toast) => async () => {
   let sendData = {
@@ -771,16 +785,16 @@ export const submitReview = (content, stars, orderId, toast) => async () => {
   };
   try {
     let { data } = await api.post(`/review/${orderId}`, sendData);
-    toast.success(`注文番号${orderId}に関するレビューを投稿しました。`);
+    toast.success(`Submitted a review entry regarding your order: ${orderId}`);
     return true;
   } catch (error) {
-    toast.error(`エラー発生。`);
+    toast.error("There was an error. Please try again.");
     return false;
   }
 };
 
 /**
- * レビュー投稿を取得
+ * Get review entries.
  */
 export const fetchReviews = () => async (dispatch, getState) => {
   try {

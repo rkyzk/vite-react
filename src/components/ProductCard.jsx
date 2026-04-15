@@ -12,12 +12,13 @@ const ProductCard = ({
   productName,
   price,
   quantity,
-  imageName,
+  imagePath,
   category,
 }) => {
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
+  const urlStart = "https://res.cloudinary.com/ds66fig3o/image/upload";
   const addToCart = (id) => {
     dispatch(updateCartAddQty(id, Number(qty), toast));
   };
@@ -27,7 +28,7 @@ const ProductCard = ({
       <Link className="cursor-pointer text-center" to={`/product/${id}`}>
         <img
           className={`${styles.imgSize} cursor-pointer`}
-          src={`/images/products/${category.categoryId}/${imageName}`}
+          src={`${urlStart}${imagePath}`}
           alt={productName}
         />
         <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">
@@ -35,9 +36,9 @@ const ProductCard = ({
         </p>
         <div className="text-orange-800 mt-[-2px]">
           {category.categoryId === 4 ? (
-            <p>&yen;{price} (球根6個)</p>
+            <p>&yen;{price} (6 bulbs)</p>
           ) : (
-            <p>&yen;{price} (球根12個)</p>
+            <p>&yen;{price} (12 bulbs)</p>
           )}
         </div>
       </Link>
@@ -45,7 +46,7 @@ const ProductCard = ({
         {isAvailable && (
           <div>
             <label className="mt-1 mr-1" htmlFor="quantity">
-              数個
+              Quantity
             </label>
             <select
               name="quantity"
@@ -73,10 +74,10 @@ const ProductCard = ({
           {isAvailable ? (
             <div className="flex">
               <FaShoppingCart className="mt-1 mr-1" />
-              <span>カートに追加</span>
+              <span>Add to cart</span>
             </div>
           ) : (
-            "在庫なし"
+            "Out of Stock"
           )}
         </button>
       </div>

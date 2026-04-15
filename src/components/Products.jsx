@@ -10,11 +10,10 @@ import Spinner from "./shared/Spinner";
 
 const Products = () => {
   const { isLoading, errorMessage, page } = useSelector(
-    (state) => state.errors
+    (state) => state.errors,
   );
   const { products, pagination } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
-
   useProductFilter();
 
   return (

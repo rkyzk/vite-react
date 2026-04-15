@@ -41,19 +41,19 @@ function Navbar() {
       <div>
         <Link to="/" style={{ color: "#333" }}>
           {path === "/" && <span>◆</span>}
-          ホーム
+          HOME
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
         <Link to="/products" style={{ color: "#333" }}>
           {path === "/products" && <span>◆</span>}
-          ショップ
+          SHOP
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
         <Link to="/contact" style={{ color: "#333" }}>
           {path === "/contact" && <span>◆</span>}
-          問い合わせ
+          CONTACT
         </Link>
       </div>
       <div className={`${styles.menuItemCart}`}>
@@ -88,7 +88,7 @@ function Navbar() {
           }}
           className={`${styles.loginBtn}`}
         >
-          ログイン
+          LOGIN
         </Button>
       )}
     </div>

@@ -66,7 +66,9 @@ const SimpleSlider = () => {
       {elems.length > 0 && (
         <>
           <hr />
-          <h2 className={`${styles.Text} text-center mt-3`}>お客様の声</h2>
+          <h2 className={`${styles.Text} text-center mt-3`}>
+            What out customers say
+          </h2>
           <Slider {...settings}>{elems.map((entry) => entry)}</Slider>
         </>
       )}

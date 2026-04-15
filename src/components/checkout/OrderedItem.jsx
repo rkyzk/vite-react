@@ -8,7 +8,7 @@ const OrderedItem = ({ data }) => {
         <span>{product.productName}</span>
         <img
           className={`${styles.imgSize} w-5/12`}
-          src={`/images/products/${product.category.categoryId}/${product.imageName}`}
+          src={`${product.imagePath}`}
           alt={product.productName}
         ></img>
       </div>

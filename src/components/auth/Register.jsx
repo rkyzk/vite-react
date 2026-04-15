@@ -108,7 +108,7 @@ const Register = () => {
           items-center gap-2"
       >
         <h2 className={`${styles.Text} font-extralight text-center`}>
-          アカウントを新規作成される方
+          For New Customers
         </h2>
         {errorMessage && page === "register" && (
           <span className="text-sm font-semibold text-red-600 mt-0">
@@ -120,13 +120,13 @@ const Register = () => {
             id="regUsername"
             name="regUsername"
             type="text"
-            placeholder="ユーザ名(英数字3〜20文字)"
+            placeholder="username(3-20 characters)"
             className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
             onChange={(e) => handleChange(e)}
           />
           {usernameErrs && (
             <div className="text-sm font-semibold text-red-600 mt-1 pl-1">
-              ユーザ名は3〜20文字入力してください
+              Username must be 3-20 characters.
             </div>
           )}
         </div>
@@ -135,13 +135,13 @@ const Register = () => {
             id="regEmail"
             name="regEmail"
             type="text"
-            placeholder="メール"
+            placeholder="email"
             className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
             onChange={(e) => handleChange(e)}
           />
           {emailErrs && (
             <div className="text-sm font-semibold text-red-600 mt-1 pl-1">
-              正しいメールアドレスを記入してください。
+              Enter valid email.
             </div>
           )}
         </div>
@@ -150,13 +150,13 @@ const Register = () => {
             id="regPassword"
             name="regPassword"
             type="password"
-            placeholder="パスワード"
+            placeholder="password"
             className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
             onChange={(e) => handleChange(e)}
           />
           {pwErrs && (
             <div className="w-80 text-sm font-semibold text-red-600 mt-1 pl-1">
-              パスワードはアルファベットと数字を含む半角8〜16文字列としてください。
+              Enter 8-16 characters containing letters and numerals.
             </div>
           )}
         </div>
@@ -165,7 +165,7 @@ const Register = () => {
           className={`${styles.Button} mt-2 bg-stone-600 text-white hover:bg-stone-300
                   hover:opacity-10 py-1 px-3`}
         >
-          {loader ? <Spinner /> : <>登録</>}
+          {loader ? <Spinner /> : <>Register</>}
         </button>
       </form>
     </>

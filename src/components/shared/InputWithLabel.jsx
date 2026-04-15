@@ -4,7 +4,6 @@ const InputWithLabel = ({
   id,
   type,
   value,
-  onInputChange,
   children,
   isSAddr,
   maxLength,

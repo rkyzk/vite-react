@@ -49,7 +49,7 @@ const Login = () => {
           items-center"
     >
       <h2 className={`${styles.Text} font-extralight text-center`}>
-        {loginOnly ? <>ログイン</> : <>アカウントをお持ちの方</>}
+        {loginOnly ? <>Login</> : <>For Returning Customers</>}
       </h2>
       {errorMessage && page === "login" && (
         <span className="text-sm font-semibold text-red-600 mt-0">
@@ -61,7 +61,7 @@ const Login = () => {
           id="username"
           name="username"
           type="text"
-          placeholder="ユーザ名またはメール"
+          placeholder="username"
           className="bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
           onChange={(e) => handleChange(e)}
         />
@@ -70,7 +70,7 @@ const Login = () => {
             id="password"
             name="password"
             type="password"
-            placeholder="パスワード"
+            placeholder="password"
             className="bg-white pl-2 py-1 rounded-lg w-80 border border-neutral-500 outline-none"
             onChange={(e) => handleChange(e)}
           />
@@ -82,7 +82,7 @@ const Login = () => {
         className={`${styles.Button} mt-2 text-white bg-stone-600 hover:bg-stone-300
           hover:opacity-10 py-1 px-3`}
       >
-        {loader ? <Spinner /> : <>ログイン</>}
+        {loader ? <Spinner /> : <>Login</>}
       </button>
     </form>
   );

@@ -19,7 +19,7 @@ const AddressList = () => {
           lg:max-w-[720px] lg:gap-x-[150px]"
       >
         <div>
-          <h2 className={`${styles.Text} font-extralight`}>お届け先</h2>
+          <h2 className={`${styles.Text} font-extralight`}>Shipping Address</h2>
           {(!sAddressList || sAddressList.length == 0) && (
             <AddressForm isSAddr />
           )}
@@ -53,7 +53,7 @@ const AddressList = () => {
                   onChange={(e) => handleSelectAddress(e, true)}
                   className="m-1"
                 />
-                <span>他の住所に配送する</span>
+                <span>Ship to another address</span>
               </label>
               {sAddressList && selectedSAddrId === 0 && <AddressForm isSAddr />}
             </div>
@@ -61,7 +61,7 @@ const AddressList = () => {
         </div>
         <hr className="xs:mx-1 xs:mt-30px md:hidden" />
         <div className="xs:mt-[50px] md:mt-0 w-[280px]">
-          <h2 className={`${styles.Text} font-extralight`}>請求先</h2>
+          <h2 className={`${styles.Text} font-extralight`}>Billing Address</h2>
           <div className="mt-[-4px]">
             <label htmlFor="selected-b-addr0">
               <input
@@ -74,7 +74,7 @@ const AddressList = () => {
                 className="m-1"
               />
             </label>
-            <span>お届け先と同じ</span>
+            <span>Same as shipping address</span>
           </div>
           {bAddressList?.map((address) => {
             return (
@@ -104,7 +104,7 @@ const AddressList = () => {
               onChange={(e) => handleSelectAddress(e, false)}
               className="mx-1"
             />
-            <span>他の住所を使用する</span>
+            <span>Send bills to another address</span>
           </label>
           {selectedBAddrId === -1 && <AddressForm />}
         </div>

@@ -79,7 +79,7 @@ const CartItem = ({
           className={`${styles.Btn} mt-4 h-[30px]
            px-1 hover:bg-neutral-600 hover:text-white`}
         >
-          削除
+          delete
         </button>
       </div>
       <hr className="mt-3 mx-4" />

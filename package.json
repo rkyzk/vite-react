@@ -16,12 +16,10 @@
     "@reduxjs/toolkit": "^2.7.0",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.3.0",
-    "@tailwindcss/postcss": "^4.1.4",
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
     "jposta": "^0.4.2",
-    "postcss": "^8.5.3",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.1.1",
@@ -33,18 +31,23 @@
     "react-slick": "^0.31.0",
     "redux": "^5.0.1",
     "slick-carousel": "^1.8.1",
-    "swiper": "^11.2.6",
-    "tailwindcss": "^4.1.4"
+    "swiper": "^11.2.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@tailwindcss/postcss": "^4.2.2",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.27",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "init": "^0.1.2",
+    "npx": "^10.2.2",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^4.2.2",
     "vite": "^6.3.1"
   }
 }

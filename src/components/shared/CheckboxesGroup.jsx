@@ -15,7 +15,17 @@ const CheckboxesGroup = ({
   setColorLabel,
 }) => {
   const [colorFilter, setColorFilter] = useState(false);
-  const colorList = ["赤", "橙", "黄", "青", "ピンク", "紫", "白", "ミックス"];
+  const colorList = [
+    "red",
+    "orange",
+    "yellow",
+    "blue",
+    "pink",
+    "purple",
+    "white",
+    "multi-colors",
+  ];
+  const { red, orange, yellow, blue, pink, purple, white, multi } = colorState;
 
   const closeColorFilter = (e) => {
     if (
@@ -43,7 +53,7 @@ const CheckboxesGroup = ({
       setColors("");
     } else {
       setColors(colorArr.toString().replaceAll(",", "_"));
-      setColorLabel(label.toString() + "でフィルター");
+      setColorLabel("Filter by " + label.toString());
     }
     document.removeEventListener("mouseup", closeColorFilter);
     setColorFilter(false);
@@ -66,8 +76,6 @@ const CheckboxesGroup = ({
     });
   };
 
-  const { red, orange, yellow, blue, pink, purple, white, multi } = colorState;
-
   return (
     <div className="relative">
       <button
@@ -78,13 +86,13 @@ const CheckboxesGroup = ({
         {colorLabel?.length > 0 ? (
           colorLabel
         ) : (
-          <span className="text-slate-700">色でフィルター</span>
+          <span className="text-slate-700">filter by colors</span>
         )}
       </button>
       {colorFilter && (
         <Box
           sx={{ display: "flex" }}
-          className="absolute z-2 bg-white border border-neutral-600 w-[150px]"
+          className="absolute z-2 bg-white border border-neutral-600 w-[180px]"
         >
           <FormControl
             sx={{ m: 1 }}
@@ -96,7 +104,7 @@ const CheckboxesGroup = ({
               component="legend"
               className="colorFilter text-neutral-700"
             >
-              複数選択可
+              Multiple colors may be selected.
             </FormLabel>
             <FormGroup className="colorFilter">
               <FormControlLabel
@@ -108,7 +116,7 @@ const CheckboxesGroup = ({
                     id="color-red"
                   />
                 }
-                label="赤"
+                label="red"
               />
               <FormControlLabel
                 control={
@@ -119,7 +127,7 @@ const CheckboxesGroup = ({
                     id="color-orange"
                   />
                 }
-                label="橙"
+                label="orange"
               />
               <FormControlLabel
                 control={
@@ -130,7 +138,7 @@ const CheckboxesGroup = ({
                     id="color-yellow"
                   />
                 }
-                label="黄"
+                label="yellow"
               />
               <FormControlLabel
                 control={
@@ -141,7 +149,7 @@ const CheckboxesGroup = ({
                     id="color-blue"
                   />
                 }
-                label="青"
+                label="blue"
               />
               <FormControlLabel
                 control={
@@ -152,7 +160,7 @@ const CheckboxesGroup = ({
                     id="color-pink"
                   />
                 }
-                label="ピンク"
+                label="pink"
               />
               <FormControlLabel
                 control={
@@ -163,7 +171,7 @@ const CheckboxesGroup = ({
                     id="color-purple"
                   />
                 }
-                label="紫"
+                label="purple"
               />
               <FormControlLabel
                 control={
@@ -174,7 +182,7 @@ const CheckboxesGroup = ({
                     id="color-white"
                   />
                 }
-                label="白"
+                label="white"
               />
               <FormControlLabel
                 control={
@@ -185,7 +193,7 @@ const CheckboxesGroup = ({
                     id="color-multi"
                   />
                 }
-                label="ミックス"
+                label="multi-color"
               />
             </FormGroup>
             <button
@@ -193,7 +201,7 @@ const CheckboxesGroup = ({
               className="colorFilter w-[120px] border outline-none border-slate-900 p-1
                hover:text-white hover:bg-slate-800 hover:opacity-50"
             >
-              適用
+              Apply filter
             </button>
           </FormControl>
         </Box>

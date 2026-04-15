@@ -11,12 +11,13 @@ import Checkout from "./components/checkout/Checkout";
 import OrderHistory from "./components/orderHistory/OrderHistory";
 import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
 import { Toaster } from "react-hot-toast";
-import Product from "./components/Product";
+import ProductDetail from "./components/productDetail/ProductDetail";
 import Modal from "@mui/material/Modal";
 import AuthModal from "./components/auth/AuthModal";
 import { closeModal } from "./store/actions";
 import { useSelector } from "react-redux";
-// import ContactPage from "./components/contactPage/ContactPage";
+import ContactPage from "./components/contactPage/ContactPage";
+import ProductImage from "./components/productDetail/ProductImage";
 
 function App() {
   const { open } = useSelector((state) => state.modal);
@@ -31,12 +32,13 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/contact" element={<ContactPage />} /> */}
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirm" element={<PaymentConfirmation />} />
-              <Route path="/product/:id" element={<Product />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/order-history" element={<OrderHistory />} />
+              <Route path="/test/:id" element={<ProductImage />} />
             </Routes>
           </div>
           <Footer />
