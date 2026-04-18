@@ -13,16 +13,27 @@
   display: flex !important;
   justify-content: space-between !important;
 }
+.NotesHeading {
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  margin-top: 85px !important;
+}
+
 @media screen and (min-width: 1200px) {
   .Description {
     width: 80% !important;
   }
 }
+
 @media screen and (max-width: 1000px) {
   .ImgSize,
   .Swiper {
     width: 310px !important;
     height: 248px !important;
+  }
+
+  .NotesHeading {
+    margin-top: 30px !important;
   }
 }
 @media screen and (min-width: 890px) {
@@ -39,6 +50,7 @@
   }
   .Description {
     margin-top: 2px !important;
+    margin-left: 15px !important;
   }
 }
 

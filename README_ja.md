@@ -1,28 +1,21 @@
-# EC Shopping Site Frontend(Vite + React)
+# EC サイト アプリ Frontend(Vite + React)
 
-<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="landing-page">
+<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="ホームページ">
 
-Deployed project:
+デプロイしたプロジェクト:
 [Wild Blossom Garden](https://main.d318qultnvdzu6.amplifyapp.com)
 
-### Overview
+### 概要
 
-This is a frontend project that uses E-commerce API (REST API built with Java Spring Boot). Here users can browse through images, select items, enter delivery information including credit card information and place orders.
+Java(Spring Boot)で作成したEコマースサイトのRest APIと連携するフロントエンドのプロジェクト。
+商品閲覧、検索、アカウント登録、買い物かごに追加、住所とカード情報を記入して購入手続きなどが可能。
 
-Url for the Rest API:</br>
-https://github.com/rkyzk/ecommerceapi
+Rest APIのソース:
+[ECサイトAPI](https://github.com/rkyzk/ecommerceapi)
 
-### To be done
+### 主な機能
 
-Correct description
-add more paragraphs on prod detail pages
-use swiper on the landing page and review entries
-order things
-limit purchase history to 10 items per page
-
-### Main Functions
-
-1. Browse through
+1. 商品閲覧
 2. 商品検索（キーワード、花種、色でフィルター、人気順、価格が安い順に並び替え可能）
 3. アカウント登録、ユーザ認証機能（JWT、リフレッシュトークン使用）
 4. 買い物かごに追加
@@ -47,7 +40,7 @@ Udemy のコース "Java Spring Boot professional eCommerce project master class
 https://github.com/EmbarkXOfficial/spring-boot-course
 を参考に作成。
 
-### Credits
+### 引用した文章、画像
 
 - ホームページ<br/>
   https://shop.hanano-yamato.co.jp

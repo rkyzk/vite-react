@@ -13,3 +13,8 @@ input {
 button:hover {
   opacity: 0.5;
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ddd !important;
+}

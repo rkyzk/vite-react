@@ -31,10 +31,10 @@ const ProductCard = ({
           src={`${urlStart}${imagePath}`}
           alt={productName}
         />
-        <p className="text-lg/6 mt-1 text-gray-900 h-[12px]">
+        <p className="text-lg/6 mt-1 text-gray-900 h-3">
           {truncateText(productName, 50)}
         </p>
-        <div className="text-orange-800 mt-[-2px]">
+        <div className="text-orange-800 -mt-0.5">
           {category.categoryId === 4 ? (
             <p>&yen;{price} (6 bulbs)</p>
           ) : (
@@ -42,7 +42,7 @@ const ProductCard = ({
           )}
         </div>
       </Link>
-      <div className="mt-[-12px] flex justify-center gap-2">
+      <div className="-mt-3 flex justify-center gap-2">
         {isAvailable && (
           <div>
             <label className="mt-1 mr-1" htmlFor="quantity">

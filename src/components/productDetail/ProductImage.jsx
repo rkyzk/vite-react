@@ -8,7 +8,6 @@ import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
 import styles from "../../styles/Product.module.css";
 
-// { imagePath, productName, productDetail }
 const ProductImage = ({ imagePath, productName, productDetail }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const urlStart = "https://res.cloudinary.com/ds66fig3o/image/upload";
@@ -20,7 +19,7 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
         modules={[Navigation, Pagination, A11y, Thumbs]}
         thumbs={{ swiper: thumbsSwiper }}
         spaceBetween={0}
-        slidesPreView={1}
+        slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
         onSwiper={(swiper) => console.log(swiper)}
@@ -45,34 +44,36 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
             </SwiperSlide>
           ))}
       </Swiper>
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        modules={[Thumbs]}
-        spaceBetween={2}
-        slidesPerView={5}
-        watchSlidesVisibility
-        watchSlidesProgress
-        className="mt-1"
-      >
-        <SwiperSlide key={0}>
-          <img
-            src={`${urlStart}${thumbPathAddition}${imagePath}`}
-            alt={`thumb-${productName}`}
-            className="hidden md:block w-[85px] h-[68px] object-cover object-center"
-          />
-        </SwiperSlide>
-        {productDetail
-          .filter((entry) => entry?.key === "imagePath")
-          .map((entry, idx) => (
-            <SwiperSlide key={idx + 1}>
-              <img
-                src={`${urlStart}${thumbPathAddition}${entry.value}`}
-                alt={`thumb-${productName}`}
-                className="hidden md:block w-[85px] h-[68px] object-cover object-center"
-              />
-            </SwiperSlide>
-          ))}
-      </Swiper>
+      {productDetail.filter((elem) => elem.key == "imagePath").length > 0 && (
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          modules={[Thumbs]}
+          spaceBetween={2}
+          slidesPerView={5}
+          watchSlidesVisibility
+          watchSlidesProgress
+          className="mt-1"
+        >
+          <SwiperSlide key={0}>
+            <img
+              src={`${urlStart}${thumbPathAddition}${imagePath}`}
+              alt={`thumb-${productName}`}
+              className="hidden md:block w-21.25 h-17 object-cover object-center"
+            />
+          </SwiperSlide>
+          {productDetail
+            .filter((entry) => entry?.key === "imagePath")
+            .map((entry, idx) => (
+              <SwiperSlide key={idx + 1}>
+                <img
+                  src={`${urlStart}${thumbPathAddition}${entry.value}`}
+                  alt={`thumb-${productName}`}
+                  className="hidden md:block w-21.25 h-17 object-cover object-center"
+                />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      )}
     </div>
   );
 };

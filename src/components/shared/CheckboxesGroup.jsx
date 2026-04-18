@@ -80,7 +80,7 @@ const CheckboxesGroup = ({
     <div className="relative">
       <button
         onClick={() => handleClickColorFilter()}
-        className={`${styles.ColorFilter} text-left bg-white h-[40px]
+        className={`${styles.ColorFilter} text-left bg-white h-10
           border px-1 border-slate-800 outline-none`}
       >
         {colorLabel?.length > 0 ? (
@@ -92,7 +92,7 @@ const CheckboxesGroup = ({
       {colorFilter && (
         <Box
           sx={{ display: "flex" }}
-          className="absolute z-2 bg-white border border-neutral-600 w-[180px]"
+          className="absolute z-2 bg-white border border-neutral-600 w-55"
         >
           <FormControl
             sx={{ m: 1 }}
@@ -198,7 +198,7 @@ const CheckboxesGroup = ({
             </FormGroup>
             <button
               onClick={() => handleFilterByColors()}
-              className="colorFilter w-[120px] border outline-none border-slate-900 p-1
+              className="colorFilter w-30 border outline-none border-slate-900 p-1
                hover:text-white hover:bg-slate-800 hover:opacity-50"
             >
               Apply filter

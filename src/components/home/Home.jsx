@@ -6,7 +6,6 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "../shared/Spinner";
 import styles from "../../styles/Home.module.css";
 import { Link } from "react-router-dom";
-import SimpleSlider from "./SimpleSlider";
 
 const Home = () => {
   const { products } = useSelector((state) => state.products);
@@ -44,8 +43,8 @@ const Home = () => {
   return (
     <div className="px-2 mt-1 sm:px-8 lg:px-14">
       <HeroBanner />
-      <div className={`${styles.Intro} flex mt-2 px-2`}>
-        <p className="max-w-[640px] mx-auto">
+      <div className={`mt-2 ${styles.Intro} flex px-2`}>
+        <p className="max-w-160 mx-auto">
           Bring your garden to life with Wild Blossom Garden! We specialize in
           high-quality, organic bulbs from early spring crocuses to summer
           dahlias. Pure, sustainable, and ready to plant. Explore our shop and
@@ -83,7 +82,6 @@ const Home = () => {
           </div>
         )}
       </div>
-      <SimpleSlider />
     </div>
   );
 };

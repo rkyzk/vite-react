@@ -20,6 +20,16 @@
     height: 280px !important;
   }
 }
+@media screen and (min-width: 900px) {
+  .Intro {
+    padding-top: 80px !important;
+  }
+}
+@media screen and (min-width: 860px) {
+  .Intro {
+    padding-top: 40px !important;
+  }
+}
 
 @media screen and (max-width: 800px) {
   .imgSize {
@@ -52,7 +62,9 @@
     width: 300px !important;
     height: 240px !important;
   }
+}
+@media screen and (min-width: 440px) {
   .Intro {
-    margin-top: 18px !important;
+    padding: 0 8% !important;
   }
 }
