@@ -12,8 +12,9 @@ import { FaShoppingCart, FaExclamationTriangle } from "react-icons/fa";
 import Spinner from "../shared/Spinner";
 import styles from "../../styles/Product.module.css";
 import ProductImage from "./ProductImage";
-import productNotes from "../../utils/productNotes";
+import tulipAdditionalNotes from "../../utils/tulipAdditionalNotes";
 import { BsDot } from "react-icons/bs";
+import dahliaAdditionalNotes from "../../utils/dahliaAdditionalNotes";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -77,7 +78,9 @@ const ProductDetail = () => {
                   <div className="md:ml-4">
                     <div>
                       {category.categoryId === 4 ? (
-                        <span>&yen;{price} (6 tubers)</span>
+                        <span className="text-amber-800">
+                          &yen;{price} (6 tubers)
+                        </span>
                       ) : (
                         <span className="text-amber-800">
                           &yen;{price} (12 bulbs)
@@ -163,9 +166,8 @@ const ProductDetail = () => {
               className={`${styles.Notes} px-2 md:w-11/12 max-w-250 mx-auto`}
             >
               <h3 className={`${styles.NotesHeading}`}>Additional Notes:</h3>
-              {productNotes[category.categoryId].map((text) => (
-                <div className="flex gap-1 mb-2">{text}</div>
-              ))}
+              {category.categoryId === 1 && tulipAdditionalNotes}
+              {category.categoryId === 4 && dahliaAdditionalNotes}
             </div>
           </div>
         )}
