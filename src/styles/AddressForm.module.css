@@ -45,13 +45,6 @@
   flex-direction: column;
 }
 
-.Button:hover,
-.EditBtn:hover {
-  color: #111 !important;
-  border: #222 solid 1px;
-  background-color: aliceblue;
-}
-
 .Form {
   border-radius: 5px !important;
 }

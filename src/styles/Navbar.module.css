@@ -3,9 +3,15 @@
   text-decoration: underline !important;
   opacity: 100% !important;
 }
+.LoginLink {
+  margin: -6px 0 0 -8px !important;
+}
 @media screen and (min-width: 768px) {
   .menuBox {
     display: none;
+  }
+  .LoginLink {
+    margin-top: -16px !important;
   }
 }
 

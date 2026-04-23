@@ -14,6 +14,8 @@ https://github.com/rkyzk/ecommerceapi
 
 ### To be done
 
+return buttons
+
 Correct description
 add more paragraphs on prod detail pages
 use swiper on the landing page and review entries

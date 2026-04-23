@@ -27,7 +27,7 @@ const UserMenu = ({ id, username, roles }) => {
     <div>
       <div
         id="user"
-        className="text-base text-gray-800 mt-[-4px]"
+        className="text-base text-gray-800 -mt-1"
         onClick={handleClick}
       >
         {username}
@@ -37,7 +37,7 @@ const UserMenu = ({ id, username, roles }) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        className="ml-[-15px]"
+        className="-ml-3.75"
       >
         <MenuItem onClick={handleClose}>
           <Link style={{ color: "#333" }} to="/order-history">

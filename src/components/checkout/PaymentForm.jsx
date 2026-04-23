@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Spinner from "../shared/Spinner";
+import Cart from "../Cart";
 import {
   PaymentElement,
   useElements,
@@ -62,26 +63,54 @@ const PaymentForm = ({ props }) => {
   const isLoading = !stripe || !elements;
 
   return (
-    <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
-      <h2 className={`${styles.Text}`}>Card Information</h2>
+    <>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div>
-          <PaymentElement options={paymentElementOptions} />
-          {errorMessage && (
-            <div className="text-red-500 mt-2">{errorMessage}</div>
-          )}
-          <button
-            className={`${styles.Button} mt-2 mx-auto bg-stone-600 text-white p-1
-              hover:bg-stone-300`}
-            disabled={!stripe || isLoading}
-          >
-            {isLoading ? <Spinner /> : `Proceed to purchase`}
-          </button>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex-col py-4 gap-x-2.5 md:flex md:flex-row"
+        >
+          <div className="w-1/2">
+            <h2
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "800",
+                fontFamily: "serif",
+              }}
+            >
+              Card Information
+            </h2>
+            <PaymentElement options={paymentElementOptions} />
+            {errorMessage && (
+              <div className="text-red-500 mt-2">{errorMessage}</div>
+            )}
+          </div>
+          <div className="md:w-80">
+            <h2
+              className={`mt-4 ml-8 ${styles.CartItems}`}
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "800",
+                fontFamily: "serif",
+              }}
+            >
+              Items in your cart
+            </h2>
+            <Cart />
+            <div className="flex justify-end mr-3">
+              <button
+                className={`bg-stone-600 text-white py-1 px-2
+                hover:bg-blue-50 hover:border-stone-800 ${styles.Button}`}
+                disabled={!stripe || isLoading}
+              >
+                {isLoading ? <Spinner /> : `Proceed to purchase`}
+              </button>
+            </div>
+          </div>
+        </form>
       )}
-    </form>
+    </>
   );
 };
 

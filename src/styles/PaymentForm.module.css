@@ -1,9 +1,10 @@
-.Text {
-  font-size: 1.2rem !important;
-}
-
 .Button:hover {
   color: #111 !important;
-  border: #222 solid 1px;
-  background-color: aliceblue;
+  border: #111 solid 1px !important;
+}
+
+@media screen and (min-width: 768px) {
+  .CartItems {
+    margin-top: 0px !important;
+  }
 }

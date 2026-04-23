@@ -2,7 +2,7 @@ import StripePayment from "./StripePayment";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddressList from "./AddressList";
-import Cart from "../Cart";
+import styles from "../../styles/Checkout.module.css";
 import {
   createClientSecret,
   sendRefreshJwtTokenRequest,
@@ -52,19 +52,18 @@ export const Checkout = () => {
   }, [commandIdx]);
 
   return (
-    <>
+    <div className="flex">
       {cart.length > 0 ? (
-        <>
+        <div className={`${styles.Box} mx-auto`}>
           <AddressList props={props} />
-          <Cart />
           <StripePayment stripePaymentProps={stripePaymentProps} />
-        </>
+        </div>
       ) : (
         <div className="w-full">
-          <p className="w-[140px] m-auto">Your cart is empty.</p>
+          <p className="w-35 m-auto">Your cart is empty.</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

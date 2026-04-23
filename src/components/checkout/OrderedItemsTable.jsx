@@ -5,7 +5,7 @@ const OrderedItemsTable = ({ cart }) => {
     <>
       <div className="flex w-full xl:w-10/12 mt-2">
         <span className="w-6/12 font-bold">Product</span>
-        <span className="w-3/12 text-center font-bold">Quantity</span>
+        <span className="w-3/12 text-center font-bold">Qty</span>
         <span className="w-3/12 text-center font-bold">Unit price</span>
       </div>
       <hr className="mt-1" />
@@ -16,7 +16,7 @@ const OrderedItemsTable = ({ cart }) => {
         })}
       </div>
       <div className="flex w-full xl:w-10/12 justify-end">
-        <span className="w-9/12 text-right font-bold">合計: </span>
+        <span className="w-9/12 text-right font-bold">Total: </span>
         <span className="w-3/12 text-center pr-4 font-bold">
           &yen;{cart?.totalPrice}
         </span>

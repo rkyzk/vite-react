@@ -43,18 +43,15 @@ const StripePayment = ({ stripePaymentProps }) => {
   };
 
   return (
-    <div className="flex">
+    <>
       {clientSecret && (
-        <div
-          className="xs:px-1 mx-auto sm:w-11/12 sm:max-w-[400px]
-          md:max-w-[680px] lg:max-w-[720px]"
-        >
+        <div className="px-2">
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentForm props={props} />
           </Elements>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

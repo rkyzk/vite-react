@@ -37,7 +37,7 @@ function Navbar() {
   };
 
   const menuItems = (
-    <div className="flex-col md:flex md:flex-row md:gap-x-[25px]">
+    <div className="flex-col md:flex md:flex-row md:gap-x-6.25">
       <div>
         <Link to="/" style={{ color: "#333" }} className={`${styles.NavItem}`}>
           {path === "/" && <span>◆</span>}
@@ -98,9 +98,9 @@ function Navbar() {
             marginTop: "-13px",
             fontWeight: "400",
           }}
-          className={`${styles.NavItem}`}
+          className={`${styles.NavItem} ${styles.LoginLink}`}
         >
-          LOGIN
+          <span style={{ fontFamily: "M PLUS Rounded 1c" }}>LOGIN</span>
         </Button>
       )}
     </div>

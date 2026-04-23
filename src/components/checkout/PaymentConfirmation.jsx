@@ -78,25 +78,34 @@ const PaymentConfirmation = () => {
     <>
       {order && (
         <div className="px-2 py-4 mx-auto md:w-9/12">
-          <p>Thank you for your order! Your order will be processed.</p>
-          <legend className="text-xs">Order Details</legend>
-          <div className="xs:flex-col sm:flex sm:gap-x-28">
-            <div className="py-1">
-              <span>Shipping address:</span>
-              <AddressCard address={order.shippingAddr} />
+          <h2 style={{ fontSize: "1.2rem", fontWeight: "800" }}>
+            Thank you for your order! Your order will be processed.
+          </h2>
+          <Box className="bg-gray-200 border-b-gray-600">
+            <legend
+              className="mt-2"
+              style={{ fontSize: "1rem", fontWeight: "800" }}
+            >
+              Order Details:
+            </legend>
+            <div className="xs:flex-col sm:flex sm:gap-x-28">
+              <div className="pb-1">
+                <span>Shipping address:</span>
+                <AddressCard address={order.shippingAddr} />
+              </div>
+              <div className="py-1">
+                <span>Billing Address:</span>
+                {order.billingAddr?.fullname.length > 0 ? (
+                  <AddressCard address={order.billingAddr} />
+                ) : (
+                  <p>Same as shipping address.</p>
+                )}
+              </div>
             </div>
-            <div className="py-1">
-              <span>Billing Address:</span>
-              {order.billingAddr?.fullname.length > 0 ? (
-                <AddressCard address={order.billingAddr} />
-              ) : (
-                <p>Same as shipping address.</p>
-              )}
+            <div className="mt-3">
+              <OrderedItemsTable cart={order.cart} />
             </div>
-          </div>
-          <div className="mt-3">
-            <OrderedItemsTable cart={order.cart} />
-          </div>
+          </Box>
         </div>
       )}
     </>

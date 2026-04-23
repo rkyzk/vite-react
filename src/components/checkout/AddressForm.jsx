@@ -125,14 +125,15 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className={`gap-x-1 px-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
         <button
-          className={`${styles.Button} mt-2 bg-stone-600 text-white py-1 px-2 hover:bg-stone-300`}
+          className={`${styles.Button} mt-2 bg-stone-600
+            text-white py-1 px-2 hover:bg-stone-300`}
           onClick={() => saveAddress(tempAddress)}
         >
           Save
         </button>
         <button
           className={`${styles.Button} m-2 bg-stone-600 text-white py-1 px-2
-                    hover:bg-stone-300`}
+                    hover:bg-stone-300 hover:text-gray-800`}
           onClick={() => handleCancelEditAddress(isSAddr)}
         >
           Cancel
@@ -144,15 +145,17 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className="mt-2 flex justify-start gap-x-2">
         <button
-          className={`${styles.EditBtn}text-stone-900 p-1`}
-          style={{ border: "#555 solid 1px" }}
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+             hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "42px" }}
           onClick={() => showEditForm(true)}
         >
           Edit
         </button>
         <button
-          className={`${styles.EditBtn}text-stone-900 p-1`}
-          style={{ border: "#555 solid 1px" }}
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+           hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "160px" }}
           onClick={() => handleDeleteAddress()}
         >
           Delete this address
@@ -196,7 +199,7 @@ const AddressForm = ({ address, isSAddr }) => {
             htmlFor="fullname"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            full name:
+            Full name:
           </label>
           <input
             id="fullname"
@@ -248,9 +251,8 @@ const AddressForm = ({ address, isSAddr }) => {
             )}
         </div>
         <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
+          className={`${isSAddr ? "s-addr" : "b-addr"}
+            ${styles.InputItem} mt-1`}
         >
           <label
             htmlFor="province"
@@ -267,9 +269,7 @@ const AddressForm = ({ address, isSAddr }) => {
           />
         </div>
         <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem} mt-1`}
         >
           <label
             htmlFor="city"
@@ -299,9 +299,7 @@ const AddressForm = ({ address, isSAddr }) => {
           />
         </div>
         <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
+          className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem} mt-1`}
         >
           <label
             htmlFor="streetAddress2"
@@ -338,18 +336,22 @@ const AddressForm = ({ address, isSAddr }) => {
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
+        <div className="mt-1">
           <label htmlFor="save-addr">
-            <input
-              type="radio"
-              id="saveAddr"
-              name="saveAddr"
-              value="saveAddr"
-              checked={tempAddress.saveAddr}
-              onClick={(e) => handleChangeAddress(e)}
-              className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
-            />
-            <span>Save</span>
+            <div className="flex">
+              <input
+                type="radio"
+                id="saveAddr"
+                name="saveAddr"
+                value="saveAddr"
+                checked={tempAddress.saveAddr}
+                onClick={(e) => handleChangeAddress(e)}
+                className={`${isSAddr ? "s-addr" : "b-addr"} m-1 h-3.5`}
+              />
+              <span className="leading-5">
+                Save this address so you don't need to reenter it next time.
+              </span>
+            </div>
           </label>
         </div>
         {editAddr && <>{saveButtons()}</>}
@@ -368,7 +370,7 @@ const AddressForm = ({ address, isSAddr }) => {
         <div
           className={`${isSAddr && editAddr && "s-addr"}
           ${!isSAddr && editAddr && "b-addr"}
-          ${isSAddr && !sAddressList && !bAddressList && "md:mt-[52px]"}`}
+          ${isSAddr && !sAddressList && !bAddressList && "md:mt-13"}`}
         >
           {addressForm()}
           {((isSAddr && sAddressList?.length > 0) ||
