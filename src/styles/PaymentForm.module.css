@@ -1,10 +1,42 @@
-.Button:hover {
-  color: #111 !important;
-  border: #111 solid 1px !important;
+.Button {
+  background-color: rgb(122, 109, 10);
+}
+
+.Line {
+  width: calc(100vw * 0.75) !important;
+}
+@media screen and (min-width: 1000px) {
+  .CartItemsBox {
+    margin-left: 160px;
+  }
+  .CardForm {
+    max-width: 380px;
+  }
+  .CartItemsBox {
+    width: 260px !important;
+  }
+}
+
+@media (830px <= width < 1000px) {
+  .CartItemsBox {
+    margin-left: 10vw;
+  }
+}
+@media (768px <= width < 830px) {
+  .CartItemsBox {
+    margin-left: 40px;
+  }
+}
+@media (768px <= width < 1000px) {
+  .CartItemsBox {
+    margin-top: 0px !important;
+    width: 240px !important;
+  }
 }
 
 @media screen and (min-width: 768px) {
-  .CartItems {
-    margin-top: 0px !important;
+  .CardForm {
+    width: calc(80vw - 280px);
+    max-width: 360px;
   }
 }

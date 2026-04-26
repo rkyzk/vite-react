@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import CartItem from "./CartItem";
+import CartItem from "./shared/CartItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../styles/CartCartItem.module.css";
 import {
@@ -49,33 +49,31 @@ const Cart = ({ cartPage }) => {
             </h2>
           )}
           <div className="flex gap-1 mt-2">
-            <span className="w-1/12"></span>
+            {cartPage && <span className="w-1/12"></span>}
             <span
-              className={`w-4/12 ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}}`}
+              className={`${cartPage ? "w-4/12" : "w-5/12"} ${checkOutPage ? styles.FontSize : styles.FontSizeXS}`}
             >
               Product
             </span>
             <span
-              className={`w-2/12 ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}`}
+              className={`w-2/12 ${checkOutPage ? styles.FontSize : styles.FontSizeXS}`}
             >
               Qty
             </span>
             <span
-              className={`w-4/12 ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}`}
+              className={`w-4/12 ${checkOutPage ? styles.FontSize : styles.FontSizeXS}`}
             >
               Unit price
             </span>
           </div>
-          <hr className="mt-1 mx-4" />
+          <hr className="mt-1" />
           {cart.map((item, idx) => {
             let data = { ...item, idx: idx, cartPage };
             return <CartItem key={idx} {...data} />;
           })}
-          <div className="flex w-full mt-3">
+          <div className="flex w-full mt-3 gap-3">
             <p className="font-serif font-bold w-7/12 text-right">Total: </p>
-            <p
-              className={`font-serif font-bold tracking-2 w-2/12 ${cartPage ? "pl-3" : "pl-5"}`}
-            >
+            <p className={`font-serif font-bold w-2/12 pl-5}`}>
               &yen;{totalPrice}
             </p>
           </div>

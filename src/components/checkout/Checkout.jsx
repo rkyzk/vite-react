@@ -56,6 +56,7 @@ export const Checkout = () => {
       {cart.length > 0 ? (
         <div className={`${styles.Box} mx-auto`}>
           <AddressList props={props} />
+          <hr className={`${styles.Line} md:hidden`} />
           <StripePayment stripePaymentProps={stripePaymentProps} />
         </div>
       ) : (

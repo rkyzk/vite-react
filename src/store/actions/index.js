@@ -149,7 +149,7 @@ export const updateCartAddQty = (id, qty, toast) => (dispatch, getState) => {
         quantity: productData.quantity - qty,
       },
     });
-    toast.success("Products have been added to your cart.");
+    toast.success("Item has been added to your cart.");
     localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
   }
 };

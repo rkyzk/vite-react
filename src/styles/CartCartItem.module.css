@@ -6,18 +6,62 @@
 
 .RemoveBtn {
   border: 1px #484848 solid !important;
-  margin-left: 8px !important;
 }
-
-.FontSize {
+.QtyCheckOut,
+.PriceTextCheckOut {
   font-size: 0.9rem !important;
 }
 
-.FontSizeXS {
+.Qty,
+.PriceText,
+.RemoveBtn {
   font-size: 1rem !important;
 }
+
 .Btns {
   background-color: rgb(122, 109, 10);
+}
+.Qty,
+.QtyCheckOut,
+.PriceTextCheckOut {
+  margin-top: 25px !important;
+}
+
+.imgBoxCheckout,
+.imgSizeCheckout {
+  width: 100px !important;
+  height: 80px !important;
+}
+
+.ItemNr {
+  width: 8.3333% !important;
+  text-align: center !important;
+}
+
+.Image {
+  width: 33.3333% !important;
+}
+.SelectBoxDiv {
+  width: 16.6666% !important;
+}
+.FontSize {
+  font-size: 0.9rem !important;
+}
+.PriceText {
+  margin-right: 6vw;
+}
+
+@media screen and (min-width: 681px) {
+  .PriceText {
+    margin-top: 42px !important;
+  }
+
+  .SelectBox {
+    margin-top: 35px !important;
+  }
+  .RemoveBtn {
+    margin-top: 39px !important;
+  }
 }
 
 @media screen and (max-width: 680px) {
@@ -32,15 +76,32 @@
     height: 35px !important;
     padding: 0 0 !important;
   }
-  .RemoveBtn {
-    margin-top: 16px !important;
+  .Qty {
+    margin-top: 18px;
   }
   .PriceText {
     margin-top: 20px !important;
   }
+
+  .RemoveBtn {
+    margin-top: 18px;
+  }
 }
 @media screen and (max-width: 500px) {
+  .RemoveBtn,
+  .RemoveBtnCheckOut,
+  .PriceText,
+  .SelectBox,
+  .ProdName,
+  .ItemNr,
   .FontSizeXS {
     font-size: 0.9rem !important;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .PriceText,
+  .PriceTextCheckOut {
+    margin-right: 8px;
   }
 }

@@ -1,3 +1,5 @@
+${cartPage ? "pl-3" : "pl-5"}
+
 # EC Shopping Site Frontend(Vite + React)
 
 <img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="landing-page">

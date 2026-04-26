@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { removeItemFromCart, updateCart } from "../store/actions";
-import styles from "../styles/CartCartItem.module.css";
+import { removeItemFromCart, updateCart } from "../../store/actions";
+import styles from "../../styles/CartCartItem.module.css";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -28,31 +28,37 @@ const CartItem = ({
 
   return (
     <>
-      <div className="flex w-full gap-1 -mt-2">
-        <span className="w-1/12"></span>
+      <div className="flex w-full gap-1 -mt-3">
+        {cartPage && <span className="w-1/12"></span>}
         <span
-          className={`${styles.FontSizeXS} ${checkOutPage && styles.FontSize}`}
+          className={`${styles.ProdName} ${checkOutPage && styles.FontSize}`}
         >
           {productName}
         </span>
       </div>
-      <div className="flex w-full gap-1">
-        <span className="w-1/12 text-center">{idx + 1}</span>
-        <div className="w-4/12">
-          <div className={`${styles.imgBox} relative`}>
+      <div className="flex w-full gap-1 pb-1">
+        {cartPage && (
+          <div className={`${styles.ItemNr}`} styles={{ textAlign: "cetner" }}>
+            {idx + 1}
+          </div>
+        )}
+        <div className={`${cartPage ? styles.Image : "w-5/12"}`}>
+          <div
+            className={`${checkOutPage ? styles.imgBoxCheckout : styles.imgBox} relative`}
+          >
             <img
-              className={`${styles.imgSize} overflow-hidden object-cover absolute`}
+              className={`${checkOutPage ? styles.imgSizeCheckout : styles.imgSize} overflow-hidden object-cover absolute`}
               src={`${urlStart}${imagePath}`}
               alt={productName}
             />
           </div>
         </div>
         {cartPage ? (
-          <div className="w-2/12 flex">
+          <div className={`${styles.SelectBoxDiv}`}>
             <select
               id={`quantity-${id}`}
               onChange={(e) => handleUpdateCart(id, e)}
-              className={`${styles.SelectBox} mt-4 border bg-white rounded-lg
+              className={`${styles.SelectBox} border bg-white rounded-lg
                 py-2 pl-1 h-10`}
             >
               {[...Array(30)]
@@ -61,7 +67,7 @@ const CartItem = ({
                   if (purchaseQty === i) {
                     return (
                       <option
-                        className={`${styles.FontSizeXS} text-center`}
+                        className={`${styles.FontSize} text-center`}
                         key={i}
                         value={i}
                         selected
@@ -74,7 +80,7 @@ const CartItem = ({
                       <option
                         key={i}
                         value={i}
-                        className={`${styles.FontSizeXS} text-center`}
+                        className={`${styles.FontSize} text-center`}
                       >
                         {i}
                       </option>
@@ -84,26 +90,28 @@ const CartItem = ({
             </select>
           </div>
         ) : (
-          <div
-            className={`w-2/12 mt-4 ml-2 ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}`}
-          >
+          <div className={`w-2/12 ml-2 ${styles.QtyCheckOut}`}>
             {purchaseQty}
           </div>
         )}
-        <span
-          className={`w-2/12 mt-4 ${styles.PriceText} ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}`}
-        >
-          &yen;{price}
-        </span>
-        <button
-          onClick={() => handleRemoveItem(id)}
-          className={`${styles.RemoveBtn} ${styles.FontSizeXS} ${checkOutPage && styles.FontSize}
-            mt-4 h-7.5 px-1 hover:bg-neutral-800 hover:text-white`}
-        >
-          remove
-        </button>
+        <div className="flex">
+          <span
+            className={`${checkOutPage ? styles.PriceTextCheckOut : styles.PriceText}`}
+          >
+            &yen;{price}
+          </span>
+          {cartPage && (
+            <button
+              className={`${styles.RemoveBtn}
+            px-1 h-7 hover:bg-neutral-800 hover:text-white`}
+              onClick={() => handleRemoveItem(id)}
+            >
+              remove
+            </button>
+          )}
+        </div>
       </div>
-      <hr className="mt-3 mx-4" />
+      <hr className="mt-1" />
     </>
   );
 };

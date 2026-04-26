@@ -45,7 +45,7 @@ const StripePayment = ({ stripePaymentProps }) => {
   return (
     <>
       {clientSecret && (
-        <div className="px-2">
+        <div className="mt-4 px-2">
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <PaymentForm props={props} />
           </Elements>

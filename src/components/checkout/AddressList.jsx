@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import AddressForm from "./AddressForm";
 import { changeSelectedAddr } from "../../store/actions";
+import styles from "../../styles/AddressList.module.css";
 
 const AddressList = () => {
   const { sAddressList, bAddressList, selectedSAddrId, selectedBAddrId } =
@@ -13,10 +14,10 @@ const AddressList = () => {
   return (
     <div className="w-full flex px-2">
       <div
-        className="grid gap-x-5 grid-col-1
-          md:grid-cols-2 md:mx-auto lg:gap-x-37.5"
+        className="grid grid-col-1
+          md:grid-cols-2 md:mx-auto"
       >
-        <div>
+        <div className={`${styles.Address} mb-4`}>
           <h2
             style={{
               fontSize: "1.1rem",
@@ -65,8 +66,8 @@ const AddressList = () => {
             </div>
           )}
         </div>
-        <hr className="mx-1 mt-7.5 md:hidden" />
-        <div className="mt-12.5 md:mt-0">
+        <hr className={`${styles.Line} md:hidden`} />
+        <div className={`${styles.Address} mb-4`}>
           <h2
             style={{
               fontSize: "1.1rem",

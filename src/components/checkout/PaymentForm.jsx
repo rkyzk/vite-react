@@ -67,11 +67,8 @@ const PaymentForm = ({ props }) => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          className="flex-col py-4 gap-x-2.5 md:flex md:flex-row"
-        >
-          <div className="w-1/2">
+        <form onSubmit={handleSubmit} className="flex-col md:flex md:flex-row">
+          <div className={`${styles.CardForm} pb-3`}>
             <h2
               style={{
                 fontSize: "1.1rem",
@@ -81,14 +78,18 @@ const PaymentForm = ({ props }) => {
             >
               Card Information
             </h2>
-            <PaymentElement options={paymentElementOptions} />
+            <PaymentElement
+              options={paymentElementOptions}
+              className="max-w-80"
+            />
             {errorMessage && (
               <div className="text-red-500 mt-2">{errorMessage}</div>
             )}
           </div>
-          <div className="md:w-80">
+          <hr className={`${styles.Line} md:hidden`} />
+          <div className={`${styles.CartItemsBox}`}>
             <h2
-              className={`mt-4 ml-8 ${styles.CartItems}`}
+              className={`mt-1 ${styles.CartItems}`}
               style={{
                 fontSize: "1.1rem",
                 fontWeight: "800",
@@ -100,8 +101,7 @@ const PaymentForm = ({ props }) => {
             <Cart />
             <div className="flex justify-end mr-3">
               <button
-                className={`bg-stone-600 text-white py-1 px-2
-                hover:bg-blue-50 hover:border-stone-800 ${styles.Button}`}
+                className={`text-white py-1 px-2 ${styles.Button}`}
                 disabled={!stripe || isLoading}
               >
                 {isLoading ? <Spinner /> : `Proceed to purchase`}

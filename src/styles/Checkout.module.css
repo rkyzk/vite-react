@@ -55,9 +55,20 @@
 .bAddressBox {
   margin-top: -12px;
 }
-@media (768px <= width < 830px) {
+
+.Line {
+  width: calc(100vw * 0.75) !important;
+  max-width: 880px;
+  margin-left: 8px;
+}
+
+.Box {
+  width: 880px;
+}
+
+@media (768px <= width < 1000px) {
   .Box {
-    width: 90% !important;
+    width: 80% !important;
   }
 }
 
