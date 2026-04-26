@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Spinner from "../shared/Spinner";
-import Cart from "../Cart";
+import Cart from "../shared/Cart";
 import {
   PaymentElement,
   useElements,

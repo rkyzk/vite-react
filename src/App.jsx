@@ -1,15 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Products from "./components/Products";
+import Products from "./components/productsPage/Products";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
-import About from "./components/About";
-import Cart from "./components/Cart";
+// import About from "./components/About";
+import Cart from "./components/shared/Cart";
 import Checkout from "./components/checkout/Checkout";
 import OrderHistory from "./components/orderHistory/OrderHistory";
-import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
+import PaymentConfirmation from "./components/orderConfirmation/PaymentConfirmation";
 import { Toaster } from "react-hot-toast";
 import ProductDetail from "./components/productDetail/ProductDetail";
 import Modal from "@mui/material/Modal";
@@ -31,7 +31,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/about" element={<About />} />
+              {/* <Route path="/about" element={<About />} /> */}
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />

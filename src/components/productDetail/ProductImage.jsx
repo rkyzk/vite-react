@@ -7,11 +7,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
 import styles from "../../styles/Product.module.css";
+import { IMAGE_URL, THUMB_PATH_ADDITION } from "../../constans/constants.js";
 
 const ProductImage = ({ imagePath, productName, productDetail }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const urlStart = "https://res.cloudinary.com/ds66fig3o/image/upload";
-  const thumbPathAddition = "/c_thumb,w_200,g_face";
 
   return (
     <div className={`${styles.Swiper} mx-auto`}>
@@ -27,7 +26,7 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
       >
         <SwiperSlide key={0}>
           <img
-            src={`${urlStart}${imagePath}`}
+            src={`${IMAGE_URL}${imagePath}`}
             alt={productName}
             className={`${styles.ImgSize} object-cover object-center`}
           />
@@ -37,7 +36,7 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
           .map((entry, idx) => (
             <SwiperSlide key={idx + 1}>
               <img
-                src={`${urlStart}${entry.value}`}
+                src={`${IMAGE_URL}${entry.value}`}
                 alt={productName}
                 className={`${styles.ImgSize} object-cover object-center`}
               />
@@ -56,7 +55,7 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
         >
           <SwiperSlide key={0}>
             <img
-              src={`${urlStart}${thumbPathAddition}${imagePath}`}
+              src={`${IMAGE_URL}${THUMB_PATH_ADDITION}${imagePath}`}
               alt={`thumb-${productName}`}
               className="hidden md:block w-21.25 h-17 object-cover object-center"
             />
@@ -66,7 +65,7 @@ const ProductImage = ({ imagePath, productName, productDetail }) => {
             .map((entry, idx) => (
               <SwiperSlide key={idx + 1}>
                 <img
-                  src={`${urlStart}${thumbPathAddition}${entry.value}`}
+                  src={`${IMAGE_URL}${THUMB_PATH_ADDITION}${entry.value}`}
                   alt={`thumb-${productName}`}
                   className="hidden md:block w-21.25 h-17 object-cover object-center"
                 />

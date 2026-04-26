@@ -1,11 +1,12 @@
-import truncateText from "../utils/truncateText";
+import truncateText from "../../utils/truncateText";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateCartAddQty } from "../store/actions";
-import styles from "../styles/ProductCard.module.css";
+import { updateCartAddQty } from "../../store/actions";
+import styles from "../../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { IMAGE_URL } from "../../constans/constants.js";
 
 const ProductCard = ({
   id,
@@ -18,7 +19,6 @@ const ProductCard = ({
   const [qty, setQty] = useState(1);
   const dispatch = useDispatch();
   const isAvailable = quantity && Number(quantity) > 0;
-  const urlStart = "https://res.cloudinary.com/ds66fig3o/image/upload";
   const addToCart = (id) => {
     dispatch(updateCartAddQty(id, Number(qty), toast));
   };
@@ -28,7 +28,7 @@ const ProductCard = ({
       <Link className="cursor-pointer text-center" to={`/product/${id}`}>
         <img
           className={`${styles.imgSize} cursor-pointer`}
-          src={`${urlStart}${imagePath}`}
+          src={`${IMAGE_URL}${imagePath}`}
           alt={productName}
         />
         <p className="text-lg/6 mt-1 text-gray-900 h-3">

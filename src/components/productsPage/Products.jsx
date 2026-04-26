@@ -2,11 +2,11 @@ import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
-import useProductFilter from "../hooks/useProductFilter";
+import useProductFilter from "../../hooks/useProductFilter";
 import Filter from "./Filter";
-import PaginationSection from "./shared/PaginationSection";
-import styles from "../styles/Products.module.css";
-import Spinner from "./shared/Spinner";
+import PaginationSection from "../shared/PaginationSection";
+import styles from "../../styles/Products.module.css";
+import Spinner from "../shared/Spinner";
 
 const Products = () => {
   const { isLoading, errorMessage, page } = useSelector(

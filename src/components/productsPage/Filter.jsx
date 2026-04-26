@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import styles from "../styles/Filter.module.css";
-import { fetchCategories, clearErrorMessage } from "../store/actions";
-import CheckboxesGroup from "./shared/CheckboxesGroup";
+import styles from "../../styles/Filter.module.css";
+import { fetchCategories, clearErrorMessage } from "../../store/actions";
+import CheckboxesGroup from "../shared/CheckboxesGroup";
 
 const Filter = ({ categoryId }) => {
   const [keywords, setKeywords] = useState("");

@@ -192,7 +192,7 @@ const AddressForm = ({ address, isSAddr }) => {
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
         className={`${isSAddr ? "s-addr" : "b-addr"}
-          ${editAddr && "bg-neutral-300 px-2 py-1"} ${styles.Form}`}
+          bg-neutral-300 px-2 py-1 ${styles.Form}`}
       >
         <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
           <label

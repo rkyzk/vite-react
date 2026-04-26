@@ -1,4 +1,8 @@
 ${cartPage ? "pl-3" : "pl-5"}
+address form background
+login dialog 330px make it narrower
+nav bar the top right corner
+checkout page 330px
 
 # EC Shopping Site Frontend(Vite + React)
 

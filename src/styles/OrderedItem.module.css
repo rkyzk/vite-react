@@ -1,6 +1,12 @@
-.imgSize {
-  width: 100px;
-  height: 80px;
-  object-fit: cover;
-  object-position: 50% 50%;
+.imgSize,
+.imgBox {
+  width: 120px !important;
+  height: 96px !important;
+}
+
+@media screen and (max-width: 500px) {
+  .Labels,
+  .OrderedItemsText {
+    font: 0.9rem !important;
+  }
 }

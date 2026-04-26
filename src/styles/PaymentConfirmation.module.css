@@ -1,0 +1,5 @@
+@media (360px <= width < 767px) {
+  .Box {
+    width: 80% !important;
+  }
+}

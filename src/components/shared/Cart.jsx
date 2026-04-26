@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import CartItem from "./shared/CartItem";
+import CartItem from "./CartItem";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "../styles/CartCartItem.module.css";
+import styles from "../../styles/CartCartItem.module.css";
 import {
   clearAuthData,
   setModalCheckout,
   setModalOpen,
-} from "../store/actions";
+} from "../../store/actions";
 
 const Cart = ({ cartPage }) => {
   const cart = useSelector((state) => state.carts.cart);

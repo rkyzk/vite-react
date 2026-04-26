@@ -11,8 +11,9 @@ import {
   sendRefreshJwtTokenRequest,
   setModalCheckout,
 } from "../../store/actions";
-import AddressCard from "./AddressCard";
+import AddressCard from "../checkout/AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
+import styles from "../../styles/PaymentConfirmation.module.css";
 
 const PaymentConfirmation = () => {
   const location = useLocation();
@@ -77,35 +78,68 @@ const PaymentConfirmation = () => {
   return (
     <>
       {order && (
-        <div className="px-2 py-4 mx-auto md:w-9/12">
-          <h2 style={{ fontSize: "1.2rem", fontWeight: "800" }}>
+        <div className={`${styles.Box} px-2 py-1 mx-auto md:w-9/12`}>
+          <h2
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "800",
+              fontFamily: "serif",
+            }}
+          >
             Thank you for your order! Your order will be processed.
           </h2>
-          <Box className="bg-gray-200 border-b-gray-600">
-            <legend
-              className="mt-2"
-              style={{ fontSize: "1rem", fontWeight: "800" }}
+          <legend
+            className="mt-3"
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: "800",
+              fontFamily: "serif",
+            }}
+          >
+            Order Details
+          </legend>
+          <div className="xs:flex-col sm:flex sm:gap-x-28">
+            <div className="pb-1">
+              <span
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "800",
+                  fontFamily: "serif",
+                }}
+              >
+                Shipping address:
+              </span>
+              <AddressCard address={order.shippingAddr} />
+            </div>
+            <div>
+              <span
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "800",
+                  fontFamily: "serif",
+                }}
+              >
+                Billing Address:
+              </span>
+              {order.billingAddr?.fullname.length > 0 ? (
+                <AddressCard address={order.billingAddr} />
+              ) : (
+                <p>Same as shipping address.</p>
+              )}
+            </div>
+          </div>
+          <div className="mt-3">
+            <span
+              style={{
+                fontSize: "1rem",
+                fontWeight: "800",
+                fontFamily: "serif",
+              }}
             >
-              Order Details:
-            </legend>
-            <div className="xs:flex-col sm:flex sm:gap-x-28">
-              <div className="pb-1">
-                <span>Shipping address:</span>
-                <AddressCard address={order.shippingAddr} />
-              </div>
-              <div className="py-1">
-                <span>Billing Address:</span>
-                {order.billingAddr?.fullname.length > 0 ? (
-                  <AddressCard address={order.billingAddr} />
-                ) : (
-                  <p>Same as shipping address.</p>
-                )}
-              </div>
-            </div>
-            <div className="mt-3">
-              <OrderedItemsTable cart={order.cart} />
-            </div>
-          </Box>
+              Ordered Items:
+            </span>
+            <OrderedItemsTable cart={order.cart} />
+          </div>
         </div>
       )}
     </>
