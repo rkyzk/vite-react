@@ -3,6 +3,7 @@ import Register from "./Register";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../store/actions";
+import styles from "../../styles/AuthModal.module.css";
 
 const AuthModal = () => {
   const { loginOnly } = useSelector((state) => state.modal);
@@ -21,8 +22,8 @@ const AuthModal = () => {
 
   return (
     <div
-      className="max-w-[450px] px-3 py-4 border-b-black bg-gray-50
-        flex-col mx-auto mt-5"
+      className={`${styles.LoginForm} max-w-112.5 px-3 py-4 border-b-black bg-gray-50
+        flex-col mx-auto mt-5`}
     >
       <Login />
       {!loginOnly && <Register />}

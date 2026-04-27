@@ -66,7 +66,7 @@ const Cart = ({ cartPage }) => {
               Unit price
             </span>
           </div>
-          <hr className="mt-1" />
+          <hr className="mt-1 mx-3" />
           {cart.map((item, idx) => {
             let data = { ...item, idx: idx, cartPage };
             return <CartItem key={idx} {...data} />;
@@ -78,8 +78,8 @@ const Cart = ({ cartPage }) => {
             </p>
           </div>
           {cartPage && (
-            <div className="flex justify-end">
-              <div className={`w-55 pr-7.5 mt-2 flex-col md:pr-`}>
+            <div className="flex justify-end w-4/5 mx-auto">
+              <div className="w-55 pr-7.5 mt-2 flex-col">
                 <button
                   className={`${styles.Btns} w-47.5 mt-1 text-white py-1`}
                   onClick={() => navigate("/products")}

@@ -96,11 +96,12 @@ function Navbar() {
             color: "#444",
             fontSize: "1rem",
             marginTop: "-13px",
-            fontWeight: "400",
           }}
           className={`${styles.NavItem} ${styles.LoginLink}`}
         >
-          <span style={{ fontFamily: "M PLUS Rounded 1c" }}>LOGIN</span>
+          <span style={{ fontFamily: "M PLUS Rounded 1c", fontWeight: "400" }}>
+            LOGIN
+          </span>
         </Button>
       )}
     </div>

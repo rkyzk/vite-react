@@ -3,6 +3,7 @@ address form background
 login dialog 330px make it narrower
 nav bar the top right corner
 checkout page 330px
+second nav bar when logged in
 
 # EC Shopping Site Frontend(Vite + React)
 

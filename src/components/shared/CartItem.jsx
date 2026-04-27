@@ -111,7 +111,7 @@ const CartItem = ({
           )}
         </div>
       </div>
-      <hr className="mt-1" />
+      <hr className="mt-1 mx-3" />
     </>
   );
 };

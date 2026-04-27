@@ -9,7 +9,7 @@ import {
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import { IoEyeOutline } from "react-icons/io5";
-import styles from "../../styles/Auth.module.css";
+import styles from "../../styles/AuthModal.module.css";
 
 /**
  * log users in
@@ -52,17 +52,17 @@ const Login = () => {
         {loginOnly ? <>Login</> : <>For Returning Customers</>}
       </h2>
       {errorMessage && page === "login" && (
-        <span className="text-sm font-semibold text-red-600 mt-0">
+        <span className="text-sm font-semibold text-red-600">
           {errorMessage}
         </span>
       )}
-      <div className="w-80 flex flex-col gap-2 mt-2">
+      <div className="flex flex-col gap-2 mt-2">
         <input
           id="username"
           name="username"
           type="text"
           placeholder="username"
-          className="bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
+          className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
           onChange={(e) => handleChange(e)}
         />
         <div className="flex">
@@ -71,10 +71,10 @@ const Login = () => {
             name="password"
             type="password"
             placeholder="password"
-            className="bg-white pl-2 py-1 rounded-lg w-80 border border-neutral-500 outline-none"
+            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
-          <IoEyeOutline id="eye-icon" className="mt-2 ml-[-25px]" />
+          <IoEyeOutline id="eye-icon" className="mt-2 -ml-6.25" />
         </div>
       </div>
       <button

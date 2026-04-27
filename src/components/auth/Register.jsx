@@ -8,7 +8,7 @@ import {
 } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
-import styles from "../../styles/Auth.module.css";
+import styles from "../../styles/AuthModal.module.css";
 
 const Register = () => {
   const [loader, setLoader] = useState(false);
@@ -121,7 +121,7 @@ const Register = () => {
             name="regUsername"
             type="text"
             placeholder="username(3-20 characters)"
-            className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
+            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
           {usernameErrs && (
@@ -136,7 +136,7 @@ const Register = () => {
             name="regEmail"
             type="text"
             placeholder="email"
-            className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
+            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
           {emailErrs && (
@@ -151,7 +151,7 @@ const Register = () => {
             name="regPassword"
             type="password"
             placeholder="password"
-            className="w-80 bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none"
+            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
           {pwErrs && (
