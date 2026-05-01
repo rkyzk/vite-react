@@ -67,7 +67,10 @@ const PaymentForm = ({ props }) => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <form onSubmit={handleSubmit} className="flex-col md:flex md:flex-row">
+        <form
+          onSubmit={handleSubmit}
+          className="flex-col md:flex md:flex-row justify-between"
+        >
           <div className={`${styles.CardForm} pb-3`}>
             <h2
               style={{
@@ -80,16 +83,15 @@ const PaymentForm = ({ props }) => {
             </h2>
             <PaymentElement
               options={paymentElementOptions}
-              className="max-w-80"
+              className={`${styles.PaymentForm}`}
             />
             {errorMessage && (
               <div className="text-red-500 mt-2">{errorMessage}</div>
             )}
           </div>
-          <hr className={`${styles.Line} md:hidden`} />
           <div className={`${styles.CartItemsBox}`}>
             <h2
-              className={`mt-1 ${styles.CartItems}`}
+              className={`${styles.CartItems}`}
               style={{
                 fontSize: "1.1rem",
                 fontWeight: "800",

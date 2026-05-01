@@ -194,7 +194,7 @@ const AddressForm = ({ address, isSAddr }) => {
         className={`${isSAddr ? "s-addr" : "b-addr"}
           bg-neutral-300 px-2 py-1 ${styles.Form}`}
       >
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="fullname"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -216,16 +216,12 @@ const AddressForm = ({ address, isSAddr }) => {
             </span>
           )}
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="postalCode"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            Zip code(no hyphen):
+            Zip code (no hyphen):
           </label>
           <input
             id="postalCode"
@@ -252,25 +248,23 @@ const AddressForm = ({ address, isSAddr }) => {
         </div>
         <div
           className={`${isSAddr ? "s-addr" : "b-addr"}
-            ${styles.InputItem} mt-1`}
+            flex flex-col mt-1`}
         >
           <label
-            htmlFor="province"
+            htmlFor="prefecture"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
             Prefecture:
           </label>
           <input
-            id="province"
-            name="province"
+            id="prefecture"
+            name="prefecture"
             type="text"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.prefecture}
           />
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem} mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="city"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -285,7 +279,7 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.city}
           />
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
           <label
             htmlFor="streetAddress1"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -298,9 +292,7 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.streetAddress1}
           />
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem} mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="streetAddress2"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -322,7 +314,7 @@ const AddressForm = ({ address, isSAddr }) => {
             </span>
           )}
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
           <label
             htmlFor="streetAddress3"
             className={`${isSAddr ? "s-addr" : "b-addr"} hidden`}
@@ -354,6 +346,8 @@ const AddressForm = ({ address, isSAddr }) => {
             </div>
           </label>
         </div>
+        {((isSAddr && sAddressList?.length > 0) ||
+          (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
         {editAddr && <>{saveButtons()}</>}
       </form>
     );
@@ -373,8 +367,6 @@ const AddressForm = ({ address, isSAddr }) => {
           ${isSAddr && !sAddressList && !bAddressList && "md:mt-13"}`}
         >
           {addressForm()}
-          {((isSAddr && sAddressList?.length > 0) ||
-            (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
         </div>
       )}
     </>

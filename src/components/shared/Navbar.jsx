@@ -65,11 +65,7 @@ function Navbar() {
         </Link>
       </div>
       <div className={`${styles.menuItemCart}`}>
-        <Link
-          to="/cart"
-          style={{ color: "#333" }}
-          className={`${styles.NavItem}`}
-        >
+        <Link to="/cart" style={{ color: "#333" }} className={`${styles.Cart}`}>
           <div className="flex gap-3">
             <Badge
               showZero
@@ -90,19 +86,22 @@ function Navbar() {
           </IconButton>
         </Box>
       ) : (
-        <Button
-          onClick={() => dispatch(setModalOpen())}
-          style={{
-            color: "#444",
-            fontSize: "1rem",
-            marginTop: "-13px",
-          }}
-          className={`${styles.NavItem} ${styles.LoginLink}`}
-        >
-          <span style={{ fontFamily: "M PLUS Rounded 1c", fontWeight: "400" }}>
-            LOGIN
-          </span>
-        </Button>
+        <div className="mt-1.25">
+          <Button
+            onClick={() => dispatch(setModalOpen())}
+            style={{
+              color: "#444",
+              fontSize: "1rem",
+            }}
+            className={`${styles.NavItem} ${styles.LoginLink}`}
+          >
+            <span
+              style={{ fontFamily: "M PLUS Rounded 1c", fontWeight: "400" }}
+            >
+              LOGIN
+            </span>
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -125,7 +124,7 @@ function Navbar() {
             marginLeft: 2,
             justifyContent: "end",
           }}
-          className="flex md:hidden"
+          className="flex md:hidden -mr-3"
         >
           <Button
             id="basic-button"

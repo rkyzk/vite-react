@@ -1,9 +1,12 @@
 ${cartPage ? "pl-3" : "pl-5"}
+checkout page the cart content above 1300px
+error message needs to disppear when typing checkout page
 address form background
-login dialog 330px make it narrower
-nav bar the top right corner
-checkout page 330px
+login dialog button hover text color not changing
+nav bar the top right corner position
+user menu style
 second nav bar when logged in
+vertical line
 
 # EC Shopping Site Frontend(Vite + React)
 

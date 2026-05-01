@@ -2,12 +2,14 @@
   width: calc(100vw * 0.75) !important;
   margin-left: 3px;
 }
-.Address {
-  width: 440px;
-}
 
-@media (768px <= width < 1000px) {
+@media screen and (min-width: 768px) {
+  .AddressSection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
   .Address {
-    width: 40vw;
+    width: 280px;
   }
 }

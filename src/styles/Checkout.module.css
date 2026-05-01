@@ -1,90 +1,39 @@
-.editBillingAddress {
-  color: rgb(91, 103, 214);
+@media (min-width: 1080px) {
+  .Box {
+    width: 760px;
+    margin-left: 80px;
+  }
+  .Container {
+    justify-content: center;
+  }
 }
 
-.editBillingAddress:hover {
-  color: rgb(17, 32, 169);
-  opacity: 1;
+@media (1024px <= width < 1080px) {
+  .Box {
+    width: calc(100vw - 270px);
+    max-width: 760px;
+  }
+  .Container {
+    justify-content: space-between;
+  }
 }
 
-.Text {
-  font-family: Raleway, sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-top: 20px;
+@media (max-width: 1023px) {
+  .Box {
+    margin: auto;
+  }
 }
 
-.Note {
-  width: 500px;
-  margin: auto;
-  font-family: Raleway, sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-top: 20px;
+@media (768px <= width < 1024px) {
+  .Box {
+    width: 90% !important;
+    max-width: 760px;
+  }
 }
 
-.Label {
-  font-size: 1rem;
-  width: 160px;
-}
-
-.Input {
-  line-height: 1.2rem;
-  padding: 2px 4px !important;
-  width: 90%;
-}
-
-.note {
-  font-size: 0.9rem;
-  margin-top: -8px;
-}
-
-.addressCardBox {
-  background-color: rgb(204, 209, 209);
-  padding: 5px 0px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2px;
-  width: 300px;
-}
-
-.InputItem {
-  display: flex;
-  flex-direction: column;
-}
-.bAddressBox {
-  margin-top: -12px;
-}
-
-.Line {
-  width: calc(100vw * 0.75) !important;
-  max-width: 880px;
-  margin-left: 8px;
-}
-
-.Box {
-  width: 880px;
-}
-
-@media (768px <= width < 1000px) {
+@media (360px <= width < 768px) {
   .Box {
     width: 80% !important;
-  }
-}
-
-@media screen and (min-width: 640px) {
-  .sAddressBox {
-    margin-top: 5px;
-  }
-}
-@media (580px <= width < 768px) {
-  .Box {
-    width: 450px !important;
-  }
-}
-
-@media (400px <= width < 580px) {
-  .Box {
-    width: 80% !important;
+    max-width: 380px;
   }
 }

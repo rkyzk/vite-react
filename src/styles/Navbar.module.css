@@ -1,7 +1,11 @@
 .NavItem:hover {
   color: #8b3f04 !important;
   text-decoration: underline !important;
-  opacity: 100% !important;
+  background-color: transparent !important;
+}
+
+.Cart:hover {
+  color: rgb(122, 109, 10) !important;
 }
 .LoginLink {
   margin: -6px 0 0 -8px !important;

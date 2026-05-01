@@ -1,7 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Products from "./components/productsPage/Products";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Home from "./components/home/Home";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
@@ -18,6 +23,7 @@ import { closeModal } from "./store/actions";
 import { useSelector } from "react-redux";
 import ContactPage from "./components/contactPage/ContactPage";
 import ProductImage from "./components/productDetail/ProductImage";
+import MenuColumn from "./components/shared/MenuColumn";
 
 function App() {
   const { open } = useSelector((state) => state.modal);

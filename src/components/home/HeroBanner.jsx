@@ -1,6 +1,4 @@
 import bannerList from "../../utils/bannerList";
-import "bootstrap/dist/css/bootstrap.css";
-import Carousel from "react-bootstrap/Carousel";
 import "../../styles/HeroBanner.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -9,10 +7,11 @@ import "swiper/swiper-bundle.css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import styles from "../../styles/HeroBanner.module.css";
 
 const HeroBanner = () => {
   return (
-    <div className="max-w-220 m-auto">
+    <div className={`max-w-220 ${styles.Carousel}`}>
       <Swiper
         modules={[EffectFade, Autoplay, Navigation, Pagination]}
         effect="fade"

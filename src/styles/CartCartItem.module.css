@@ -21,6 +21,7 @@
 .Btns {
   background-color: rgb(122, 109, 10);
 }
+
 .Qty,
 .QtyCheckOut,
 .PriceTextCheckOut {
@@ -49,6 +50,13 @@
 }
 .PriceText {
   margin-right: 6vw;
+}
+
+@media screen and (min-width: 1024px) {
+  .ContentBox {
+    width: calc(100vw - 255px);
+    margin-left: 10px;
+  }
 }
 
 @media screen and (min-width: 681px) {

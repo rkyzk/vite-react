@@ -25,26 +25,30 @@ const UserMenu = ({ id, username, roles }) => {
 
   return (
     <div>
-      <div
-        id="user"
-        className="text-base text-gray-800 -mt-1"
-        onClick={handleClick}
-      >
-        {username}
+      <div style={{ fontSize: "1.1rem" }} className="-mt-2">
+        <button
+          id="user"
+          className="text-gray-700 hover:text-amber-800 hover:underline hover:bg-transparent"
+          onClick={handleClick}
+        >
+          {username}
+        </button>
       </div>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        className="-ml-3.75"
+        className="-ml-3.75 mt-2"
       >
         <MenuItem onClick={handleClose}>
           <Link style={{ color: "#333" }} to="/order-history">
             Order history & Write reviews
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Log out</MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <span>Log out</span>
+        </MenuItem>
       </Menu>
       {open && <BackDrop />}
     </div>

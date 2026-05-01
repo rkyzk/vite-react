@@ -1,17 +1,28 @@
-div {
+div,
+button,
+.MuiButtonBase-root > span {
+  font-family: "M PLUS Rounded 1c";
+}
+a {
+  text-decoration: none !important;
   font-family: "M PLUS Rounded 1c";
 }
 
-a {
+#Menu > a {
   text-decoration: none !important;
+  font: #666 !important;
 }
 
-input {
-  background-color: #fff;
+#Menu > a:hover {
+  text-decoration: underline !important;
+  font: #222 !important;
 }
 
 button:hover {
-  opacity: 0.5;
+  font: #222 !important;
+}
+input {
+  background-color: #fff;
 }
 
 .swiper-button-prev,

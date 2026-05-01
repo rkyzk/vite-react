@@ -12,11 +12,8 @@ const AddressList = () => {
   };
 
   return (
-    <div className="w-full flex px-2">
-      <div
-        className="grid grid-col-1
-          md:grid-cols-2 md:mx-auto"
-      >
+    <div className="w-full flex px-2 md:px-0">
+      <div className={`${styles.AddressSection}`}>
         <div className={`${styles.Address} mb-4`}>
           <h2
             style={{
@@ -66,7 +63,6 @@ const AddressList = () => {
             </div>
           )}
         </div>
-        <hr className={`${styles.Line} md:hidden`} />
         <div className={`${styles.Address} mb-4`}>
           <h2
             style={{

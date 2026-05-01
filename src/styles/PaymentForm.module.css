@@ -5,38 +5,41 @@
 .Line {
   width: calc(100vw * 0.75) !important;
 }
-@media screen and (min-width: 1000px) {
-  .CartItemsBox {
-    margin-left: 160px;
-  }
-  .CardForm {
-    max-width: 380px;
-  }
-  .CartItemsBox {
-    width: 260px !important;
-  }
-}
-
-@media (830px <= width < 1000px) {
-  .CartItemsBox {
-    margin-left: 10vw;
-  }
-}
-@media (768px <= width < 830px) {
-  .CartItemsBox {
-    margin-left: 40px;
-  }
-}
-@media (768px <= width < 1000px) {
-  .CartItemsBox {
-    margin-top: 0px !important;
-    width: 240px !important;
-  }
-}
 
 @media screen and (min-width: 768px) {
   .CardForm {
     width: calc(80vw - 280px);
+    max-width: 360px;
+  }
+  .CartItemsBox {
+    margin-top: 0px !important;
+    width: 280px !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .PaymentForm {
+    margin-top: -18px;
+  }
+  .CartItemsBox {
+    margin-top: 15px;
+  }
+}
+
+@media screen and (400px <= width < 767px) {
+  .PaymentForm,
+  .CardForm,
+  .CartItemsBox {
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+@media screen and (max-width: 399px) {
+  .PaymentForm,
+  .CardForm,
+  .CartItemsBox {
+    width: 90vw;
     max-width: 360px;
   }
 }

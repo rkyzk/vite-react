@@ -2,6 +2,10 @@
   border-radius: 5px;
 }
 
+.Button:hover {
+  font: #2d3942 !important;
+}
+
 .Text {
   font-size: 1.2rem !important;
 }

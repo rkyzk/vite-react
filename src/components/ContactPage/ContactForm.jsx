@@ -15,11 +15,11 @@ const ContactForm = () => {
     <div className="absolute top-95 mt-5 xxs:px-[10px] w-screen mb-2">
       <div
         className={`${styles.Form} bg-slate-600 opacity-90 z-10
-          px-1 sm:px-2 max-w-[520px] max-h-[600px] mx-auto pb-3`}
+          px-1 sm:px-2 max-w-130 max-h-150 mx-auto pb-3`}
       >
         <form
           method="post"
-          className="flex-col flex items-center text-white pt-2"
+          className="flex-col flex items-center text-white pt-2 px-1"
         >
           <h2 className="text-sm">Inquiry Form</h2>
           <span className="text-[0.9rem]">

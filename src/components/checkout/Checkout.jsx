@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddressList from "./AddressList";
 import styles from "../../styles/Checkout.module.css";
+import menuStyles from "../../styles/MenuColumn.module.css";
 import {
   createClientSecret,
   sendRefreshJwtTokenRequest,
@@ -10,6 +11,7 @@ import {
   setModalLogin,
   setModalOpen,
 } from "../../store/actions";
+import MenuColumn from "../shared/MenuColumn";
 
 export const Checkout = () => {
   const auth = useSelector((state) => state.auth);
@@ -52,11 +54,13 @@ export const Checkout = () => {
   }, [commandIdx]);
 
   return (
-    <div className="flex">
+    <div className={`${styles.Container} w-full flex`}>
+      <div className={`${menuStyles.MenuCol} hidden lg:block`}>
+        <MenuColumn />
+      </div>
       {cart.length > 0 ? (
-        <div className={`${styles.Box} mx-auto`}>
+        <div className={`${styles.Box}`}>
           <AddressList props={props} />
-          <hr className={`${styles.Line} md:hidden`} />
           <StripePayment stripePaymentProps={stripePaymentProps} />
         </div>
       ) : (
