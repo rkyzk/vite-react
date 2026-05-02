@@ -1,4 +1,6 @@
 ${cartPage ? "pl-3" : "pl-5"}
+login dialog autofocus
+second nav bar disappears
 checkout page the cart content above 1300px
 error message needs to disppear when typing checkout page
 address form background

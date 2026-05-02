@@ -30,9 +30,6 @@ export const Checkout = () => {
     billAddrCheck,
     setBillAddrCheck,
   };
-  const stripePaymentProps = {
-    billAddrCheck,
-  };
 
   useEffect(() => {
     const getClientSecret = async () => {
@@ -61,7 +58,7 @@ export const Checkout = () => {
       {cart.length > 0 ? (
         <div className={`${styles.Box}`}>
           <AddressList props={props} />
-          <StripePayment stripePaymentProps={stripePaymentProps} />
+          <StripePayment />
         </div>
       ) : (
         <div className="w-full">

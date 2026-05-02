@@ -4,7 +4,7 @@ import { IMAGE_URL } from "../../constans/constants";
 const OrderedItem = ({ data }) => {
   const { product, quantity } = data;
   return (
-    <div className="flex -mt-2.5 pb-4">
+    <div className="flex mt-1">
       <div className="flex-col w-6/12">
         <span>{product.productName}</span>
         <div className={`${styles.imgBox} relative`}>

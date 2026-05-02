@@ -22,7 +22,6 @@ const PaymentConfirmation = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
   const { cart } = useSelector((state) => state.carts);
-  const { errorMessage } = useSelector((state) => state.errors);
   const order = useSelector((state) => state.order.order);
   const { selectedSAddrId, selectedBAddrId, commandIdx, user } = useSelector(
     (state) => state.auth,

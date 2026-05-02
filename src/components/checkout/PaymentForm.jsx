@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../shared/Spinner";
 import Cart from "../shared/Cart";
 import {
@@ -16,11 +16,10 @@ import styles from "../../styles/PaymentForm.module.css";
  * Handles form submission when user clicks 'proceed'
  * @param clientSecret, totalPrice
  */
-const PaymentForm = ({ props }) => {
-  const { clientSecret, totalPrice } = props;
+const PaymentForm = ({ clientSecret }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
   const { selectedSAddrId, selectedBAddrId } = useSelector(
     (state) => state.auth,
   );
@@ -70,6 +69,7 @@ const PaymentForm = ({ props }) => {
         <form
           onSubmit={handleSubmit}
           className="flex-col md:flex md:flex-row justify-between"
+          id="payment-form"
         >
           <div className={`${styles.CardForm} pb-3`}>
             <h2
@@ -81,13 +81,12 @@ const PaymentForm = ({ props }) => {
             >
               Card Information
             </h2>
-            <PaymentElement
-              options={paymentElementOptions}
-              className={`${styles.PaymentForm}`}
-            />
-            {errorMessage && (
-              <div className="text-red-500 mt-2">{errorMessage}</div>
-            )}
+            <div onClick={() => setErrorMessage(null)}>
+              <PaymentElement
+                options={paymentElementOptions}
+                className={`${styles.PaymentForm}`}
+              />
+            </div>
           </div>
           <div className={`${styles.CartItemsBox}`}>
             <h2
@@ -101,13 +100,16 @@ const PaymentForm = ({ props }) => {
               Items in your cart
             </h2>
             <Cart />
-            <div className="flex justify-end mr-3">
+            <div className="flex-col">
               <button
                 className={`text-white py-1 px-2 ${styles.Button}`}
                 disabled={!stripe || isLoading}
               >
                 {isLoading ? <Spinner /> : `Proceed to purchase`}
               </button>
+              {errorMessage && (
+                <div className="text-red-500 mt-2">{errorMessage}</div>
+              )}
             </div>
           </div>
         </form>

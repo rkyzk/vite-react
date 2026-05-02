@@ -81,9 +81,9 @@ function Navbar() {
       </div>
       {auth?.user && auth.user?.id ? (
         <Box sx={{ flexGrow: 0 }}>
-          <IconButton sx={{ p: 0 }}>
-            <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
-          </IconButton>
+          {/* <IconButton sx={{ p: 0 }}> */}
+          <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
+          {/* </IconButton> */}
         </Box>
       ) : (
         <div className="mt-1.25">

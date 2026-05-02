@@ -25,13 +25,13 @@ const UserMenu = ({ id, username, roles }) => {
 
   return (
     <div>
-      <div style={{ fontSize: "1.1rem" }} className="-mt-2">
+      <div style={{ fontSize: "1.1rem" }} className="-mt-0.75">
         <button
           id="user"
           className="text-gray-700 hover:text-amber-800 hover:underline hover:bg-transparent"
           onClick={handleClick}
         >
-          {username}
+          <span>{username}</span>
         </button>
       </div>
       <Menu

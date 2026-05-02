@@ -87,7 +87,7 @@ const Cart = ({ cartPage }) => {
             </div>
             {cartPage && (
               <div className="flex justify-end w-4/5 mx-auto">
-                <div className="w-55 pr-7.5 mt-2 flex-col">
+                <div className="w-55 pr-7.5 mt-2 flex-col md:mr-10">
                   <button
                     className={`${styles.Btns} w-47.5 mt-1 text-white py-1`}
                     onClick={() => navigate("/products")}
