@@ -13,7 +13,7 @@ const Order = ({ orderId, orderDate, cart, review }) => {
   return (
     <>
       <div
-        className="w-full max-w-2xl gap-1 pl-2 xs:flex-col sm:flex
+        className="gap-1 pl-2 xs:flex-col sm:flex max-w-220
         sm:flex-row bg-amber-950 text-white"
       >
         <div>
@@ -23,7 +23,7 @@ const Order = ({ orderId, orderDate, cart, review }) => {
         <div className="sm:ml-10">Order ID: {orderId}</div>
       </div>
       <div className="sm:flex sm:flex-row sm:items-center">
-        <div className="sm:w-107.5 md:w-117.5 lg:w-125">
+        <div className="sm:w-2/3 md:w-9/12 max-w-150">
           {cart?.cartItems.map((item, idx) => (
             <ItemsInOrderHistory
               {...item}

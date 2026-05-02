@@ -5,7 +5,7 @@ const ItemsInOrderHistory = ({ product, quantity, totalPrice }) => {
   const { productName, imagePath, price } = product;
   return (
     <>
-      <div className="flex gap-1 mt-2">
+      <div className="flex gap-1 mt-1">
         <span className="w-5/12">{productName}</span>
         <span className="w-3/12">Qty</span>
         <span className="w-4/12">Unit price</span>

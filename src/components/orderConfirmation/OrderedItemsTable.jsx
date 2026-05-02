@@ -16,17 +16,13 @@ const OrderedItemsTable = ({ cart }) => {
         })}
       </div>
       <hr />
-      <div
-        className="flex w-full xl:w-10/12 justify-end"
-        style={{
-          fontWeight: "800",
-          fontFamily: "serif",
-          letterSpacing: "0.1rem",
-          fontSize: "1.1rem",
-        }}
-      >
-        <span className="w-10/12 text-right">Total: </span>
-        <span className="w-2/12">&yen; {cart?.totalPrice}</span>
+      <div className="flex w-full xl:w-10/12 justify-end">
+        <span className="w-10/12 text-right font-bold font-serif pr-2">
+          Total:
+        </span>
+        <span className="w-2/12 font-bold font-serif">
+          &yen; {cart?.totalPrice}
+        </span>
       </div>
     </>
   );

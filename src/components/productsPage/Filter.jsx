@@ -152,10 +152,10 @@ const Filter = ({ categoryId }) => {
           </select>
         </div>
       </div>
-      <div className={`w-[65px] ${styles.ClearBtnBox}`}>
+      <div className={`w-16.25 ${styles.ClearBtnBox}`}>
         <button
           onClick={() => handleClearFilter()}
-          className={`${styles.ClearBtn} px-2 h-[34px]
+          className={`${styles.ClearBtn} px-2 h-8.5]
             bg-amber-950 text-white hover:opacity-50`}
         >
           Clear

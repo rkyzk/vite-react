@@ -571,15 +571,15 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 };
 
 /** Get order history of the user */
-export const fetchOrderHistory = () => async (dispatch, getState) => {
+export const fetchOrderHistory = (query) => async (dispatch, getState) => {
   dispatch({
     type: "IS_FETCHING",
   });
   try {
-    const { data } = await api.get(`/order-history`);
+    const { data } = await api.get(`/order-history${query}`);
     dispatch({
       type: "STORE_ORDER_HISTORY",
-      payload: data,
+      payload: data.content,
       lastPage: data.lastPage,
       pageNumber: data.pageNumber,
       pageSize: data.pageSize,
