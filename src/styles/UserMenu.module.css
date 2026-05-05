@@ -1,0 +1,8 @@
+.SecondMenuItem:hover {
+  text-decoration: underline !important;
+  color: #8b3f04 !important;
+}
+
+.SecondMenuItem {
+  color: #333 !important;
+}

@@ -1,9 +1,8 @@
 ${cartPage ? "pl-3" : "pl-5"}
 
-review 4 entries. What to write on order history page
-home page feature products layout
-login dialog autofocus
-second nav bar disappears
+review 4 entries.
+home page feature products
+second nav bar code again
 checkout page the cart content above 1300px
 error message needs to disppear when typing checkout page
 error message shows on order history
@@ -13,6 +12,10 @@ user menu style
 vertical line
 
 https://zenn.dev/juth/articles/form-json-formdata-spring
+
+# bugs
+
+autofocus on Login dialog not working
 
 # EC Shopping Site Frontend(Vite + React)
 

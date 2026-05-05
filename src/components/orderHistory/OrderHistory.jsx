@@ -27,6 +27,7 @@ const OrderHistory = () => {
   useOrderHistoryPages();
 
   useEffect(() => {
+    dispatch(clearErrorMessage());
     // Request order history data. If JWT has expired, request to regenerate it.
     // If the refresh token has expired, log out the user and display the login dialog.
     const refreshJwtToken = async () => {

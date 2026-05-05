@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { setModalOpen } from "../../store/actions";
+import { useState } from "react";
 
 function Navbar() {
   const cart = useSelector((state) => state.carts.cart);
@@ -80,26 +81,22 @@ function Navbar() {
         </Link>
       </div>
       {auth?.user && auth.user?.id ? (
-        <Box sx={{ flexGrow: 0 }}>
-          {/* <IconButton sx={{ p: 0 }}> */}
-          <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
-          {/* </IconButton> */}
+        <Box sx={{ flexGrow: 0 }} className={`${styles.UserMenu}`}>
+          <UserMenu clasName="absolute top-30 right-5" />
         </Box>
       ) : (
-        <div className="mt-1.25">
+        <div
+          className="mt-1.25"
+          style={{
+            fontFamily: "M-PLUS-Rounded-1c",
+            color: "#333",
+          }}
+        >
           <Button
             onClick={() => dispatch(setModalOpen())}
-            style={{
-              color: "#444",
-              fontSize: "1rem",
-            }}
             className={`${styles.NavItem} ${styles.LoginLink}`}
           >
-            <span
-              style={{ fontFamily: "M PLUS Rounded 1c", fontWeight: "400" }}
-            >
-              LOGIN
-            </span>
+            <span>LOGIN</span>
           </Button>
         </div>
       )}
@@ -137,6 +134,7 @@ function Navbar() {
             <RxHamburgerMenu className="text-lg" />
           </Button>
         </Box>
+        {/* burgerMenu */}
         <div
           id="menuItems"
           className={`${styles.menuBox} hidden px-3 py-2`}
@@ -152,7 +150,6 @@ function Navbar() {
           }}
         >
           {menuItems}
-          {/* burgerMenu */}
         </div>
         <Box
           sx={{

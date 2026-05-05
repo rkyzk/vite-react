@@ -64,6 +64,7 @@ const Login = () => {
           placeholder="username"
           className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
           onChange={(e) => handleChange(e)}
+          autofocus
         />
         <div className="flex">
           <input

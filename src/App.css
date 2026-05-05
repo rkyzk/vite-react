@@ -7,6 +7,11 @@ a {
   text-decoration: none !important;
   font-family: "M PLUS Rounded 1c";
 }
+#user {
+  font-family: "M PLUS Rounded 1c" !important;
+  font: #333;
+  font-size: 1.1rem !important;
+}
 
 #Menu > a {
   text-decoration: none !important;

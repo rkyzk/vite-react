@@ -123,6 +123,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           value={content}
           rows="10"
           cols="50"
+          autofocus
         ></textarea>
         <input
           type="file"

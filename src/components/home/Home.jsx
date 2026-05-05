@@ -46,7 +46,6 @@ const Home = () => {
     dispatch(clearErrorMessage());
     !products && dispatch(fetchProducts(""));
     dispatch(fetchReviews());
-    console.log("fired");
   }, []);
 
   return (
