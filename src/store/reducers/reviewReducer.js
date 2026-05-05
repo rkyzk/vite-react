@@ -1,12 +1,12 @@
 const initialState = {
-  reviews: null,
+  entries: null,
 };
 const reviewReducer = (state = initialState, action) => {
   switch (action.type) {
     case "STORE_REVIEWS":
       return {
         ...state,
-        reviews: action.payload,
+        entries: action.payload,
       };
     default:
       return state;

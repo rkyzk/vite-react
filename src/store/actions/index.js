@@ -1,4 +1,5 @@
 import api from "../../api/axiosDefaults";
+import customAxios from "../../api/customAxios";
 
 /** ge products data */
 export const fetchProducts = (queryString) => async (dispatch, getState) => {
@@ -778,14 +779,11 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
 /**
  * Insert reviews in DB
  */
-export const submitReview = (content, stars, orderId, toast) => async () => {
-  let sendData = {
-    reviewContent: content,
-    stars: stars,
-  };
+export const postReview = (formData, orderId, toast) => async () => {
+  const axiosForMultiPart = customAxios("multipart/form-data");
   try {
-    let { data } = await api.post(`/review/${orderId}`, sendData);
-    toast.success(`Submitted a review entry regarding your order: ${orderId}`);
+    let { data } = await axiosForMultiPart.post(`/review/${orderId}`, formData);
+    toast.success(`Your review has been submitted: ${orderId}`);
     return true;
   } catch (error) {
     toast.error("There was an error. Please try again.");
@@ -799,11 +797,12 @@ export const submitReview = (content, stars, orderId, toast) => async () => {
 export const fetchReviews = () => async (dispatch, getState) => {
   try {
     let { data } = await api.get(`/public/reviews`);
+    console.log(data);
     dispatch({
       type: "STORE_REVIEWS",
       payload: data,
     });
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
+    localStorage.setItem("reviews", JSON.stringify(getState().reviews));
   } catch (error) {
     console.log(error.response?.data?.message);
   }

@@ -7,4 +7,5 @@ const api = axios.create({
   // "http://ec2-54-250-2-23.ap-northeast-1.compute.amazonaws.com:8080/api",
   withCredentials: "true",
 });
+
 export default api;

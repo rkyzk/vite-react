@@ -6,7 +6,7 @@ import { updateCartAddQty } from "../../store/actions";
 import styles from "../../styles/ProductCard.module.css";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { IMAGE_URL } from "../../constans/constants.js";
+import { IMAGE_URL } from "../../constants/constants.js";
 
 const ProductCard = ({
   id,

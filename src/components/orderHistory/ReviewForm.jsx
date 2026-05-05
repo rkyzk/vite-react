@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { submitReview } from "../../store/actions";
+import { postReview } from "../../store/actions";
 import toast from "react-hot-toast";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
@@ -15,10 +15,13 @@ import {
 const ReviewForm = ({ closeReviewForm, orderId }) => {
   const [content, setContent] = useState("");
   const [stars, setStars] = useState(0);
+  const [displayName, setDisplayName] = useState("");
+  const [image, setImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let formData = new FormData();
 
   const { commandIdx, user } = useSelector((state) => state.auth);
   /** Close dialog if outside the dialog is clicked. */
@@ -28,24 +31,28 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
       document.removeEventListener("mouseup", handleCloseModal);
     }
   };
-  const handleChangeText = (e) => {
-    error && setError("");
-    setContent(e.target.value);
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let result;
-    if (content.trim() !== "") {
+    let result = null;
+    if (content.trim() === "") {
+      setError("Please enter your feedback.");
+    } else if (stars === 0) {
+      setError("Please rate on a scale of 1 to 5 stars.");
+    } else {
       setSubmitted(true);
-      result = await dispatch(submitReview(content, stars, orderId, toast));
+      formData.append("reviewContent", content);
+      formData.append("stars", stars);
+      formData.append("displayName", displayName);
+      if (image) formData.append("file", image);
+      result = await dispatch(postReview(formData, orderId, toast));
       closeReviewForm();
       if (result) {
         navigate("/order-history"); // so that 'submitted' will be displayed.
       }
-    } else {
-      setError("Please enter your review.");
     }
   };
+
   useEffect(() => {
     let result;
     const logoutUser = async () => {
@@ -58,7 +65,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
     if (submitted) {
       switch (commandIdx) {
         case 0:
-          result = dispatch(submitReview(content, stars, orderId, toast));
+          result = dispatch(postReview(formData, orderId, toast));
           closeReviewForm();
           if (result) {
             navigate("/order-history"); // so that 'submitted' will be displayed.
@@ -96,7 +103,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
 
   return (
     <div
-      className="max-w-[450px] px-3 py-4 border-b-black bg-gray-50
+      className="max-w-112.5 px-3 py-4 border-b-black bg-gray-50
         flex-col mx-auto mt-5"
     >
       <form
@@ -104,18 +111,25 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
         className="px-2 pt-1 flex flex-col mx-auto mb-5
           items-center"
       >
-        <label htmlFor="review">
-          Feel free to share your opinions about the products.
-        </label>
+        <span>
+          We'd appreciate your feedback and will use it to improve our service.
+          We also post the rates and some of the entries on the review page.
+        </span>
         <textarea
-          id="review"
-          name="review"
-          onChange={(e) => handleChangeText(e)}
-          value={content}
+          id="content"
+          name="content"
+          onChange={(e) => setContent(e.target.value)}
           className="border border-neutral-800 p-2"
+          value={content}
           rows="10"
           cols="50"
         ></textarea>
+        <input
+          type="file"
+          accept="image/*,.png,.jpg,.jpeg,.gif"
+          className="mt-1 w-70 border border-neutral-800 p-2"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
         <div className="flex mt-2">
           {scoreStars(1)}
           {scoreStars(2)}
@@ -123,6 +137,14 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           {scoreStars(4)}
           {scoreStars(5)}
         </div>
+        <input
+          type="text"
+          id="displayName"
+          className="mt-1 w-70 border border-neutral-800 px-2 py-1"
+          onChange={(e) => setDisplayName(e.target.value)}
+          placeholder="Enter your name"
+          value={displayName}
+        />
         {error && <span style={{ color: "red" }}>{error}</span>}
         <button className="mt-2 px-2 py-1 outline-none bg-amber-950 text-white hover:opacity-50">
           Submit

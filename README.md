@@ -1,14 +1,18 @@
 ${cartPage ? "pl-3" : "pl-5"}
+
+review 4 entries. What to write on order history page
+home page feature products layout
 login dialog autofocus
 second nav bar disappears
 checkout page the cart content above 1300px
 error message needs to disppear when typing checkout page
+error message shows on order history
 address form background
 login dialog button hover text color not changing
-nav bar the top right corner position
 user menu style
-second nav bar when logged in
 vertical line
+
+https://zenn.dev/juth/articles/form-json-formdata-spring
 
 # EC Shopping Site Frontend(Vite + React)
 
@@ -88,3 +92,6 @@ https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</
 
 spinner:</br>
 https://tw-elements.com/docs/standard/components/spinners/</br>
+
+reviews
+https://russellsmillsflowerco.com/pages/reviews?srsltid=AfmBOoqZm2Eo8DMq6DLf0MM5P129YBGATlrbwkyxQB4l_ZaIp8yC_msr

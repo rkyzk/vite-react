@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/swiper-bundle.css";
 import styles from "../../styles/Product.module.css";
-import { IMAGE_URL, THUMB_PATH_ADDITION } from "../../constans/constants.js";
+import { IMAGE_URL, THUMB_PATH_ADDITION } from "../../constants/constants.js";
 
 const ProductImage = ({ imagePath, productName, productDetail }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);

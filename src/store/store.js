@@ -14,7 +14,6 @@ const cartItems = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
-localStorage.removeItem("reviews");
 // const auth = [];
 // localStorage.removeItem("auth");
 const auth = localStorage.getItem("auth")

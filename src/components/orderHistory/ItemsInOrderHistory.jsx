@@ -1,4 +1,4 @@
-import { IMAGE_URL } from "../../constans/constants.js";
+import { IMAGE_URL } from "../../constants/constants.js";
 import styles from "../../styles/ItemsInOrderHistory.module.css";
 
 const ItemsInOrderHistory = ({ product, quantity, totalPrice }) => {

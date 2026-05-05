@@ -1,5 +1,5 @@
 import styles from "../../styles/OrderedItem.module.css";
-import { IMAGE_URL } from "../../constans/constants";
+import { IMAGE_URL } from "../../constants/constants";
 
 const OrderedItem = ({ data }) => {
   const { product, quantity } = data;

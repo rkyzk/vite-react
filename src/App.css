@@ -30,3 +30,9 @@ input {
 .swiper-button-next {
   color: #ddd !important;
 }
+.swiper-button-prev {
+  margin-left: -11px;
+}
+.swiper-button-next {
+  margin-right: -11px;
+}

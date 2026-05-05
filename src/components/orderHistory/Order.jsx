@@ -34,8 +34,8 @@ const Order = ({ orderId, orderDate, cart, review }) => {
         </div>
         <div className="w-35 h- mb-4 ml-[55%] mt-2 sm:ml-5 md:ml-0">
           {review ? (
-            <p className="w-35.25 h-8 mt-1 bg-slate-600 text-white p-1">
-              Review submitted
+            <p className="w-40 h-8 mt-1 bg-slate-600 text-white p-1">
+              Feedback submitted
             </p>
           ) : (
             <button
@@ -43,7 +43,7 @@ const Order = ({ orderId, orderDate, cart, review }) => {
               className="flex border border-black p-1 h-8"
             >
               <TiPencil className="mt-1" />
-              Write a review
+              Send feedback
             </button>
           )}
         </div>
