@@ -13,6 +13,7 @@ import menuStyles from "../../styles/MenuColumn.module.css";
 import { Link } from "react-router-dom";
 import MenuColumn from "../shared/MenuColumn";
 import ReviewEntry from "./ReviewEntry";
+import { IMAGES } from "../../constants/constants";
 
 const Home = () => {
   const { products } = useSelector((state) => state.products);
@@ -20,28 +21,6 @@ const Home = () => {
     (state) => state.errors,
   );
   const dispatch = useDispatch();
-  const IMAGES = [
-    {
-      0: 1,
-      1: "Tulips",
-      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786200/ecommerce/images/products/1/tulipa-barcelona_zi4nhn.jpg",
-    },
-    {
-      0: 2,
-      1: "Hyacinths",
-      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786242/ecommerce/images/products/2/grape-hyacinth_nfkuoe.jpg",
-    },
-    {
-      0: 3,
-      1: "Crocusses",
-      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786237/ecommerce/images/products/3/advance-crocus_nymq0l.jpg",
-    },
-    {
-      0: 4,
-      1: "Dahlias",
-      2: "https://res.cloudinary.com/ds66fig3o/image/upload/v1774786222/ecommerce/images/products/4/dahlia-caf%C3%A9-au-lait_yya5yz.jpg",
-    },
-  ];
   useEffect(() => {
     dispatch(clearErrorMessage());
     !products && dispatch(fetchProducts(""));
@@ -68,13 +47,13 @@ const Home = () => {
         </div>
       </div>
       <h2
-        style={{ fontSize: "1.3rem", fontFamily: "Railway" }}
+        style={{ fontSize: "1.3rem", fontFamily: "M PLUS Rounded 1c" }}
         className="text-center font-bold mt-2"
       >
-        Featured Products
+        View our Collection
       </h2>
       {isLoading ? (
-        <Spinner className="w-300px mx-auto" />
+        <Spinner className="w-9 mx-auto" />
       ) : errorMessage && page === "home" ? (
         <>
           <FaExclamationTriangle className="text-slate-600 text-3xl ml-20 mr-2" />

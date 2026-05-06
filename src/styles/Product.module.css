@@ -13,11 +13,6 @@
   display: flex !important;
   justify-content: space-between !important;
 }
-.NotesHeading {
-  font-size: 1.2rem !important;
-  font-weight: 600 !important;
-  margin-top: 45px !important;
-}
 
 @media screen and (min-width: 1200px) {
   .Description {

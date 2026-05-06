@@ -125,16 +125,18 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className={`gap-x-1 px-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
         <button
-          className={`${styles.Button} mt-2 bg-stone-600
-            text-white py-1 px-2 hover:bg-stone-300`}
+          className="mt-2 bg-stone-600
+            text-white py-1 px-2 hover:opacity-60"
           onClick={() => saveAddress(tempAddress)}
+          style={{ borderRadius: "5px" }}
         >
           Save
         </button>
         <button
-          className={`${styles.Button} m-2 bg-stone-600 text-white py-1 px-2
-                    hover:bg-stone-300 hover:text-gray-800`}
+          className="m-2 bg-stone-600 text-white py-1 px-2
+                    hover:opacity-60"
           onClick={() => handleCancelEditAddress(isSAddr)}
+          style={{ borderRadius: "5px" }}
         >
           Cancel
         </button>
@@ -340,9 +342,7 @@ const AddressForm = ({ address, isSAddr }) => {
                 onClick={(e) => handleChangeAddress(e)}
                 className={`${isSAddr ? "s-addr" : "b-addr"} m-1 h-3.5`}
               />
-              <span className="leading-5">
-                Save this address so you don't need to reenter it next time.
-              </span>
+              <span className="leading-5">Save this address</span>
             </div>
           </label>
         </div>

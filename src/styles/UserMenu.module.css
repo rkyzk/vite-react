@@ -6,3 +6,10 @@
 .SecondMenuItem {
   color: #333 !important;
 }
+
+@media screen and (max-width: 767px) {
+  .SecondMenuBox {
+    top: 150 !important;
+    right: 0 !important;
+  }
+}

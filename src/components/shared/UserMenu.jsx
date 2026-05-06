@@ -44,13 +44,12 @@ const UserMenu = () => {
       {secondMenuOpen && (
         <div
           id="secondMenu"
-          className="px-2 py-2 absolute w-66.25 h-18.75 top-40.5 right-0
-            md:top-10 md:right-3"
+          className={`${styles.SecondMenuBox} px-2 py-2 absolute w-66.25 h-18.75 top-44 right-3
+            md:top-10 md:right-3`}
           style={{
             backgroundColor: "#fff",
-            borderRadius: "5px",
+            border: "solid 1px #cce",
             zIndex: 3,
-            opacity: 0.9,
           }}
         >
           <Link

@@ -15,6 +15,8 @@ import ProductImage from "./ProductImage";
 import tulipAdditionalNotes from "../../utils/tulipAdditionalNotes";
 import { BsDot } from "react-icons/bs";
 import dahliaAdditionalNotes from "../../utils/dahliaAdditionalNotes";
+import crocusAdditionalNotes from "../../utils/crocusAdditionalNotes";
+import hyacinthAdditionalNotes from "../../utils/hyacinthAdditionalNotes";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -97,7 +99,7 @@ const ProductDetail = () => {
                           </label>
                           <select
                             name="quantity"
-                            className="border bg-white rounded-lg pb-1 ml-1"
+                            className="border bg-white rounded-lg ml-1"
                             onChange={(e) => setQty(Number(e.target.value))}
                           >
                             {[...Array(30)]
@@ -165,8 +167,18 @@ const ProductDetail = () => {
             <div
               className={`${styles.Notes} px-2 md:w-11/12 max-w-250 mx-auto`}
             >
-              <h3 className={`${styles.NotesHeading}`}>Additional Notes:</h3>
+              <h3
+                style={{
+                  fontSize: "1.2rem",
+                  fontWeight: "800",
+                }}
+                className="font-serif mt-4"
+              >
+                Additional Notes:
+              </h3>
               {category.categoryId === 1 && tulipAdditionalNotes}
+              {category.categoryId === 2 && hyacinthAdditionalNotes}
+              {category.categoryId === 3 && crocusAdditionalNotes}
               {category.categoryId === 4 && dahliaAdditionalNotes}
             </div>
           </div>

@@ -1,15 +1,21 @@
 ${cartPage ? "pl-3" : "pl-5"}
 
+additional notes about hyacynths crocusses & layout
+add isLoading on orders
+foot notes not showing on contact page
+image hover opaque or zoom in
 review 4 entries.
-home page feature products
 checkout page the cart content above 1300px
 error message needs to disppear when typing checkout page
 address form background
-login dialog button hover text color not changing
 vertical line
 filter color check box style
+product detail back to search button and category menu
 
 https://zenn.dev/juth/articles/form-json-formdata-spring
+
+hycinth additional notes:
+https://www.longfield-gardens.com/blogs/all-about-fall-planted-bulbs/all-about-crocus?srsltid=AfmBOoqgGQz2gYQu2CWDxciVl-4dh-UHjXU78a_b-AKofO9gvS6t5_LN
 
 # bugs
 
@@ -32,12 +38,7 @@ https://github.com/rkyzk/ecommerceapi
 ### To be done
 
 return buttons
-
-Correct description
 add more paragraphs on prod detail pages
-use swiper on the landing page and review entries
-order things
-limit purchase history to 10 items per page
 
 ### Main Functions
 

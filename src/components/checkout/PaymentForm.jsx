@@ -100,7 +100,7 @@ const PaymentForm = ({ clientSecret }) => {
               Items in your cart
             </h2>
             <Cart />
-            <div className="flex-col">
+            <div className="flex-col text-right">
               <button
                 className={`text-white py-1 px-2 ${styles.Button}`}
                 disabled={!stripe || isLoading}

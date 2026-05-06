@@ -17,7 +17,7 @@ const ReviewEntry = () => {
       {entries.content.length > 0 && (
         <>
           <h2
-            style={{ fontSize: "1.3rem", fontFamily: "Railway" }}
+            style={{ fontSize: "1.3rem", fontFamily: "M PLUS Rounded 1c" }}
             className="text-center font-bold mt-3"
           >
             Compliments from our Customers
@@ -41,7 +41,7 @@ const ReviewEntry = () => {
                   <div key={idx}>
                     <Stars stars={entry.stars} />
                     <div
-                      className={`${styles.EntryBox} flex mt-3 justify-center gap-3`}
+                      className={`${styles.EntryBox} flex mt-3 justify-center gap-4`}
                     >
                       <div className={`${styles.ReviewEntry}`}>
                         <div className={`${styles.ReviewEntry} absolute`}>

@@ -12,7 +12,6 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { setModalOpen } from "../../store/actions";
-import { useState } from "react";
 
 function Navbar() {
   const cart = useSelector((state) => state.carts.cart);
@@ -140,13 +139,13 @@ function Navbar() {
           className={`${styles.menuBox} hidden px-3 py-2`}
           style={{
             backgroundColor: "#fff",
+            border: "solid 1px #cce",
             width: "120px",
             height: "160px",
             position: "absolute",
             top: 50,
             right: 38,
             zIndex: 3,
-            opacity: 0.9,
           }}
         >
           {menuItems}

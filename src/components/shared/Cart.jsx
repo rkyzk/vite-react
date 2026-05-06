@@ -81,7 +81,7 @@ const Cart = ({ cartPage }) => {
             })}
             <div className="flex w-full mt-3 gap-3">
               <p className="font-serif font-bold w-7/12 text-right">Total: </p>
-              <p className={`font-serif font-bold w-2/12 pl-5}`}>
+              <p className={`font-serif font-bold w-5/12 pl-5}`}>
                 &yen;{totalPrice}
               </p>
             </div>
