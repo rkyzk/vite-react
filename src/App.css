@@ -3,6 +3,9 @@ button,
 .MuiButtonBase-root > span {
   font-family: "M PLUS Rounded 1c";
 }
+button {
+  font: #333 !important;
+}
 a {
   text-decoration: none !important;
   font-family: "M PLUS Rounded 1c";
@@ -23,7 +26,7 @@ a {
   font: #222 !important;
 }
 
-button:hover {
+form > button:hover {
   font: #222 !important;
   background-color: transparent;
 }

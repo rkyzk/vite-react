@@ -162,8 +162,8 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          className={`${styles.Button} mt-2 bg-stone-600 text-white hover:bg-stone-300
-                  hover:opacity-10 py-1 px-3`}
+          className={`${styles.Button} mt-2 bg-stone-600 text-white hover:opacity-80
+                   py-1 px-3`}
         >
           {loader ? <Spinner /> : <>Register</>}
         </button>

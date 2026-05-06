@@ -19,7 +19,7 @@ const Products = () => {
   return (
     <>
       <Filter categoryId={`${searchParams.get("category")}`} />
-      <div className="px-2 py-10 flex justify-center sm:px-8 lg:px-14">
+      <div className="px-2 py-5 flex justify-center sm:px-8 lg:px-14">
         {isLoading ? (
           <Spinner />
         ) : errorMessage && page === "products" ? (
@@ -29,7 +29,7 @@ const Products = () => {
           </>
         ) : (
           <div
-            className={`${styles.imgGap} grid gap-y-10 sm:gap-x-4 xs:grid-col-1 sm:grid-cols-2 lg:grid-cols-3
+            className={`${styles.imgGap} grid gap-y-10 sm:gap-x-4 sm:grid-cols-2 lg:grid-cols-3
               2xl:grid-cols-4`}
           >
             {products &&

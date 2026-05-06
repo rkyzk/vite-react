@@ -22,9 +22,6 @@
 .CheckboxesGroup {
   width: 150px !important;
 }
-.ClearBtnBox {
-  margin: 2px 4px !important;
-}
 
 @media screen and (max-width: 639px) {
   .SerachInput,
@@ -36,9 +33,5 @@
   .CheckboxesGroup,
   .ColorFilter {
     width: 200px !important;
-  }
-
-  .ClearBtnBox {
-    margin: 5px auto !important;
   }
 }

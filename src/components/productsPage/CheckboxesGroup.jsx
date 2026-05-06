@@ -199,7 +199,7 @@ const CheckboxesGroup = ({
             <button
               onClick={() => handleFilterByColors()}
               className="colorFilter w-30 border outline-none border-slate-900 p-1
-               hover:text-white hover:bg-slate-800 hover:opacity-50"
+               hover:text-white hover:bg-neutral-600"
             >
               Apply filter
             </button>

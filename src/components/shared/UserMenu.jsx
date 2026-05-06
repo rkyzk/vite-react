@@ -22,7 +22,9 @@ const UserMenu = () => {
 
   const handleOpenSecondMenu = () => {
     setSecondMenuOpen(true);
-    document.addEventListener("mouseup", handleClose);
+    setTimeout(() => {
+      document.addEventListener("mouseup", handleClose);
+    }, 200);
   };
 
   const handleLogout = () => {
@@ -42,15 +44,11 @@ const UserMenu = () => {
       {secondMenuOpen && (
         <div
           id="secondMenu"
-          className="md:hidden px-2 py-2"
+          className="px-2 py-2 absolute w-66.25 h-18.75 top-40.5 right-0
+            md:top-10 md:right-3"
           style={{
             backgroundColor: "#fff",
-            width: "265px",
-            height: "75px",
-            position: "absolute",
             borderRadius: "5px",
-            top: 162,
-            right: 0,
             zIndex: 3,
             opacity: 0.9,
           }}

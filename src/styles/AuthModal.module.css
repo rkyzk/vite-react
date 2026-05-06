@@ -3,7 +3,9 @@
 }
 
 .Button:hover {
-  font: #2d3942 !important;
+  color: #2d3942 !important;
+  background-color: transparent !important;
+  border: solid 1px #2d3942 !important;
 }
 
 .Text {

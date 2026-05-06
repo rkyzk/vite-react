@@ -4,7 +4,7 @@ import { FiSearch } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "../../styles/Filter.module.css";
 import { fetchCategories, clearErrorMessage } from "../../store/actions";
-import CheckboxesGroup from "../shared/CheckboxesGroup";
+import CheckboxesGroup from "./CheckboxesGroup";
 
 const Filter = ({ categoryId }) => {
   const [keywords, setKeywords] = useState("");
@@ -76,7 +76,7 @@ const Filter = ({ categoryId }) => {
 
   return (
     <div className="flex flex-col sm:flex-row sm:justify-center sm:mt-4">
-      <div className={`w-[550px] ${styles.FilterInput} flex-col items-center`}>
+      <div className={`${styles.FilterInput} w-137.5 flex-col items-center`}>
         <div className="flex flex-col mx-auto gap-1 sm:gap-2 sm:flex-row">
           {/* Search box */}
           <input
@@ -93,8 +93,8 @@ const Filter = ({ categoryId }) => {
             value={category}
             onChange={(e) => setCategory(Number(e.target.value))}
             name="category"
-            className="py-1 w-64 bg-white border border-slate-800 rounded-md
-                h-[40px] outline-none focus:outline-none"
+            className="py-1 bg-white border border-slate-800 rounded-md
+                h-10 outline-none focus:outline-none"
             style={{ width: "200px" }}
           >
             {(category === "null" || category === "") && (
@@ -129,18 +129,14 @@ const Filter = ({ categoryId }) => {
             name="sort"
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className={`${styles.OrderBy} py-1 w-64 bg-white h-[40px]
+            className={`${styles.OrderBy} py-1 bg-white h-10
             sm:mt-2 border border-slate-800`}
             style={{ width: "200px" }}
             defaultValue="label"
           >
-            {sort === "label" ? (
+            {sort === "label" && (
               <option value="label" className="font-sans text-slate-700">
                 sort order
-              </option>
-            ) : (
-              <option value="random" className="font-sans text-slate-700">
-                random
               </option>
             )}
             <option value="sales_count" className="font-sans text-slate-700">
@@ -152,10 +148,13 @@ const Filter = ({ categoryId }) => {
           </select>
         </div>
       </div>
-      <div className={`w-16.25 ${styles.ClearBtnBox}`}>
+      <div
+        className={`${styles.ClearBtnBox} w-full flex justify-center
+          sm:block sm:mt-0.5 sm:ml-1 sm:w-13.75`}
+      >
         <button
           onClick={() => handleClearFilter()}
-          className={`${styles.ClearBtn} px-2 h-8.5]
+          className={`${styles.ClearBtn} px-2 h-7 mt-1
             bg-amber-950 text-white hover:opacity-50`}
         >
           Clear

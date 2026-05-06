@@ -50,8 +50,9 @@ const ProductCard = ({
             </label>
             <select
               name="quantity"
-              className="border bg-white pb-1 ml-1"
+              className="border bg-white ml-1"
               onChange={(e) => setQty(Number(e.target.value))}
+              style={{ borderRadius: "5px" }}
             >
               {[...Array(30)]
                 .map((_, i) => i + 1)

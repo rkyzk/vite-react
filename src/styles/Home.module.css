@@ -10,9 +10,7 @@
   height: 264px !important;
 }
 .Intro {
-  padding-top: 10px;
-  padding-left: 8% !important;
-  padding-right: 8% !important;
+  padding-top: 10px !important;
 }
 
 @media screen and (min-width: 1280px) {
@@ -55,5 +53,12 @@
 @media screen and (max-width: 639px) {
   .FeaturedProd {
     width: 300px !important;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  .Intro {
+    padding-left: 8% !important;
+    padding-right: 8% !important;
   }
 }

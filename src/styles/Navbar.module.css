@@ -19,6 +19,9 @@
   .LoginLink {
     margin-top: -16px !important;
   }
+  .UserMenu {
+    margin-top: -3px !important;
+  }
 }
 
 @media screen and (max-width: 767px) {

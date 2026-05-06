@@ -144,7 +144,7 @@ function Navbar() {
             height: "160px",
             position: "absolute",
             top: 50,
-            right: 40,
+            right: 38,
             zIndex: 3,
             opacity: 0.9,
           }}

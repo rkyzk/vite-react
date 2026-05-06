@@ -2,14 +2,12 @@ ${cartPage ? "pl-3" : "pl-5"}
 
 review 4 entries.
 home page feature products
-second nav bar code again
 checkout page the cart content above 1300px
 error message needs to disppear when typing checkout page
-error message shows on order history
 address form background
 login dialog button hover text color not changing
-user menu style
 vertical line
+filter color check box style
 
 https://zenn.dev/juth/articles/form-json-formdata-spring
 
