@@ -2,7 +2,11 @@
   margin-top: 2px;
 }
 
-.MenuItem:hover {
+.MenuItem > a {
+  font: #333 !important;
+}
+
+.MenuItem > a:hover {
   text-decoration: underline !important;
   font: rgb(17, 23, 99) !important;
   opacity: 80%;
