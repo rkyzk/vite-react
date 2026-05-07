@@ -1,4 +1,4 @@
-# Wild Blossom Garden -- EC Shopping Site Frontend(Vite + React)
+# Wild Blossom Garden - EC Shopping Site Frontend App(Vite + React)
 
 <img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="landing-page">
 
@@ -32,19 +32,19 @@ JavaScript (Vite + React)
 
 ### Credits
 
-- I learned many of the ideas and methods used in this application from the following course at Udemy:</br>
+<p>I learned many of the ideas and methods used in this application from the following course at Udemy:</br>
   "Java Spring Boot professional eCommerce project master class"</br>
-  https://github.com/EmbarkXOfficial/spring-boot-course</br>
+  https://github.com/EmbarkXOfficial/spring-boot-course</p>
 
-- Paragraphs used in the app are taken and modified from the following sources.
+<p>Paragraphs used in the app are taken and modified from the following sources.</p>
 
-<p>Introduction on the landing page.<br/>
-  https://shop.hanano-yamato.co.jp</p>
+- Introduction on the landing page.<br/>
+  https://shop.hanano-yamato.co.jp
 
- <p>Review Entries<br/> 
- https://russellsmillsflowerco.com/pages/reviews?srsltid=AfmBOoqZm2Eo8DMq6DLf0MM5P129YBGATlrbwkyxQB4l_ZaIp8yC_msr</p>
+- Review Entries<br/>
+  https://russellsmillsflowerco.com/pages/reviews?srsltid=AfmBOoqZm2Eo8DMq6DLf0MM5P129YBGATlrbwkyxQB4l_ZaIp8yC_msr
 
-<p>Product Detail Pages<br/>
+- Product Detail Pages<br/>
   https://www.pref.toyama.jp/1613/sangyou/nourinsuisan/nougyou/kj00014132/kj00014132-011-01.html<br/>
   https://www.919g.co.jp/blog/?p=7420<br/>
   https://www.gardenersworld.com/how-to/grow-plants/best-crocus-varieties-to-grow/<br/>
@@ -59,19 +59,18 @@ JavaScript (Vite + React)
   https://en.wikipedia.org/wiki/Crocus#/media/File:860808-Saffronfarm-01-IMG_7707-2.jpg<br/>
   https://www.bulbi.nl/en/barcelona<br/>
   https://www.longfield-gardens.com/blogs/all-about-fall-planted-bulbs/all-about-crocus?srsltid=AfmBOoqgGQz2gYQu2CWDxciVl-4dh-UHjXU78a_b-AKofO9gvS6t5_LN
-</p>
 
-- I utilized code snippets from the following websites.
+<p>I utilized code snippets from the following websites.</p>
 
-<p>Drop down box for product quantity</br>
-https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n</p>
+- Drop down box for product quantity</br>
+  https://stackoverflow.com/questions/74367838/react-select-dropdown-from-1-to-n
 
-<p>Spinner</br>
-https://tw-elements.com/docs/standard/components/spinners/</p>
+- Spinner</br>
+  https://tw-elements.com/docs/standard/components/spinners/
 
-<p>Logic to send image file from react to the backend</br>
-https://zenn.dev/juth/articles/form-json-formdata-spring</p>
+- Logic to send image file from react to the backend</br>
+  https://zenn.dev/juth/articles/form-json-formdata-spring
 
-# Bugs
+### Bugs
 
 Autofocus on Login dialog is not working.
