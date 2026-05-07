@@ -172,7 +172,7 @@ const ProductDetail = () => {
                   fontSize: "1.2rem",
                   fontWeight: "800",
                 }}
-                className="font-serif mt-4"
+                className="font-serif mt-5"
               >
                 Additional Notes:
               </h3>

@@ -1,16 +1,22 @@
 ${cartPage ? "pl-3" : "pl-5"}
 
+email address instead of username
 additional notes about hyacynths crocusses & layout
-add isLoading on orders
 foot notes not showing on contact page
 image hover opaque or zoom in
-review 4 entries.
-checkout page the cart content above 1300px
-error message needs to disppear when typing checkout page
-address form background
-vertical line
 filter color check box style
 product detail back to search button and category menu
+
+checkout page the cart content above 1300px
+error message needs to disppear when typing checkout page
+hide/show password
+autofocus on login
+vertical line
+
+Spring:
+sql products search
+
+review 4 entries.
 
 https://zenn.dev/juth/articles/form-json-formdata-spring
 
@@ -42,7 +48,7 @@ add more paragraphs on prod detail pages
 
 ### Main Functions
 
-1. Browse through
+1. Browse Products
 2. 商品検索（キーワード、花種、色でフィルター、人気順、価格が安い順に並び替え可能）
 3. アカウント登録、ユーザ認証機能（JWT、リフレッシュトークン使用）
 4. 買い物かごに追加
@@ -52,22 +58,20 @@ add more paragraphs on prod detail pages
 8. 購入履歴照会、レビュー投稿
 9. 問い合わせページ（フォーム表示のみ。実際メッセージ送信は行わない。）
 
-### 使用した言語、フレームワーク、ライブラリ、API
+### Languages, Framework, Libraries
 
-JavaScript (Vite + React)<br/>
+JavaScript (Vite + React)
 
-### テスト
+### Tests
 
 全般的に動作確認済み。
 マニュアルテストを2026年2月以降実施予定。
 
-## 教材
-
-Udemy のコース "Java Spring Boot professional eCommerce project master class"</br>
-https://github.com/EmbarkXOfficial/spring-boot-course
-を参考に作成。
-
 ### Credits
+
+I learned many of the ideas and methods used in this application from the following course at Udemy:</br>
+"Java Spring Boot professional eCommerce project master class"</br>
+https://github.com/EmbarkXOfficial/spring-boot-course</br>
 
 - ホームページ<br/>
   https://shop.hanano-yamato.co.jp

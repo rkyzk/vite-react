@@ -14,7 +14,7 @@ const ReviewEntry = () => {
   const date = (data) => data?.substring(0, 10).replaceAll("-", "/");
   return (
     <>
-      {entries.content.length > 0 && (
+      {entries?.content?.length > 0 && (
         <>
           <h2
             style={{ fontSize: "1.3rem", fontFamily: "M PLUS Rounded 1c" }}
@@ -22,10 +22,7 @@ const ReviewEntry = () => {
           >
             Compliments from our Customers
           </h2>
-          <div
-            className="flex justify-center w-[97%] sm:w-[95%] max-w-160 mx-auto mt-2"
-            // style={{ width: `${width - 10}px` }}
-          >
+          <div className="flex justify-center w-[97%] sm:w-[95%] max-w-160 mx-auto mt-2">
             <Swiper
               modules={[Navigation, Pagination]}
               spaceBetween={0}

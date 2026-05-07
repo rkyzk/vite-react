@@ -11,7 +11,7 @@ import styles from "../../styles/HeroBanner.module.css";
 
 const HeroBanner = () => {
   return (
-    <div className={`max-w-220 ${styles.Carousel}`}>
+    <div className={`max-w-218 ${styles.Carousel}`}>
       <Swiper
         modules={[EffectFade, Autoplay, Navigation, Pagination]}
         effect="fade"

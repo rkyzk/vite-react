@@ -13,8 +13,8 @@ const tulipAdditionalNotes = (
       pretty show.
     </p>
     <p>
-      Tulips are naturally a very long-lasting cut flower. Homegrown varieties
-      can easily hold for a week and a half in the vase.
+      Tulips last very long in a vase. Homegrown varieties can easily hold for a
+      week and a half.
     </p>
   </>
 );

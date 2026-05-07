@@ -80,8 +80,8 @@ const Login = () => {
       </div>
       <button
         type="submit"
-        className={`${styles.Button} mt-2 bg-stone-600 text-white hover:opacity-80
-          py-1 px-3`}
+        className={`${styles.Button} mt-2 py-1 px-3 text-white`}
+        style={{ borderRadius: "5px" }}
       >
         {loader ? <Spinner /> : <>Login</>}
       </button>

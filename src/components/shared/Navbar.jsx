@@ -85,7 +85,7 @@ function Navbar() {
         </Box>
       ) : (
         <div
-          className="mt-1.25"
+          className="mt-1.5"
           style={{
             fontFamily: "M-PLUS-Rounded-1c",
             color: "#333",
