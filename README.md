@@ -63,6 +63,8 @@ On the landing page, cart page and checkout page, a menu bar appears on the left
 
 The footer includes the brand of the shop, a copyright statement and links to facebook and instegram.
 
+#### Login/logout Dialog
+
 <h3 style="fontSize: 1rem;">2. Each Page in Detail</h3>
 
 #### Landing Page
@@ -110,6 +112,42 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 - Clicking the product images take the users to product detail pages.
 - Users can add products by clicking 'Add to cart' buttons.
 - Quantity can be selected by the pulldown box.
+
+#### Product Detail Page
+
+- First a short paragraph introduces the features of the product.
+- A list gives practical data such as plant height, spacing and depth at and optimal soil condition.
+- Additional Notes provide users with growing tipps. These notes are written for each category -- the same notes are used for all tulips, and that applies for other categories.
+
+#### Cart Page
+
+- The cart page shows a table of products, quantities, unit prices and the total price of the cart.
+- The user can change the quantity using the pulldown box, and the total price will be updated accordingly.
+- The cart data will not be sent to the backend until the user places the order.
+- If the user loggs out, the cart data will be lost.
+
+#### Checkout Page
+
+1. Address section
+
+- If the user has not saved addresses previously, a shipping address form will be displayed. If the user has saved an address(es), the saved address(es) will be displayed. The same applies for billing addresses.
+- By default the billing address is set the same as shipping address. The user can check the radio botton if they need to enter a different address.
+- The user can choose to save or not save the address. If he/she chooses to save the address, it will be displayed on the page next time and the user won't need to reenter it.
+- The user can set the address as default address so that the address will appear at the top if the user enters multiple addresses.
+- limit?
+
+2. Card Information
+
+- The user can enter their credit card information.
+
+3. Items in the Cart
+
+- Cart items and the total price are shown in the section, so users can make sure their order is what they intend, before they proceed to make payment.
+- If 'Proceed to Purchase' button is clicked, the order will be placed, and the user is taken to the payment confirmation page.
+
+#### Order Confirmation Page
+
+#### Order History Page
 
 ### Credits
 

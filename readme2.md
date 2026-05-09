@@ -1,5 +1,6 @@
 To do
 keywords separated by spaces or commas max how many words?
+limit the number of addresses
 
 the batch operation every day. delete sales count records
 
