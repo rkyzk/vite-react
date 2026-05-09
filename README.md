@@ -1,13 +1,13 @@
 # Wild Blossom Garden<br>E-commerce Site Frontend App (Vite + React)
 
-<img src="./src/assets/homepage.jpg" style="width: 85%;" alt="Landing page" title="landing-page">
+<img src="./src/assets/readme/landing-page.png" style="width: 85%;" alt="Landing page" title="landing-page">
 
 Deployed project:
 [Wild Blossom Garden](https://main.d318qultnvdzu6.amplifyapp.com)
 
 ### Overview
 
-Wild Blossom Garden is an imaginary online shop selling flower bulbs. Here users can browse products, place items in carts, enter delivery and payment information and place orders. They can also view their order history and submit feedback about their purchase. This frontend application communicates with the Rest API built with Java Spring Boot, which manages to store data in database, ...
+Wild Blossom Garden is an imaginary shop selling flower bulbs online. Here users can browse products, place items in their carts, enter delivery and payment information and place orders. They can also view their order history and submit feedback about their purchase. This frontend application communicates with a Rest API built with Java Spring Boot, which handles storing and acquiring of data in a database.
 The application is built responsible for different screen sizes above 330px.
 
 The source code for the Rest API can be found <a href="https://github.com/rkyzk/ecommerceapi/tree/dev-eng" target="_blank">here</a>.
@@ -38,6 +38,8 @@ JavaScript (Vite + React)
 
 #### Navigation Bar
 
+<img src="./src/assets/readme/navigation-bar.png" style="width: 85%;" alt="navigation bar" title="navigation bar">
+
 - Placed at the top across the page, the navigation bar offers the following links.
   |Nr. |Item |Destination (or events when clicked.) |
   |:--:|:-------------|:---------------------|
@@ -55,16 +57,19 @@ JavaScript (Vite + React)
   |1. |Order History & Send Feedback |Order history page |
   |2. |Logout |The user will be logged out and will be taken to the landing page. |
 
-#### Menu Bar
+#### Menu Column
 
-On the landing page, cart page and checkout page, a menu bar appears on the left side of the window for a screen size above 768px. The menu bar allows quick access to product lists by categories.
+<img src="./src/assets/readme/menu-column.png" style="width: 85%;" alt="menu column" title="menu column">
+On the landing page, cart page and checkout page, a menu column appears on the left side of the window for a screen size above 768px. The menu column allows for quick access to product lists of each category.
 
 #### Footer
 
+<img src="./src/assets/readme/footer.png" style="width: 250px;" alt="footer" title="footer">
 The footer includes the brand of the shop, a copyright statement and links to facebook and instegram.
 
 #### Login/Register Dialog
 
+<img src="./src/assets/readme/login-dialog.png" style="width: 600px;" alt="login dialog" title="login dialog">
 - When 'LOGIN' button in the navigation bar is clicked, a login and register dialog will appear.
 - Visitors who don't have an account yet will enter username, a valid email and a password.
 - Username must be 3-20 characters; password must be 8-16 letters containing alphabets and numerals.
@@ -81,40 +86,44 @@ The landing page showcases the products and promotes sales while offering enjoya
   A carousel displays scenaries of the garden including their products. Autoplay and fade effects of 'swiper' library are applied in order to enhance visual experience of the page.
 
 - Links to Product Lists<br>
+  <img src="./src/assets/readme/links-to-product-lists.png" style="width: 85%;" alt="links to product list" title="links to product list">
   An image of each category is displayed, which serves as links to a product list of the category. The section prompts users to browse products.
 
 - Customer Reviews<br>
+  <img src="./src/assets/readme/reviews.png" style="width: 500px;" alt="reviews" title="reviews">
   The section introduces positive feedback entries from customers, which will promote sales. In this application, customers can submit feedback and optionally an image of their purchased product on 'Order History' page. When admin personnel reviews the entry and decides to post it in this section, they can set publicizeFlg of the record in the DB table 'Reviews' to true, and the entry will be shown in the section. The reviews are shown in the order of the most recent to the oldest. The review contains the customers's feedback, reviewed date, the customer's display name and an image, if it was submitted.
-
-#### Contact Page
-
-If users wish to contact the personnel of Wild Blossom Garden, they can fill the inquiry form and send it. The page is not equiped with the function to actually send the form for a review.
 
 #### Shop Page
 
-1. Filter and sort
+<img src="./src/assets/readme/products-list.png" style="width: 85%;" alt="products-list" title="products-list">
+#### 1. Filter and sort
 
 - The shop page has filter and sort options and displays a product list accordingly.
 - If multiple filter options are selected, the products that match all options will ne displayed.
 
-<h3 style="fontSize: 1rem;">Keywords Filter<h3>
-  - Users can enter up to three keywords in the input box, separated by spaces or commas.
-  - Only those products will be selected, whose data contain one of more of the keywords.
+#### Keywords Filter
 
-<h3 style="fontSize: 1rem;">Color Filter<h3>
-  - One or more colors can be selected in the checkbox, and the products that match at least one color will be displayed as results.
-  - Products may be classified as having only one color or multiple colors.
+- Users can enter up to three keywords in the input box, separated by spaces or commas.
+- Only those products will be selected, whose data contain one of more of the keywords.
 
-<h3 style="fontSize: 1rem;">Category Filter<h3>
+#### Color Filter
+
+- One or more colors can be selected in the checkbox, and the products that match at least one color will be displayed as results.
+- Products may be classified as having only one color or multiple colors.
+
+#### Category Filter
+
 - Flower kind can be selected by the pulldown box.
 
-<h3 style="fontSize: 1rem;">Order by popularity<h3>
+#### Order by popularity
+
 - When 'most sold' is selected, the products will be ordered by the sales count in the past 30 days.
 
-<h3 style="fontSize: 1rem;">Order by prices (low to high)<h3>
+#### Order by prices (low to high)
+
 - As the label explains, the products will be ordered by ascending prices.
 
-2. Other Features
+#### 2. Other Features
 
 - Clicking the product images take the users to product detail pages.
 - Users can add products to their cart by clicking 'Add to cart' buttons.
@@ -122,12 +131,19 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 
 #### Product Detail Page
 
+<img src="./src/assets/readme/product-detail.png" style="width: 85%;" alt="product-detail" title="product-detail">
 - First a short paragraph introduces the features of the product.
 - A list gives practical data such as plant height, spacing and depth at and optimal soil condition.
 - Additional Notes provide users with growing tipps. These notes are written for each category -- the same notes are used for all tulips, and that applies for other categories.
 
+#### Contact Page
+
+<img src="./src/assets/readme/contact.png" alt="contact page" title="contact-page">
+If users wish to contact the personnel of Wild Blossom Garden, they can fill the inquiry form and send it. The page is not equiped with the function to actually send the form for a review.
+
 #### Cart Page
 
+<img src="./src/assets/readme/cart.png" alt="cart page" title="cart page">
 - The cart page shows a table of products, quantities, unit prices and the total price of the cart.
 - The user can change the quantity using the pulldown box, and the total price will be updated accordingly.
 - The cart data will not be sent to the backend until the user places the order.
@@ -154,6 +170,7 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 
 #### Order Confirmation Page
 
+<img src="./src/assets/readme/order-confirmation.png" alt="order confirmation page" title="order confirmation page">
 - Thank you message for the purchase is displayed at the top.
 - Shipping address (and billing address if it differs from the shipping address) is displayed.
 - A table of purchased items, quantities and unit prices is displayed as well as the total price of the order.

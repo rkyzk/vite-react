@@ -2,6 +2,7 @@ To do
 keywords separated by spaces or commas max how many words?
 limit the number of addresses
 review page with rates graph
+button blue outline
 
 the batch operation every day. delete sales count records
 
