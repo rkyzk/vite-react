@@ -63,7 +63,13 @@ On the landing page, cart page and checkout page, a menu bar appears on the left
 
 The footer includes the brand of the shop, a copyright statement and links to facebook and instegram.
 
-#### Login/logout Dialog
+#### Login/Register Dialog
+
+- When 'LOGIN' button in the navigation bar is clicked, a login and register dialog will appear.
+- Visitors who don't have an account yet will enter username, a valid email and a password.
+- Username must be 3-20 characters; password must be 8-16 letters containing alphabets and numerals.
+- Returning users will enter their username and password.
+- An error message will be displayed if the input is invalid.
 
 <h3 style="fontSize: 1rem;">2. Each Page in Detail</h3>
 
@@ -87,8 +93,9 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 #### Shop Page
 
 1. Filter and sort
-   The shop page has filter and sort options and displays a product list accordingly.
-   If multiple filter options are selected, the products that match all options will ne displayed.
+
+- The shop page has filter and sort options and displays a product list accordingly.
+- If multiple filter options are selected, the products that match all options will ne displayed.
 
 <h3 style="fontSize: 1rem;">Keywords Filter<h3>
   - Users can enter up to three keywords in the input box, separated by spaces or commas.
@@ -110,7 +117,7 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 2. Other Features
 
 - Clicking the product images take the users to product detail pages.
-- Users can add products by clicking 'Add to cart' buttons.
+- Users can add products to their cart by clicking 'Add to cart' buttons.
 - Quantity can be selected by the pulldown box.
 
 #### Product Detail Page
@@ -138,16 +145,26 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 
 2. Card Information
 
-- The user can enter their credit card information.
+- Users can enter their credit card information. The card information won't be saved in the database. The Stripe API will verify the validity of the card and display error messages if the input is invalid.
 
 3. Items in the Cart
 
-- Cart items and the total price are shown in the section, so users can make sure their order is what they intend, before they proceed to make payment.
+- Cart items and the total price are shown in the section, so users can make sure the order is what they intend before they proceed to make payment.
 - If 'Proceed to Purchase' button is clicked, the order will be placed, and the user is taken to the payment confirmation page.
 
 #### Order Confirmation Page
 
+- Thank you message for the purchase is displayed at the top.
+- Shipping address (and billing address if it differs from the shipping address) is displayed.
+- A table of purchased items, quantities and unit prices is displayed as well as the total price of the order.
+
 #### Order History Page
+
+- The current user's past purchases are listed. The data includes purchase date, product names, images, quantities, unit prices and the total price.
+- By default the list is ordered by the date (the most recent record appears at the top.), but the order can be reversed by selecting 'oldest to newest' in the pulldown.
+- 8 results are listed per page if there are more than eight results, and pagination buttons are placed at the top of the table.
+- By clicking 'submit feedback' button, users can send feedback about their particular order. The entries will be saved in the database, and if the publicizeFlg of the record is later set to 'true,' the review will be posted on the landing page. (The admin personnel can choose which reviews they want to post in the landing page.)
+- The feedback can't be updated once submitted. 'Send feedback' button will change to a note 'Feedback Submitted.'
 
 ### Credits
 
