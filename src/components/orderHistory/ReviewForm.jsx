@@ -113,7 +113,8 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
       >
         <span>
           We'd appreciate your feedback and will use it to improve our service.
-          We also post the rates and some of the entries on the review page.
+          We also post the rates and some of the submitted entries on the review
+          page.
         </span>
         <textarea
           id="content"
