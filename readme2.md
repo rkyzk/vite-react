@@ -1,3 +1,8 @@
+To do
+keywords separated by spaces or commas max how many words?
+
+the batch operation every day. delete sales count records
+
 https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf
 
 ## Tests
