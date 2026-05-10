@@ -12,20 +12,24 @@ const AddressList = () => {
   };
 
   return (
-    <div className="flex">
-      <div
-        className="w-[290px] mx-auto grid gap-x-5 xs:grid-col-1
-          md:grid-cols-2 sm:w-11/12 sm:max-w-[400px] md:max-w-[680px]
-          lg:max-w-[720px] lg:gap-x-[150px]"
-      >
-        <div>
-          <h2 className={`${styles.Text} font-extralight`}>お届け先</h2>
+    <div className="w-full flex px-2 md:px-0">
+      <div className={`${styles.AddressSection}`}>
+        <div className={`${styles.Address} mb-4`}>
+          <h2
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: "800",
+              fontFamily: "serif",
+            }}
+          >
+            Shipping Address
+          </h2>
           {(!sAddressList || sAddressList.length == 0) && (
             <AddressForm isSAddr />
           )}
           {sAddressList?.map((address) => {
             return (
-              <div key={address.addressId} className="mt-3 flex gap-x-2">
+              <div key={address.addressId} className="mt-1 flex gap-x-2">
                 <label htmlFor={`selected-addr` + address.addressId}>
                   <input
                     type="radio"
@@ -53,16 +57,23 @@ const AddressList = () => {
                   onChange={(e) => handleSelectAddress(e, true)}
                   className="m-1"
                 />
-                <span>他の住所に配送する</span>
+                <span>Ship to another address</span>
               </label>
               {sAddressList && selectedSAddrId === 0 && <AddressForm isSAddr />}
             </div>
           )}
         </div>
-        <hr className="xs:mx-1 xs:mt-30px md:hidden" />
-        <div className="xs:mt-[50px] md:mt-0 w-[280px]">
-          <h2 className={`${styles.Text} font-extralight`}>請求先</h2>
-          <div className="mt-[-4px]">
+        <div className={`${styles.Address} mb-4`}>
+          <h2
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: "800",
+              fontFamily: "serif",
+            }}
+          >
+            Billing Address
+          </h2>
+          <div className="-mt-1">
             <label htmlFor="selected-b-addr0">
               <input
                 type="radio"
@@ -74,7 +85,7 @@ const AddressList = () => {
                 className="m-1"
               />
             </label>
-            <span>お届け先と同じ</span>
+            <span>Same as shipping address</span>
           </div>
           {bAddressList?.map((address) => {
             return (
@@ -94,7 +105,7 @@ const AddressList = () => {
               </div>
             );
           })}
-          <label htmlFor="selected-b-addr-1" className="mt-3">
+          <label htmlFor="selected-b-addr-1" className="mt-1">
             <input
               type="radio"
               id="selected-b-addr-1"
@@ -104,7 +115,7 @@ const AddressList = () => {
               onChange={(e) => handleSelectAddress(e, false)}
               className="mx-1"
             />
-            <span>他の住所を使用する</span>
+            <span>Send the bill to another address</span>
           </label>
           {selectedBAddrId === -1 && <AddressForm />}
         </div>

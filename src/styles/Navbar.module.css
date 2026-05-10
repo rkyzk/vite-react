@@ -1,13 +1,26 @@
-.Text {
-  text-decoration: none;
-  color: #333 !important;
-  font-size: 1rem;
-  font-weight: 400;
+.NavItem:hover {
+  color: #8b3f04 !important;
+  text-decoration: underline !important;
+  background-color: transparent !important;
 }
 
+.Cart:hover {
+  color: rgb(122, 109, 10) !important;
+}
+.LoginLink {
+  margin: -6px 0 0 -8px !important;
+  color: #333 !important;
+  font-size: 1rem !important;
+}
 @media screen and (min-width: 768px) {
   .menuBox {
     display: none;
+  }
+  .LoginLink {
+    margin-top: -16px !important;
+  }
+  .UserMenu {
+    margin-top: -3px !important;
   }
 }
 
@@ -17,5 +30,9 @@
   }
   .menuItemCart {
     margin-top: 8px;
+  }
+  .UserMenu {
+    margin-top: 5px !important;
+    margin-left: -1px !important;
   }
 }

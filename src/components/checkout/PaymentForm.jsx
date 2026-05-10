@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../shared/Spinner";
+import Cart from "../shared/Cart";
 import {
   PaymentElement,
   useElements,
@@ -15,11 +16,10 @@ import styles from "../../styles/PaymentForm.module.css";
  * Handles form submission when user clicks 'proceed'
  * @param clientSecret, totalPrice
  */
-const PaymentForm = ({ props }) => {
-  const { clientSecret, totalPrice } = props;
+const PaymentForm = ({ clientSecret }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
   const { selectedSAddrId, selectedBAddrId } = useSelector(
     (state) => state.auth,
   );
@@ -41,7 +41,7 @@ const PaymentForm = ({ props }) => {
       isValid &= await dispatch(validateAddress(false));
     }
     if (!isValid) {
-      setErrorMessage("住所を正しく記入してください。");
+      setErrorMessage("Enter valid address.");
       return;
     } else {
       setErrorMessage(null);
@@ -62,26 +62,59 @@ const PaymentForm = ({ props }) => {
   const isLoading = !stripe || !elements;
 
   return (
-    <form onSubmit={handleSubmit} className="flex-col py-4 md:w-[400px]">
-      <h2 className={`${styles.Text}`}>カード情報</h2>
+    <>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div>
-          <PaymentElement options={paymentElementOptions} />
-          {errorMessage && (
-            <div className="text-red-500 mt-2">{errorMessage}</div>
-          )}
-          <button
-            className={`${styles.Button} mt-2 mx-auto bg-stone-600 text-white p-1
-              hover:bg-stone-300`}
-            disabled={!stripe || isLoading}
-          >
-            {isLoading ? <Spinner /> : `¥${totalPrice}を支払い商品を購入する`}
-          </button>
-        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex-col md:flex md:flex-row justify-between"
+          id="payment-form"
+        >
+          <div className={`${styles.CardForm} pb-3`}>
+            <h2
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "800",
+                fontFamily: "serif",
+              }}
+            >
+              Card Information
+            </h2>
+            <div onClick={() => setErrorMessage(null)}>
+              <PaymentElement
+                options={paymentElementOptions}
+                className={`${styles.PaymentForm}`}
+              />
+            </div>
+          </div>
+          <div className={`${styles.CartItemsBox}`}>
+            <h2
+              className={`${styles.CartItems}`}
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: "800",
+                fontFamily: "serif",
+              }}
+            >
+              Items in your cart
+            </h2>
+            <Cart />
+            <div className="flex-col text-right">
+              <button
+                className={`text-white py-1 px-2 ${styles.Button}`}
+                disabled={!stripe || isLoading}
+              >
+                {isLoading ? <Spinner /> : `Proceed to purchase`}
+              </button>
+              {errorMessage && (
+                <div className="text-red-500 mt-2">{errorMessage}</div>
+              )}
+            </div>
+          </div>
+        </form>
       )}
-    </form>
+    </>
   );
 };
 

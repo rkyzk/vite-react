@@ -37,27 +37,35 @@ function Navbar() {
   };
 
   const menuItems = (
-    <div className="flex-col md:flex md:flex-row md:gap-x-[25px]">
+    <div className="flex-col md:flex md:flex-row md:gap-x-6.25">
       <div>
-        <Link to="/" style={{ color: "#333" }}>
+        <Link to="/" style={{ color: "#333" }} className={`${styles.NavItem}`}>
           {path === "/" && <span>◆</span>}
-          ホーム
+          HOME
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
-        <Link to="/products" style={{ color: "#333" }}>
+        <Link
+          to="/products"
+          style={{ color: "#333" }}
+          className={`${styles.NavItem}`}
+        >
           {path === "/products" && <span>◆</span>}
-          ショップ
+          SHOP
         </Link>
       </div>
       <div className={`${styles.menuItems}`}>
-        <Link to="/contact" style={{ color: "#333" }}>
+        <Link
+          to="/contact"
+          style={{ color: "#333" }}
+          className={`${styles.NavItem}`}
+        >
           {path === "/contact" && <span>◆</span>}
-          問い合わせ
+          CONTACT
         </Link>
       </div>
       <div className={`${styles.menuItemCart}`}>
-        <Link to="/cart" style={{ color: "#333" }}>
+        <Link to="/cart" style={{ color: "#333" }} className={`${styles.Cart}`}>
           <div className="flex gap-3">
             <Badge
               showZero
@@ -72,24 +80,24 @@ function Navbar() {
         </Link>
       </div>
       {auth?.user && auth.user?.id ? (
-        <Box sx={{ flexGrow: 0 }}>
-          <IconButton sx={{ p: 0 }}>
-            <UserMenu {...auth.user} clasName="absolute top-30 right-5" />
-          </IconButton>
+        <Box sx={{ flexGrow: 0 }} className={`${styles.UserMenu}`}>
+          <UserMenu clasName="absolute top-30 right-5" />
         </Box>
       ) : (
-        <Button
-          onClick={() => dispatch(setModalOpen())}
+        <div
+          className="mt-1.5"
           style={{
+            fontFamily: "M-PLUS-Rounded-1c",
             color: "#333",
-            fontSize: "1rem",
-            marginTop: "-13px",
-            fontWeight: "400",
           }}
-          className={`${styles.loginBtn}`}
         >
-          ログイン
-        </Button>
+          <Button
+            onClick={() => dispatch(setModalOpen())}
+            className={`${styles.NavItem} ${styles.LoginLink}`}
+          >
+            <span>LOGIN</span>
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -112,7 +120,7 @@ function Navbar() {
             marginLeft: 2,
             justifyContent: "end",
           }}
-          className="flex md:hidden"
+          className="flex md:hidden -mr-3"
         >
           <Button
             id="basic-button"
@@ -125,22 +133,22 @@ function Navbar() {
             <RxHamburgerMenu className="text-lg" />
           </Button>
         </Box>
+        {/* burgerMenu */}
         <div
           id="menuItems"
           className={`${styles.menuBox} hidden px-3 py-2`}
           style={{
             backgroundColor: "#fff",
+            border: "solid 1px #cce",
             width: "120px",
             height: "160px",
             position: "absolute",
             top: 50,
-            right: 40,
+            right: 38,
             zIndex: 3,
-            opacity: 0.9,
           }}
         >
           {menuItems}
-          {/* burgerMenu */}
         </div>
         <Box
           sx={{

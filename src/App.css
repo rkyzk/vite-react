@@ -1,17 +1,48 @@
-@import "tailwindcss";
-
-div {
+div,
+button,
+.MuiButtonBase-root > span {
+  font-family: "M PLUS Rounded 1c";
+}
+a {
+  text-decoration: none !important;
   font-family: "M PLUS Rounded 1c";
 }
 
-a {
-  text-decoration: none !important;
+button:focus {
+  outline: 0 !important;
 }
 
+#user {
+  font-family: "M PLUS Rounded 1c" !important;
+  font: #333;
+  font-size: 1.1rem !important;
+}
+
+#Menu > a {
+  text-decoration: none !important;
+  color: #444 !important;
+}
+
+#Menu > a:hover {
+  text-decoration: underline !important;
+  color: #222 !important;
+}
+
+form > button:hover {
+  font: #222 !important;
+  background-color: transparent;
+}
 input {
   background-color: #fff;
 }
 
-button:hover {
-  opacity: 0.5;
+.swiper-button-prev,
+.swiper-button-next {
+  color: #ddd !important;
+}
+.swiper-button-prev {
+  margin-left: -11px;
+}
+.swiper-button-next {
+  margin-right: -11px;
 }

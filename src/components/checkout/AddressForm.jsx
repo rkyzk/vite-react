@@ -35,7 +35,7 @@ const AddressForm = ({ address, isSAddr }) => {
   const dispatch = useDispatch();
 
   /**
-   * 住所を取得
+   * get addresses
    */
   const handleChangeZip = (e) => {
     let zip = e.target.value;
@@ -56,7 +56,7 @@ const AddressForm = ({ address, isSAddr }) => {
     addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
     const res = await getAddress(zip);
     if (res === null) {
-      setErrMsgZip("正しい郵便番号を入力してください。");
+      setErrMsgZip("Enter correct zip code.");
       clearAddr();
       return;
     }
@@ -76,7 +76,7 @@ const AddressForm = ({ address, isSAddr }) => {
   };
 
   const handleCheckZip = () => {
-    zip.length !== 7 && setErrMsgZip("7桁入力してください");
+    zip.length !== 7 && setErrMsgZip("Enter 7 digits");
     return;
   };
 
@@ -125,17 +125,20 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className={`gap-x-1 px-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
         <button
-          className={`${styles.Button} mt-2 bg-stone-600 text-white py-1 px-2 hover:bg-stone-300`}
+          className="mt-2 bg-stone-600
+            text-white py-1 px-2 hover:opacity-60"
           onClick={() => saveAddress(tempAddress)}
+          style={{ borderRadius: "5px" }}
         >
-          保存
+          Save
         </button>
         <button
-          className={`${styles.Button} m-2 bg-stone-600 text-white py-1 px-2
-                    hover:bg-stone-300`}
+          className="m-2 bg-stone-600 text-white py-1 px-2
+                    hover:opacity-60"
           onClick={() => handleCancelEditAddress(isSAddr)}
+          style={{ borderRadius: "5px" }}
         >
-          キャンセル
+          Cancel
         </button>
       </div>
     );
@@ -144,18 +147,20 @@ const AddressForm = ({ address, isSAddr }) => {
     return (
       <div className="mt-2 flex justify-start gap-x-2">
         <button
-          className={`${styles.EditBtn}text-stone-900 p-1`}
-          style={{ border: "#555 solid 1px" }}
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+             hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "42px" }}
           onClick={() => showEditForm(true)}
         >
-          編集
+          Edit
         </button>
         <button
-          className={`${styles.EditBtn}text-stone-900 p-1`}
-          style={{ border: "#555 solid 1px" }}
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+           hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "160px" }}
           onClick={() => handleDeleteAddress()}
         >
-          この住所を削除
+          Delete this address
         </button>
       </div>
     );
@@ -178,7 +183,7 @@ const AddressForm = ({ address, isSAddr }) => {
             className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
           />
         </label>
-        <span>デフォルトに設定(次回以降上に表示)</span>
+        <span>Set as default address</span>
       </div>
     );
   };
@@ -189,14 +194,14 @@ const AddressForm = ({ address, isSAddr }) => {
         id={isSAddr ? "s-addr" : "b-addr"}
         onSubmit={(e) => e.preventDefault}
         className={`${isSAddr ? "s-addr" : "b-addr"}
-          ${editAddr && "bg-neutral-300 px-2 py-1"} ${styles.Form}`}
+          bg-neutral-300 px-2 py-1 ${styles.Form}`}
       >
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="fullname"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            氏名:
+            Full name:
           </label>
           <input
             id="fullname"
@@ -209,20 +214,16 @@ const AddressForm = ({ address, isSAddr }) => {
           {((isSAddr && sAddrErrs?.fullname) ||
             (!isSAddr && bAddrErrs?.fullname)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
-              氏名を入力してください
+              Enter your full name
             </span>
           )}
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="postalCode"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            郵便番号(ハイフンなし):
+            Zip code (no hyphen):
           </label>
           <input
             id="postalCode"
@@ -243,39 +244,34 @@ const AddressForm = ({ address, isSAddr }) => {
             ((isSAddr && sAddrErrs?.postalCode) ||
               (!isSAddr && bAddrErrs?.postalCode)) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                郵便番号を入力してください
+                Enter zip code.
               </span>
             )}
         </div>
         <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
+          className={`${isSAddr ? "s-addr" : "b-addr"}
+            flex flex-col mt-1`}
         >
           <label
-            htmlFor="province"
+            htmlFor="prefecture"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            都道府県:
+            Prefecture:
           </label>
           <input
-            id="province"
-            name="province"
+            id="prefecture"
+            name="prefecture"
             type="text"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
             value={tempAddress?.prefecture}
           />
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="city"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            市区町村:
+            City, District:
           </label>
           <input
             id="city"
@@ -285,7 +281,7 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.city}
           />
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
           <label
             htmlFor="streetAddress1"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
@@ -298,16 +294,12 @@ const AddressForm = ({ address, isSAddr }) => {
             value={tempAddress?.streetAddress1}
           />
         </div>
-        <div
-          className={`${isSAddr ? "s-addr" : "b-addr"} ${
-            styles.InputItem
-          } mt-1`}
-        >
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
           <label
             htmlFor="streetAddress2"
             className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
           >
-            番地・建物名・部屋番号:
+            Street address:
           </label>
           <input
             id="streetAddress2"
@@ -320,11 +312,11 @@ const AddressForm = ({ address, isSAddr }) => {
           {((isSAddr && sAddrErrs?.streetAddress2) ||
             (!isSAddr && bAddrErrs?.streetAddress2)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
-              番地を入力してください
+              Enter street address.
             </span>
           )}
         </div>
-        <div className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.InputItem}`}>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
           <label
             htmlFor="streetAddress3"
             className={`${isSAddr ? "s-addr" : "b-addr"} hidden`}
@@ -338,20 +330,24 @@ const AddressForm = ({ address, isSAddr }) => {
             onChange={(e) => handleChangeAddress(e)}
           />
         </div>
-        <div>
+        <div className="mt-1">
           <label htmlFor="save-addr">
-            <input
-              type="radio"
-              id="saveAddr"
-              name="saveAddr"
-              value="saveAddr"
-              checked={tempAddress.saveAddr}
-              onClick={(e) => handleChangeAddress(e)}
-              className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
-            />
-            <span>この住所を保存</span>
+            <div className="flex">
+              <input
+                type="radio"
+                id="saveAddr"
+                name="saveAddr"
+                value="saveAddr"
+                checked={tempAddress.saveAddr}
+                onClick={(e) => handleChangeAddress(e)}
+                className={`${isSAddr ? "s-addr" : "b-addr"} m-1 h-3.5`}
+              />
+              <span className="leading-5">Save this address</span>
+            </div>
           </label>
         </div>
+        {((isSAddr && sAddressList?.length > 0) ||
+          (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
         {editAddr && <>{saveButtons()}</>}
       </form>
     );
@@ -368,11 +364,9 @@ const AddressForm = ({ address, isSAddr }) => {
         <div
           className={`${isSAddr && editAddr && "s-addr"}
           ${!isSAddr && editAddr && "b-addr"}
-          ${isSAddr && !sAddressList && !bAddressList && "md:mt-[52px]"}`}
+          ${isSAddr && !sAddressList && !bAddressList && "md:mt-13"}`}
         >
           {addressForm()}
-          {((isSAddr && sAddressList?.length > 0) ||
-            (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
         </div>
       )}
     </>

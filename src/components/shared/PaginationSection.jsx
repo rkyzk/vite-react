@@ -1,6 +1,6 @@
 import Pagination from "@mui/material/Pagination";
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const PaginationSection = ({ totalPages }) => {
   const [searchParams] = useSearchParams();

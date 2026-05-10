@@ -8,7 +8,7 @@ AddressList.jsx
 AddressForm.jsx
 PaymentForm.jsx
 StripePayment.jsx
-PaymentConfirmation.jsx
+OrderConfirmation.jsx
 OrdeeredItem.jsx
 OrderedItemsTable.jsx
 index.js

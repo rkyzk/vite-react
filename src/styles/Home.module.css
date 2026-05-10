@@ -9,50 +9,56 @@
   width: 330px !important;
   height: 264px !important;
 }
+.Intro {
+  padding-top: 10px !important;
+}
 
-@media screen and (max-width: 1023px) {
-  .imgSize {
-    width: 350px !important;
-    height: 280px !important;
-  }
-  .Card {
-    width: 350px !important;
-    height: 280px !important;
+@media screen and (min-width: 1280px) {
+  .FeaturedProd {
+    width: 1000px !important;
   }
 }
 
-@media screen and (max-width: 800px) {
-  .imgSize {
-    width: 300px !important;
-    height: 240px !important;
+@media (1080px <= width < 1280px) {
+  .FeaturedProd {
+    width: 670px !important;
   }
+}
+@media (640px <= width < 1080px) {
+  .FeaturedProd {
+    width: 610px !important;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .imgSize,
   .Card {
     width: 300px !important;
     height: 240px !important;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .Intro {
+    margin: 0 auto !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .FeaturedProd {
+    width: 610px !important;
   }
 }
 
 @media screen and (max-width: 639px) {
-  .imgSize {
-    width: 400px !important;
-    height: 320px !important;
-  }
-  .Card {
-    width: 400px !important;
-    height: 320px !important;
+  .FeaturedProd {
+    width: 300px !important;
   }
 }
 
-@media screen and (max-width: 475px) {
-  .imgSize {
-    width: 300px !important;
-    height: 240px !important;
-  }
-  .Card {
-    width: 300px !important;
-    height: 240px !important;
-  }
+@media screen and (min-width: 360px) {
   .Intro {
-    margin-top: 18px !important;
+    padding-left: 8% !important;
+    padding-right: 8% !important;
   }
 }

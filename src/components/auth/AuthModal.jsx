@@ -3,11 +3,12 @@ import Register from "./Register";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "../../store/actions";
+import styles from "../../styles/AuthModal.module.css";
 
 const AuthModal = () => {
   const { loginOnly } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  /** ダイアログの外をクリックしたらダイアログを閉じる */
+  /** Close dialog if outside the dialog is clicked. */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
       dispatch(closeModal());
@@ -15,14 +16,14 @@ const AuthModal = () => {
     }
   };
   useEffect(() => {
-    // 初回レンダーリングでイベントリスナーを追加
+    // add event listener when mounted.
     document.addEventListener("mouseup", (e) => handleCloseModal(e));
   }, []);
 
   return (
     <div
-      className="max-w-[450px] px-3 py-4 border-b-black bg-gray-50
-        flex-col mx-auto mt-5"
+      className={`${styles.LoginForm} max-w-112.5 px-3 py-4 border-b-black bg-gray-50
+        flex-col mx-auto mt-5`}
     >
       <Login />
       {!loginOnly && <Register />}

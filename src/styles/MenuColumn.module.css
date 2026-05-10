@@ -1,0 +1,43 @@
+.MenuItem {
+  margin-top: 2px;
+}
+
+.MenuItem > a {
+  font: #333 !important;
+}
+
+.MenuItem > a:hover {
+  text-decoration: underline !important;
+  font: rgb(17, 23, 99) !important;
+  opacity: 80%;
+}
+
+@media screen and (max-width: 1350px) {
+  .ContentBox {
+    margin: auto;
+  }
+}
+
+@media screen and (min-width: 1350px) {
+  .MenuCol {
+    width: 300px !important;
+  }
+  .ContentBox {
+    width: calc(100vw - 330px) !important;
+  }
+}
+
+@media (1024px <= width < 1350px) {
+  .ContentBox {
+    width: calc(100vw - 270px);
+  }
+  .MenuCol {
+    width: 240px !important;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .ContentBox {
+    margin-left: 40px;
+  }
+}

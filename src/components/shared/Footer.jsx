@@ -2,7 +2,7 @@ import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 
 /**
- * フッター
+ * Footer
  */
 const FooterComponent = () => {
   return (
@@ -29,11 +29,13 @@ const FooterComponent = () => {
           </a>
         </li>
       </ul>
-      <p className="text-center text-amber-900">ワイルドブロッサムガーデン</p>
-      <div className="w-full flex justify-center mt-[-15px]">
-        <p className="text-center text-amber-900 w-[220px] text-xs">
-          Copyright 2025 @Wild Blossom Garden All Rights Reserved
-        </p>
+      <div className="mt-[-15px]">
+        <p className="text-center text-amber-900">Wild Blossom Garden</p>
+        <div className="w-full flex justify-center mt-[-15px]">
+          <p className="text-center text-amber-900 w-[220px] text-xs">
+            Copyright 2025 @Wild Blossom Garden All Rights Reserved
+          </p>
+        </div>
       </div>
     </div>
   );

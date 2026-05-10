@@ -4,8 +4,41 @@
   color: #333;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 3px !important;
+  border: solid 1px #ccc !important;
 }
 
-.Text {
-  font-size: 1.5rem !important;
+@media screen and (min-width: 600px) {
+  .EntryBox {
+    flex-direction: row !important;
+    margin-top: 16px;
+  }
+  .ReviewEntry {
+    width: 44% !important;
+    height: 220px !important;
+  }
+  .Image {
+    width: 100% !important;
+    height: 220px !important;
+  }
+  .ReviewContent {
+    width: 44% !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .ReviewEntry,
+  .Image {
+    width: 240px !important;
+    height: 192px !important;
+    margin: 0 auto !important;
+  }
+
+  .EntryBox {
+    flex-direction: column !important;
+  }
+  .ReviewContent {
+    padding: 0 21px !important;
+  }
 }
