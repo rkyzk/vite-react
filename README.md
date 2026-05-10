@@ -1,4 +1,4 @@
-# Wild Blossom Garden<br>E-commerce Site Frontend App (Vite + React)
+# Wild Blossom Garden<br>Frontend Application (Vite + React)
 
 <img src="./src/assets/readme/landing-page.png" style="width: 85%;" alt="Landing page" title="landing-page">
 
@@ -7,32 +7,32 @@ Deployed project:
 
 ### Overview
 
-Wild Blossom Garden is an imaginary shop selling flower bulbs online. Here users can browse products, place items in their carts, enter delivery and payment information and place orders. They can also view their order history and submit feedback about their purchase. This frontend application communicates with a Rest API built with Java Spring Boot, which handles storing and acquiring of data in a database.
-The application is built responsible for different screen size above 330px.
+Wild Blossom Garden is an imaginary shop selling flower bulbs online. Here users can browse products, place items in their carts, enter delivery and payment information and place orders. They can also view their order history and submit feedback about their purchase. This frontend application communicates with a Rest API built with Java Spring Boot, which manages authentication of requests and processes interactions with the database.
+The application is built responsible for various screen sizes above 330px.
 
 The source code for the Rest API can be found <a href="https://github.com/rkyzk/ecommerceapi/tree/dev-eng" target="_blank">here</a>.
 
 ### Languages, Framework
 
-JavaScript (Vite + React)
+JavaScript, Vite 6.3.1, React 19.1.1
 
 ### Libraries Used
 
 - 'redux' for making data available in any component
-- 'axios' for sending requests to the Rest API
+- 'axios' for handling requests and responses to and from the Rest API
 - 'stripe' for handling credit card information
-- 'material UI' for various components
 - 'jposta' for autofilling addresses by postal codes
 - 'react hot toast' for toast messages
+- 'material UI' for ready made components to be used with or without modification
 - 'react icons'
-- 'swiper' for Carousels
-- Tailwind CSS for styling
+- 'swiper' for carousels
+- 'tailwindcss' for styling
 
 ### Main Functions
 
 - Browse Products
 - View product details
-- Search products by keywords, flower kinds and colors
+- Search products by keywords, categories and colors
 - Sort products by popularity or prices
 - Manage user accounts
 - Login/logout users (JWT and refresh tokens are used.)
@@ -42,17 +42,16 @@ JavaScript (Vite + React)
 - Place orders
 - View order history, submit feedback of purchases
 - View review entries of other customers
-- Enter inquiry form (the form won't be actually submitted.)
 
-### Functions of Common Elements and Pages in Detail
+### Common Elements and Each Page in Detail
 
-<h3 style="fontSize: 1rem;">1. Common Elements across the Pages</h3>
+<h3 style="fontSize: 1rem;">1. Common Elements on Multiple Pages</h3>
 
 #### Navigation Bar
 
 <img src="./src/assets/readme/navigation-bar.png" style="width: 85%;" alt="navigation bar" title="navigation bar">
 
-- Placed at the top across the page, the navigation bar offers the following links.
+- Placed at the top of the page, the navigation bar offers the following links.
   |Nr. |Item |Destination of the link (or events when clicked.) |
   |:--:|:-------------|:---------------------|
   |1. |Logo |Landing Page |
@@ -71,22 +70,31 @@ JavaScript (Vite + React)
 
 #### Menu Column
 
-<img src="./src/assets/readme/menu-column.png" style="width: 200px;" alt="menu column" title="menu column">
-On the landing page, cart page and checkout page, a menu column appears on the left side of the window for a screen size above 768px. The menu column allows for quick access to product list of each category.
+<img src="./src/assets/readme/menu-column.png" style="width: 200px;" alt="menu column" title="menu column"><br>
+On the landing page, cart page and checkout page, a menu column appears on the left side of the window if the screen size exceeds 767px. The menu column allows for quick access to product list of each category.
 
 #### Footer
 
-<img src="./src/assets/readme/footer.png" style="width: 250px;" alt="footer" title="footer">
+<img src="./src/assets/readme/footer.png" style="width: 250px;" alt="footer" title="footer"><br>
 The footer includes the brand of the shop, a copyright statement and links to facebook and instegram.
 
 #### Login/Register Dialog
 
-<img src="./src/assets/readme/login-dialog.png" style="width: 600px;" alt="login dialog" title="login dialog">
+<img src="./src/assets/readme/login-dialog.png" style="width: 450px;" alt="login dialog" title="login dialog"><br>
+
 - When 'LOGIN' button in the navigation bar is clicked, a login and register dialog will appear.<br>
-- Visitors who don't have an account will enter a username, a valid email and a password.<br>
-- Usernames must be 3-20 characters; passwords must be 8-16 letters containing alphabets and numerals.<br>
-- Returning users will enter their username and password.<br>
-- An error message will be displayed if the input is invalid.<br>
+- Visitors who don't have an account should enter a username, a valid email and a password in the register form.<br>
+- Input in the register form will be validated in following methods in Register.jsx, and an error message(s) will be displayed in red if the input is invalid.<br>
+
+| Item     | Restriction                                                   | Function name    |
+| :------- | :------------------------------------------------------------ | :--------------- |
+| username | 3-20 letters                                                  | validateUsername |
+| email.   | must contain @ and afterwards a dot in the middle of a String | validateEmail    |
+| password | 8-16 letters containing alphabets and numerals                | validatePassword |
+
+- If the username or email are already used, the Rest API will return an error response, and the error message will be displayed.
+- Returning users will enter their username and password in Login dialog.<br>
+- Error messages will be displayed if the Rest API finds the username and the password don't match, or if the connection to the Rest API is disrupted. Otherwise the user can log in.<br>
 
 <h3 style="fontSize: 1rem;">2. Each Page in Detail</h3>
 
@@ -95,29 +103,29 @@ The footer includes the brand of the shop, a copyright statement and links to fa
 The landing page showcases products and promotes sales while offering enjoyable visual experience for site visitors. It contains an eyecatching hero banner, quick access to product lists and positive review entries from customers.
 
 - Hero Banner<br>
-  A carousel displays scenaries of the garden including their products. Autoplay and fade effects of 'swiper' library are applied in order to enhance visual experience of the page.
+  A carousel displays scenaries of the garden displaying various flowers in full bloom. Autoplay and fade effects of 'swiper' library are applied in order to offer enjoyable visual experience.
 
-- Links to Product Lists<br>
+- 'View our Collection'<br>
   <img src="./src/assets/readme/links-to-product-lists.png" style="width: 85%;" alt="links to product list" title="links to product list"><br>
-  An image of each category is displayed, which serves as a link to a product list of the category. This section invites users to browse products.
+  In this section the image of each category is a link to a product list of that category. This section aims to invite users to browse products.
 
-- Customer Reviews<br>
+- 'Compliments from Our Customers'<br>
   <img src="./src/assets/readme/reviews.png" style="width: 500px;" alt="reviews" title="reviews"><br>
-  The section introduces positive feedback entries from customers, which will promote sales. In this application, customers can submit feedback and optionally an image of their purchased product on 'Order History' page. When admin personnel reviews the entry and decides to post it, they can set publicizeFlg of the record in the DB table 'Reviews' to true, and the entry will be shown in the section. The reviews are shown in the order of the most recent to the oldest. The review contains the customers's feedback, reviewed date, the customer's display name and an image, if it was submitted.
+  The section introduces positive feedback entries from customers, which will promote sales. In this application, customers can submit feedback and optionally an image of their purchased product on 'Order History' page. When admin personnel reviews the entry and decides to post it, they can set publicizeFlg of the record in the DB table 'Reviews' to true, and the entry will be shown in the section. The reviews are shown in the order of the most recent to the oldest. The review contains the customers's feedback, reviewed date, the customer's display name and an image.
 
-#### Shop Page
+#### Product List Page
 
 <img src="./src/assets/readme/product-list.png" style="width: 85%;" alt="product-list" title="product-list">
 
 #### 1. Filter and sort
 
-- The shop page offers filter and sort options and displays a product list accordingly.
+- The product list page offers filter and sort options and displays a product list accordingly.
 - If multiple filter options are displayed, the products that match all options will ne displayed.
 
 #### Keywords Filter
 
-- Users can enter up to three keywords in the input box, separated by spaces or commas.
-- Only those products will be selected, whose data contain one of more of the keywords.
+- Users can enter keywords in the input box.
+- Only those products will be selected, whose data (product name and product detail) contain one of more of the keywords.
 
 #### Color Filter
 
@@ -144,36 +152,38 @@ The landing page showcases products and promotes sales while offering enjoyable 
 
 #### Product Detail Page
 
-<img src="./src/assets/readme/product-detail.png" style="width: 85%;" alt="product-detail" title="product-detail"><br>
+<img src="./src/assets/readme/product-detail.png" style="width: 85%;" alt="mixed tulips detail page" title="mixed tulips detail page"><br>
 
-- First a short paragraph introduces the features of the product.
-- A list provides data such as plant height, desired spacing and depth at planting time as well as soil conditions.
-- 'Additional Notes' section provides users with growing tipps. These notes are written for each category -- the same notes are used for all tulips, and that applies for other categories.
+1. If multiple images are stored for the product, users can click pagination buttons to view other images. All images are posted in small size below the main image.
+2. Users can set quantity and click 'Add to cart' to place the item in the cart.
+3. A short paragraph introduces the features of the product.
+4. A list provides data such as plant height, desired spacing and depth at planting as well as soil conditions.
+5. 'Additional Notes' section provides users with growing tipps. These notes are written for each category -- the same notes are posted for all tulips, and that applies for other categories.
 
 #### Contact Page
 
-<img src="./src/assets/readme/contact.png" alt="contact page" title="contact-page"><br>
-If users wish to contact the personnel of Wild Blossom Garden, they can fill the inquiry form and send it. The page is not equiped with the function to actually deliver the form to be reviewed.
+<img src="./src/assets/readme/contact.png" alt="contact page" title="contact-page" style="width: 85%;" ><br>
+If users wish to contact the personnel of Wild Blossom Garden, they can fill in the inquiry form. The page is not equiped with the function to actually save the form to be reviewed.
 
 #### Cart Page
 
-<img src="./src/assets/readme/cart.png" alt="cart page" title="cart page"><br>
+<img src="./src/assets/readme/cart.png" style="width: 85%;" alt="cart page" title="cart page"><br>
 
-- The cart page shows a table of products, quantities, unit prices and the total price of the cart.
-- The user can change the quantity using the pulldown box, and the total price will be updated accordingly.
-- If 'Continue Shopping' is clicked, to go to the product list page.
-- The cart data will not be sent to the backend until the user places the order.
-- If the user logs out, the cart data will be lost.
+1. The cart page shows a table of products, quantities, unit prices and the total price of the cart.
+2. Users can change the quantity using the pulldown box, and the total price will be updated accordingly.
+3. If 'Continue Shopping' is clicked, users are taken to the product list page.
+4. If 'Proceed to Checkout' is cliecked, users are taken to the checkout page.
+5. The cart data will not be sent to the backend until users place orders.
+6. If the user logs out, the cart data will be lost.
 
 #### Checkout Page
 
 1. Address section
 
 - If the current user has not saved addresses previously, a shipping address form will be displayed. If the user has saved an address(es), the saved address(es) will be displayed. The same applies for billing addresses.
-- By default the billing address is set to be the same as shipping address. The user can check the radio botton if they need to enter a different address.
-- The user can choose to save or not save the address. If he/she chooses to save the address, it will be displayed next time so that the user won't need to enter it again.
-- The user can set the address as default address so that the address will appear at the top if the user enters multiple addresses.
-- limit?
+- By default the billing address is set to be the same as shipping address. Users can check the radio botton if they need to enter a different address.
+- Users can choose to save or not save the address. If they choose to save the address, it will be stored in the database when they place orders and will be displayed next time they make orders.
+- Users can set the address as default address so that the address will appear at the top, and the radio button will be checked.
 
 2. Card Information
 
@@ -182,23 +192,25 @@ If users wish to contact the personnel of Wild Blossom Garden, they can fill the
 3. Items in the Cart
 
 - Cart items and the total price are shown in 'Items in the Cart' section, so users can make sure the order is what they intend before they proceed to make payment.
-- If 'Proceed to Purchase' button is clicked, the order will be placed, and the user is taken to the order confirmation page.
+- If 'Proceed to Purchase' button is clicked, the order will be placed (the order data will be sent to the Rest API), and users will be taken to the order confirmation page.
 
 #### Order Confirmation Page
 
-<img src="./src/assets/readme/order-confirmation.png" alt="order confirmation page" title="order confirmation page"><br>
+<img src="./src/assets/readme/order-confirmation.png" style="width: 85%;" alt="order confirmation page" title="order confirmation page"><br>
 
-- Thank you message for the purchase is displayed at the top.
-- Shipping address (and billing address if it differs from the shipping address) is displayed.
-- A table of ordered items, quantities and unit prices as well as the total price of the order will be displayed.
+1. A note, 'Thank you for your order! Your order will be processed,' will be displayed at the top.
+2. Shipping address (and billing address if it differs from the shipping address) is displayed.
+3. A table of ordered items, quantities and unit prices as well as the total price of the order will be displayed.
 
 #### Order History Page
 
-- The current user's past purchases are listed. The data includes purchase date, product names, images, quantities, unit prices and the total price.
-- By default the list is ordered by the date, showing the most recent record at the top, but the sort order can be reversed by selecting 'oldest to newest' in the pulldown.
-- 8 results are listed per page if there are more than eight results, and pagination buttons at the top of the table allow users to navigate the pages.
-- By clicking 'submit feedback' button, users can send feedback about their particular order. The entries will be saved in the database, and if the publicizeFlg of the record is later set to 'true,' the entry will be posted on the landing page. (The admin personnel can choose which reviews to post.)
-- The feedback can't be updated once submitted. 'Send feedback' button will change to a note 'Feedback Submitted.'
+<img src="./src/assets/readme/order-history.png" style="width: 85%;"  alt="order history page" title="order history page"><br>
+
+1. The current user's past purchases are listed. The data includes the date of purchase, product names, images, quantities, unit prices and the total price.
+2. By default the list is ordered by the date of purchase, showing the most recent record at the top, but the sort order can be reversed by selecting 'oldest to newest' in the pulldown.
+3. If there are more than eight results, 8 results will be shown per page, and pagination buttons at the top of the table allow users to navigate the pages.
+4. By clicking 'submit feedback' button, users can send feedback about their particular order. The entries will be saved in the database, and if the publicizeFlg of the record is later set to 'true,' the entry will be posted on the landing page. (The admin personnel can choose which reviews to post.)
+5. The feedback can't be updated once submitted. The purchase will be labeld with a note saying 'Feedback Submitted.'
 
 ### Credits
 

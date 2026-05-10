@@ -43,9 +43,11 @@ const Filter = ({ categoryId }) => {
       } else {
         searchParams.set("category", category);
       }
-      // Trim spaces of keywords. Replace spaces in the middle with '_'
+      // Trim keywords. Replace spaces in the middle with '_'
       let trimmedKeywords = keywords.trim();
-      let searchTerms = trimmedKeywords.replace(/\s+/g, "_");
+      let searchTerms = trimmedKeywords
+        .replace(/[\s,]/g, " ") // replace commas with spaces
+        .replace(/\s+/g, "_"); // replace spaces (single & multiple) with '_'
       searchTerms === ""
         ? searchParams.delete("keywords")
         : searchParams.set("keywords", searchTerms);

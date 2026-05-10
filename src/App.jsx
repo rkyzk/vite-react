@@ -14,7 +14,7 @@ import Footer from "./components/shared/Footer";
 import Cart from "./components/shared/Cart";
 import Checkout from "./components/checkout/Checkout";
 import OrderHistory from "./components/orderHistory/OrderHistory";
-import PaymentConfirmation from "./components/orderConfirmation/PaymentConfirmation";
+import OrderConfirmation from "./components/orderConfirmation/OrderConfirmation";
 import { Toaster } from "react-hot-toast";
 import ProductDetail from "./components/productDetail/ProductDetail";
 import Modal from "@mui/material/Modal";
@@ -41,7 +41,7 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/order-confirm" element={<PaymentConfirmation />} />
+              <Route path="/order-confirm" element={<OrderConfirmation />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/order-history" element={<OrderHistory />} />
               <Route path="/test/:id" element={<ProductImage />} />

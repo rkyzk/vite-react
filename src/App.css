@@ -7,6 +7,11 @@ a {
   text-decoration: none !important;
   font-family: "M PLUS Rounded 1c";
 }
+
+button:focus {
+  outline: 0 !important;
+}
+
 #user {
   font-family: "M PLUS Rounded 1c" !important;
   font: #333;

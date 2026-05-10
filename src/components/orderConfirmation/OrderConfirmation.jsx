@@ -13,9 +13,9 @@ import {
 } from "../../store/actions";
 import AddressCard from "../checkout/AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
-import styles from "../../styles/PaymentConfirmation.module.css";
+import styles from "../../styles/OrderConfirmation.module.css";
 
-const PaymentConfirmation = () => {
+const OrderConfirmation = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const paymentIntent = searchParams.get("payment_intent");
@@ -145,4 +145,4 @@ const PaymentConfirmation = () => {
   );
 };
 
-export default PaymentConfirmation;
+export default OrderConfirmation;
