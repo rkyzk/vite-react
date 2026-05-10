@@ -1,11 +1,9 @@
 To do
 view all products, by category fix the queries
 product colors
-keywords separated by spaces or commas max how many words?
 limit the number of addresses
 hide passwords
 review page with rates graph
-button blue outline
 
 the batch operation every day. delete sales count records
 
