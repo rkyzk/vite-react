@@ -1,43 +1,55 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Products from "./components/Products";
+import Products from "./components/productsPage/Products";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Cart from "./components/Cart";
+// import About from "./components/About";
+import Cart from "./components/shared/Cart";
 import Checkout from "./components/checkout/Checkout";
-import PaymentConfirmation from "./components/checkout/PaymentConfirmation";
-import PrivateRoute from "./components/PrivateRote";
+import OrderHistory from "./components/orderHistory/OrderHistory";
+import OrderConfirmation from "./components/orderConfirmation/OrderConfirmation";
 import { Toaster } from "react-hot-toast";
-import { Fragment } from "react";
-import Product from "./components/Product";
+import ProductDetail from "./components/productDetail/ProductDetail";
+import Modal from "@mui/material/Modal";
+import AuthModal from "./components/auth/AuthModal";
+import { closeModal } from "./store/actions";
+import { useSelector } from "react-redux";
+import ContactPage from "./components/contact/ContactPage";
+import ProductImage from "./components/productDetail/ProductImage";
+import MenuColumn from "./components/shared/MenuColumn";
 
 function App() {
+  const { open } = useSelector((state) => state.modal);
+
   return (
-    <Fragment>
+    <>
       <Router>
-        <div className="bg-neutral-100 min-h-screen mt-0 pt-3">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/" element={<PrivateRoute />}>
+        <div className="bg-neutral-100 min-h-screen pt-17 md:pt-20">
+          <div style={{ minHeight: "70vh" }}>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              {/* <Route path="/about" element={<About />} /> */}
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cart" element={<Cart cartPage />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/order-confirm" element={<PaymentConfirmation />} />
-            </Route>
-            <Route path="/product/:id" element={<Product />} />
-          </Routes>
+              <Route path="/order-confirm" element={<OrderConfirmation />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/order-history" element={<OrderHistory />} />
+              <Route path="/test/:id" element={<ProductImage />} />
+            </Routes>
+          </div>
           <Footer />
         </div>
+        <Modal open={open} onClose={closeModal}>
+          <AuthModal />
+        </Modal>
       </Router>
       <Toaster position="top-center" duration="4000" />
-    </Fragment>
+    </>
   );
 }
 

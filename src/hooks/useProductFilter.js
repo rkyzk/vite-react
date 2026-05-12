@@ -14,10 +14,16 @@ const useProductFilter = () => {
       : 1;
     const category = searchParams.get("category") || null;
     const keywords = searchParams.get("keywords") || null;
-    if (category) params.set("category", category);
+    const colors = searchParams.get("colors") || null;
+    const sort = searchParams.get("sortBy") || null;
+    if (category && category !== "" && category !== 0)
+      params.set("category", category);
     if (keywords) params.set("keywords", keywords);
+    if (colors) params.set("colors", colors);
+    if (sort) params.set("sortBy", sort);
     params.set("pageNumber", currPage - 1);
-    const queryString = params.toString();
+    let queryString = params.toString();
+    if (queryString && queryString.length > 0) queryString = "?" + queryString;
     dispatch(fetchProducts(queryString));
   }, [dispatch, searchParams]);
 };

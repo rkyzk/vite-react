@@ -1,10 +1,16 @@
 const initialState = {
   user: null,
-  shippingAddress: null,
-  billingAddress: null,
+  sAddressList: null,
+  bAddressList: null,
   tempSAddress: null,
   tempBAddress: null,
   clientSecret: null,
+  sAddrErrs: null,
+  bAddrErrs: null,
+  addrChecked: false,
+  selectedSAddrId: 0,
+  selectedBAddrId: 0,
+  commandIdx: 0,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -17,53 +23,102 @@ const authReducer = (state = initialState, action) => {
     case "LOGOUT_USER":
       return {
         user: null,
-        shippingAddress: null,
-        billingAddress: null,
+        sAddressList: null,
+        bAddressList: null,
+        clientSecret: null,
       };
-    case "STORE_BILLING_ADDRESS":
+    case "STORE_SADDRESSLIST":
       return {
         ...state,
-        billingAddress: action.payload,
+        sAddressList: action.payload,
       };
-    case "STORE_SHIPPING_ADDRESS":
+    case "STORE_BADDRESSLIST":
       return {
         ...state,
-        shippingAddress: action.payload,
+        bAddressList: action.payload,
       };
     case "STORE_TEMP_BILLING_ADDRESS":
       return {
         ...state,
-        tempBAddress: action.payload,
+        tempBAddress: { ...action.payload, shippingAddress: false },
       };
     case "STORE_TEMP_SHIPPING_ADDRESS":
       return {
         ...state,
-        tempSAddress: action.payload,
+        tempSAddress: { ...action.payload, shippingAddress: true },
       };
-    case "DELETE_BILLING_ADDRESS":
+    case "CLEAR_TEMP_BILLING_ADDRESS":
       return {
         ...state,
-        billingAddress: null,
+        tempBAddress: null,
+      };
+    case "CLEAR_TEMP_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        tempSAddress: null,
+      };
+    case "DELETE_S_ADDRESS":
+      return {
+        ...state,
+        sAddressList: action.payload,
+      };
+    case "DELETE_B_ADDRESS":
+      return {
+        ...state,
+        bAddressList: action.payload,
+      };
+    case "STORE_SADDRESS_ERRORS":
+      return {
+        ...state,
+        sAddrErrs: action.payload,
+        addrChecked: true,
+      };
+    case "STORE_BADDRESS_ERRORS":
+      return {
+        ...state,
+        bAddrErrs: action.payload,
+        addrChecked: true,
+      };
+    case "CLEAR_SADDRESS_ERRORS":
+      return {
+        ...state,
+        sAddrErrs: null,
+      };
+    case "CLEAR_BADDRESS_ERRORS":
+      return {
+        ...state,
+        bAddrErrs: null,
       };
     case "STORE_CLIENT_SECRET":
       return {
         ...state,
         clientSecret: action.payload,
       };
-    case "REMOVE_CLIENT_SECRET":
+    case "SET_ADDR_CHECKED_FALSE":
       return {
         ...state,
-        clientSecret: null,
+        addrChecked: false,
       };
-    case "CLEAR_TEMP_S_ADDRESS":
+    case "SET_SELECTED_SADDRESS":
       return {
         ...state,
-        tempSAddress: null,
+        selectedSAddrId: action.payload,
       };
-    case "CLEAR_TEMP_B_ADDRESS":
+    case "SET_SELECTED_BADDRESS":
       return {
         ...state,
-        tempBAddress: null,
+        selectedBAddrId: action.payload,
+      };
+    case "CLEAR_SELECTED_ADDRESS":
+      return {
+        ...state,
+        selectedSAddrId: 0,
+        selectedBAddrId: 0,
+      };
+    case "SET_COMMAND_IDX":
+      return {
+        ...state,
+        commandIdx: action.payload,
       };
     default:
       return state;

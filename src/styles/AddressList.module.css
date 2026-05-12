@@ -1,0 +1,15 @@
+.Line {
+  width: calc(100vw * 0.75) !important;
+  margin-left: 3px;
+}
+
+@media screen and (min-width: 768px) {
+  .AddressSection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .Address {
+    width: 280px;
+  }
+}

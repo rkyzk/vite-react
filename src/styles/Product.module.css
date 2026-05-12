@@ -1,47 +1,72 @@
-.Img {
-  width: 430px;
-  height: 344px;
-  object-fit: cover;
-  object-position: center top;
-  margin: auto;
+.ImgSize,
+.Swiper {
+  width: 430px !important;
+  height: 344px !important;
 }
 
 .Button {
   border-radius: 0px !important;
+  border: 1px solid #555 !important;
 }
 
 .PrcQty {
-  display: flex;
+  display: flex !important;
+  justify-content: space-between !important;
 }
 
-@media screen and (min-width: 768px) {
-  .Box {
-    gap: 15px;
+@media screen and (min-width: 1200px) {
+  .Description {
+    width: 80% !important;
   }
 }
 
-@media screen and (max-width: 680px) {
-  .Img {
+@media screen and (max-width: 1000px) {
+  .ImgSize,
+  .Swiper {
     width: 310px !important;
-    height: 264px !important;
+    height: 248px !important;
   }
-  h1 {
-    font-size: 1.6rem;
+
+  .NotesHeading {
+    margin-top: 30px !important;
+  }
+}
+@media screen and (min-width: 890px) {
+  .PrcQty {
+    flex-direction: row !important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .PrcQty {
+    flex-direction: column !important;
+  }
+  .QtyAddBtn {
+    justify-content: end !important;
+  }
+  .Description {
+    margin-top: 2px !important;
+    margin-left: 15px !important;
   }
 }
 
-@media screen and (max-width: 639px) {
-  .Box {
-    width: 95%;
-    margin: auto;
+@media screen and (max-width: 767px) {
+  .ImgSize,
+  .Swiper {
+    width: 430px !important;
+    height: 344px !important;
   }
 }
 
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 500px) {
   .Qty {
-    margin-top: 2px;
+    margin-top: 2px !important;
   }
   .PrcQty {
-    flex-direction: column;
+    flex-direction: column !important;
+  }
+  .ImgSize,
+  .Swiper {
+    width: 310px !important;
+    height: 248px !important;
   }
 }

@@ -1,378 +1,374 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { sendUpdateAddressReq, deleteAddress } from "../../store/actions";
+import { getAddress } from "jposta";
+import { useState, useEffect } from "react";
+import {
+  sendUpdateAddressReq,
+  deleteAddress,
+  validateAddress,
+  storeTempAddress,
+  clearAddressErrors,
+} from "../../store/actions";
 import styles from "../../styles/AddressForm.module.css";
-import AddressCard from "./AddressCard";
 import toast from "react-hot-toast";
+import AddressCard from "./AddressCard";
 
-const AddressForm = ({ props }) => {
-  const {
-    sAddress,
-    setSAddress,
-    errors,
-    setErrors,
-    bAddress,
-    setBAddress,
-    billAddrErrors,
-    setBillAddrErrors,
-    showErrorsSA,
-    showErrorsBA,
-    initAddr,
-    billAddrCheck,
-    setBillAddrCheck,
-  } = props;
-  const auth = useSelector((state) => state.auth);
-  const shippingAddress =
-    auth && auth?.shippingAddress ? auth.shippingAddress : null;
-  const billingAddress =
-    auth && auth?.billingAddress ? auth.billingAddress : null;
-  const [editSAddr, setEditSAddr] = useState(false);
-  const [editBAddr, setEditBAddr] = useState(false);
-  const [saveSAddr, setSaveSAddr] = useState(true);
-  const [saveBAddr, setSaveBAddr] = useState(true);
-
-  const handleChangeShippingAddress = (e) => {
-    setSAddress({
-      ...sAddress,
-      [e.target.name]: e.target.value,
-    });
-    validateIpt(e);
+const AddressForm = ({ address, isSAddr }) => {
+  const initAddr = {
+    addressId: 0,
+    fullname: "",
+    defaultAddressFlg: false,
+    shippingAddress: isSAddr,
+    streetAddress1: "",
+    streetAddress2: "",
+    streetAddress3: "",
+    city: "",
+    prefecture: "",
+    postalCode: "",
+    saveAddr: true,
   };
-
-  const handleChangeBillingAddress = (e) => {
-    setBAddress({
-      ...bAddress,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const toggleSaveAddr = (isShippingAddr) => {
-    if (isShippingAddr) {
-      setSaveSAddr(!saveSAddr);
-      sAddress.saveAddr = !sAddress.saveAddr;
-    } else {
-      setSaveBAddr(!saveBAddr);
-      bAddress.saveAddr = !bAddress.saveAddr;
-    }
-  };
-
+  const [tempAddress, setTempAddress] = useState(address || initAddr);
+  const { sAddrErrs, bAddrErrs, addrChecked, sAddressList, bAddressList } =
+    useSelector((state) => state.auth);
+  const [editAddr, setEditAddr] = useState(false);
+  const [zip, setZip] = useState("");
+  const [errMsgZip, setErrMsgZip] = useState("");
   const dispatch = useDispatch();
-  const saveAddress = (address) => {
-    dispatch(sendUpdateAddressReq(address));
-    setEditSAddr(false);
-    setEditBAddr(false);
+
+  /**
+   * get addresses
+   */
+  const handleChangeZip = (e) => {
+    let zip = e.target.value;
+    setZip(zip);
+    zip.length === 7 ? fetchAddress(zip) : clearAddr();
   };
 
-  const handleDeleteBAddress = (id) => {
-    dispatch(deleteAddress(id, toast));
-    setBAddress({ ...initAddr, billingAddress: true });
-    setEditBAddr(false);
+  const clearAddr = () => {
+    setTempAddress({
+      ...tempAddress,
+      prefecture: "",
+      city: "",
+      streetAddress1: "",
+    });
   };
-  const handleCancelEditAddress = (isShippingAddr) => {
-    if (isShippingAddr) {
-      setSAddress({ ...sAddress, ...shippingAddress });
-      setEditSAddr(false);
+
+  const fetchAddress = async (zip) => {
+    addrChecked && dispatch(validateAddress(tempAddress, isSAddr));
+    const res = await getAddress(zip);
+    if (res === null) {
+      setErrMsgZip("Enter correct zip code.");
+      clearAddr();
+      return;
+    }
+    setErrMsgZip("");
+    setTempAddress({
+      ...tempAddress,
+      postalCode: zip,
+      prefecture: res.pref,
+      city: res.city,
+      streetAddress1: res.area,
+    });
+  };
+
+  const showEditForm = () => {
+    setZip(tempAddress.postalCode);
+    setEditAddr(true);
+  };
+
+  const handleCheckZip = () => {
+    zip.length !== 7 && setErrMsgZip("Enter 7 digits");
+    return;
+  };
+
+  const handleChangeAddress = (e) => {
+    if (e.target.name === "saveAddr" || e.target.name === "defaultAddressFlg") {
+      setTempAddress({
+        ...tempAddress,
+        [e.target.name]: !tempAddress[e.target.name],
+      });
     } else {
-      setBAddress({ ...bAddress, ...billingAddress });
-      setEditBAddr(false);
+      setTempAddress({ ...tempAddress, [e.target.name]: e.target.value });
     }
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-  const validateIpt = (e) => {
-    let errs = errors;
-    if (e.target.id !== "streetAddress2") {
-      if (e.target.value.trim().length === 1) {
-        errs[e.target.name] = true;
-        setErrors(errs);
-      } else {
-        errs[e.target.name] = false;
-        setErrors(errs);
-      }
+
+  const saveAddress = async () => {
+    let result = await dispatch(validateAddress(isSAddr));
+    if (result) {
+      dispatch(sendUpdateAddressReq(tempAddress));
+      setEditAddr(false);
+      dispatch(clearAddressErrors(isSAddr));
     } else {
-      if (e.target.value.trim().length < 2) {
-        errs[e.target.name] = true;
-        setErrors(errs);
-      } else {
-        errs[e.target.name] = false;
-        setErrors(errs);
-      }
+      return;
     }
   };
+
+  const handleDeleteAddress = () => {
+    dispatch(deleteAddress(isSAddr, address.addressId, toast));
+    setTempAddress({ ...initAddr, shippingAddress: isSAddr });
+    setEditAddr(false);
+    dispatch(clearAddressErrors(isSAddr));
+  };
+
+  const handleCancelEditAddress = (sAddr) => {
+    setTempAddress({ ...address });
+    setEditAddr(false);
+    setErrMsgZip("");
+    dispatch(clearAddressErrors(sAddr));
+  };
+
   useEffect(() => {
-    shippingAddress && setSAddress({ ...shippingAddress, saveAddr: true });
-    billingAddress && setBAddress({ ...billingAddress, saveAddr: true });
-  }, [auth]);
-  useEffect(() => {}, [showErrorsSA]);
+    dispatch(storeTempAddress(tempAddress));
+    addrChecked && dispatch(validateAddress(isSAddr));
+  }, [tempAddress]);
 
-  const addressForm = (handleChangeAddress, address, isShippingAddr) => {
+  const saveButtons = () => {
+    return (
+      <div className={`gap-x-1 px-2 ${isSAddr ? "s-addr" : "b-addr"}`}>
+        <button
+          className="mt-2 bg-stone-600
+            text-white py-1 px-2 hover:opacity-60"
+          onClick={() => saveAddress(tempAddress)}
+          style={{ borderRadius: "5px" }}
+        >
+          Save
+        </button>
+        <button
+          className="m-2 bg-stone-600 text-white py-1 px-2
+                    hover:opacity-60"
+          onClick={() => handleCancelEditAddress(isSAddr)}
+          style={{ borderRadius: "5px" }}
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  };
+  const editButtons = () => {
+    return (
+      <div className="mt-2 flex justify-start gap-x-2">
+        <button
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+             hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "42px" }}
+          onClick={() => showEditForm(true)}
+        >
+          Edit
+        </button>
+        <button
+          className={`${styles.EditBtn} h-6.75 text-stone-900 px-1
+           hover:bg-neutral-800 hover:text-white`}
+          style={{ border: "#555 solid 1px", width: "160px" }}
+          onClick={() => handleDeleteAddress()}
+        >
+          Delete this address
+        </button>
+      </div>
+    );
+  };
+
+  const defaultRadioBtn = () => {
+    return (
+      <div className={`${isSAddr ? "s-addr" : "b-addr"} flex`}>
+        <label
+          htmlFor="defaultAddressFlg"
+          className={`${isSAddr ? "s-addr" : "b-addr"}`}
+        >
+          <input
+            type="radio"
+            id="defaultAddressFlg"
+            name="defaultAddressFlg"
+            value="defaultAddress"
+            checked={tempAddress.defaultAddressFlg}
+            onClick={(e) => handleChangeAddress(e)}
+            className={`${isSAddr ? "s-addr" : "b-addr"} m-1`}
+          />
+        </label>
+        <span>Set as default address</span>
+      </div>
+    );
+  };
+
+  const addressForm = () => {
     return (
       <form
-        id={isShippingAddr ? "s-addr" : "b-addr"}
-        onSubmit={(e) => handleSubmit(e)}
+        id={isSAddr ? "s-addr" : "b-addr"}
+        onSubmit={(e) => e.preventDefault}
+        className={`${isSAddr ? "s-addr" : "b-addr"}
+          bg-neutral-300 px-2 py-1 ${styles.Form}`}
       >
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="fullname" className={`${styles.Label}`}>
-            full name:
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
+          <label
+            htmlFor="fullname"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            Full name:
           </label>
           <input
             id="fullname"
             name="fullname"
             type="text"
-            className={`${styles.Input}`}
-            value={address.fullname}
-            onChange={(e) => handleChangeAddress(e)}
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+            value={tempAddress?.fullname}
+            onChange={(e) => handleChangeAddress(e, isSAddr)}
           />
-          {((showErrorsSA && isShippingAddr && errors.fullname) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.fullname)) && (
+          {((isSAddr && sAddrErrs?.fullname) ||
+            (!isSAddr && bAddrErrs?.fullname)) && (
             <span className="text-sm font-semibold text-red-600 mt-0">
-              "Fullname must be two or more characters"
+              Enter your full name
             </span>
           )}
         </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="streetAddress1" className={`${styles.Label}`}>
-            street address 1:
-          </label>
-          <input
-            id="streetAddress1"
-            name="streetAddress1"
-            type="text"
-            className={`${styles.Input}`}
-            value={address.streetAddress1}
-            onChange={(e) => handleChangeAddress(e)}
-          />
-          {((showErrorsSA && isShippingAddr && errors.streetAddress1) ||
-            (showErrorsBA &&
-              !isShippingAddr &&
-              billAddrErrors.streetAddress1)) && (
-            <span className="text-sm font-semibold text-red-600 mt-0">
-              Eneter valid street address
-            </span>
-          )}
-        </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="streetAddress2" className={`${styles.Label}`}>
-            street address 2:
-          </label>
-          <input
-            id="streetAddress2"
-            name="streetAddress2"
-            type="text"
-            className={`${styles.Input}`}
-            value={address.streetAddress2}
-            onChange={(e) => handleChangeAddress(e)}
-          />
-          {((showErrorsSA && isShippingAddr && errors.streetAddress2) ||
-            (showErrorsBA &&
-              !isShippingAddr &&
-              billAddrErrors.streetAddress2)) && (
-            <span className="text-sm font-semibold text-red-600 mt-0">
-              Eneter valid street address
-            </span>
-          )}
-        </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="city" className={`${styles.Label}`}>
-            city:
-          </label>
-          <input
-            id="city"
-            name="city"
-            type="text"
-            className={`${styles.Input}`}
-            value={address.city}
-            onChange={(e) => handleChangeAddress(e)}
-          />
-          {((showErrorsSA && isShippingAddr && errors.city) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.city)) && (
-            <span className="text-sm font-semibold text-red-600 mt-0">
-              Enter valid city
-            </span>
-          )}
-        </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="province" className={`${styles.Label}`}>
-            province:
-          </label>
-          <input
-            id="province"
-            name="province"
-            type="text"
-            className={`${styles.Input}`}
-            value={address.province}
-            onChange={(e) => handleChangeAddress(e)}
-          />
-          {((showErrorsSA && isShippingAddr && errors.province) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.province)) &&
-            !(address.province?.length > 2) && (
-              <span className="text-sm font-semibold text-red-600 mt-0">
-                Enter valid province
-              </span>
-            )}
-        </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="postalCode" className={`${styles.Label}`}>
-            postal code:
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
+          <label
+            htmlFor="postalCode"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            Zip code (no hyphen):
           </label>
           <input
             id="postalCode"
             name="postalCode"
             type="text"
-            className={`${styles.Input}`}
-            value={address.postalCode}
-            onChange={(e) => handleChangeAddress(e)}
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+            value={zip}
+            maxLength="7"
+            onChange={(e) => handleChangeZip(e)}
+            onBlur={(e) => handleCheckZip(e)}
           />
-          {((showErrorsSA && isShippingAddr && errors.postalCode) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.postalCode)) &&
-            !(address.postalCode?.length > 2) && (
+          {errMsgZip.length > 0 && (
+            <span className="text-sm font-semibold text-red-600 mt-0">
+              {errMsgZip}
+            </span>
+          )}
+          {errMsgZip.length === 0 &&
+            ((isSAddr && sAddrErrs?.postalCode) ||
+              (!isSAddr && bAddrErrs?.postalCode)) && (
               <span className="text-sm font-semibold text-red-600 mt-0">
-                Enter valid postal code
+                Enter zip code.
               </span>
             )}
         </div>
-        <div className={`${styles.InputItem}`}>
-          <label htmlFor="countryCode" className={`${styles.Label}`}>
-            country:
+        <div
+          className={`${isSAddr ? "s-addr" : "b-addr"}
+            flex flex-col mt-1`}
+        >
+          <label
+            htmlFor="prefecture"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            Prefecture:
           </label>
           <input
-            id="countryCode"
-            name="countryCode"
+            id="prefecture"
+            name="prefecture"
             type="text"
-            className={`${styles.Input}`}
-            value={address.countryCode}
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+            value={tempAddress?.prefecture}
+          />
+        </div>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
+          <label
+            htmlFor="city"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            City, District:
+          </label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+            value={tempAddress?.city}
+          />
+        </div>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
+          <label
+            htmlFor="streetAddress1"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          ></label>
+          <input
+            id="streetAddress1"
+            name="streetAddress1"
+            type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
+            value={tempAddress?.streetAddress1}
+          />
+        </div>
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col mt-1`}>
+          <label
+            htmlFor="streetAddress2"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Label}`}
+          >
+            Street address:
+          </label>
+          <input
+            id="streetAddress2"
+            name="streetAddress2"
+            type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input}`}
+            value={tempAddress?.streetAddress2}
             onChange={(e) => handleChangeAddress(e)}
           />
-          {((showErrorsSA && isShippingAddr && errors.countryCode) ||
-            (showErrorsBA && !isShippingAddr && billAddrErrors.countryCode)) &&
-            !(address?.countryCode?.length > 2) && (
-              <span className="text-sm font-semibold text-red-600 mt-0">
-                Enter valid country
-              </span>
-            )}
+          {((isSAddr && sAddrErrs?.streetAddress2) ||
+            (!isSAddr && bAddrErrs?.streetAddress2)) && (
+            <span className="text-sm font-semibold text-red-600 mt-0">
+              Enter street address.
+            </span>
+          )}
         </div>
-        {((isShippingAddr && !shippingAddress) ||
-          (!isShippingAddr && !billingAddress)) && (
-          <div>
-            <label htmlFor="save-addr">
+        <div className={`${isSAddr ? "s-addr" : "b-addr"} flex flex-col`}>
+          <label
+            htmlFor="streetAddress3"
+            className={`${isSAddr ? "s-addr" : "b-addr"} hidden`}
+          ></label>
+          <input
+            id="streetAddress3"
+            name="streetAddress3"
+            type="text"
+            className={`${isSAddr ? "s-addr" : "b-addr"} ${styles.Input} mt-1`}
+            value={tempAddress?.streetAddress3}
+            onChange={(e) => handleChangeAddress(e)}
+          />
+        </div>
+        <div className="mt-1">
+          <label htmlFor="save-addr">
+            <div className="flex">
               <input
                 type="radio"
                 id="saveAddr"
                 name="saveAddr"
-                value={isShippingAddr ? saveSAddr : saveBAddr}
-                defaultChecked={address.saveAddr}
-                onClick={() => {
-                  toggleSaveAddr(isShippingAddr);
-                }}
-                onChange={(e) => handleChangeAddress(e)}
-                className="m-1"
+                value="saveAddr"
+                checked={tempAddress.saveAddr}
+                onClick={(e) => handleChangeAddress(e)}
+                className={`${isSAddr ? "s-addr" : "b-addr"} m-1 h-3.5`}
               />
-              <span>save this address</span>
-            </label>
-          </div>
-        )}
+              <span className="leading-5">Save this address</span>
+            </div>
+          </label>
+        </div>
+        {((isSAddr && sAddressList?.length > 0) ||
+          (!isSAddr && bAddressList?.length > 0)) && <>{defaultRadioBtn()}</>}
+        {editAddr && <>{saveButtons()}</>}
       </form>
     );
   };
+
   return (
     <>
-      <div className="flex w-full mt-3">
-        <div className="grid xs:grid-col-1 sm:grid-cols-2 xs:gap-2 sm:gap-x-4 md:gap-x-16">
-          <div className="min-w-[300px]">
-            <h2 className={`${styles.Text} "mt-2"`}>Shipping Address:</h2>
-            {shippingAddress && !editSAddr ? (
-              <>
-                <AddressCard address={sAddress} />
-                <button
-                  className="bg-cyan-700 block mt-2 px-3 py-1"
-                  onClick={() => setEditSAddr(true)}
-                >
-                  edit
-                </button>
-              </>
-            ) : (
-              <div className={`${styles.addressCardBox} ${styles.sAddressBox}`}>
-                {addressForm(handleChangeShippingAddress, sAddress, true)}
-                {shippingAddress && (
-                  <div className="flex">
-                    <button
-                      className="bg-fuchsia-400 px-2 py-1 m-1"
-                      onClick={() => saveAddress(sAddress)}
-                    >
-                      save
-                    </button>
-                    <button
-                      className="bg-fuchsia-400 px-2 my-1"
-                      onClick={() => handleCancelEditAddress(true)}
-                    >
-                      cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          <div>
-            <h2 className={`${styles.Text}`}>Billing Address:</h2>
-            {billingAddress && !editBAddr && (
-              <>
-                <AddressCard address={bAddress} />
-                <button
-                  className="bg-cyan-700 block mt-2 px-3 py-1"
-                  onClick={() => setEditBAddr(true)}
-                >
-                  edit
-                </button>
-              </>
-            )}
-            {!billingAddress && (
-              <div className="mt-[-10px]">
-                <label htmlFor="billAddrCheck">
-                  <input
-                    type="radio"
-                    id="billAddrCheckBox"
-                    name="billAddrCheckBox"
-                    value={billAddrCheck}
-                    deafultChecked={billAddrCheck}
-                    onClick={() => {
-                      setBillAddrCheck(!billAddrCheck);
-                    }}
-                  />
-                  <span className="ml-1">Same as shipping address</span>
-                </label>
-              </div>
-            )}
-            {(!billAddrCheck || editBAddr) && (
-              <div className={`${styles.addressCardBox}`}>
-                {addressForm(handleChangeBillingAddress, bAddress, false)}
-                {editBAddr && (
-                  <div className="flex">
-                    <button
-                      className="bg-fuchsia-400 px-2 py-1 mt-1"
-                      onClick={() => saveAddress(bAddress)}
-                    >
-                      save
-                    </button>
-                    <button
-                      className="bg-fuchsia-400 px-2 mx-1 mt-1"
-                      onClick={() => handleCancelEditAddress(false)}
-                    >
-                      cancel
-                    </button>
-                    <button
-                      className="bg-fuchsia-400 mt-1 px-2"
-                      onClick={() => handleDeleteBAddress(bAddress.addressId)}
-                    >
-                      delete this address
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+      {address && !editAddr ? (
+        <div className="flex-col">
+          <AddressCard address={tempAddress} />
+          {editButtons()}
         </div>
-      </div>
+      ) : (
+        <div
+          className={`${isSAddr && editAddr && "s-addr"}
+          ${!isSAddr && editAddr && "b-addr"}
+          ${isSAddr && !sAddressList && !bAddressList && "md:mt-13"}`}
+        >
+          {addressForm()}
+        </div>
+      )}
     </>
   );
 };

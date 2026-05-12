@@ -1,0 +1,15 @@
+.SecondMenuItem:hover {
+  text-decoration: underline !important;
+  color: #8b3f04 !important;
+}
+
+.SecondMenuItem {
+  color: #333 !important;
+}
+
+@media screen and (max-width: 767px) {
+  .SecondMenuBox {
+    top: 150 !important;
+    right: 0 !important;
+  }
+}

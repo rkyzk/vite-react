@@ -7,50 +7,28 @@
   opacity: 1;
 }
 
-.Text {
-  font-family: Raleway, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 400;
-  margin-top: 20px;
-}
-
-.Note {
-  width: 500px;
-  margin: auto;
-  font-family: Raleway, sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  margin-top: 20px;
-}
-
 .Label {
-  font-size: 1rem;
-  width: 160px;
+  font-size: 0.9rem;
+  width: 200px;
+  line-height: 1.1;
 }
 
 .Input {
   line-height: 1.2rem;
-  padding: 2px 4px !important;
-  width: 90%;
+  padding: 3px 5px !important;
+  border: #c9c4c4 solid 1px;
+  border-radius: 5px;
 }
 
-.note {
-  font-size: 0.9rem;
-  margin-top: -8px;
-}
-
-.addressCardBox {
-  background-color: rgb(204, 209, 209);
-  padding: 5px 0px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 2px;
+.Form {
+  border-radius: 5px !important;
   width: 300px;
 }
 
-.InputItem {
-  display: flex;
-  flex-direction: column;
+@media (768px <= width < 850px) {
+  .Form {
+    width: 270px;
+  }
 }
 
 @media screen and (min-width: 640px) {

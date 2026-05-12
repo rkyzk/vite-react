@@ -1,0 +1,29 @@
+.Button {
+  border-radius: 5px;
+  background-color: #483708 !important;
+}
+
+.Button:hover {
+  opacity: 70%;
+}
+
+.Text {
+  font-size: 1.2rem !important;
+}
+
+.Input {
+  width: 300px;
+}
+
+.LoginForm {
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 480px) {
+  .LoginForm {
+    width: 90%;
+  }
+  .Input {
+    width: 270px;
+  }
+}

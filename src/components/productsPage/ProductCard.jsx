@@ -1,0 +1,89 @@
+import truncateText from "../../utils/truncateText";
+import { FaShoppingCart } from "react-icons/fa";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateCartAddQty } from "../../store/actions";
+import styles from "../../styles/ProductCard.module.css";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { IMAGE_URL } from "../../constants/constants.js";
+
+const ProductCard = ({
+  id,
+  productName,
+  price,
+  quantity,
+  imagePath,
+  category,
+}) => {
+  const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
+  const isAvailable = quantity && Number(quantity) > 0;
+  const addToCart = (id) => {
+    dispatch(updateCartAddQty(id, Number(qty), toast));
+  };
+
+  return (
+    <div className={`${styles.Card} relative`}>
+      <Link className="cursor-pointer text-center" to={`/product/${id}`}>
+        <img
+          className={`${styles.imgSize} cursor-pointer`}
+          src={`${IMAGE_URL}${imagePath}`}
+          alt={productName}
+        />
+        <p className="text-lg/6 mt-1 text-gray-900 h-3">
+          {truncateText(productName, 50)}
+        </p>
+        <div className="text-orange-800 -mt-0.5">
+          {category.categoryId === 4 ? (
+            <p>&yen;{price} (6 bulbs)</p>
+          ) : (
+            <p>&yen;{price} (12 bulbs)</p>
+          )}
+        </div>
+      </Link>
+      <div className="-mt-3 flex justify-center gap-2">
+        {isAvailable && (
+          <div>
+            <label className="mt-1 mr-1" htmlFor="quantity">
+              Quantity
+            </label>
+            <select
+              name="quantity"
+              className="border bg-white ml-1"
+              onChange={(e) => setQty(Number(e.target.value))}
+              style={{ borderRadius: "5px" }}
+            >
+              {[...Array(30)]
+                .map((_, i) => i + 1)
+                .map((i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
+        <button
+          className={`${
+            isAvailable
+              ? "bg-neutral-100 text-gray-900 hover:bg-neutral-600 hover:text-white"
+              : "bg-gray-400 text-gray-700"
+          } ${styles.Button} p-1 ml-2`}
+          onClick={() => addToCart(id)}
+        >
+          {isAvailable ? (
+            <div className="flex">
+              <FaShoppingCart className="mt-1 mr-1" />
+              <span>Add to cart</span>
+            </div>
+          ) : (
+            "Out of Stock"
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;

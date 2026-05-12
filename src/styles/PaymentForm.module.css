@@ -1,9 +1,45 @@
-.paymentForm {
-  max-width: 512px;
+.Button {
+  background-color: rgb(122, 109, 10);
 }
 
-.paymentHeading {
-  font-family: Raleway, sans-serif !important;
-  font-size: 1.1rem;
-  font-weight: 400;
+.Line {
+  width: calc(100vw * 0.75) !important;
+}
+
+@media screen and (min-width: 768px) {
+  .CardForm {
+    width: calc(80vw - 280px);
+    max-width: 360px;
+  }
+  .CartItemsBox {
+    margin-top: 0px !important;
+    width: 280px !important;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .PaymentForm {
+    margin-top: -18px;
+  }
+  .CartItemsBox {
+    margin-top: 15px;
+  }
+}
+
+@media screen and (400px <= width < 767px) {
+  .PaymentForm,
+  .CardForm,
+  .CartItemsBox {
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+@media screen and (max-width: 399px) {
+  .PaymentForm,
+  .CardForm,
+  .CartItemsBox {
+    width: 90vw;
+    max-width: 360px;
+  }
 }
