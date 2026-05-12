@@ -1,4 +1,4 @@
-const croccusAdditionalNotes = (
+const crocusAdditionalNotes = (
   <>
     <h4
       style={{
@@ -52,4 +52,4 @@ const croccusAdditionalNotes = (
   </>
 );
 
-export default croccusAdditionalNotes;
+export default crocusAdditionalNotes;

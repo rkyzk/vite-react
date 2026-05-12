@@ -3,7 +3,7 @@
 <img src="./src/assets/readme/landing-page.png" style="width: 85%;" alt="Landing page" title="landing-page">
 
 Deployed project:
-[Wild Blossom Garden](https://main.d318qultnvdzu6.amplifyapp.com)
+[Wild Blossom Garden](https://main.dw15oiibmfng0.amplifyapp.com)
 
 ### Overview
 

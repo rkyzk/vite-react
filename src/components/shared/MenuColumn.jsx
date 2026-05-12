@@ -33,7 +33,7 @@ const MenuColumn = () => {
           className={`${styles.MenuItem}`}
         >
           {path === "/products?category=3" && <span>◆</span>}
-          Croccusses
+          Crocusses
         </Link>
         <Link
           to={`/products?category=4`}
