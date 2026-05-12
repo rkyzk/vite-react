@@ -9,6 +9,7 @@ import {
 import { validateAddress } from "../../store/actions";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "../../styles/PaymentForm.module.css";
+import { FRONTEND_URL } from "../../constants/constants.js";
 
 /**
  * Displays stripe's payment element
@@ -51,7 +52,7 @@ const PaymentForm = ({ clientSecret }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://localhost:5173/order-confirm`,
+        return_url: `${FRONTEND_URL}/order-confirm`,
       },
     });
     if (error) {
