@@ -2,9 +2,6 @@
 
 <img src="./src/assets/readme/landing-page.png" style="width: 85%;" alt="Landing page" title="landing-page">
 
-Deployed project:
-[Wild Blossom Garden](https://main.dw15oiibmfng0.amplifyapp.com)
-
 ### Overview
 
 Wild Blossom Garden is an imaginary shop selling flower bulbs online. Here users can browse products, place items in their carts, enter delivery and payment information and place orders. They can also view their order history and submit feedback about their purchase. This frontend application communicates with a Rest API built with Java Spring Boot, which manages authentication of requests and processes interactions with the database.
