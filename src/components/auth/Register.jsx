@@ -51,8 +51,8 @@ const Register = () => {
 
   const validatePassword = useCallback(() => {
     if (
-      !data.regEmail.match(
-        /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,16}$/,
+      !data.regPassword.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,16}$/,
       )
     ) {
       setPwErrs(true);
@@ -83,10 +83,14 @@ const Register = () => {
     }
   };
   const handleChange = (e) => {
+    setUsernameErrs(false);
+    setEmailErrs(false);
+    setPwErrs(false);
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
+    console.log("fired");
   };
   // toggle show/hide password, switch between closed/open eye-icons
   const handleShowPassword = (e) => {
@@ -107,7 +111,7 @@ const Register = () => {
 
   useEffect(() => {
     dispatch(clearErrorMessage());
-  }, []);
+  }, [usernameErrs, emailErrs, pwErrs]);
 
   useEffect(() => {
     if (checked) {
@@ -163,7 +167,7 @@ const Register = () => {
             </div>
           )}
         </div>
-        <div text="align-left">
+        <div text="align-left" className={`${styles.Input}`}>
           <input
             id="regPassword"
             name="regPassword"
@@ -180,8 +184,10 @@ const Register = () => {
             <IoEyeOutline id="reg-eye-icon" className="-ml-6.25 hidden" />
           </button>
           {pwErrs && (
-            <div className="w-80 text-sm font-semibold text-red-600 mt-1 pl-1">
-              Enter 8-16 characters containing letters and numerals.
+            <div className="w-75 text-sm font-semibold text-red-600 mt-1 pl-1">
+              Password should be 8-16 characters containing at least one lower
+              case letter, one upper case letter, a digit and a special
+              character.
             </div>
           )}
         </div>

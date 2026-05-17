@@ -59,7 +59,10 @@ const UserMenu = () => {
           >
             Order history & Write reviews
           </Link>
-          <div onClick={handleLogout} className={`${styles.SecondMenuItem}`}>
+          <div
+            onClick={handleLogout}
+            className={`${styles.SecondMenuItem} cursor-pointer`}
+          >
             <span style={{ fontSize: "1.1rem", marginTop: "5px" }}>
               Log out
             </span>

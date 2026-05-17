@@ -27,6 +27,11 @@ const orderReducer = (state = initialState, action) => {
           pageSize: action.pageSize,
         },
       };
+    case "UPDATE_REVIEW_STATUS":
+      return {
+        ...state,
+        orderList: action.payload,
+      };
     default:
       return state;
   }

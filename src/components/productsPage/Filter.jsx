@@ -91,7 +91,7 @@ const Filter = ({ categoryId }) => {
           />
           {/* Category drowdown */}
           <select
-            labelId="category-select-label"
+            labelid="category-select-label"
             value={category}
             onChange={(e) => setCategory(Number(e.target.value))}
             name="category"
@@ -129,7 +129,7 @@ const Filter = ({ categoryId }) => {
           <select
             id="order-by"
             name="sort"
-            value={sort}
+            // value={sort}
             onChange={(e) => setSort(e.target.value)}
             className={`${styles.OrderBy} py-1 bg-white h-10
             sm:mt-2 border border-slate-800`}

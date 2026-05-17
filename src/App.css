@@ -30,7 +30,6 @@ button:focus {
 
 form > button:hover {
   font: #222 !important;
-  background-color: transparent;
 }
 input {
   background-color: #fff;

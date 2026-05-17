@@ -93,7 +93,7 @@ const OrderHistory = () => {
                     <select
                       id="sort-order"
                       name="sortOrder"
-                      value={sortOrder}
+                      // value={sortOrder}
                       onChange={(e) => setSortOrder(e.target.value)}
                       className={`${styles.Select} bg-white h-8
                        -mt-2 mb-1 border border-slate-800 w-42.5`}

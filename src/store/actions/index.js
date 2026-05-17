@@ -476,16 +476,8 @@ export const sendRegisterRequest =
         dispatch({
           type: "IS_ERROR",
           payload: {
-            errorMessage: "Username is already in use.",
-            page: "register",
-          },
-        });
-      } else {
-        dispatch({
-          type: "IS_ERROR",
-          payload: {
             errorMessage:
-              error?.response?.data?.message ||
+              error?.response?.data?.message.replace('"', "") ||
               "There was an error.  Please try again.",
             page: "register",
           },
@@ -577,7 +569,8 @@ export const fetchOrderHistory = (query) => async (dispatch, getState) => {
     type: "IS_FETCHING",
   });
   try {
-    const { data } = await api.get(`/order-history${query}`);
+    let path = query ? "/order-history" + query : "/order-history";
+    const { data } = await api.get(path);
     dispatch({
       type: "STORE_ORDER_HISTORY",
       payload: data.content,
@@ -779,17 +772,72 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
 /**
  * Insert reviews in DB
  */
-export const postReview = (formData, orderId, toast) => async () => {
-  const axiosForMultiPart = customAxios("multipart/form-data");
-  try {
-    let { data } = await axiosForMultiPart.post(`/review/${orderId}`, formData);
-    toast.success(`Your review has been submitted: ${orderId}`);
-    return true;
-  } catch (error) {
-    toast.error("There was an error. Please try again.");
-    return false;
-  }
-};
+export const postReview =
+  (formData, orderId, toast) => async (dispatch, getState) => {
+    const axiosForMultiPart = customAxios("multipart/form-data");
+    try {
+      let { data } = await axiosForMultiPart.post(
+        `/review/${orderId}`,
+        formData,
+      );
+      // update review id for the order in redux
+      // 'review submitted' will be displayed.)
+      let { orderList } = getState().order;
+      let newOrderList = orderList.map((order) => {
+        // set the review id for the order
+        if (order.orderId === orderId) {
+          return { ...order, review: Number(data.message.split(": ")[1]) };
+        } else {
+          return order;
+        }
+      });
+      dispatch({ type: "UPDATE_REVIEW_STATUS", payload: newOrderList });
+      toast.success(
+        `Your review for the order #${orderId} has been submitted.`,
+      );
+      return true;
+    } catch (error) {
+      if (error.status === 420) {
+        let { data } = await api.post(`/auth/refreshtoken`);
+        if (data.message === "Refresh Token has expired.") {
+          dispatch({ type: "SET_COMMAND_IDX", payload: 2 });
+          return false;
+        } else {
+          try {
+            let { data } = await axiosForMultiPart.post(
+              `/review/${orderId}`,
+              formData,
+            );
+            // update review id for the order in redux
+            // 'review submitted' will be displayed.)
+            let { orderList } = getState().order;
+            let newOrderList = orderList.map((order) => {
+              // set the review id for the order
+              if (order.orderId === orderId) {
+                return {
+                  ...order,
+                  review: Number(data.message.split(": ")[1]),
+                };
+              } else {
+                return order;
+              }
+            });
+            dispatch({ type: "UPDATE_REVIEW_STATUS", payload: newOrderList });
+            toast.success(
+              `Your review for the order #${orderId} has been submitted.`,
+            );
+            return true;
+          } catch (error) {
+            toast.error("There was an error. Please try again.");
+            return false;
+          }
+        }
+      } else {
+        toast.error("There was an error. Please try again.");
+        return false;
+      }
+    }
+  };
 
 /**
  * Get review entries.

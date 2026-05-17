@@ -1,4 +1,4 @@
-import truncateText from "../../utils/truncateText";
+import { truncateText } from "../../utils/truncateText";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import { useDispatch } from "react-redux";

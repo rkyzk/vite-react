@@ -27,6 +27,7 @@ const Login = () => {
     password: "",
   });
   const path = useLocation().pathname;
+  console.log(errorMessage);
 
   const handleChange = (e) => {
     setData({
@@ -74,11 +75,12 @@ const Login = () => {
           {errorMessage}
         </span>
       )}
-      {loginOnly && (
-        <span className="text-sm font-semibold text-red-600">
-          Please log in again.
-        </span>
-      )}
+      {errorMessage &&
+        loginOnly(
+          <span className="text-sm font-semibold text-red-600">
+            Please log in again.
+          </span>,
+        )}
       <div className="flex flex-col gap-2 mt-2">
         <input
           id="username"

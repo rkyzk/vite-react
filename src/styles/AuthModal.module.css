@@ -12,7 +12,7 @@
 }
 
 .Input {
-  width: 300px;
+  width: 300px !important;
 }
 
 .LoginForm {
@@ -24,6 +24,6 @@
     width: 90%;
   }
   .Input {
-    width: 270px;
+    width: 270px !important;
   }
 }

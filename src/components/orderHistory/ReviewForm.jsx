@@ -6,11 +6,11 @@ import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import {
-  sendRefreshJwtTokenRequest,
   sendLogoutRequest,
   setModalLogin,
   setModalOpen,
 } from "../../store/actions";
+import styles from "../../styles/ReviewForm.module.css";
 
 const ReviewForm = ({ closeReviewForm, orderId }) => {
   const [content, setContent] = useState("");
@@ -19,11 +19,10 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
   const [image, setImage] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const { commandIdx, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let formData = new FormData();
 
-  const { commandIdx, user } = useSelector((state) => state.auth);
   /** Close dialog if outside the dialog is clicked. */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
@@ -34,51 +33,39 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let result = null;
     if (content.trim() === "") {
       setError("Please enter your feedback.");
     } else if (stars === 0) {
       setError("Please rate on a scale of 1 to 5 stars.");
     } else {
       setSubmitted(true);
+      let formData = new FormData();
       formData.append("reviewContent", content);
       formData.append("stars", stars);
       formData.append("displayName", displayName);
       if (image) formData.append("file", image);
-      result = await dispatch(postReview(formData, orderId, toast));
-      closeReviewForm();
+      console.log(formData);
+      let result = await dispatch(postReview(formData, orderId, toast));
       if (result) {
+        closeReviewForm();
         navigate("/order-history"); // so that 'submitted' will be displayed.
       }
     }
   };
 
   useEffect(() => {
-    let result;
+    console.log("use effect: " + submitted + " " + commandIdx);
+    setError("");
     const logoutUser = async () => {
-      // If refreshToken has expired, log out the user.
+      // send a request to log out the user.
       dispatch(sendLogoutRequest(user.id, null, null));
-      // Show only the login dialog (without register dialog)
-      await dispatch(setModalLogin());
+      // Display the login dialog
+      await dispatch(setModalLogin()); // set login only (no register form)
       dispatch(setModalOpen());
     };
-    if (submitted) {
-      switch (commandIdx) {
-        case 0:
-          result = dispatch(postReview(formData, orderId, toast));
-          closeReviewForm();
-          if (result) {
-            navigate("/order-history"); // so that 'submitted' will be displayed.
-          }
-          break;
-        case 1:
-          // If JWT has expired, send a request to refresh it.
-          dispatch(sendRefreshJwtTokenRequest());
-          break;
-        case 2:
-          // If the refresh token has expired, log out the user.
-          logoutUser();
-      }
+    if (commandIdx === 2) {
+      closeReviewForm();
+      logoutUser(); // 2: refresh token expired
     }
   }, [commandIdx]);
 
@@ -124,7 +111,7 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           value={content}
           rows="10"
           cols="50"
-          autofocus
+          autoFocus
         ></textarea>
         <input
           type="file"
@@ -148,7 +135,10 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
           value={displayName}
         />
         {error && <span style={{ color: "red" }}>{error}</span>}
-        <button className="mt-2 px-2 py-1 outline-none bg-amber-950 text-white hover:opacity-50">
+        <button
+          className={`${styles.SubmitBtn} mt-2 px-2 py-1 outline-none
+            bg-amber-950 text-white hover:opacity-60`}
+        >
           Submit
         </button>
       </form>

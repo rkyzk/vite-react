@@ -15,6 +15,7 @@ const AuthModal = () => {
       document.removeEventListener("mouseup", handleCloseModal);
     }
   };
+
   useEffect(() => {
     // add event listener when mounted.
     document.addEventListener("mouseup", (e) => handleCloseModal(e));

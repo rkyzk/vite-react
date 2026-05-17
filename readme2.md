@@ -1,9 +1,17 @@
 To do
-view all products, by category fix the queries
+register login form, enter input and return (eye button will be pressed)
+Review form refresh token expires, then after log in the form will not be sent
+refresh token expires, try to access auth page, the page appears and the login dialog. (better not to show the next page until logged in.)
+hit order-history when not logged in and will be a blank page
 product colors
+review carousel pagination weird
+view all products, by category fix the queries
+
 limit the number of addresses
-hide passwords
 review page with rates graph
+
+Deployed project:
+[Wild Blossom Garden](https://main.dw15oiibmfng0.amplifyapp.com)
 
 the batch operation every day. delete sales count records
 

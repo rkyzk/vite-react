@@ -26,6 +26,7 @@ const Order = ({ orderId, orderDate, cart, review }) => {
         <div className="sm:w-2/3 md:w-9/12 max-w-150">
           {cart?.cartItems.map((item, idx) => (
             <ItemsInOrderHistory
+              key={idx}
               {...item}
               idx={idx}
               totalPrice={idx === cart?.cartItems.length - 1 && cart.totalPrice}
