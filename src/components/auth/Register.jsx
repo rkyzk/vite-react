@@ -9,6 +9,8 @@ import {
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
 import styles from "../../styles/AuthModal.module.css";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   const [loader, setLoader] = useState(false);
@@ -86,6 +88,22 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
+  // toggle show/hide password, switch between closed/open eye-icons
+  const handleShowPassword = (e) => {
+    e.preventDefault();
+    let elem = document.getElementById("regPassword");
+    let eyeIcon = document.getElementById("reg-eye-icon");
+    let closedEyeIcon = document.getElementById("reg-closed-eye-icon");
+    if (elem.type === "password") {
+      elem.type = "text";
+      eyeIcon.classList.remove("hidden");
+      closedEyeIcon.classList.add("hidden");
+    } else {
+      elem.type = "password";
+      eyeIcon.classList.add("hidden");
+      closedEyeIcon.classList.remove("hidden");
+    }
+  };
 
   useEffect(() => {
     dispatch(clearErrorMessage());
@@ -154,6 +172,13 @@ const Register = () => {
             className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
+          <button
+            className="bg-transparent outline-none"
+            onClick={(e) => handleShowPassword(e)}
+          >
+            <FaRegEyeSlash id="reg-closed-eye-icon" className="-ml-6.25" />
+            <IoEyeOutline id="reg-eye-icon" className="-ml-6.25 hidden" />
+          </button>
           {pwErrs && (
             <div className="w-80 text-sm font-semibold text-red-600 mt-1 pl-1">
               Enter 8-16 characters containing letters and numerals.
