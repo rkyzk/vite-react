@@ -30,11 +30,20 @@ const reviews = localStorage.getItem("reviews")
   ? JSON.parse(localStorage.getItem("reviews"))
   : [];
 
+const errors = localStorage.getItem("errors")
+  ? JSON.parse(localStorage.getItem("errors"))
+  : {
+      isLoading: false,
+      errorMessage: null,
+      page: null,
+    };
+
 const initialState = {
   carts: { cart: cartItems },
   auth: auth,
   products: products,
   reviews: reviews,
+  errors: errors,
 };
 
 const store = configureStore({

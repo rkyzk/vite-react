@@ -42,7 +42,7 @@ const PaymentForm = ({ clientSecret }) => {
       isValid &= await dispatch(validateAddress(false));
     }
     if (!isValid) {
-      setErrorMessage("Enter valid address.");
+      setErrorMessage("Enter a valid address.");
       return;
     } else {
       setErrorMessage(null);

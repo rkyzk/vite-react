@@ -1,5 +1,6 @@
 import api from "../../api/axiosDefaults";
 import customAxios from "../../api/customAxios";
+import { sendRefreshJwt } from "../utils/utils";
 
 /** ge products data */
 export const fetchProducts = (queryString) => async (dispatch, getState) => {
@@ -405,6 +406,7 @@ export const sendLoginRequest =
         type: "SET_FALSE",
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
+      dispatch({ type: "SET_MODAL", payload: { destPath: "", error: false } });
       toast.success("You've been logged in.");
       return true;
     } catch (error) {
@@ -436,23 +438,15 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   await api.post(`/auth/signout/${id}`);
   dispatch({ type: "LOGOUT_USER" });
   localStorage.setItem("auth", null);
-  if (navigate) {
-    toast.success("You've been logged out.");
-    localStorage.setItem("cartItems", []);
-    dispatch({
-      type: "CLEAR_CART",
-    });
-    dispatch({
-      type: "CLEAR_ERROR_MESSAGE",
-    });
-    navigate(`/`);
-  } else {
-    // If refresh token has expired, prompt users to log in again.
-    dispatch({
-      type: "IS_ERROR",
-      payload: "Please log in again.",
-    });
-  }
+  toast.success("You've been logged out.");
+  localStorage.setItem("cartItems", []);
+  dispatch({
+    type: "CLEAR_CART",
+  });
+  dispatch({
+    type: "CLEAR_ERROR_MESSAGE",
+  });
+  if (navigate) navigate(`/`);
 };
 
 /** Send register request */
@@ -472,17 +466,17 @@ export const sendRegisterRequest =
       toast.success("Your account has been created.  Please log in.");
       return true;
     } catch (error) {
-      if (error.response?.data?.message === "Username is already in use.") {
-        dispatch({
-          type: "IS_ERROR",
-          payload: {
-            errorMessage:
-              error?.response?.data?.message.replace('"', "") ||
-              "There was an error.  Please try again.",
-            page: "register",
-          },
-        });
-      }
+      let errorMessage = "";
+      errorMessage =
+        error?.response?.data?.message?.replaceAll('"', "") ||
+        "There was an error.  Please try again.";
+      dispatch({
+        type: "IS_ERROR",
+        payload: {
+          errorMessage: errorMessage,
+          page: "register",
+        },
+      });
       return false;
     }
   };
@@ -564,52 +558,63 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 };
 
 /** Get order history of the user */
-export const fetchOrderHistory = (query) => async (dispatch, getState) => {
-  dispatch({
-    type: "IS_FETCHING",
-  });
-  try {
-    let path = query ? "/order-history" + query : "/order-history";
-    const { data } = await api.get(path);
+export const fetchOrderHistory =
+  (query, toast) => async (dispatch, getState) => {
     dispatch({
-      type: "STORE_ORDER_HISTORY",
-      payload: data.content,
-      lastPage: data.lastPage,
-      pageNumber: data.pageNumber,
-      pageSize: data.pageSize,
-      totalElements: data.totalElements,
-      totalPages: data.totalPages,
+      type: "IS_FETCHING",
     });
-    localStorage.setItem("order", JSON.stringify(getState().order));
-  } catch (error) {
-    if (error.status === 401) {
-      dispatch({
-        type: "IS_ERROR",
-        payload: {
-          errorMessage:
-            error?.response?.data?.message || "No order history found.",
-          page: "order-history",
-        },
-      });
-    } else if (error.status === 420) {
-      dispatch({ type: "SET_COMMAND_IDX", payload: 1 });
-    } else {
-      dispatch({
-        type: "IS_ERROR",
-        payload: {
-          errorMessage:
-            error?.response?.data?.message ||
-            "There was an error. Failed to fetch order history.",
-          page: "order-history",
-        },
-      });
+    let path = query ? "/order-history" + query : "/order-history";
+    while (true) {
+      try {
+        console.log("getting order history");
+        const { data } = await api.get(path);
+        dispatch({
+          type: "STORE_ORDER_HISTORY",
+          payload: data.content,
+          lastPage: data.lastPage,
+          pageNumber: data.pageNumber,
+          pageSize: data.pageSize,
+          totalElements: data.totalElements,
+          totalPages: data.totalPages,
+        });
+        localStorage.setItem("order", JSON.stringify(getState().order));
+        break;
+      } catch (error) {
+        if (error.status === 401) {
+          dispatch({
+            type: "IS_ERROR",
+            payload: {
+              errorMessage:
+                error?.response?.data?.message || "No order history found.",
+              page: "order-history",
+            },
+          });
+          break;
+        } else if (error.status === 420) {
+          let result = await sendRefreshJwt(toast, path, dispatch, getState);
+          if (result) {
+            continue;
+          } else {
+            break;
+          }
+        } else {
+          dispatch({
+            type: "IS_ERROR",
+            payload: {
+              errorMessage:
+                error?.response?.data?.message ||
+                "There was an error. Failed to fetch order history.",
+              page: "order-history",
+            },
+          });
+          break;
+        }
+      }
     }
-    return;
-  }
-  dispatch({
-    type: "IS_SUCCESS",
-  });
-};
+    dispatch({
+      type: "IS_SUCCESS",
+    });
+  };
 
 /** Store addresses in Redux. */
 export const storeTempAddress = (address) => async (dispatch, getState) => {
@@ -775,66 +780,37 @@ export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
 export const postReview =
   (formData, orderId, toast) => async (dispatch, getState) => {
     const axiosForMultiPart = customAxios("multipart/form-data");
-    try {
-      let { data } = await axiosForMultiPart.post(
-        `/review/${orderId}`,
-        formData,
-      );
-      // update review id for the order in redux
-      // 'review submitted' will be displayed.)
-      let { orderList } = getState().order;
-      let newOrderList = orderList.map((order) => {
-        // set the review id for the order
-        if (order.orderId === orderId) {
-          return { ...order, review: Number(data.message.split(": ")[1]) };
-        } else {
-          return order;
-        }
-      });
-      dispatch({ type: "UPDATE_REVIEW_STATUS", payload: newOrderList });
-      toast.success(
-        `Your review for the order #${orderId} has been submitted.`,
-      );
-      return true;
-    } catch (error) {
-      if (error.status === 420) {
-        let { data } = await api.post(`/auth/refreshtoken`);
-        if (data.message === "Refresh Token has expired.") {
-          dispatch({ type: "SET_COMMAND_IDX", payload: 2 });
-          return false;
-        } else {
-          try {
-            let { data } = await axiosForMultiPart.post(
-              `/review/${orderId}`,
-              formData,
-            );
-            // update review id for the order in redux
-            // 'review submitted' will be displayed.)
-            let { orderList } = getState().order;
-            let newOrderList = orderList.map((order) => {
-              // set the review id for the order
-              if (order.orderId === orderId) {
-                return {
-                  ...order,
-                  review: Number(data.message.split(": ")[1]),
-                };
-              } else {
-                return order;
-              }
-            });
-            dispatch({ type: "UPDATE_REVIEW_STATUS", payload: newOrderList });
-            toast.success(
-              `Your review for the order #${orderId} has been submitted.`,
-            );
-            return true;
-          } catch (error) {
-            toast.error("There was an error. Please try again.");
-            return false;
+    let i = 0;
+    while (i < 2) {
+      try {
+        let { data } = await axiosForMultiPart.post(
+          `/review/${orderId}`,
+          formData,
+        );
+        // update review id for the order in redux
+        // 'review submitted' will be displayed.)
+        let { orderList } = getState().order;
+        let newOrderList = orderList.map((order) => {
+          // set the review id for the order
+          if (order.orderId === orderId) {
+            return { ...order, review: Number(data.message.split(": ")[1]) };
+          } else {
+            return order;
           }
+        });
+        dispatch({ type: "UPDATE_REVIEW_STATUS", payload: newOrderList });
+        toast.success(
+          `Your review for the order #${orderId} has been submitted.`,
+        );
+        return true;
+      } catch (error) {
+        if (error.status === 420) {
+          let result = await sendRefreshJwt();
+          if (result) i += 1;
+        } else {
+          toast.error("There was an error. Please try again.");
+          return false;
         }
-      } else {
-        toast.error("There was an error. Please try again.");
-        return false;
       }
     }
   };
@@ -854,10 +830,6 @@ export const fetchReviews = () => async (dispatch, getState) => {
   } catch (error) {
     console.log(error.response?.data?.message);
   }
-};
-
-export const setErrorMessage = (msg) => async (dispatch) => {
-  dispatch({ type: "IS_ERROR", payload: msg });
 };
 
 export const clearErrorMessage = () => async (dispatch) => {

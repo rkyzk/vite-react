@@ -2,6 +2,8 @@ const initialState = {
   open: false,
   checkout: false,
   loginOnly: false,
+  destPath: "",
+  error: false,
 };
 
 const modalReducer = (state = initialState, action) => {
@@ -26,6 +28,18 @@ const modalReducer = (state = initialState, action) => {
         open: false,
         checkout: false,
         loginOnly: false,
+      };
+    case "SET_PATH":
+      return {
+        ...state,
+        destPath: action.payload,
+      };
+    case "SET_MODAL":
+      return {
+        ...state,
+        loginOnly: action.payload.loginOnly,
+        destPath: action.payload.destPath,
+        error: action.payload.error,
       };
     default:
       return state;

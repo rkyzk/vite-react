@@ -28,7 +28,10 @@ const Register = () => {
   const [emailErrs, setEmailErrs] = useState(false);
   const [pwErrs, setPwErrs] = useState(false);
   const validateUsername = useCallback(() => {
-    if (data.regUsername.length < 3 || data.regUsername.length > 20) {
+    if (
+      data.regUsername.trim().length < 3 ||
+      data.regUsername.trim().length > 20
+    ) {
       setUsernameErrs(true);
       return false;
     } else {
@@ -90,7 +93,6 @@ const Register = () => {
       ...data,
       [e.target.name]: e.target.value,
     });
-    console.log("fired");
   };
   // toggle show/hide password, switch between closed/open eye-icons
   const handleShowPassword = (e) => {
@@ -163,7 +165,7 @@ const Register = () => {
           />
           {emailErrs && (
             <div className="text-sm font-semibold text-red-600 mt-1 pl-1">
-              Enter valid email.
+              Enter a valid email.
             </div>
           )}
         </div>

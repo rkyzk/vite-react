@@ -24,29 +24,10 @@ const OrderHistory = () => {
     (state) => state.errors,
   );
   const [searchParams] = useSearchParams();
-  const { user, commandIdx } = useSelector((state) => state.auth);
   const { orderList, pagination } = useSelector((state) => state.order);
   const [sortOrder, setSortOrder] = useState("desc");
   useOrderHistoryPages();
-
-  useEffect(() => {
-    dispatch(clearErrorMessage());
-    // Request order history data. If JWT has expired, request to regenerate it.
-    // If the refresh token has expired, log out the user and display the login dialog.
-    const refreshJwtToken = async () => {
-      await dispatch(sendRefreshJwtTokenRequest());
-    };
-    const logoutUser = async () => {
-      // send a request to log out the user.
-      dispatch(sendLogoutRequest(user.id, null, null));
-      // Display the login dialog
-      await dispatch(setModalLogin()); // set login only (no register form)
-      dispatch(setModalOpen());
-    };
-    if (commandIdx === 0 && !orderList) dispatch(fetchOrderHistory()); // 0: JWT ok
-    if (commandIdx === 1) refreshJwtToken(); // 1: JWT expired
-    if (commandIdx === 2) logoutUser(); // 2: refresh token expired
-  }, [commandIdx]);
+  console.log("order history page");
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -58,7 +39,7 @@ const OrderHistory = () => {
       navigate(`?${searchParams.toString()}`);
     }, 700);
     return () => clearTimeout(handler);
-  }, [sortOrder]);
+  }, [sortOrder, orderList]);
 
   return (
     <div className="px-2 mx-auto max-w-7xl md:w-10/12 lg:w-9/12">

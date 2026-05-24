@@ -20,14 +20,13 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { errorMessage, page } = useSelector((state) => state.errors);
-  const { checkout } = useSelector((state) => state.modal);
-  const { loginOnly } = useSelector((state) => state.modal);
+  const { destPath, loginOnly, error } = useSelector((state) => state.modal);
   const [data, setData] = useState({
     username: "",
     password: "",
   });
   const path = useLocation().pathname;
-  console.log(errorMessage);
+  console.log(error + " " + errorMessage + " " + page);
 
   const handleChange = (e) => {
     setData({
@@ -41,7 +40,7 @@ const Login = () => {
     let result = await dispatch(sendLoginRequest(data, toast, setLoader));
     dispatch(setCommandIdx(0));
     dispatch(getUserAddress());
-    result && checkout ? navigate("/checkout") : navigate(path);
+    result && destPath !== "" ? navigate(destPath) : navigate(path);
   };
 
   // toggle show/hide password, switch between closed/open eye-icons
@@ -75,19 +74,21 @@ const Login = () => {
           {errorMessage}
         </span>
       )}
-      {errorMessage &&
-        loginOnly(
-          <span className="text-sm font-semibold text-red-600">
-            Please log in again.
-          </span>,
-        )}
+      {/* In case refresh token has expired
+        and the dialog is shown */}
+      {error && (
+        <span className="text-sm font-semibold text-red-600">
+          Please log in again.
+        </span>
+      )}
       <div className="flex flex-col gap-2 mt-2">
         <input
           id="username"
           name="username"
           type="text"
           placeholder="username"
-          className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
+          className={`${styles.Input} bg-white pl-2 py-1 rounded-lg 
+            border border-neutral-500 outline-none`}
           onChange={(e) => handleChange(e)}
           autoFocus
         />
@@ -97,7 +98,8 @@ const Login = () => {
             name="password"
             type="password"
             placeholder="password"
-            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border border-neutral-500 outline-none`}
+            className={`${styles.Input} bg-white pl-2 py-1 rounded-lg border
+             border-neutral-500 outline-none`}
             onChange={(e) => handleChange(e)}
           />
           <button

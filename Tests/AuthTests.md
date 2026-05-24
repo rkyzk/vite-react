@@ -1,8 +1,16 @@
 ### Testing Register and Login form
 
-1. Testing validation
+1. Testing if all elements are displayed
+   |Nr. |tested feature|procedure|expected results|pass/fail|date|what went wrong in case of failures|
+   |:-:|:----------|:----------|:------------------|:--|:------|:-----------------------------|
+   |1. |Displayed elements|Check that all elements<br>are displayed, and that<br>they are resonsive between screen<br>sizes 330px-1500px.|All elements are displayed, and the layout looks fine.||||
+   |2. |Show password button|Enter 'abc' in password field.<br>Click the eye icon.|Initially the eye icon has a slash across itself.<br>Dots appear as the value is being typed.<br>After clicking, the text will be displayed,<br>and the icon will have no slash across.||||
+   |3. |Hide password button|After case Nr.2, click<br>the eye icon.|After clicking, the text<br>will turned to dots, and the icon<br>will have a slash.||||
+   |4. |Show password button<br>(Click before typing)|Click the eye icon.<br>Enter 'abc' in password field.|The eye icon will lose a slash across itself.<br>Dots appear as the value is being typed.||||
+
+2. Testing validation
    |Nr. |tested field(s)|tested feature|username to be entered|email|password|expected results|error message if any|pass/fail|date|
-   |:---:|:----------|:-------------|:---------------------|:-------------|:-------------|:-------------------|:-------------|:--|:----|
+   |:-:|:----------|:----------|:----------|:----------|:----------|:-----------------------------|:-----------------------------|:--|:---|
    |1. |all fields|normal, min # of characters|3 characters|test@mail.com|Test123!|Toast message 'Your account has been created.<br>Please log in.' will appear.<br>Record is created in the table 'users'|-|||
    |2. |all fields|normal, max # of characters|20 characters|test@mail.com|Test123!Test123!|Toast message 'Your account has been created.<br>Please log in.' will appear.<br>Record is created in the table 'users'|-|||
    |3. |Username|abnormal, empty|-|test@mail.com|Test123!|Error|Username must be 3-20 characters.|||
