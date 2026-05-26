@@ -406,7 +406,7 @@ export const sendLoginRequest =
         type: "SET_FALSE",
       });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
-      dispatch({ type: "SET_MODAL", payload: { destPath: "", error: false } });
+      //dispatch({ type: "SET_MODAL", payload: { destPath: "", error: false } });
       toast.success("You've been logged in.");
       return true;
     } catch (error) {
@@ -439,10 +439,10 @@ export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
   dispatch({ type: "LOGOUT_USER" });
   localStorage.setItem("auth", null);
   toast.success("You've been logged out.");
-  localStorage.setItem("cartItems", []);
-  dispatch({
-    type: "CLEAR_CART",
-  });
+  // localStorage.setItem("cartItems", []);
+  // dispatch({
+  //   type: "CLEAR_CART",
+  // });
   dispatch({
     type: "CLEAR_ERROR_MESSAGE",
   });
@@ -727,7 +727,7 @@ export const clearAddressData = () => async (dispatch, getState) => {
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
 
-export const clearAuthData = () => async (dispatch, getState) => {
+export const clearClientSecret = () => async (dispatch, getState) => {
   dispatch({ type: "STORE_CLIENT_SECRET", payload: null });
   localStorage.setItem("auth", JSON.stringify(getState().auth));
 };
@@ -735,7 +735,7 @@ export const clearAuthData = () => async (dispatch, getState) => {
 /**
  * Request client secret and store it in Redux.
  */
-export const createClientSecret = () => async (dispatch, getState) => {
+export const createClientSecret = (toast) => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -745,15 +745,37 @@ export const createClientSecret = () => async (dispatch, getState) => {
     amount: Number(totalPrice),
     currency: "jpy",
   };
-  try {
-    const { data } = await api.post(`/order/stripe-client-secret`, sendData);
-    dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
-  } catch (error) {
-    if (error.status === 420) {
-      dispatch({ type: "SET_COMMAND_IDX", payload: 1 });
-    } else {
-      dispatch({ type: "IS_ERROR", payload: error.message });
+  while (true) {
+    try {
+      const { data } = await api.post(`/order/stripe-client-secret`, sendData);
+      dispatch({ type: "STORE_CLIENT_SECRET", payload: data });
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
+      break;
+    } catch (error) {
+      if (error.status === 420) {
+        let result = await sendRefreshJwt(
+          toast,
+          "/checkout",
+          dispatch,
+          getState,
+        );
+        if (result) {
+          continue;
+        } else {
+          break;
+        }
+      } else {
+        dispatch({
+          type: "IS_ERROR",
+          payload: {
+            errorMessage:
+              error?.response?.data?.message ||
+              "There was an error. Please access the page again later.",
+            page: "checkout",
+          },
+        });
+        break;
+      }
     }
   }
 };
@@ -844,8 +866,11 @@ export const setModalLogin = () => async (dispatch) => {
   dispatch({ type: "LOGIN_ONLY" });
 };
 
-export const setModalCheckout = () => async (dispatch) => {
-  dispatch({ type: "CHECKOUT" });
+export const setModal = (loginOnly, path, error) => async (dispatch) => {
+  dispatch({
+    type: "SET_MODAL",
+    payload: { loginOnly: loginOnly, destPath: path, error: error },
+  });
 };
 
 export const closeModal = () => async (dispatch) => {

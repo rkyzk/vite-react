@@ -9,7 +9,7 @@ import {
   setModalLogin,
   setModalOpen,
   sendRefreshJwtTokenRequest,
-  setModalCheckout,
+  setModal,
 } from "../../store/actions";
 import AddressCard from "../checkout/AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
@@ -37,7 +37,7 @@ const OrderConfirmation = () => {
       dispatch(sendLogoutRequest(user.id, null, null));
       // Display the login dialog (no register form.)
       dispatch(setModalLogin());
-      dispatch(setModalCheckout());
+      //dispatch(setModal(false));
       dispatch(setModalOpen());
     };
     if (

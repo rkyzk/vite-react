@@ -3,12 +3,9 @@ import CartItem from "./CartItem";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../../styles/CartCartItem.module.css";
 import menuStyles from "../../styles/MenuColumn.module.css";
-import {
-  clearAuthData,
-  setModalCheckout,
-  setModalOpen,
-} from "../../store/actions";
+import { clearClientSecret, setModal, setModalOpen } from "../../store/actions";
 import MenuColumn from "./MenuColumn";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 const Cart = ({ cartPage }) => {
   const cart = useSelector((state) => state.carts.cart);
@@ -24,10 +21,10 @@ const Cart = ({ cartPage }) => {
 
   const handleCheckout = () => {
     if (auth && auth.user) {
-      dispatch(clearAuthData());
+      dispatch(clearClientSecret());
       navigate("/checkout");
     } else {
-      dispatch(setModalCheckout());
+      dispatch(setModal(false, "/checkout", false));
       dispatch(setModalOpen());
     }
   };
@@ -41,7 +38,10 @@ const Cart = ({ cartPage }) => {
       )}
       <div className={`${menuStyles.ContentBox} max-w-114 mt-2 md:max-w-200`}>
         {!cart.length ? (
-          <p className="w-40 m-auto">Your cart is empty.</p>
+          <div className="flex justify-center">
+            <FaExclamationTriangle className="text-slate-600 text-3xl mr-2" />
+            <span className="text-lg text-slate-600">Your cart is empty.</span>
+          </div>
         ) : (
           <>
             {path === "/cart" && (

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setModal,
   getUserAddress,
   sendLoginRequest,
   setCommandIdx,
@@ -26,7 +27,6 @@ const Login = () => {
     password: "",
   });
   const path = useLocation().pathname;
-  console.log(error + " " + errorMessage + " " + page);
 
   const handleChange = (e) => {
     setData({
@@ -41,6 +41,7 @@ const Login = () => {
     dispatch(setCommandIdx(0));
     dispatch(getUserAddress());
     result && destPath !== "" ? navigate(destPath) : navigate(path);
+    dispatch(setModal(false, "", false));
   };
 
   // toggle show/hide password, switch between closed/open eye-icons

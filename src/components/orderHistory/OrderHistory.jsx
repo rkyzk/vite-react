@@ -1,12 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchOrderHistory,
-  sendRefreshJwtTokenRequest,
-  sendLogoutRequest,
-  setModalLogin,
-  setModalOpen,
-  clearErrorMessage,
-} from "../../store/actions";
+import { clearErrorMessage } from "../../store/actions";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -74,7 +67,6 @@ const OrderHistory = () => {
                     <select
                       id="sort-order"
                       name="sortOrder"
-                      // value={sortOrder}
                       onChange={(e) => setSortOrder(e.target.value)}
                       className={`${styles.Select} bg-white h-8
                        -mt-2 mb-1 border border-slate-800 w-42.5`}

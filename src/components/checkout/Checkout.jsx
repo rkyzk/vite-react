@@ -4,23 +4,16 @@ import { useSelector, useDispatch } from "react-redux";
 import AddressList from "./AddressList";
 import styles from "../../styles/Checkout.module.css";
 import menuStyles from "../../styles/MenuColumn.module.css";
-import {
-  createClientSecret,
-  sendRefreshJwtTokenRequest,
-  sendLogoutRequest,
-  setModalLogin,
-  setModalOpen,
-} from "../../store/actions";
+import { createClientSecret } from "../../store/actions";
 import MenuColumn from "../shared/MenuColumn";
+import toast from "react-hot-toast";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 export const Checkout = () => {
-  const auth = useSelector((state) => state.auth);
-  const clientSecret = auth?.clientSecret;
+  const { clientSecret, user } = useSelector((state) => state.auth);
   const [billAddrCheck, setBillAddrCheck] = useState(true);
   const cart = useSelector((state) => state.carts.cart);
   const dispatch = useDispatch();
-  const { errorMessage } = useSelector((state) => state.errors);
-  const commandIdx = auth?.commandIdx;
 
   // If not logged in, show log in dialog
   // if (auth === null) {
@@ -32,23 +25,8 @@ export const Checkout = () => {
   };
 
   useEffect(() => {
-    const getClientSecret = async () => {
-      !clientSecret && auth?.user && dispatch(createClientSecret());
-    };
-    const refreshJwtToken = async () => {
-      await dispatch(sendRefreshJwtTokenRequest());
-    };
-    const logoutUser = async () => {
-      // If refresh token has expired, log out the user and show the login dialog.
-      dispatch(sendLogoutRequest(auth.user.id, null, null));
-      // Show only the login dialog (no register form)
-      await dispatch(setModalLogin());
-      dispatch(setModalOpen());
-    };
-    if (commandIdx === 0) getClientSecret();
-    if (commandIdx === 1) refreshJwtToken(); // If JWT has expired, request to refresh token.
-    if (commandIdx === 2) logoutUser(); // If refresh token has expired, log out the user.
-  }, [commandIdx]);
+    !clientSecret && user && dispatch(createClientSecret(toast));
+  }, [user]);
 
   return (
     <div className={`${styles.Container} w-full flex`}>
@@ -57,12 +35,17 @@ export const Checkout = () => {
       </div>
       {cart.length > 0 ? (
         <div className={`${styles.Box}`}>
-          <AddressList props={props} />
-          <StripePayment />
+          {clientSecret && (
+            <>
+              <AddressList props={props} />
+              <StripePayment />
+            </>
+          )}
         </div>
       ) : (
-        <div className="w-full">
-          <p className="w-35 m-auto">Your cart is empty.</p>
+        <div className="w-51 mx-auto flex">
+          <FaExclamationTriangle className="text-3xl mr-2" />
+          <span className="text-lg text-slate-600">Your cart is empty.</span>
         </div>
       )}
     </div>

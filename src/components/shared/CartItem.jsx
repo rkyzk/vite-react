@@ -70,7 +70,6 @@ const CartItem = ({
                         className={`${styles.FontSize} text-center`}
                         key={i}
                         value={i}
-                        selected
                       >
                         {i}
                       </option>
