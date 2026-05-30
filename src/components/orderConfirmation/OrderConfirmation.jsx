@@ -5,15 +5,11 @@ import {
   sendOrder,
   sendOrderWithNewAddresses,
   getUserAddress,
-  sendLogoutRequest,
-  setModalLogin,
-  setModalOpen,
-  sendRefreshJwtTokenRequest,
-  setModal,
 } from "../../store/actions";
 import AddressCard from "../checkout/AddressCard";
 import OrderedItemsTable from "./OrderedItemsTable";
 import styles from "../../styles/OrderConfirmation.module.css";
+import toast from "react-hot-toast";
 
 const OrderConfirmation = () => {
   const location = useLocation();
@@ -22,61 +18,49 @@ const OrderConfirmation = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
   const { cart } = useSelector((state) => state.carts);
-  const order = useSelector((state) => state.order.order);
-  const { selectedSAddrId, selectedBAddrId, commandIdx, user } = useSelector(
+  const { order } = useSelector((state) => state.order);
+  const { selectedSAddrId, selectedBAddrId, user } = useSelector(
     (state) => state.auth,
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const refreshJwtToken = async () => {
-      await dispatch(sendRefreshJwtTokenRequest());
-    };
-    const logoutUser = async () => {
-      // If refresh token has expired, log out the user.
-      dispatch(sendLogoutRequest(user.id, null, null));
-      // Display the login dialog (no register form.)
-      dispatch(setModalLogin());
-      //dispatch(setModal(false));
-      dispatch(setModalOpen());
-    };
+    console.log("useEffect fired");
+    console.log(clientSecret);
+    console.log(user);
     if (
+      user &&
       paymentIntent &&
       clientSecret &&
       redirectStatus &&
       cart &&
-      cart?.length > 0
+      cart.length > 0
     ) {
-      if (commandIdx === 0) {
-        const sendData = {
-          pgName: "Stripe",
-          pgPaymentId: paymentIntent,
-          pgStatus: "succeeded",
-          pgResponseMessage: "Payment successful",
-        };
-        if (selectedSAddrId === 0 || selectedBAddrId === -1) {
-          // If new address has been entered, include the address data
-          // in the order request.
-          dispatch(sendOrderWithNewAddresses(sendData));
-        } else {
-          dispatch(sendOrder(sendData));
-        }
-      } else if (commandIdx === 1) {
-        refreshJwtToken();
-      } else if (commandIdx === 2) {
-        logoutUser();
+      const sendData = {
+        pgName: "Stripe",
+        pgPaymentId: paymentIntent,
+        pgStatus: "succeeded",
+        pgResponseMessage: "Payment successful",
+      };
+      if (selectedSAddrId === 0 || selectedBAddrId === -1) {
+        // If new address has been entered, include the address data
+        // in the order request.
+        console.log("dispatching send order req");
+        dispatch(sendOrderWithNewAddresses(sendData, toast));
+      } else {
+        dispatch(sendOrder(sendData, toast));
       }
     }
-  }, [commandIdx]);
+  }, [user]);
 
-  useEffect(() => {
-    // If the address has been updated, get the user addresses data from DB again.
-    dispatch(getUserAddress());
-  }, [order]);
+  // useEffect(() => {
+  //   // If the address has been updated, get the user addresses data from DB again.
+  //   dispatch(getUserAddress());
+  // }, [order]);
 
   return (
     <>
-      {order && (
+      {Object.keys(order).length > 0 && (
         <div className={`${styles.Box} px-2 py-1 mx-auto md:w-9/12`}>
           <h2
             style={{

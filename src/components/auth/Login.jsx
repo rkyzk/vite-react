@@ -38,9 +38,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let result = await dispatch(sendLoginRequest(data, toast, setLoader));
-    dispatch(setCommandIdx(0));
-    dispatch(getUserAddress());
-    result && destPath !== "" ? navigate(destPath) : navigate(path);
+    if (destPath !== "/order-confirm") {
+      if (result) {
+        dispatch(getUserAddress());
+        destPath !== "" ? navigate(destPath) : navigate(path);
+      }
+    }
     dispatch(setModal(false, "", false));
   };
 

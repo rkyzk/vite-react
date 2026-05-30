@@ -1,4 +1,9 @@
 To do
+user5
+Password1!
+log in fail twice, then do something
+Spinner needed checkout page
+Address change will not be saved.
 register login form, enter input and return (eye button will be pressed)
 Review form refresh token expires, then after log in the form will not be sent
 refresh token expires, try to access auth page, the page appears and the login dialog. (better not to show the next page until logged in.)

@@ -197,7 +197,7 @@ export const removeItemFromCart = (prodId) => (dispatch, getState) => {
  * (no new address data is included.
  *  already existimg address will be used.)
  */
-export const sendOrder = (data) => async (dispatch, getState) => {
+export const sendOrder = (data, toast) => async (dispatch, getState) => {
   const { cart } = getState().carts;
   const totalPrice = cart.reduce(
     (acc, curr) => acc + curr?.price * curr?.purchaseQty,
@@ -220,50 +220,54 @@ export const sendOrder = (data) => async (dispatch, getState) => {
     pgStatus: data.pgStatus,
     pgResponseMessage: data.pgResponseMessage,
   };
-  try {
-    const response = await api.post(`/order`, sendData);
-    if (response.data) {
-      dispatch({
-        type: "STORE_ORDER_SUMMARY",
-        payload: response.data,
-      });
-      dispatch({
-        type: "CLEAR_CART",
-      });
-      dispatch({
-        type: "CLEAR_TEMP_BILLING_ADDRESS",
-      });
-      dispatch({
-        type: "CLEAR_TEMP_SHIPPING_ADDRESS",
-      });
-      dispatch({
-        type: "SET_ADDR_CHECKED_FALSE",
-      });
-      dispatch({
-        type: "CLEAR_SELECTED_ADDRESS",
-      });
-      dispatch({
-        type: "REMOVE_CLIENT_SECRET",
-      });
+  console.log(sendData);
+  while (true) {
+    try {
+      const response = await api.post(`/order`, sendData);
+      if (response.data) {
+        dispatch({ type: "STORE_ORDER_SUMMARY", payload: response.data });
+        dispatch({ type: "CLEAR_CART" });
+        dispatch({ type: "CLEAR_TEMP_BILLING_ADDRESS" });
+        dispatch({ type: "CLEAR_TEMP_SHIPPING_ADDRESS" });
+        dispatch({ type: "SET_ADDR_CHECKED_FALSE" });
+        dispatch({ type: "CLEAR_SELECTED_ADDRESS" });
+        dispatch({ type: "REMOVE_CLIENT_SECRET" });
+      }
+      localStorage.setItem("cart", null);
+      localStorage.setItem("auth", JSON.stringify(getState().auth));
+    } catch (error) {
+      // If JWT has expired, set commandIdx = 1 so a request will be sent
+      // to regenerate JWT.
+      if (error.status === 420) {
+        // If JWT has expired (status code = 420), request to refresh JWT,
+        let result = await sendRefreshJwt(
+          toast,
+          "/order-confirm",
+          dispatch,
+          getState,
+        );
+        if (result) {
+          continue; // if JWT was refreshed, send order again.
+        } else {
+          break; // If refresh token has expired, exit the loop.
+        }
+      } else {
+        dispatch({
+          type: "IS_ERROR",
+          payload: {
+            errorMessage: "There was an error. Please try again.",
+            page: "order-confirmation",
+          },
+        });
+        break;
+      }
     }
-    localStorage.setItem("cart", null);
-    localStorage.setItem("auth", JSON.stringify(getState().auth));
-  } catch (error) {
-    // If JWT has expired, set commandIdx = 1 so a request will be sent
-    // to regenerate JWT.
-    if (error.status === 420) {
-      dispatch({
-        type: "SET_COMMAND_IDX",
-        payload: 1,
-      });
-    }
-    return false;
   }
 };
 
 /** Send request to place order (including new address data) */
 export const sendOrderWithNewAddresses =
-  (data) => async (dispatch, getState) => {
+  (data, toast) => async (dispatch, getState) => {
     const id = getState().auth.user.id;
     const cart = getState().carts.cart;
     const totalPrice = cart.reduce(
@@ -316,42 +320,45 @@ export const sendOrderWithNewAddresses =
       pgStatus: data.pgStatus,
       pgResponseMessage: data.pgResponseMessage,
     };
-    try {
-      const response = await api.post(`/order/newaddresses`, sendData);
-      if (response.data) {
-        dispatch({
-          type: "STORE_ORDER_SUMMARY",
-          payload: response.data,
-        });
-        dispatch({
-          type: "CLEAR_CART",
-        });
-        dispatch({
-          type: "CLEAR_TEMP_BILLING_ADDRESS",
-        });
-        dispatch({
-          type: "CLEAR_TEMP_SHIPPING_ADDRESS",
-        });
-        dispatch({
-          type: "SET_ADDR_CHECKED_FALSE",
-        });
-        dispatch({
-          type: "REMOVE_CLIENT_SECRET",
-        });
+    while (true) {
+      try {
+        const response = await api.post(`/order/newaddresses`, sendData);
+        if (response.data) {
+          dispatch({ type: "STORE_ORDER_SUMMARY", payload: response.data });
+          dispatch({ type: "CLEAR_CART" });
+          dispatch({ type: "CLEAR_TEMP_BILLING_ADDRESS" });
+          dispatch({ type: "CLEAR_TEMP_SHIPPING_ADDRESS" });
+          dispatch({ type: "SET_ADDR_CHECKED_FALSE" });
+          dispatch({ type: "REMOVE_CLIENT_SECRET" });
+        }
+        localStorage.setItem("cart", null);
+        localStorage.setItem("auth", JSON.stringify(getState().auth));
+        return true;
+      } catch (error) {
+        if (error.status === 420) {
+          // If JWT has expired (status code = 420), request to refresh JWT,
+          let result = await sendRefreshJwt(
+            toast,
+            "/order-confirm",
+            dispatch,
+            getState,
+          );
+          if (result) {
+            continue; // if JWT was refreshed, send order again.
+          } else {
+            break; // If refresh token has expired, exit the loop.
+          }
+        } else {
+          dispatch({
+            type: "IS_ERROR",
+            payload: {
+              errorMessage: "There was an error. Please try again.",
+              page: "order-confirmation",
+            },
+          });
+          break;
+        }
       }
-      localStorage.setItem("cart", null);
-      localStorage.setItem("auth", JSON.stringify(getState().auth));
-      return true;
-    } catch (error) {
-      // If JWT has expired, set commandIdx = 1 so a request will be sent
-      // to regenerate JWT.
-      if (error.status === 420) {
-        dispatch({
-          type: "SET_COMMAND_IDX",
-          payload: 1,
-        });
-      }
-      return false;
     }
   };
 
@@ -391,22 +398,11 @@ export const sendLoginRequest =
     try {
       const { data } = await api.post(`/auth/signin`, sendData);
       setLoader(false);
-      dispatch({
-        type: "LOGIN_USER",
-        payload: data,
-      });
-      dispatch({
-        type: "SET_COMMAND_IDX",
-        payload: 0,
-      });
-      dispatch({
-        type: "CLEAR_ERROR_MESSAGE",
-      });
-      dispatch({
-        type: "SET_FALSE",
-      });
+      dispatch({ type: "LOGIN_USER", payload: data });
+      console.log("stored user data");
+      dispatch({ type: "CLEAR_ERROR_MESSAGE" });
+      dispatch({ type: "SET_FALSE" });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
-      //dispatch({ type: "SET_MODAL", payload: { destPath: "", error: false } });
       toast.success("You've been logged in.");
       return true;
     } catch (error) {
@@ -433,21 +429,34 @@ export const sendLoginRequest =
     }
   };
 
-/** Send logout request */
-export const sendLogoutRequest = (id, navigate, toast) => async (dispatch) => {
-  await api.post(`/auth/signout/${id}`);
+export const clearAuthData = (destPath, navigate) => async (dispatch) => {
   dispatch({ type: "LOGOUT_USER" });
   localStorage.setItem("auth", null);
-  toast.success("You've been logged out.");
-  // localStorage.setItem("cartItems", []);
-  // dispatch({
-  //   type: "CLEAR_CART",
-  // });
-  dispatch({
-    type: "CLEAR_ERROR_MESSAGE",
-  });
-  if (navigate) navigate(`/`);
+  if (destPath === "/checkout") {
+    navigate("/cart");
+  } else {
+    console.log("home!");
+    navigate("/");
+  }
 };
+
+/** Send logout request */
+export const sendLogoutRequest =
+  (navigate, toast) => async (dispatch, getState) => {
+    const { user } = getState().auth;
+    await api.post(`/auth/signout/${user.id}`);
+    dispatch({ type: "LOGOUT_USER" });
+    localStorage.setItem("auth", null);
+    toast?.success("You've been logged out.");
+    // localStorage.setItem("cartItems", []);
+    // dispatch({
+    //   type: "CLEAR_CART",
+    // });
+    dispatch({
+      type: "CLEAR_ERROR_MESSAGE",
+    });
+    if (navigate) navigate(`/`);
+  };
 
 /** Send register request */
 export const sendRegisterRequest =
@@ -850,7 +859,7 @@ export const fetchReviews = () => async (dispatch, getState) => {
     });
     localStorage.setItem("reviews", JSON.stringify(getState().reviews));
   } catch (error) {
-    console.log(error.response?.data?.message);
+    console.log(error);
   }
 };
 
