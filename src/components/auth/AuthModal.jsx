@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal, clearAuthData } from "../../store/actions";
 import styles from "../../styles/AuthModal.module.css";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const AuthModal = () => {
   const { loginOnly, destPath } = useSelector((state) => state.modal);
@@ -14,7 +15,10 @@ const AuthModal = () => {
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
       dispatch(closeModal());
-      if (destPath?.length > 0) dispatch(clearAuthData(destPath, navigate));
+      if (destPath?.length > 0) {
+        dispatch(clearAuthData(destPath, navigate));
+        toast.success("You've been logged out.");
+      }
       document.removeEventListener("mouseup", handleCloseModal);
     }
   };

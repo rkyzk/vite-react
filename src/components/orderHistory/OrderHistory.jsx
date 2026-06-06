@@ -20,12 +20,12 @@ const OrderHistory = () => {
   const { orderList, pagination } = useSelector((state) => state.order);
   const [sortOrder, setSortOrder] = useState("desc");
   useOrderHistoryPages();
-  console.log("order history page");
+  console.log("order history");
 
   useEffect(() => {
     const handler = setTimeout(() => {
       errorMessage && dispatch(clearErrorMessage());
-      searchParams.delete("page");
+      //searchParams.delete("page");
       sortOrder === "desc"
         ? searchParams.delete("sortOrder")
         : searchParams.set("sortOrder", sortOrder);

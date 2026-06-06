@@ -114,6 +114,9 @@ but goes to home page
 
 ## Credits
 
+convert URL to file
+https://medium.com/@impulsejs/convert-dataurl-to-a-file-in-javascript-1921b8c3f4b
+
 code snippets:
 box shadow (review entries on home page)
 https://getcssscan.com/css-box-shadow-examples

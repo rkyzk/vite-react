@@ -18,7 +18,7 @@ const ReviewEntry = () => {
         <>
           <h2
             style={{ fontSize: "1.3rem", fontFamily: "M PLUS Rounded 1c" }}
-            className="text-center font-bold mt-3"
+            className="text-center font-bold mt-3.5"
           >
             Compliments from our Customers
           </h2>

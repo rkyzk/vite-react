@@ -3,17 +3,13 @@ import api from "../../api/axiosDefaults";
 /** Send logout request */
 const sendLogoutRequest = async (id, toast, dispatch, path) => {
   await api.post(`/auth/signout/${id}`);
-  console.log("not deleting auth");
   if (path !== "/order-confirm") {
     dispatch({ type: "LOGOUT_USER" });
     localStorage.setItem("auth", null);
   }
-  // localStorage.setItem("cartItems", []);
-  // dispatch({ type: "CLEAR_CART" });
 };
 
 export const sendRefreshJwt = async (toast, path, dispatch, getState) => {
-  console.log("refreshing JWT");
   try {
     let { data } = await api.post(`/auth/refreshtoken`);
     if (data.message === "JWT has been regenerated.") {

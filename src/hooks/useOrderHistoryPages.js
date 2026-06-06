@@ -19,7 +19,7 @@ const useOrderHistoryPages = () => {
     let queryString = params.toString();
     if (queryString?.length > 0) queryString = "?" + queryString;
     dispatch(fetchOrderHistory(queryString, toast));
-    console.log("fetch order history fired");
+    console.log("util class order history");
   }, [dispatch, searchParams]);
 };
 

@@ -6,9 +6,6 @@ import Modal from "@mui/material/Modal";
 
 const Order = ({ orderId, orderDate, cart, review }) => {
   const [open, setOpen] = useState(false);
-  const closeReviewForm = () => {
-    setOpen(false);
-  };
 
   return (
     <>
@@ -49,8 +46,8 @@ const Order = ({ orderId, orderDate, cart, review }) => {
           )}
         </div>
       </div>
-      <Modal open={open} onClose={closeReviewForm}>
-        <ReviewForm closeReviewForm={closeReviewForm} orderId={orderId} />
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <ReviewForm setOpen={setOpen} orderId={orderId} />
       </Modal>
     </>
   );

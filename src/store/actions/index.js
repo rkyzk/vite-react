@@ -435,7 +435,6 @@ export const clearAuthData = (destPath, navigate) => async (dispatch) => {
   if (destPath === "/checkout") {
     navigate("/cart");
   } else {
-    console.log("home!");
     navigate("/");
   }
 };
@@ -447,7 +446,7 @@ export const sendLogoutRequest =
     await api.post(`/auth/signout/${user.id}`);
     dispatch({ type: "LOGOUT_USER" });
     localStorage.setItem("auth", null);
-    toast?.success("You've been logged out.");
+    toast.success("You've been logged out.");
     // localStorage.setItem("cartItems", []);
     // dispatch({
     //   type: "CLEAR_CART",
@@ -575,7 +574,7 @@ export const fetchOrderHistory =
     let path = query ? "/order-history" + query : "/order-history";
     while (true) {
       try {
-        console.log("getting order history");
+        console.log("index.js " + query);
         const { data } = await api.get(path);
         dispatch({
           type: "STORE_ORDER_HISTORY",
@@ -790,29 +789,12 @@ export const createClientSecret = (toast) => async (dispatch, getState) => {
 };
 
 /**
- * Request to regenerate JWT.
- */
-export const sendRefreshJwtTokenRequest = () => async (dispatch) => {
-  try {
-    let { data } = await api.post(`/auth/refreshtoken`);
-    if (data.message === "Refresh Token has expired.") {
-      dispatch({ type: "SET_COMMAND_IDX", payload: 2 });
-    } else {
-      dispatch({ type: "SET_COMMAND_IDX", payload: 0 });
-    }
-  } catch (error) {
-    dispatch({ type: "IS_ERROR", payload: error.message });
-  }
-};
-
-/**
  * Insert reviews in DB
  */
 export const postReview =
   (formData, orderId, toast) => async (dispatch, getState) => {
     const axiosForMultiPart = customAxios("multipart/form-data");
-    let i = 0;
-    while (i < 2) {
+    while (true) {
       try {
         let { data } = await axiosForMultiPart.post(
           `/review/${orderId}`,
@@ -836,8 +818,17 @@ export const postReview =
         return true;
       } catch (error) {
         if (error.status === 420) {
-          let result = await sendRefreshJwt();
-          if (result) i += 1;
+          let result = await sendRefreshJwt(
+            toast,
+            "/order-history",
+            dispatch,
+            getState,
+          );
+          if (result) {
+            continue; // if JWT was refreshed, post the review again.
+          } else {
+            return false;
+          }
         } else {
           toast.error("There was an error. Please try again.");
           return false;

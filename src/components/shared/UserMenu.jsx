@@ -30,7 +30,7 @@ const UserMenu = () => {
   const handleLogout = () => {
     setSecondMenuOpen(false);
     handleClose();
-    dispatch(sendLogoutRequest(user.id, navigate, toast));
+    dispatch(sendLogoutRequest(navigate, toast));
   };
 
   return (

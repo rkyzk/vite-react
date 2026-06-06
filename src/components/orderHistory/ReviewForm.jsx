@@ -5,28 +5,21 @@ import toast from "react-hot-toast";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import {
-  sendLogoutRequest,
-  setModalLogin,
-  setModalOpen,
-} from "../../store/actions";
 import styles from "../../styles/ReviewForm.module.css";
 
-const ReviewForm = ({ closeReviewForm, orderId }) => {
+const ReviewForm = ({ setOpen, orderId }) => {
   const [content, setContent] = useState("");
   const [stars, setStars] = useState(0);
   const [displayName, setDisplayName] = useState("");
   const [image, setImage] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const { commandIdx, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   /** Close dialog if outside the dialog is clicked. */
   const handleCloseModal = (e) => {
     if (e.target.classList.contains("MuiModal-backdrop")) {
-      closeReviewForm();
+      setOpen(false);
       document.removeEventListener("mouseup", handleCloseModal);
     }
   };
@@ -38,41 +31,26 @@ const ReviewForm = ({ closeReviewForm, orderId }) => {
     } else if (stars === 0) {
       setError("Please rate on a scale of 1 to 5 stars.");
     } else {
-      setSubmitted(true);
       let formData = new FormData();
       formData.append("reviewContent", content);
       formData.append("stars", stars);
       formData.append("displayName", displayName);
       if (image) formData.append("file", image);
-      console.log(formData);
       let result = await dispatch(postReview(formData, orderId, toast));
       if (result) {
-        closeReviewForm();
+        setOpen(false);
         navigate("/order-history"); // so that 'submitted' will be displayed.
       }
     }
   };
 
   useEffect(() => {
-    console.log("use effect: " + submitted + " " + commandIdx);
-    setError("");
-    const logoutUser = async () => {
-      // send a request to log out the user.
-      dispatch(sendLogoutRequest(user.id, null, null));
-      // Display the login dialog
-      await dispatch(setModalLogin()); // set login only (no register form)
-      dispatch(setModalOpen());
-    };
-    if (commandIdx === 2) {
-      closeReviewForm();
-      logoutUser(); // 2: refresh token expired
-    }
-  }, [commandIdx]);
-
-  useEffect(() => {
+    console.log("useEffect");
     // Add eventlistener at first rendering.
     document.addEventListener("mouseup", (e) => handleCloseModal(e));
+    setError("");
   }, []);
+
   const scoreStars = (idx) =>
     idx > stars ? (
       <CiStar

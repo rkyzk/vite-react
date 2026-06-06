@@ -5,7 +5,6 @@ import {
   setModal,
   getUserAddress,
   sendLoginRequest,
-  setCommandIdx,
 } from "../../store/actions";
 import Spinner from "../shared/Spinner";
 import toast from "react-hot-toast";
@@ -38,7 +37,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let result = await dispatch(sendLoginRequest(data, toast, setLoader));
-    if (destPath !== "/order-confirm") {
+    if (destPath === "/checkout") {
       if (result) {
         dispatch(getUserAddress());
         destPath !== "" ? navigate(destPath) : navigate(path);

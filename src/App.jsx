@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import ContactPage from "./components/contact/ContactPage";
 import ProductImage from "./components/productDetail/ProductImage";
 import MenuColumn from "./components/shared/MenuColumn";
+import PrivateRoute from "./components/PrivateRote";
 
 function App() {
   const { open } = useSelector((state) => state.modal);
@@ -35,11 +36,12 @@ function App() {
               {/* <Route path="/about" element={<About />} /> */}
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/cart" element={<Cart cartPage />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              {/* <Route path="/" element={<PrivateRoute />}> */}
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirm" element={<OrderConfirmation />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/order-history" element={<OrderHistory />} />
-              <Route path="/test/:id" element={<ProductImage />} />
+              {/* </Route> */}
             </Routes>
           </div>
           <Footer />
