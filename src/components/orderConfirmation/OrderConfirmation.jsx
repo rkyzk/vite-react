@@ -42,6 +42,7 @@ const OrderConfirmation = () => {
         pgStatus: "succeeded",
         pgResponseMessage: "Payment successful",
       };
+      console.log(selectedSAddrId);
       if (selectedSAddrId === 0 || selectedBAddrId === -1) {
         // If new address has been entered, include the address data
         // in the order request.
@@ -52,11 +53,6 @@ const OrderConfirmation = () => {
       }
     }
   }, [user]);
-
-  // useEffect(() => {
-  //   // If the address has been updated, get the user addresses data from DB again.
-  //   dispatch(getUserAddress());
-  // }, [order]);
 
   return (
     <>

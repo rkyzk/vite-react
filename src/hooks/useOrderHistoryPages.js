@@ -13,6 +13,7 @@ const useOrderHistoryPages = () => {
     const currPage = searchParams.get("page")
       ? Number(searchParams.get("page"))
       : 1;
+    console.log(currPage);
     const sortOrder = searchParams.get("sortOrder") || null;
     if (sortOrder) params.set("sortOrder", sortOrder);
     params.set("pageNumber", currPage - 1);

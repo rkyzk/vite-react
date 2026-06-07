@@ -25,6 +25,7 @@ const useProductFilter = () => {
     let queryString = params.toString();
     if (queryString && queryString.length > 0) queryString = "?" + queryString;
     dispatch(fetchProducts(queryString));
+    console.log("util prod");
   }, [dispatch, searchParams]);
 };
 

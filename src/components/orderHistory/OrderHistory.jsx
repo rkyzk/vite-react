@@ -1,8 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import { clearErrorMessage } from "../../store/actions";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { FiSearch } from "react-icons/fi";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaExclamationTriangle } from "react-icons/fa";
 import Order from "./Order";
 import PaginationSection from "../shared/PaginationSection";
@@ -11,28 +8,12 @@ import styles from "../../styles/OrderHistory.module.css";
 import Spinner from "../shared/Spinner";
 
 const OrderHistory = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { isLoading, errorMessage, page } = useSelector(
     (state) => state.errors,
   );
-  const [searchParams] = useSearchParams();
   const { orderList, pagination } = useSelector((state) => state.order);
-  const [sortOrder, setSortOrder] = useState("desc");
   useOrderHistoryPages();
-  console.log("order history");
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      errorMessage && dispatch(clearErrorMessage());
-      //searchParams.delete("page");
-      sortOrder === "desc"
-        ? searchParams.delete("sortOrder")
-        : searchParams.set("sortOrder", sortOrder);
-      navigate(`?${searchParams.toString()}`);
-    }, 700);
-    return () => clearTimeout(handler);
-  }, [sortOrder, orderList]);
+  console.log("order history page");
 
   return (
     <div className="px-2 mx-auto max-w-7xl md:w-10/12 lg:w-9/12">
@@ -45,11 +26,12 @@ const OrderHistory = () => {
       >
         Order History
       </h2>
-      {isLoading ? (
+      {isLoading && (
         <div className="flex justify-center">
           <Spinner className="w-9 mx-auto" />
         </div>
-      ) : (
+      )}
+      {!isLoading && (
         <>
           {page === "order-history" && errorMessage ? (
             <div className="flex justify-center">
@@ -59,42 +41,42 @@ const OrderHistory = () => {
           ) : (
             <>
               {orderList && (
-                <>
-                  <div className="flex gap-3">
-                    <span className="mt-1">
-                      Total: {pagination.totalElements}
-                    </span>
-                    <select
-                      id="sort-order"
-                      name="sortOrder"
-                      onChange={(e) => setSortOrder(e.target.value)}
-                      className={`${styles.Select} bg-white h-8
+                <div className="flex gap-3">
+                  <span className="mt-1">
+                    Total: {pagination.totalElements}
+                  </span>
+                  <select
+                    id="sort-order"
+                    name="sortOrder"
+                    //onChange={(e) => setSortOrder(e.target.value)}
+                    className={`${styles.Select} bg-white h-8
                        -mt-2 mb-1 border border-slate-800 w-42.5`}
-                      defaultValue="desc"
-                    >
-                      <option value="desc" className="font-sans text-slate-700">
-                        newest to oldest
-                      </option>
-                      <option value="asc" className="font-sans text-slate-700">
-                        oldest to newest
-                      </option>
-                    </select>
-                  </div>
-                  <div className="flex justify-end max-w-220">
-                    {pagination.totalElements > 8 && (
-                      <PaginationSection
-                        totalPages={Number(pagination.totalPages)}
-                      />
-                    )}
-                  </div>
-                  {orderList.map((order, idx) => (
-                    <Order {...order} key={idx} />
-                  ))}
-                </>
+                    defaultValue="desc"
+                  >
+                    <option value="desc" className="font-sans text-slate-700">
+                      newest to oldest
+                    </option>
+                    <option value="asc" className="font-sans text-slate-700">
+                      oldest to newest
+                    </option>
+                  </select>
+                </div>
               )}
             </>
           )}
         </>
+      )}
+      <div className="flex justify-end max-w-220">
+        {pagination?.totalElements > 8 && (
+          <PaginationSection totalPages={Number(pagination.totalPages)} />
+        )}
+      </div>
+      {!isLoading && (
+        <div>
+          {orderList?.map((order, idx) => (
+            <Order {...order} key={idx} />
+          ))}
+        </div>
       )}
     </div>
   );

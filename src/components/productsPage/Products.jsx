@@ -15,6 +15,7 @@ const Products = () => {
   const { products, pagination } = useSelector((state) => state.products);
   const [searchParams] = useSearchParams();
   useProductFilter();
+  console.log("products page");
 
   return (
     <>

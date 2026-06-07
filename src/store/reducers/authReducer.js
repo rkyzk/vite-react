@@ -10,7 +10,6 @@ const initialState = {
   addrChecked: false,
   selectedSAddrId: 0,
   selectedBAddrId: 0,
-  commandIdx: 0,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -22,10 +21,7 @@ const authReducer = (state = initialState, action) => {
       };
     case "LOGOUT_USER":
       return {
-        user: null,
-        sAddressList: null,
-        bAddressList: null,
-        clientSecret: null,
+        ...initialState,
       };
     case "STORE_SADDRESSLIST":
       return {

@@ -10,6 +10,8 @@ const AddressList = () => {
   const handleSelectAddress = (e, isSAddr) => {
     dispatch(changeSelectedAddr(isSAddr, Number(e.target.value)));
   };
+  console.log("selected b addr id " + selectedBAddrId);
+  console.log("selected s addr id" + selectedBAddrId);
 
   return (
     <div className="w-full flex px-2 md:px-0">

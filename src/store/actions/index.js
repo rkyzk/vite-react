@@ -12,6 +12,7 @@ export const fetchProducts = (queryString) => async (dispatch, getState) => {
   });
   try {
     const { data } = await api.get(`/public/products${queryString}`);
+    console.log("fetching prod");
     dispatch({
       type: "FETCH_PRODUCTS",
       payload: data.content,
@@ -220,7 +221,6 @@ export const sendOrder = (data, toast) => async (dispatch, getState) => {
     pgStatus: data.pgStatus,
     pgResponseMessage: data.pgResponseMessage,
   };
-  console.log(sendData);
   while (true) {
     try {
       const response = await api.post(`/order`, sendData);
@@ -399,7 +399,6 @@ export const sendLoginRequest =
       const { data } = await api.post(`/auth/signin`, sendData);
       setLoader(false);
       dispatch({ type: "LOGIN_USER", payload: data });
-      console.log("stored user data");
       dispatch({ type: "CLEAR_ERROR_MESSAGE" });
       dispatch({ type: "SET_FALSE" });
       localStorage.setItem("auth", JSON.stringify(getState().auth));
@@ -569,13 +568,18 @@ export const sendUpdateAddressReq = (address) => async (dispatch, getState) => {
 export const fetchOrderHistory =
   (query, toast) => async (dispatch, getState) => {
     dispatch({
-      type: "IS_FETCHING",
+      type: "IS_ERROR",
+      payload: {
+        errorMessage: null,
+        page: null,
+      },
     });
-    let path = query ? "/order-history" + query : "/order-history";
+    dispatch({ type: "IS_FETCHING" });
+    //let path = query ? "/order-history" + query : "/order-history";
     while (true) {
       try {
-        console.log("index.js " + query);
-        const { data } = await api.get(path);
+        console.log("fetching order hist");
+        const { data } = await api.get(`/order-history${query}`);
         dispatch({
           type: "STORE_ORDER_HISTORY",
           payload: data.content,
@@ -599,7 +603,12 @@ export const fetchOrderHistory =
           });
           break;
         } else if (error.status === 420) {
-          let result = await sendRefreshJwt(toast, path, dispatch, getState);
+          let result = await sendRefreshJwt(
+            toast,
+            "/order-history",
+            dispatch,
+            getState,
+          );
           if (result) {
             continue;
           } else {

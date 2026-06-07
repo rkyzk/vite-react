@@ -1,11 +1,13 @@
 To do
 user5
 Password1!
+
 log in fail twice, then do something
 Spinner needed checkout page
+save addresses in redux if new addresses entered
 Address change will not be saved.
 register login form, enter input and return (eye button will be pressed)
-Review form refresh token expires, then after log in the form will not be sent
+order history page2 pagination weird.
 refresh token expires, try to access auth page, the page appears and the login dialog. (better not to show the next page until logged in.)
 hit order-history when not logged in and will be a blank page
 product colors

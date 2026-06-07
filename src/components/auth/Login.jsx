@@ -37,9 +37,11 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     let result = await dispatch(sendLoginRequest(data, toast, setLoader));
-    if (destPath === "/checkout") {
-      if (result) {
+    if (result) {
+      if (destPath === "") {
         dispatch(getUserAddress());
+      }
+      if (destPath !== "/order-confirm" && destPath !== "/order-history") {
         destPath !== "" ? navigate(destPath) : navigate(path);
       }
     }
